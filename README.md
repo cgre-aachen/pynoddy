@@ -11,6 +11,16 @@ At this stage, pynoddy provides wrapper modules for existing Noddy history (.his
 Installation
 ---------
 
+To install pynoddy simply run:
+
+	python setup.py install
+
+Note:
+
+- sufficient priviledges are required (i.e. run in sudo with MacOSX/ Linux and set permissions on Windows)
+
+Important: the Noddy executable has to be in a directory defined in the PATH variable!!
+
 
 
 Documentation

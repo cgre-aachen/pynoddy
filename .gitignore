@@ -1,5 +1,9 @@
 *.py[cod]
 
+# ignore experiemntal results in sandbox directory (but keep directory and readme file)
+sandbox/*
+!sandbox/README.txt
+
 # C extensions
 *.so
 
