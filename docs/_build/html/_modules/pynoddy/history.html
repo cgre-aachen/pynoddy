@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pynoddy.history &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../../index.html" />
+    <link rel="up" title="pynoddy" href="../pynoddy.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">pynoddy  documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../pynoddy.html" accesskey="U">pynoddy</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for pynoddy.history</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;Noddy history file wrapper</span>
+<span class="sd">Created on 24/03/2014</span>
+
+<span class="sd">@author: Florian Wellmann</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c"># import numpy as np</span>
+<span class="c"># import matplotlib.pyplot as plt</span>
+
+
+<div class="viewcode-block" id="NoddyHistory"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory">[docs]</a><span class="k">class</span> <span class="nc">NoddyHistory</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Class container for Noddy history files&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">history</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Methods to analyse and change Noddy history files</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *history* = string : Name of Noddy history file</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">determine_events</span><span class="p">()</span>
+    
+    
+<div class="viewcode-block" id="NoddyHistory.load_history"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.load_history">[docs]</a>    <span class="k">def</span> <span class="nf">load_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">history</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load Noddy history</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *history* = string : Name of Noddy history file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    </div>
+<div class="viewcode-block" id="NoddyHistory.determine_events"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.determine_events">[docs]</a>    <span class="k">def</span> <span class="nf">determine_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine events and save line numbers</span>
+<span class="sd">        </span>
+<span class="sd">        ..Note: Parsing of the history file is based on a fixed Noddy output order.</span>
+<span class="sd">        If this is, for some reason (e.g. in a changed version of Noddy) not the case, then</span>
+<span class="sd">        this parsing might fail!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&quot;No of Events&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_events</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="s">&quot;Event #&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">event</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">event</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+                <span class="n">event</span><span class="p">[</span><span class="s">&#39;num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">7</span><span class="p">:</span><span class="mi">9</span><span class="p">])</span>
+                <span class="n">event</span><span class="p">[</span><span class="s">&#39;line_start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>       
+            <span class="c"># finally: if the definition for BlockOptions starts, the event definition is over</span>
+            <span class="k">elif</span> <span class="s">&quot;BlockOptions&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">last_event_stop</span> <span class="o">=</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span>
+        <span class="c"># now: find the line ends for the single event blocks</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&#39;line_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s">&#39;line_start&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+        <span class="c"># now adjust for last event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;line_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_event_stop</span>
+            
+        
+        </div>
+<div class="viewcode-block" id="NoddyHistory.change_cube_size"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.change_cube_size">[docs]</a>    <span class="k">def</span> <span class="nf">change_cube_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cube_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Change the model cube size (isotropic)</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *cube_size* = float : new model cube size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># create local copy of history</span>
+        <span class="n">lines_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">[:]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&#39;Geophysics Cube Size&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span> 
+                <span class="n">l</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)</span>
+                <span class="n">l_new</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%7.2f</span><span class="se">\r\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">cube_size</span>
+                <span class="n">line_new</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;=&quot;</span> <span class="o">+</span> <span class="n">l_new</span>
+                <span class="n">lines_new</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">line_new</span>
+        <span class="c"># assign changed lines back to object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span> <span class="o">=</span> <span class="n">lines_new</span><span class="p">[:]</span>        
+        
+                </div>
+<div class="viewcode-block" id="NoddyHistory.write_history"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.write_history">[docs]</a>    <span class="k">def</span> <span class="nf">write_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write history to new file</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *filename* = string : filename of new history file</span>
+<span class="sd">            </span>
+<span class="sd">        NB: Just love it how easy it is to &#39;write history&#39; with Noddy ;-)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">pynoddy  documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../pynoddy.html" >pynoddy</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Florian Wellmann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

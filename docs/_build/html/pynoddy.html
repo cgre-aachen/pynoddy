@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pynoddy package &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="index.html" />
+    <link rel="prev" title="Welcome to pynoddy’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to pynoddy’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pynoddy-package">
+<h1>pynoddy package<a class="headerlink" href="#pynoddy-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pynoddy.history">
+<span id="pynoddy-history-module"></span><h2>pynoddy.history module<a class="headerlink" href="#module-pynoddy.history" title="Permalink to this headline">¶</a></h2>
+<p>Noddy history file wrapper
+Created on 24/03/2014</p>
+<p>&#64;author: Florian Wellmann</p>
+<dl class="class">
+<dt id="pynoddy.history.NoddyHistory">
+<em class="property">class </em><tt class="descclassname">pynoddy.history.</tt><tt class="descname">NoddyHistory</tt><big>(</big><em>history</em><big>)</big><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class container for Noddy history files</p>
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.change_cube_size">
+<tt class="descname">change_cube_size</tt><big>(</big><em>cube_size</em><big>)</big><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.change_cube_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.change_cube_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the model cube size (isotropic)</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>cube_size</em> = float : new model cube size</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.determine_events">
+<tt class="descname">determine_events</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.determine_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.determine_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine events and save line numbers</p>
+<p>..Note: Parsing of the history file is based on a fixed Noddy output order.
+If this is, for some reason (e.g. in a changed version of Noddy) not the case, then
+this parsing might fail!</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.load_history">
+<tt class="descname">load_history</tt><big>(</big><em>history</em><big>)</big><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.load_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.load_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load Noddy history</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>history</em> = string : Name of Noddy history file</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.write_history">
+<tt class="descname">write_history</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.write_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.write_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write history to new file</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>filename</em> = string : filename of new history file</li>
+</ul>
+</dd>
+</dl>
+<p>NB: Just love it how easy it is to &#8216;write history&#8217; with Noddy ;-)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pynoddy.output">
+<span id="pynoddy-output-module"></span><h2>pynoddy.output module<a class="headerlink" href="#module-pynoddy.output" title="Permalink to this headline">¶</a></h2>
+<p>Noddy output file analysis
+Created on 24/03/2014</p>
+<p>&#64;author: Florian Wellmann</p>
+<dl class="class">
+<dt id="pynoddy.output.NoddyOutput">
+<em class="property">class </em><tt class="descclassname">pynoddy.output.</tt><tt class="descname">NoddyOutput</tt><big>(</big><em>output_name</em><big>)</big><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class definition for Noddy output analysis</p>
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.export_to_vtk">
+<tt class="descname">export_to_vtk</tt><big>(</big><em>**kwds</em><big>)</big><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.export_to_vtk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.export_to_vtk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export model to VTK</p>
+<p>Export the geology blocks to VTK for visualisation of the entire 3-D model in an
+external VTK viewer, e.g. Paraview.</p>
+<p>..Note:: Requires pyevtk, available for free on: <a class="reference external" href="https://github.com/firedrakeproject/firedrake/tree/master/python/evtk">https://github.com/firedrakeproject/firedrake/tree/master/python/evtk</a></p>
+<dl class="docutils">
+<dt><strong>Optional keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>vtk_filename</em> = string : filename of VTK file (default: output_name)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.load_geology">
+<tt class="descname">load_geology</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.load_geology"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.load_geology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load block geology ids from .g12 output file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.load_model_info">
+<tt class="descname">load_model_info</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.load_model_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.load_model_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load information about model discretisation from .g00 file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.plot_section">
+<tt class="descname">plot_section</tt><big>(</big><em>direction='y'</em>, <em>position='center'</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.plot_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.plot_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a section block through the model</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>direction</em> = &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217; : coordinate direction of section plot (default: &#8216;y&#8217;)</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>position</em> = int or &#8216;center&#8217; <span class="classifier-delimiter">:</span> <span class="classifier">cell position of section as integer value</span></dt>
+<dd><p class="first last">or identifier (default: &#8216;center&#8217;)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>ax</em> = matplotlib.axis : append plot to axis (default: create new plot)</li>
+<li><em>figsize</em> = (x,y) : matplotlib figsize</li>
+<li><em>colorbar</em> = bool : plot colorbar (default: True)</li>
+<li><em>title</em> = string : plot title</li>
+<li><em>savefig</em> = bool : save figure to file (default: show directly on scren)</li>
+<li><em>fig_filename</em> = string : figure filename</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pynoddy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pynoddy" title="Permalink to this headline">¶</a></h2>
+<p>Package initialization file for pynoddy</p>
+<dl class="function">
+<dt id="pynoddy.compute_model">
+<tt class="descclassname">pynoddy.</tt><tt class="descname">compute_model</tt><big>(</big><em>history</em>, <em>output_name</em><big>)</big><a class="reference internal" href="_modules/pynoddy.html#compute_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.compute_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pynoddy package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pynoddy.history">pynoddy.history module</a></li>
+<li><a class="reference internal" href="#module-pynoddy.output">pynoddy.output module</a></li>
+<li><a class="reference internal" href="#module-pynoddy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to pynoddy&#8217;s documentation!</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/pynoddy.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to pynoddy’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Florian Wellmann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

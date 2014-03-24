@@ -1,0 +1,38 @@
+\begin{theindex}
+\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
+
+  \bigletter C
+  \item change\_cube\_size() (pynoddy.history.NoddyHistory method), \hyperpage{3}
+  \item compute\_model() (in module pynoddy), \hyperpage{4}
+
+  \indexspace
+  \bigletter D
+  \item determine\_events() (pynoddy.history.NoddyHistory method), \hyperpage{3}
+
+  \indexspace
+  \bigletter E
+  \item export\_to\_vtk() (pynoddy.output.NoddyOutput method), \hyperpage{4}
+
+  \indexspace
+  \bigletter L
+  \item load\_geology() (pynoddy.output.NoddyOutput method), \hyperpage{4}
+  \item load\_history() (pynoddy.history.NoddyHistory method), \hyperpage{3}
+  \item load\_model\_info() (pynoddy.output.NoddyOutput method), \hyperpage{4}
+
+  \indexspace
+  \bigletter N
+  \item NoddyHistory (class in pynoddy.history), \hyperpage{3}
+  \item NoddyOutput (class in pynoddy.output), \hyperpage{3}
+
+  \indexspace
+  \bigletter P
+  \item plot\_section() (pynoddy.output.NoddyOutput method), \hyperpage{4}
+  \item pynoddy (module), \hyperpage{4}
+  \item pynoddy.history (module), \hyperpage{3}
+  \item pynoddy.output (module), \hyperpage{3}
+
+  \indexspace
+  \bigletter W
+  \item write\_history() (pynoddy.history.NoddyHistory method), \hyperpage{3}
+
+\end{theindex}

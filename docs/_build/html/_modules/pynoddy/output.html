@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pynoddy.output &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../../index.html" />
+    <link rel="up" title="pynoddy" href="../pynoddy.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">pynoddy  documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../pynoddy.html" accesskey="U">pynoddy</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for pynoddy.output</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;Noddy output file analysis</span>
+<span class="sd">Created on 24/03/2014</span>
+
+<span class="sd">@author: Florian Wellmann</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<div class="viewcode-block" id="NoddyOutput"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.output.NoddyOutput">[docs]</a><span class="k">class</span> <span class="nc">NoddyOutput</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Class definition for Noddy output analysis&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Noddy output analysis</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *output_name* = string : (base) name of Noddy output files</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basename</span> <span class="o">=</span> <span class="n">output_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_model_info</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_geology</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="NoddyOutput.load_model_info"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.output.NoddyOutput.load_model_info">[docs]</a>    <span class="k">def</span> <span class="nf">load_model_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load information about model discretisation from .g00 file&quot;&quot;&quot;</span>
+        <span class="n">filelines</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basename</span> <span class="o">+</span> <span class="s">&quot;.g00&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> 
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">filelines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s">&#39;NUMBER OF LAYERS&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="s">&#39;LAYER 1 DIMENSIONS&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]]</span>
+            <span class="k">elif</span> <span class="s">&#39;UPPER SW CORNER&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]]</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zmax</span><span class="p">)</span> <span class="o">=</span> <span class="n">l</span>
+            <span class="k">elif</span> <span class="s">&#39;LOWER NE CORNER&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]]</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zmin</span><span class="p">)</span> <span class="o">=</span> <span class="n">l</span>
+            <span class="k">elif</span> <span class="s">&#39;NUM ROCK&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_rocktypes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_z</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmax</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymin</span><span class="p">,</span> 
+                                                         <span class="bp">self</span><span class="o">.</span><span class="n">zmax</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">zmin</span><span class="p">)</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dely</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delz</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent_x</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">),</span> 
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">extent_y</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">),</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">extent_z</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">))</span>
+    
+    </div>
+<div class="viewcode-block" id="NoddyOutput.load_geology"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.output.NoddyOutput.load_geology">[docs]</a>    <span class="k">def</span> <span class="nf">load_geology</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load block geology ids from .g12 output file&quot;&quot;&quot;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basename</span> <span class="o">+</span> <span class="s">&quot;.g12&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&quot;int&quot;</span><span class="p">)</span>
+        <span class="c"># reshape to proper 3-D shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        </div>
+<div class="viewcode-block" id="NoddyOutput.plot_section"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.output.NoddyOutput.plot_section">[docs]</a>    <span class="k">def</span> <span class="nf">plot_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a section block through the model</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *direction* = &#39;x&#39;, &#39;y&#39;, &#39;z&#39; : coordinate direction of section plot (default: &#39;y&#39;)</span>
+<span class="sd">            - *position* = int or &#39;center&#39; : cell position of section as integer value</span>
+<span class="sd">                or identifier (default: &#39;center&#39;)</span>
+<span class="sd">        </span>
+<span class="sd">        **Optional Keywords**:</span>
+<span class="sd">            - *ax* = matplotlib.axis : append plot to axis (default: create new plot)</span>
+<span class="sd">            - *figsize* = (x,y) : matplotlib figsize</span>
+<span class="sd">            - *colorbar* = bool : plot colorbar (default: True)</span>
+<span class="sd">            - *title* = string : plot title</span>
+<span class="sd">            - *savefig* = bool : save figure to file (default: show directly on scren)</span>
+<span class="sd">            - *fig_filename* = string : figure filename</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">kwds</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;ax&#39;</span><span class="p">):</span>
+            <span class="c"># append plot to existing axis</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s">&#39;ax&#39;</span><span class="p">]</span>
+            <span class="n">return_axis</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">return_axis</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">figsize</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;figsize&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="n">savefig</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;savefig&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="n">colorbar</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;colorbar&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+            
+        <span class="c"># extract slice</span>
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s">&#39;x&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">position</span> <span class="o">==</span> <span class="s">&#39;center&#39;</span><span class="p">:</span>
+                <span class="n">cell_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cell_pos</span> <span class="o">=</span> <span class="n">position</span>
+            <span class="n">section_slice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">[</span><span class="n">cell_pos</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+            <span class="n">xlabel</span> <span class="o">=</span> <span class="s">&quot;y&quot;</span>
+            <span class="n">ylabel</span> <span class="o">=</span> <span class="s">&quot;z&quot;</span>
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s">&#39;y&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">position</span> <span class="o">==</span> <span class="s">&#39;center&#39;</span><span class="p">:</span>
+                <span class="n">cell_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cell_pos</span> <span class="o">=</span> <span class="n">position</span>
+            <span class="n">section_slice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">[:,</span><span class="n">cell_pos</span><span class="p">,:]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+            <span class="n">xlabel</span> <span class="o">=</span> <span class="s">&quot;x&quot;</span>
+            <span class="n">ylabel</span> <span class="o">=</span> <span class="s">&quot;z&quot;</span>
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s">&#39;z&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">position</span> <span class="o">==</span> <span class="s">&#39;center&#39;</span><span class="p">:</span>
+                <span class="n">cell_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cell_pos</span> <span class="o">=</span> <span class="n">position</span>
+            <span class="n">section_slice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">[:,:,</span><span class="n">cell_pos</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+            <span class="n">xlabel</span> <span class="o">=</span> <span class="s">&quot;x&quot;</span>
+            <span class="n">ylabel</span> <span class="o">=</span> <span class="s">&quot;y&quot;</span>
+
+        <span class="n">title</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">,</span> <span class="s">&quot;Section in </span><span class="si">%s</span><span class="s">-direction, pos=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="n">cell_pos</span><span class="p">))</span>
+                
+        <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">section_slice</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s">&#39;lower left&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">colorbar</span><span class="p">:</span>
+            <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">cbar</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">return_axis</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ax</span>
+        <span class="k">elif</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">fig_filename</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;fig_filename&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">_section_</span><span class="si">%s</span><span class="s">_pos_</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basename</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">cell_pos</span><span class="p">))</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            </div>
+<div class="viewcode-block" id="NoddyOutput.export_to_vtk"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.output.NoddyOutput.export_to_vtk">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_vtk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Export model to VTK</span>
+<span class="sd">        </span>
+<span class="sd">        Export the geology blocks to VTK for visualisation of the entire 3-D model in an</span>
+<span class="sd">        external VTK viewer, e.g. Paraview.</span>
+<span class="sd">        </span>
+<span class="sd">        ..Note:: Requires pyevtk, available for free on: https://github.com/firedrakeproject/firedrake/tree/master/python/evtk</span>
+<span class="sd">        </span>
+<span class="sd">        **Optional keywords**:</span>
+<span class="sd">            - *vtk_filename* = string : filename of VTK file (default: output_name)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vtk_filename</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;vtk_filename&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">basename</span><span class="p">)</span>
+        
+        <span class="kn">from</span> <span class="nn">evtk.hl</span> <span class="kn">import</span> <span class="n">gridToVTK</span>
+        <span class="c"># Coordinates</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_x</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">delx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delx</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;float64&#39;</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_y</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dely</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dely</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;float64&#39;</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_z</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">delz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delz</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;float64&#39;</span><span class="p">)</span>
+        
+        <span class="n">gridToVTK</span><span class="p">(</span><span class="n">vtk_filename</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">cellData</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;geology&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">})</span>         
+        </div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">pynoddy  documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../pynoddy.html" >pynoddy</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Florian Wellmann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
