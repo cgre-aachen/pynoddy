@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Change Noddy input file and recompute model &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="change-noddy-input-file-and-recompute-model">
+<h1>Change Noddy input file and recompute model<a class="headerlink" href="#change-noddy-input-file-and-recompute-model" title="Permalink to this headline">¶</a></h1>
+<p>Visualising output of a Noddy model is nice, but not terribly helpful as
+it can be done with the GUI itself. More interesting is it to change
+aspects of the Noddy input (history) file with the Python module to
+quickly compare the effect of changes in the geological history.</p>
+<p>Implementing these changes in scripts is the first step to a more
+extensive uncertainty analysis, as we will see in the next section.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="c"># adjust some settings for matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="c"># print rcParams</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="c"># set Pythonpath to pynoddy</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">r&quot;../../python&quot;</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">pynoddy</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>&lt;module &#39;pynoddy&#39; from &#39;/Users/flow/git/floddy/python/pynoddy/__init__.pyc&#39;&gt;
+</pre></div>
+</div>
+<p>First step: load the history file into a Python object:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">example_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">r&#39;../../docs/examples&#39;</span><span class="p">)</span>
+<span class="n">history_file</span> <span class="o">=</span> <span class="s">&#39;fault_model_1.his&#39;</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">example_directory</span><span class="p">,</span> <span class="n">history_file</span><span class="p">)</span>
+<span class="n">output_name</span> <span class="o">=</span> <span class="s">&#39;noddy_out&#39;</span>
+<span class="n">H1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="get-basic-information-on-the-model">
+<h2>(1) Get basic information on the model<a class="headerlink" href="#get-basic-information-on-the-model" title="Permalink to this headline">¶</a></h2>
+<p>The history file contains the entire information on the Noddy model.
+Some information can be accessed through the NoddyHistory object (and
+more will be added soon!):</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="change-model-cube-size-and-recompute-model">
+<h2>(2) Change model cube size and recompute model<a class="headerlink" href="#change-model-cube-size-and-recompute-model" title="Permalink to this headline">¶</a></h2>
+<p>The Noddy model itself is, once computed, a continuous model in 3-D
+space. However, for most visualisations and further calculations (e.g.
+geophysics), a discretised version is suitable. The discretisation (or
+block size) can be adapted in the history file. The according pynoddy
+function is change_cube_size.</p>
+<p>A simple example to change the cube size and write a new history file:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># We will first recompute the model and store results in an output file for comparison</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="p">)</span>
+<span class="n">NH1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+<span class="n">NO1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Now: change cubsize, write to new file and recompute</span>
+<span class="n">NH1</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="c"># Save model to a new history file and recompute (Note: may take a while to compute now)</span>
+<span class="n">new_history</span> <span class="o">=</span> <span class="s">&quot;fault_model_changed_cubesize.his&quot;</span>
+<span class="n">new_output_name</span> <span class="o">=</span> <span class="s">&quot;noddy_out_changed_cube&quot;</span>
+<span class="n">NH1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">new_history</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">new_history</span><span class="p">,</span> <span class="n">new_output_name</span><span class="p">)</span>
+<span class="n">NO2</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">new_output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The different cell sizes are also represented in the output files:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="s">&quot;Model 1 contains a total of </span><span class="si">%7d</span><span class="s"> cells with a blocksize </span><span class="si">%.0f</span><span class="s"> m&quot;</span> <span class="o">%</span>
+      <span class="p">(</span><span class="n">NO1</span><span class="o">.</span><span class="n">n_total</span><span class="p">,</span> <span class="n">NO1</span><span class="o">.</span><span class="n">delx</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Model 2 contains a total of </span><span class="si">%7d</span><span class="s"> cells with a blocksize </span><span class="si">%.0f</span><span class="s"> m&quot;</span> <span class="o">%</span>
+      <span class="p">(</span><span class="n">NO2</span><span class="o">.</span><span class="n">n_total</span><span class="p">,</span> <span class="n">NO2</span><span class="o">.</span><span class="n">delx</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Model 1 contains a total of   72850 cells with a blocksize 200 m
+Model 2 contains a total of  582800 cells with a blocksize 100 m
+</pre></div>
+</div>
+<p>We can compare the effect of the different model discretisations in
+section plots, created with the plot_section method described before.
+Let&#8217;s get a bit more fancy here and use the functionality to pass axes
+to the plot_section method, and to create one figure as direct
+comparison:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># create basic figure layout</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">NO1</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax1</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Model 1&quot;</span><span class="p">)</span>
+<span class="n">NO2</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Model 2&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="notebooks/2ChangingNoddyinputfile_files/2ChangingNoddyinputfile_12_0.png" src="notebooks/2ChangingNoddyinputfile_files/2ChangingNoddyinputfile_12_0.png" />
+</div>
+<div class="section" id="change-aspects-of-geological-events">
+<h2>(3) Change aspects of geological events<a class="headerlink" href="#change-aspects-of-geological-events" title="Permalink to this headline">¶</a></h2>
+<p>Ok, now from some basic settings to the things that we actually want to
+change: aspects of the geological history defined in Noddy. This can
+happen on two hierarchical levels: on the level of each single event
+(i.e. changing parameters relating to one event) and on the level of the
+events themselves (i.e. the order of the events).</p>
+<p>We will here have a look at the paramteres of the single events:</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Change Noddy input file and recompute model</a><ul>
+<li><a class="reference internal" href="#get-basic-information-on-the-model">(1) Get basic information on the model</a></li>
+<li><a class="reference internal" href="#change-model-cube-size-and-recompute-model">(2) Change model cube size and recompute model</a></li>
+<li><a class="reference internal" href="#change-aspects-of-geological-events">(3) Change aspects of geological events</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/notebooks/2 Changing Noddy input file.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Florian Wellmann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
