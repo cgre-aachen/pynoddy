@@ -67,7 +67,7 @@ object:
 .. code:: python
 
     reload(pynoddy)
-    N1 = pynoddy.output.NoddyOutput(output_name)
+    N1 = pynoddy.NoddyOutput(output_name)
 The object contains the calculated geology blocks and some additional
 information on grid spacing, model extent, etc. For example:
 
@@ -107,7 +107,13 @@ viewer, for example Paraview. To export the model, simply use:
     N1.export_to_vtk()
 .. code:: python
 
-    
+    print("bla")
+
+.. parsed-literal::
+
+    bla
+
+
 .. code:: python
 
     

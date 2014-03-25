@@ -67,7 +67,7 @@ object:
 .. code:: python
 
     reload(pynoddy)
-    N1 = pynoddy.output.NoddyOutput(output_name)
+    N1 = pynoddy.NoddyOutput(output_name)
 The object contains the calculated geology blocks and some additional
 information on grid spacing, model extent, etc. For example:
 
@@ -92,7 +92,7 @@ the generated models. To plot sections through the model:
     N1.plot_section('x', position = 0)
 
 
-.. image:: 1 Simulation and output visualisation_files/1 Simulation and output visualisation_11_0.png
+.. image:: 1-Simulation_files/1-Simulation_11_0.png
 
 
 (4) Export model to VTK
@@ -107,7 +107,13 @@ viewer, for example Paraview. To export the model, simply use:
     N1.export_to_vtk()
 .. code:: python
 
-    
+    print("bla")
+
+.. parsed-literal::
+
+    bla
+
+
 .. code:: python
 
     

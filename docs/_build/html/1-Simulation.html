@@ -8,34 +8,34 @@
     
     <title>Simulation of a Noddy history and visualisation of output &mdash; pynoddy  documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
+        URL_ROOT:    './',
         VERSION:     '',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="pynoddy  documentation" href="../index.html" /> 
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
+          <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
+          <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+        <li><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -97,7 +97,7 @@ reads all relevant information and provides simple methods for plotting,
 model analysis, and export. To load the output information into a Python
 object:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="p">)</span>
-<span class="n">N1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">N1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The object contains the calculated geology blocks and some additional
@@ -117,7 +117,7 @@ the generated models. To plot sections through the model:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">N1</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="notebooks/1Simulationandoutputvisualisation_files/1Simulationandoutputvisualisation_11_0.png" src="notebooks/1Simulationandoutputvisualisation_files/1Simulationandoutputvisualisation_11_0.png" />
+<img alt="_images/1-Simulation_11_0.png" src="_images/1-Simulation_11_0.png" />
 </div>
 <div class="section" id="export-model-to-vtk">
 <h2>(4) Export model to VTK<a class="headerlink" href="#export-model-to-vtk" title="Permalink to this headline">¶</a></h2>
@@ -125,6 +125,12 @@ the generated models. To plot sections through the model:</p>
 export the model to a VTK file and then to visualise it with a VTK
 viewer, for example Paraview. To export the model, simply use:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">N1</span><span class="o">.</span><span class="n">export_to_vtk</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="s">&quot;bla&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">bla</span>
 </pre></div>
 </div>
 </div>
@@ -136,7 +142,7 @@ viewer, for example Paraview. To export the model, simply use:</p>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Simulation of a Noddy history and visualisation of output</a><ul>
 <li><a class="reference internal" href="#compute-the-model">(1) Compute the model</a></li>
@@ -149,12 +155,12 @@ viewer, for example Paraview. To export the model, simply use:</p>
 
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="../_sources/notebooks/1 Simulation and output visualisation.txt"
+    <li><a href="_sources/1-Simulation.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
+    <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
@@ -173,12 +179,12 @@ viewer, for example Paraview. To export the model, simply use:</p>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
+          <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
+          <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+        <li><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

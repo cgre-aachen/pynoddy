@@ -8,34 +8,34 @@
     
     <title>Change Noddy input file and recompute model &mdash; pynoddy  documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
+        URL_ROOT:    './',
         VERSION:     '',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="pynoddy  documentation" href="../index.html" /> 
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
+          <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
+          <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+        <li><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -58,18 +58,20 @@ extensive uncertainty analysis, as we will see in the next section.</p>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
 <span class="c"># print rcParams</span>
 <span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
-<span class="c"># set Pythonpath to pynoddy</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">r&quot;../../python&quot;</span><span class="p">))</span>
+<span class="c"># determine path of repository to set paths corretly below</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">r&#39;/Users/Florian/git/pynoddy/docs/notebooks/&#39;</span><span class="p">)</span>
+<span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">&#39;../..&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">pynoddy</span>
-<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre>&lt;module &#39;pynoddy&#39; from &#39;/Users/flow/git/floddy/python/pynoddy/__init__.pyc&#39;&gt;
 </pre></div>
 </div>
 <p>First step: load the history file into a Python object:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">example_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">r&#39;../../docs/examples&#39;</span><span class="p">)</span>
-<span class="n">history_file</span> <span class="o">=</span> <span class="s">&#39;fault_model_1.his&#39;</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Change to sandbox directory to store results</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s">&#39;sandbox&#39;</span><span class="p">))</span>
+
+<span class="c"># Path to exmaple directory in this repository</span>
+<span class="n">example_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span><span class="s">&#39;examples&#39;</span><span class="p">)</span>
+<span class="c"># Compute noddy model for history file</span>
+<span class="n">history_file</span> <span class="o">=</span> <span class="s">&#39;simple_two_faults.his&#39;</span>
 <span class="n">history</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">example_directory</span><span class="p">,</span> <span class="n">history_file</span><span class="p">)</span>
 <span class="n">output_name</span> <span class="o">=</span> <span class="s">&#39;noddy_out&#39;</span>
 <span class="n">H1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
@@ -135,7 +137,7 @@ comparison:</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="notebooks/2ChangingNoddyinputfile_files/2ChangingNoddyinputfile_12_0.png" src="notebooks/2ChangingNoddyinputfile_files/2ChangingNoddyinputfile_12_0.png" />
+<img alt="_images/2-Adjust-input_12_0.png" src="_images/2-Adjust-input_12_0.png" />
 </div>
 <div class="section" id="change-aspects-of-geological-events">
 <h2>(3) Change aspects of geological events<a class="headerlink" href="#change-aspects-of-geological-events" title="Permalink to this headline">¶</a></h2>
@@ -154,7 +156,7 @@ events themselves (i.e. the order of the events).</p>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Change Noddy input file and recompute model</a><ul>
 <li><a class="reference internal" href="#get-basic-information-on-the-model">(1) Get basic information on the model</a></li>
@@ -166,12 +168,12 @@ events themselves (i.e. the order of the events).</p>
 
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="../_sources/notebooks/2 Changing Noddy input file.txt"
+    <li><a href="_sources/2-Adjust-input.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
+    <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
@@ -190,12 +192,12 @@ events themselves (i.e. the order of the events).</p>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
+          <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
+          <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+        <li><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

@@ -1,0 +1,24 @@
+#
+# Makefile to convert notebooks for documentation
+#
+
+RST_FILES := $(wildcard *.ipynb)
+
+what1 = $(foreach a, ham cheese salad, hon likes $(a) )
+what: 
+	@echo "what=$(what1)"
+
+
+%.rst: %.ipynb
+	ipython nbconvert --to rst $<
+
+
+rst_rules = $(foreach a, $(RST_FILES), echo $(a) )
+
+test:
+	$(rst_rules)
+
+
+rst: $(RST_FILES)
+	# ipython nbcoddnvert --to rst $^
+	@echo "ipython $(rst_files)"

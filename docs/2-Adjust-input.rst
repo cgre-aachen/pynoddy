@@ -18,25 +18,21 @@ extensive uncertainty analysis, as we will see in the next section.
     from matplotlib import rcParams
     # print rcParams
     rcParams['font.size'] = 15
-    # set Pythonpath to pynoddy
-    sys.path.append(os.path.realpath(r"../../python"))
+    # determine path of repository to set paths corretly below
+    os.chdir(r'/Users/Florian/git/pynoddy/docs/notebooks/')
+    repo_path = os.path.realpath('../..')
     import pynoddy
-    reload(pynoddy)
-
-
-
-.. parsed-literal::
-
-    <module 'pynoddy' from '/Users/flow/git/floddy/python/pynoddy/__init__.pyc'>
-
-
-
 First step: load the history file into a Python object:
 
 .. code:: python
 
-    example_directory = os.path.realpath(r'../../docs/examples')
-    history_file = 'fault_model_1.his'
+    # Change to sandbox directory to store results
+    os.chdir(os.path.join(repo_path, 'sandbox'))
+    
+    # Path to exmaple directory in this repository
+    example_directory = os.path.join(repo_path,'examples')
+    # Compute noddy model for history file
+    history_file = 'simple_two_faults.his'
     history = os.path.join(example_directory, history_file)
     output_name = 'noddy_out'
     H1 = pynoddy.NoddyHistory(history)
@@ -112,7 +108,7 @@ comparison:
 
 
 
-.. image:: 2 Changing Noddy input file_files/2 Changing Noddy input file_12_0.png
+.. image:: 2-Adjust-input_files/2-Adjust-input_12_0.png
 
 
 (3) Change aspects of geological events

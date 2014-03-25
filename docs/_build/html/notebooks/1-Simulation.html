@@ -24,6 +24,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="pynoddy  documentation" href="../index.html" />
+    <link rel="next" title="Change Noddy input file and recompute model" href="2-Adjust-input.html" />
     <link rel="prev" title="pynoddy package" href="../pynoddy.html" /> 
   </head>
   <body>
@@ -36,6 +37,9 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="2-Adjust-input.html" title="Change Noddy input file and recompute model"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../pynoddy.html" title="pynoddy package"
              accesskey="P">previous</a> |</li>
@@ -101,7 +105,7 @@ reads all relevant information and provides simple methods for plotting,
 model analysis, and export. To load the output information into a Python
 object:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="p">)</span>
-<span class="n">N1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">N1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The object contains the calculated geology blocks and some additional
@@ -121,7 +125,7 @@ the generated models. To plot sections through the model:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">N1</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../_images/1-Simulation_11_0.png" src="../_images/1-Simulation_11_0.png" />
+<img alt="../_images/1-Simulation_11_01.png" src="../_images/1-Simulation_11_01.png" />
 </div>
 <div class="section" id="export-model-to-vtk">
 <h2>(4) Export model to VTK<a class="headerlink" href="#export-model-to-vtk" title="Permalink to this headline">¶</a></h2>
@@ -129,6 +133,12 @@ the generated models. To plot sections through the model:</p>
 export the model to a VTK file and then to visualise it with a VTK
 viewer, for example Paraview. To export the model, simply use:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">N1</span><span class="o">.</span><span class="n">export_to_vtk</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="s">&quot;bla&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">bla</span>
 </pre></div>
 </div>
 </div>
@@ -154,6 +164,9 @@ viewer, for example Paraview. To export the model, simply use:</p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="../pynoddy.html"
                         title="previous chapter">pynoddy package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="2-Adjust-input.html"
+                        title="next chapter">Change Noddy input file and recompute model</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/notebooks/1-Simulation.txt"
@@ -185,6 +198,9 @@ viewer, for example Paraview. To export the model, simply use:</p>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="2-Adjust-input.html" title="Change Noddy input file and recompute model"
+             >next</a> |</li>
         <li class="right" >
           <a href="../pynoddy.html" title="pynoddy package"
              >previous</a> |</li>

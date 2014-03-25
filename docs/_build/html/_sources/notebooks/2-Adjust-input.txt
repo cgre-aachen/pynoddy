@@ -21,6 +21,7 @@ extensive uncertainty analysis, as we will see in the next section.
     # determine path of repository to set paths corretly below
     os.chdir(r'/Users/Florian/git/pynoddy/docs/notebooks/')
     repo_path = os.path.realpath('../..')
+    import pynoddy
 First step: load the history file into a Python object:
 
 .. code:: python
@@ -60,9 +61,9 @@ A simple example to change the cube size and write a new history file:
 
     # We will first recompute the model and store results in an output file for comparison
     reload(pynoddy)
-    NH1 = pynoddy.history.NoddyHistory(history)
+    NH1 = pynoddy.NoddyHistory(history)
     pynoddy.compute_model(history, output_name) 
-    NO1 = pynoddy.output.NoddyOutput(output_name)
+    NO1 = pynoddy.NoddyOutput(output_name)
 .. code:: python
 
     # Now: change cubsize, write to new file and recompute
@@ -72,7 +73,7 @@ A simple example to change the cube size and write a new history file:
     new_output_name = "noddy_out_changed_cube"
     NH1.write_history(new_history)
     pynoddy.compute_model(new_history, new_output_name)
-    NO2 = pynoddy.output.NoddyOutput(new_output_name)
+    NO2 = pynoddy.NoddyOutput(new_output_name)
 The different cell sizes are also represented in the output files:
 
 .. code:: python

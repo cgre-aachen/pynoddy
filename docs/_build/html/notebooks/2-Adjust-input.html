@@ -65,6 +65,7 @@ extensive uncertainty analysis, as we will see in the next section.</p>
 <span class="c"># determine path of repository to set paths corretly below</span>
 <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">r&#39;/Users/Florian/git/pynoddy/docs/notebooks/&#39;</span><span class="p">)</span>
 <span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">&#39;../..&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pynoddy</span>
 </pre></div>
 </div>
 <p>First step: load the history file into a Python object:</p>
@@ -99,9 +100,9 @@ function is change_cube_size.</p>
 <p>A simple example to change the cube size and write a new history file:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="c"># We will first recompute the model and store results in an output file for comparison</span>
 <span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="p">)</span>
-<span class="n">NH1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">NH1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
 <span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
-<span class="n">NO1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">NO1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Now: change cubsize, write to new file and recompute</span>
@@ -111,7 +112,7 @@ function is change_cube_size.</p>
 <span class="n">new_output_name</span> <span class="o">=</span> <span class="s">&quot;noddy_out_changed_cube&quot;</span>
 <span class="n">NH1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">new_history</span><span class="p">)</span>
 <span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">new_history</span><span class="p">,</span> <span class="n">new_output_name</span><span class="p">)</span>
-<span class="n">NO2</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">new_output_name</span><span class="p">)</span>
+<span class="n">NO2</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">new_output_name</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The different cell sizes are also represented in the output files:</p>
@@ -140,7 +141,7 @@ comparison:</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/2-Adjust-input_12_0.png" src="../_images/2-Adjust-input_12_0.png" />
+<img alt="../_images/2-Adjust-input_12_01.png" src="../_images/2-Adjust-input_12_01.png" />
 </div>
 <div class="section" id="change-aspects-of-geological-events">
 <h2>(3) Change aspects of geological events<a class="headerlink" href="#change-aspects-of-geological-events" title="Permalink to this headline">¶</a></h2>
