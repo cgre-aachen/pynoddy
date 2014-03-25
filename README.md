@@ -75,7 +75,7 @@ The result could look something like this:
 
 .. image:: docs/pics/noddy_block_example.png
 
-(docs/pics/noddy_block_example.png?raw=true)
+![](docs/pics/noddy_block_example.png?raw=true)
 
 The software runs on Windows only, but the source files (written in C) are available for download to generate a command line version of the modelling step alone:
 
