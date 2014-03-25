@@ -83,9 +83,10 @@
 <div class="viewcode-block" id="NoddyHistory.determine_events"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.determine_events">[docs]</a>    <span class="k">def</span> <span class="nf">determine_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine events and save line numbers</span>
 <span class="sd">        </span>
-<span class="sd">        ..Note: Parsing of the history file is based on a fixed Noddy output order.</span>
-<span class="sd">        If this is, for some reason (e.g. in a changed version of Noddy) not the case, then</span>
-<span class="sd">        this parsing might fail!</span>
+<span class="sd">        .. note:: Parsing of the history file is based on a fixed Noddy output order. </span>
+<span class="sd">                  If this is, for some reason (e.g. in a changed version of Noddy) not the case, then</span>
+<span class="sd">                  this parsing might fail!</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">):</span>
@@ -132,7 +133,8 @@
 <span class="sd">        **Arguments**:</span>
 <span class="sd">            - *filename* = string : filename of new history file</span>
 <span class="sd">            </span>
-<span class="sd">        NB: Just love it how easy it is to &#39;write history&#39; with Noddy ;-)</span>
+<span class="sd">        .. hint:: Just love it how easy it is to &#39;write history&#39; with Noddy ;-)</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">:</span>

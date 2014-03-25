@@ -22,14 +22,14 @@
   \indexspace
   \bigletter N
   \item NoddyHistory (class in pynoddy.history), \hyperpage{3}
-  \item NoddyOutput (class in pynoddy.output), \hyperpage{3}
+  \item NoddyOutput (class in pynoddy.output), \hyperpage{4}
 
   \indexspace
   \bigletter P
   \item plot\_section() (pynoddy.output.NoddyOutput method), \hyperpage{4}
   \item pynoddy (module), \hyperpage{4}
   \item pynoddy.history (module), \hyperpage{3}
-  \item pynoddy.output (module), \hyperpage{3}
+  \item pynoddy.output (module), \hyperpage{4}
 
   \indexspace
   \bigletter W

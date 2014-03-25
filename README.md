@@ -4,12 +4,12 @@ pynoddy
 pynoddy is a python package to write, change, and analyse kinematic geological modelling simulations performed with Noddy (see below for more infomration on Noddy).
 
 How does it work?
----------
+-----------------
 
 At this stage, pynoddy provides wrapper modules for existing Noddy history (.his) and result files (.g00, etc.). It is 
 
 Installation
----------
+-------------
 
 To install pynoddy simply run:
 
@@ -24,7 +24,7 @@ Important: the Noddy executable has to be in a directory defined in the PATH var
 
 
 Documentation
----------
+-------------
 
 
 Tutorial
@@ -39,7 +39,7 @@ These notebooks are also included in the documentation as non-interactive versio
 
 
 Dependencies
----------
+------------
 
 pynoddy depends on several standard Python packages that should be shipped with any standard distribution (and are easy to install, otherwise):
 
@@ -62,7 +62,7 @@ pynoddy is free software and published under a MIT license (see license file inc
 
 
 What is Noddy?
----------
+-------------
 
 Noddy itself is a kinematic modelling program written by Mark Jessell [1] to simulate the effect of subsequent geological events (folding, unconformities, faulting, etc.) on a primary sedimentary pile. A typical example would be:
 
@@ -73,7 +73,7 @@ Noddy itself is a kinematic modelling program written by Mark Jessell [1] to sim
 
 The result could look something like this:
 
-(to do: add figure)
+.. image:: /docs/noddy_block_example.png
 
 The software runs on Windows only, but the source files (written in C) are available for download to generate a command line version of the modelling step alone:
 
@@ -82,7 +82,7 @@ https://github.com/markjessell/functionNoddy
 It has been tested and compiled on MacOSX, Windows and Linux.
 
 References
---------
+----------
 
 [1] Mark W. Jessell, Rick K. Valenta, Structural geophysics: Integrated structural and geophysical modelling, In: Declan G. De Paor, Editor(s), Computer Methods in the Geosciences, Pergamon, 1996, Volume 15, Pages 303-324, ISSN 1874-561X, ISBN 9780080424309, http://dx.doi.org/10.1016/S1874-561X(96)80027-7.
 

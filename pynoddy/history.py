@@ -33,11 +33,10 @@ class NoddyHistory():
     def determine_events(self):
         """Determine events and save line numbers
         
-        .. note:: Parsing of the history file is based on a fixed Noddy output order.
-        If this is, for some reason (e.g. in a changed version of Noddy) not the case, then
-        this parsing might fail!
+        .. note:: Parsing of the history file is based on a fixed Noddy output order. 
+                  If this is, for some reason (e.g. in a changed version of Noddy) not the case, then
+                  this parsing might fail!
         
-        bla
         """
         self.events = []
         for i,line in enumerate(self.history_lines):
@@ -84,7 +83,8 @@ class NoddyHistory():
         **Arguments**:
             - *filename* = string : filename of new history file
             
-        NB: Just love it how easy it is to 'write history' with Noddy ;-)
+        .. hint:: Just love it how easy it is to 'write history' with Noddy ;-)
+        
         """
         f = open(filename, 'w')
         for line in self.history_lines:

@@ -4,8 +4,8 @@
 \indexentry{determine\_events() (pynoddy.history.NoddyHistory method)|hyperpage}{3}
 \indexentry{load\_history() (pynoddy.history.NoddyHistory method)|hyperpage}{3}
 \indexentry{write\_history() (pynoddy.history.NoddyHistory method)|hyperpage}{3}
-\indexentry{pynoddy.output (module)|hyperpage}{3}
-\indexentry{NoddyOutput (class in pynoddy.output)|hyperpage}{3}
+\indexentry{pynoddy.output (module)|hyperpage}{4}
+\indexentry{NoddyOutput (class in pynoddy.output)|hyperpage}{4}
 \indexentry{export\_to\_vtk() (pynoddy.output.NoddyOutput method)|hyperpage}{4}
 \indexentry{load\_geology() (pynoddy.output.NoddyOutput method)|hyperpage}{4}
 \indexentry{load\_model\_info() (pynoddy.output.NoddyOutput method)|hyperpage}{4}
