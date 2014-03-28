@@ -19,7 +19,7 @@ extensive uncertainty analysis, as we will see in the next section.
     # print rcParams
     rcParams['font.size'] = 15
     # determine path of repository to set paths corretly below
-    os.chdir(r'/Users/Florian/git/pynoddy/docs/notebooks/')
+    os.chdir(r'/Users/flow/git/pynoddy/docs/notebooks/')
     repo_path = os.path.realpath('../..')
     import pynoddy
 First step: load the history file into a Python object:
@@ -45,7 +45,49 @@ more will be added soon!):
 
 .. code:: python
 
-    pass
+    history_file = 'two_faults_fold_unconformity_slice.his'
+    history = os.path.join(example_directory, history_file)
+    import pynoddy.history
+    reload(pynoddy.history)
+    reload(pynoddy.events)
+    H1 = pynoddy.history.NoddyHistory(history)
+    H1._raw_events
+
+
+
+.. parsed-literal::
+
+    [{'line_end': 85, 'line_start': 7, 'num': 1, 'type': ' STRATIGRAPHY'},
+     {'line_end': 93, 'line_start': 86, 'num': 2, 'type': ' TILT'},
+     {'line_end': 377, 'line_start': 94, 'num': 3, 'type': ' UNCONFORMITY'},
+     {'line_end': 467, 'line_start': 378, 'num': 4, 'type': ' FOLD'},
+     {'line_end': 767, 'line_start': 468, 'num': 5, 'type': ' FAULT'},
+     {'line_end': 1068, 'line_start': 768, 'num': 6, 'type': ' FAULT'}]
+
+
+
+.. code:: python
+
+    H1.events
+
+
+
+.. parsed-literal::
+
+    {5: <pynoddy.events.Fault instance at 0x104f0b6c8>,
+     6: <pynoddy.events.Fault instance at 0x104f0b7a0>}
+
+
+
+.. code:: python
+
+    print("a",2)
+
+.. parsed-literal::
+
+    ('a', 2)
+
+
 (2) Change model cube size and recompute model
 ----------------------------------------------
 
@@ -108,7 +150,7 @@ comparison:
 
 
 
-.. image:: 2-Adjust-input_files/2-Adjust-input_12_0.png
+.. image:: 2-Adjust-input_files/2-Adjust-input_14_0.png
 
 
 (3) Change aspects of geological events

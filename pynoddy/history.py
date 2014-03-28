@@ -7,6 +7,8 @@ Created on 24/03/2014
 # import numpy as np
 # import matplotlib.pyplot as plt
 
+import events
+
 
 class NoddyHistory():
     """Class container for Noddy history files"""
@@ -38,7 +40,7 @@ class NoddyHistory():
                   this parsing might fail!
         
         """
-        self.events = []
+        self._raw_events = []
         for i,line in enumerate(self.history_lines):
             if "No of Events" in line:
                 self.n_events = int(line.split("=")[1])
@@ -47,16 +49,38 @@ class NoddyHistory():
                 event['type'] = line.split('=')[1].rstrip()
                 event['num'] = int(line[7:9])
                 event['line_start'] = i
-                self.events.append(event)       
+                self._raw_events.append(event)       
             # finally: if the definition for BlockOptions starts, the event definition is over
             elif "BlockOptions" in line:
                 last_event_stop = i-1
         # now: find the line ends for the single event blocks
-        for i,event in enumerate(self.events[1:]):
-            self.events[i]['line_end'] = event['line_start']-1
+        for i,event in enumerate(self._raw_events[1:]):
+            self._raw_events[i]['line_end'] = event['line_start']-1
         # now adjust for last event
-        self.events[-1]['line_end'] = last_event_stop
-            
+        self._raw_events[-1]['line_end'] = last_event_stop
+        
+        
+        self.events = {} # idea: create events as dictionary so that it is easier
+        # to swap order later!
+        # now create proper event objects for these events
+        for e in self._raw_events:
+            if 'FAULT' in e['type']:
+                ev = events.Fault(lines = self.history_lines[e['line_start']:e['line_end']])
+                # set specific aspects first
+                
+            elif 'STRATIGRAPHY' in e['type']:
+                ev = events.Stratigraphy(lines = self.history_lines[e['line_start']:e['line_end']])
+            else: continue
+                
+            # now set shared attributes (those defined in superclass Event)
+            order = e['num']
+            ev.set_order(order)
+            self.events[order] = ev
+        
+        # determine overall begin and end of the history events
+        self.all_events_begin = self._raw_events[0]['line_start']
+        self.all_events_end = self._raw_events[-1]['line_end']
+        
         
         
     def change_cube_size(self, cube_size):
@@ -86,7 +110,32 @@ class NoddyHistory():
         .. hint:: Just love it how easy it is to 'write history' with Noddy ;-)
         
         """
+        # First step: update history lines with events
+        
+        
+        
         f = open(filename, 'w')
         for line in self.history_lines:
             f.write(line)
         f.close()
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

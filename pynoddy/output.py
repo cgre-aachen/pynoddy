@@ -43,6 +43,9 @@ class NoddyOutput():
                                              self.extent_y / float(self.ny),
                                              self.extent_z / float(self.nz))
     
+    def test(self):
+        print "jawohl und jetzt? und jetzt? und jetzt?"
+    
     
     def load_geology(self):
         """Load block geology ids from .g12 output file"""

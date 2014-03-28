@@ -1,0 +1,6 @@
+[{'line_end': 85, 'line_start': 7, 'num': 1, 'type': ' STRATIGRAPHY'},
+ {'line_end': 93, 'line_start': 86, 'num': 2, 'type': ' TILT'},
+ {'line_end': 377, 'line_start': 94, 'num': 3, 'type': ' UNCONFORMITY'},
+ {'line_end': 467, 'line_start': 378, 'num': 4, 'type': ' FOLD'},
+ {'line_end': 767, 'line_start': 468, 'num': 5, 'type': ' FAULT'},
+ {'line_end': 1068, 'line_start': 768, 'num': 6, 'type': ' FAULT'}]

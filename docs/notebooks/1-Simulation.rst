@@ -15,7 +15,7 @@ visualise the output.
     import pynoddy
     
     # determine path of repository to set paths corretly below
-    os.chdir(r'/Users/Florian/git/pynoddy/docs/notebooks/')
+    
     repo_path = os.path.realpath('../..')
 (1) Compute the model
 ---------------------
@@ -36,6 +36,9 @@ independent is to use Python's own subprocess module:
     history = os.path.join(example_directory, history_file)
     output_name = 'noddy_out'
     # call Noddy
+    
+    # NOTE: Make sure that the noddy executable is accessible in the system!!
+    sys
     print subprocess.Popen(['noddy', history, output_name], 
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
@@ -52,6 +55,12 @@ in pynoddy:
 .. code:: python
 
     pynoddy.compute_model(history, output_name)
+Note: The Noddy call from Python is, to date, calling Noddy through the
+subprocess function. In a future implementation, this call could be
+subsituted with a full wrapper for the C-functions written in Python.
+Therefore, using the member function compute\_model is not only easier,
+but also the more "future-proof" way to compute the Noddy model.
+
 (2) Loading Noddy output files
 ------------------------------
 
@@ -66,7 +75,6 @@ object:
 
 .. code:: python
 
-    reload(pynoddy)
     N1 = pynoddy.NoddyOutput(output_name)
 The object contains the calculated geology blocks and some additional
 information on grid spacing, model extent, etc. For example:
@@ -92,7 +100,7 @@ the generated models. To plot sections through the model:
     N1.plot_section('x', position = 0)
 
 
-.. image:: 1-Simulation_files/1-Simulation_11_0.png
+.. image:: 1-Simulation_files/1-Simulation_12_0.png
 
 
 (4) Export model to VTK
@@ -107,13 +115,7 @@ viewer, for example Paraview. To export the model, simply use:
     N1.export_to_vtk()
 .. code:: python
 
-    print("bla")
-
-.. parsed-literal::
-
-    bla
-
-
+    
 .. code:: python
 
     
