@@ -5,3 +5,4 @@ pynoddy
    :maxdepth: 4
 
    pynoddy
+   pynoddy.events

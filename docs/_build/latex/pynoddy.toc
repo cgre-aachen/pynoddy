@@ -9,25 +9,27 @@
 \contentsline {section}{\numberline {1.7}What is Noddy?}{4}{section.1.7}
 \contentsline {section}{\numberline {1.8}References}{4}{section.1.8}
 \contentsline {chapter}{\numberline {2}Simulation of a Noddy history and visualisation of output}{7}{chapter.2}
-\contentsline {section}{\numberline {2.1}(1) Compute the model}{7}{section.2.1}
-\contentsline {section}{\numberline {2.2}(2) Loading Noddy output files}{8}{section.2.2}
-\contentsline {section}{\numberline {2.3}(3) Plotting sections through the model}{8}{section.2.3}
-\contentsline {section}{\numberline {2.4}(4) Export model to VTK}{9}{section.2.4}
+\contentsline {section}{\numberline {2.1}Compute the model}{7}{section.2.1}
+\contentsline {section}{\numberline {2.2}Loading Noddy output files}{8}{section.2.2}
+\contentsline {section}{\numberline {2.3}Plotting sections through the model}{8}{section.2.3}
+\contentsline {section}{\numberline {2.4}Export model to VTK}{9}{section.2.4}
 \contentsline {chapter}{\numberline {3}Change Noddy input file and recompute model}{11}{chapter.3}
-\contentsline {section}{\numberline {3.1}(1) Get basic information on the model}{11}{section.3.1}
-\contentsline {section}{\numberline {3.2}(2) Change model cube size and recompute model}{12}{section.3.2}
-\contentsline {section}{\numberline {3.3}(3) Change aspects of geological events}{13}{section.3.3}
-\contentsline {chapter}{\numberline {4}Geological events in pynoddy: organisation and adpatiation}{15}{chapter.4}
-\contentsline {section}{\numberline {4.1}Loading events from a Noddy history}{15}{section.4.1}
-\contentsline {section}{\numberline {4.2}Changing aspects of geological events}{16}{section.4.2}
-\contentsline {section}{\numberline {4.3}Changing the order of geological events}{17}{section.4.3}
-\contentsline {chapter}{\numberline {5}Stochastic events}{19}{chapter.5}
-\contentsline {section}{\numberline {5.1}Definition of stochastic events}{19}{section.5.1}
-\contentsline {chapter}{\numberline {6}pynoddy package}{21}{chapter.6}
-\contentsline {section}{\numberline {6.1}Submodules}{21}{section.6.1}
-\contentsline {section}{\numberline {6.2}pynoddy.history module}{21}{section.6.2}
-\contentsline {section}{\numberline {6.3}pynoddy.output module}{22}{section.6.3}
-\contentsline {section}{\numberline {6.4}Module contents}{23}{section.6.4}
-\contentsline {chapter}{\numberline {7}Indices and tables}{25}{chapter.7}
-\contentsline {chapter}{Python Module Index}{27}{section*.16}
-\contentsline {chapter}{Index}{29}{section*.17}
+\contentsline {section}{\numberline {3.1}Get basic information on the model}{11}{section.3.1}
+\contentsline {section}{\numberline {3.2}Change model cube size and recompute model}{12}{section.3.2}
+\contentsline {section}{\numberline {3.3}Estimating computation time for a high-resolution model}{14}{section.3.3}
+\contentsline {section}{\numberline {3.4}Simple convergence study}{17}{section.3.4}
+\contentsline {chapter}{\numberline {4}Geological events in pynoddy: organisation and adpatiation}{19}{chapter.4}
+\contentsline {section}{\numberline {4.1}Loading events from a Noddy history}{19}{section.4.1}
+\contentsline {section}{\numberline {4.2}Changing aspects of geological events}{20}{section.4.2}
+\contentsline {section}{\numberline {4.3}Changing the order of geological events}{21}{section.4.3}
+\contentsline {section}{\numberline {4.4}Determining the stratigraphic difference between two models}{23}{section.4.4}
+\contentsline {chapter}{\numberline {5}Stochastic events}{25}{chapter.5}
+\contentsline {section}{\numberline {5.1}Definition of stochastic events}{25}{section.5.1}
+\contentsline {chapter}{\numberline {6}pynoddy package}{27}{chapter.6}
+\contentsline {section}{\numberline {6.1}Submodules}{27}{section.6.1}
+\contentsline {section}{\numberline {6.2}pynoddy.history module}{27}{section.6.2}
+\contentsline {section}{\numberline {6.3}pynoddy.output module}{28}{section.6.3}
+\contentsline {section}{\numberline {6.4}Module contents}{29}{section.6.4}
+\contentsline {chapter}{\numberline {7}Indices and tables}{31}{chapter.7}
+\contentsline {chapter}{Python Module Index}{33}{section*.18}
+\contentsline {chapter}{Index}{35}{section*.19}

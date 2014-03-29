@@ -17,8 +17,8 @@ visualise the output.
     # determine path of repository to set paths corretly below
     
     repo_path = os.path.realpath('../..')
-(1) Compute the model
----------------------
+Compute the model
+-----------------
 
 The simplest way to perform the Noddy simulation through Python is
 simply to call the executable. One way that should be fairly platform
@@ -61,8 +61,8 @@ subsituted with a full wrapper for the C-functions written in Python.
 Therefore, using the member function compute\_model is not only easier,
 but also the more "future-proof" way to compute the Noddy model.
 
-(2) Loading Noddy output files
-------------------------------
+Loading Noddy output files
+--------------------------
 
 Noddy simulations produce a variety of different output files, depending
 on the type of simulation. The basic output is the geological model.
@@ -89,22 +89,22 @@ information on grid spacing, model extent, etc. For example:
     The model has an extent of 12400 m in x-direction, with 62 cells of width 200 m
 
 
-(3) Plotting sections through the model
----------------------------------------
+Plotting sections through the model
+-----------------------------------
 
 The NoddyOutput class has some basic methods for the visualisation of
 the generated models. To plot sections through the model:
 
 .. code:: python
 
-    N1.plot_section('x', position = 0)
+    N1.plot_section('x')
 
 
 .. image:: 1-Simulation_files/1-Simulation_12_0.png
 
 
-(4) Export model to VTK
------------------------
+Export model to VTK
+-------------------
 
 A simple possibility to visualise the modeled results in 3-D is to
 export the model to a VTK file and then to visualise it with a VTK

@@ -101,6 +101,25 @@
         <span class="c"># reshape to proper 3-D shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c"># self.block = np.swapaxes(self.block, 0, 1)</span>
+        <span class="c"># print np.shape(self.block)</span>
+    </div>
+<div class="viewcode-block" id="NoddyOutput.determine_unit_volumes"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.output.NoddyOutput.determine_unit_volumes">[docs]</a>    <span class="k">def</span> <span class="nf">determine_unit_volumes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine volumes of geological units in the discretized block model</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#</span>
+        <span class="c"># Note: for the time being, the following implementation is extremely simple</span>
+        <span class="c"># and could be optimised, for example to test specifically for units defined</span>
+        <span class="c"># in stratigraphies, intrusions, etc.!</span>
+        <span class="c"># </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delx</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dely</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">delz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit_volumes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_ids</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">unit_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_ids</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unit_volumes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="o">==</span> <span class="n">unit_id</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_volume</span>
+        
+        
         </div>
 <div class="viewcode-block" id="NoddyOutput.plot_section"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.output.NoddyOutput.plot_section">[docs]</a>    <span class="k">def</span> <span class="nf">plot_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a section block through the model</span>
@@ -115,9 +134,11 @@
 <span class="sd">            - *figsize* = (x,y) : matplotlib figsize</span>
 <span class="sd">            - *colorbar* = bool : plot colorbar (default: True)</span>
 <span class="sd">            - *title* = string : plot title</span>
-<span class="sd">            - *savefig* = bool : save figure to file (default: show directly on scren)</span>
+<span class="sd">            - *savefig* = bool : save figure to file (default: show directly on screen)</span>
+<span class="sd">            - *cmap* = matplotlib.cmap : colormap</span>
 <span class="sd">            - *fig_filename* = string : figure filename</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;cmap&#39;</span><span class="p">,</span> <span class="s">&#39;jet&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">kwds</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;ax&#39;</span><span class="p">):</span>
             <span class="c"># append plot to existing axis</span>
             <span class="n">ax</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s">&#39;ax&#39;</span><span class="p">]</span>
@@ -158,7 +179,7 @@
 
         <span class="n">title</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">,</span> <span class="s">&quot;Section in </span><span class="si">%s</span><span class="s">-direction, pos=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="n">cell_pos</span><span class="p">))</span>
                 
-        <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">section_slice</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s">&#39;lower left&#39;</span><span class="p">)</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">section_slice</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">colorbar</span><span class="p">:</span>
             <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
             <span class="n">_</span> <span class="o">=</span> <span class="n">cbar</span>
@@ -194,7 +215,42 @@
         <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_z</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">delz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delz</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;float64&#39;</span><span class="p">)</span>
         
         <span class="n">gridToVTK</span><span class="p">(</span><span class="n">vtk_filename</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">cellData</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;geology&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">})</span>         
+        
+        
         </div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c"># some testing and debugging functions...</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">r&#39;/Users/Florian/git/pynoddy/sandbox&#39;</span><span class="p">)</span>
+    <span class="n">NO</span> <span class="o">=</span> <span class="n">NoddyOutput</span><span class="p">(</span><span class="s">&quot;faults_out&quot;</span><span class="p">)</span>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
 </pre></div>
 
           </div>

@@ -15,10 +15,10 @@ visualise the output.
     import pynoddy
     
     # determine path of repository to set paths corretly below
-    os.chdir(r'/Users/Florian/git/pynoddy/docs/notebooks/')
+    
     repo_path = os.path.realpath('../..')
-(1) Compute the model
----------------------
+Compute the model
+-----------------
 
 The simplest way to perform the Noddy simulation through Python is
 simply to call the executable. One way that should be fairly platform
@@ -36,6 +36,9 @@ independent is to use Python's own subprocess module:
     history = os.path.join(example_directory, history_file)
     output_name = 'noddy_out'
     # call Noddy
+    
+    # NOTE: Make sure that the noddy executable is accessible in the system!!
+    sys
     print subprocess.Popen(['noddy', history, output_name], 
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
@@ -52,8 +55,14 @@ in pynoddy:
 .. code:: python
 
     pynoddy.compute_model(history, output_name)
-(2) Loading Noddy output files
-------------------------------
+Note: The Noddy call from Python is, to date, calling Noddy through the
+subprocess function. In a future implementation, this call could be
+subsituted with a full wrapper for the C-functions written in Python.
+Therefore, using the member function compute\_model is not only easier,
+but also the more "future-proof" way to compute the Noddy model.
+
+Loading Noddy output files
+--------------------------
 
 Noddy simulations produce a variety of different output files, depending
 on the type of simulation. The basic output is the geological model.
@@ -66,7 +75,6 @@ object:
 
 .. code:: python
 
-    reload(pynoddy)
     N1 = pynoddy.NoddyOutput(output_name)
 The object contains the calculated geology blocks and some additional
 information on grid spacing, model extent, etc. For example:
@@ -81,22 +89,22 @@ information on grid spacing, model extent, etc. For example:
     The model has an extent of 12400 m in x-direction, with 62 cells of width 200 m
 
 
-(3) Plotting sections through the model
----------------------------------------
+Plotting sections through the model
+-----------------------------------
 
 The NoddyOutput class has some basic methods for the visualisation of
 the generated models. To plot sections through the model:
 
 .. code:: python
 
-    N1.plot_section('x', position = 0)
+    N1.plot_section('x')
 
 
-.. image:: 1-Simulation_files/1-Simulation_11_0.png
+.. image:: 1-Simulation_files/1-Simulation_12_0.png
 
 
-(4) Export model to VTK
------------------------
+Export model to VTK
+-------------------
 
 A simple possibility to visualise the modeled results in 3-D is to
 export the model to a VTK file and then to visualise it with a VTK
@@ -107,13 +115,7 @@ viewer, for example Paraview. To export the model, simply use:
     N1.export_to_vtk()
 .. code:: python
 
-    print("bla")
-
-.. parsed-literal::
-
-    bla
-
-
+    
 .. code:: python
 
     

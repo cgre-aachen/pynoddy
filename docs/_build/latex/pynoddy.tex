@@ -276,7 +276,7 @@ visualise the output.
 \end{Verbatim}
 
 
-\section{(1) Compute the model}
+\section{Compute the model}
 \label{notebooks/1-Simulation:compute-the-model}
 The simplest way to perform the Noddy simulation through Python is
 simply to call the executable. One way that should be fairly platform
@@ -316,7 +316,7 @@ Therefore, using the member function compute\_model is not only easier,
 but also the more ``future-proof'' way to compute the Noddy model.
 
 
-\section{(2) Loading Noddy output files}
+\section{Loading Noddy output files}
 \label{notebooks/1-Simulation:loading-noddy-output-files}
 Noddy simulations produce a variety of different output files, depending
 on the type of simulation. The basic output is the geological model.
@@ -344,19 +344,19 @@ The model has an extent of 12400 m in x\PYGZhy{}direction, with 62 cells of widt
 \end{Verbatim}
 
 
-\section{(3) Plotting sections through the model}
+\section{Plotting sections through the model}
 \label{notebooks/1-Simulation:plotting-sections-through-the-model}
 The NoddyOutput class has some basic methods for the visualisation of
 the generated models. To plot sections through the model:
 
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{N1}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{x}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{position} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{)}
+\PYG{n}{N1}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{x}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
 \end{Verbatim}
 
 \includegraphics{1-Simulation_12_0.png}
 
 
-\section{(4) Export model to VTK}
+\section{Export model to VTK}
 \label{notebooks/1-Simulation:export-model-to-vtk}
 A simple possibility to visualise the modeled results in 3-D is to
 export the model to a VTK file and then to visualise it with a VTK
@@ -369,13 +369,14 @@ viewer, for example Paraview. To export the model, simply use:
 
 \chapter{Change Noddy input file and recompute model}
 \label{notebooks/2-Adjust-input::doc}\label{notebooks/2-Adjust-input:change-noddy-input-file-and-recompute-model}
-Visualising output of a Noddy model is nice, but not terribly helpful as
-it can be done with the GUI itself. More interesting is it to change
-aspects of the Noddy input (history) file with the Python module to
-quickly compare the effect of changes in the geological history.
+In this section, we will briefly present possibilities to access the
+properties defined in the Noddy history input file and show how simple
+adjustments can be performed, for example changing the cube size to
+obtain a model with a higher resolution.
 
-Implementing these changes in scripts is the first step to a more
-extensive uncertainty analysis, as we will see in the next section.
+Also outlined here is the way that events are stored in the history file
+as single objects. For more information on accessing and changing the
+events themselves, please be patient until we get to the next section.
 
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{k+kn}{import} \PYG{n+nn}{sys}\PYG{o}{,} \PYG{n+nn}{os}
@@ -385,7 +386,7 @@ extensive uncertainty analysis, as we will see in the next section.
 \PYG{c}{\PYGZsh{} print rcParams}
 \PYG{n}{rcParams}\PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{font.size}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{15}
 \PYG{c}{\PYGZsh{} determine path of repository to set paths corretly below}
-\PYG{c}{\PYGZsh{} os.chdir(r\PYGZsq{}/Users/flow/git/pynoddy/docs/notebooks/\PYGZsq{})}
+\PYG{n}{os}\PYG{o}{.}\PYG{n}{chdir}\PYG{p}{(}\PYG{l+s}{r\PYGZsq{}}\PYG{l+s}{/Users/Florian/git/pynoddy/docs/notebooks/}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
 \PYG{n}{repo\PYGZus{}path} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{realpath}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{../..}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
 \PYG{k+kn}{import} \PYG{n+nn}{pynoddy}
 \end{Verbatim}
@@ -395,56 +396,63 @@ First step: load the history file into a Python object:
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{c}{\PYGZsh{} Change to sandbox directory to store results}
 \PYG{n}{os}\PYG{o}{.}\PYG{n}{chdir}\PYG{p}{(}\PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{repo\PYGZus{}path}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{sandbox}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{)}
-
 \PYG{c}{\PYGZsh{} Path to exmaple directory in this repository}
 \PYG{n}{example\PYGZus{}directory} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{repo\PYGZus{}path}\PYG{p}{,}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{examples}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
 \PYG{c}{\PYGZsh{} Compute noddy model for history file}
 \PYG{n}{history\PYGZus{}file} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{simple\PYGZus{}two\PYGZus{}faults.his}\PYG{l+s}{\PYGZsq{}}
 \PYG{n}{history} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{example\PYGZus{}directory}\PYG{p}{,} \PYG{n}{history\PYGZus{}file}\PYG{p}{)}
 \PYG{n}{output\PYGZus{}name} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{noddy\PYGZus{}out}\PYG{l+s}{\PYGZsq{}}
-\PYG{n}{H1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
+\PYG{n}{H1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
 \end{Verbatim}
 
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{l+m+mi}{8}
-\end{Verbatim}
+\textbf{Technical note}: the \code{NoddyHistory} class can be accessed on the
+level of pynoddy (as it is imported in the \code{\_\_init\_\_.py} module) with
+the shortcut:
+
+\code{H1 = pynoddy.NoddyHistory(history)}
+
+I am using the long version \code{pynoddy.history.NoddyHistory} here to
+ensure that the correct package is loaded with the \code{reload()}
+function. If you don't make changes to any of the pynoddy files, this is
+not required. So for any practical cases, the shortcuts are absolutely
+fine!
 
 
-\section{(1) Get basic information on the model}
+\section{Get basic information on the model}
 \label{notebooks/2-Adjust-input:get-basic-information-on-the-model}
 The history file contains the entire information on the Noddy model.
 Some information can be accessed through the NoddyHistory object (and
-more will be added soon!):
+more will be added soon!), for example the total number of events:
 
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c}{\PYGZsh{} history\PYGZus{}file = \PYGZsq{}two\PYGZus{}faults\PYGZus{}fold\PYGZus{}unconformity\PYGZus{}slice.his\PYGZsq{}}
-\PYG{n}{history} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{example\PYGZus{}directory}\PYG{p}{,} \PYG{n}{history\PYGZus{}file}\PYG{p}{)}
-\PYG{k+kn}{import} \PYG{n+nn}{pynoddy.history}
-\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{p}{)}
-\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{events}\PYG{p}{)}
-\PYG{n}{H1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
-\PYG{n}{H1}\PYG{o}{.}\PYG{n}{\PYGZus{}raw\PYGZus{}events}
+\PYG{k}{print}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{The history contains }\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s}{ events}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{n\PYGZus{}events}\PYG{p}{)}
 \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{l+m+mi}{8}
+The history contains 3 events
 \end{Verbatim}
 
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{p}{[}\PYG{p}{\PYGZob{}}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{line\PYGZus{}end}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mi}{161}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{line\PYGZus{}start}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mi}{7}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{num}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{type}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{ STRATIGRAPHY}\PYG{l+s}{\PYGZsq{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}
- \PYG{p}{\PYGZob{}}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{line\PYGZus{}end}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mi}{461}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{line\PYGZus{}start}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mi}{162}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{num}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{type}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{ FAULT}\PYG{l+s}{\PYGZsq{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}
- \PYG{p}{\PYGZob{}}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{line\PYGZus{}end}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mi}{762}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{line\PYGZus{}start}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mi}{462}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{num}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{type}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{ FAULT}\PYG{l+s}{\PYGZsq{}}\PYG{p}{\PYGZcb{}}\PYG{p}{]}
-\end{Verbatim}
+Events are implemented as objects, the classes are defined in
+\code{H1.events}. All events are accessible in a list on the level of the
+history object:
 
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}
 \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYGZob{}1: \PYGZlt{}pynoddy.events.Stratigraphy instance at 0x104f9b320\PYGZgt{},
- 2: \PYGZlt{}pynoddy.events.Fault instance at 0x104f9b368\PYGZgt{},
- 3: \PYGZlt{}pynoddy.events.Fault instance at 0x104f9b440\PYGZgt{}\PYGZcb{}
+\PYGZob{}1: \PYGZlt{}pynoddy.events.Stratigraphy instance at 0x10a6c3bd8\PYGZgt{},
+ 2: \PYGZlt{}pynoddy.events.Fault instance at 0x10a6c3c20\PYGZgt{},
+ 3: \PYGZlt{}pynoddy.events.Fault instance at 0x10a6c3cf8\PYGZgt{}\PYGZcb{}
 \end{Verbatim}
+
+The properties of an event are stored in the event objects themselves.
+To date, only a subset of the properties (deemed as relevant for the
+purpose of pynoddy so far) are parsed. The .his file contains a lot more
+information! If access to this information is required, adjustments in
+pynoddy.events have to be made.
+
+For example, the properties of a fault object are:
 
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{o}{.}\PYG{n}{properties}
@@ -477,7 +485,7 @@ more will be added soon!):
 \end{Verbatim}
 
 
-\section{(2) Change model cube size and recompute model}
+\section{Change model cube size and recompute model}
 \label{notebooks/2-Adjust-input:change-model-cube-size-and-recompute-model}
 The Noddy model itself is, once computed, a continuous model in 3-D
 space. However, for most visualisations and further calculations (e.g.
@@ -489,14 +497,15 @@ A simple example to change the cube size and write a new history file:
 
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{c}{\PYGZsh{} We will first recompute the model and store results in an output file for comparison}
-\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{p}{)}
-\PYG{n}{NH1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{p}{)}
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{p}{)}
+\PYG{n}{NH1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
 \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{history}\PYG{p}{,} \PYG{n}{output\PYGZus{}name}\PYG{p}{)}
-\PYG{n}{NO1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{output\PYGZus{}name}\PYG{p}{)}
+\PYG{n}{NO1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{output\PYGZus{}name}\PYG{p}{)}
 \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{l+m+mi}{8}
+\PYG{p}{(}\PYG{l+m+mi}{62}\PYG{p}{,} \PYG{l+m+mi}{47}\PYG{p}{,} \PYG{l+m+mi}{25}\PYG{p}{)}
 \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -507,7 +516,11 @@ A simple example to change the cube size and write a new history file:
 \PYG{n}{new\PYGZus{}output\PYGZus{}name} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{noddy\PYGZus{}out\PYGZus{}changed\PYGZus{}cube}\PYG{l+s}{\PYGZdq{}}
 \PYG{n}{NH1}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{)}
 \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{,} \PYG{n}{new\PYGZus{}output\PYGZus{}name}\PYG{p}{)}
-\PYG{n}{NO2} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{new\PYGZus{}output\PYGZus{}name}\PYG{p}{)}
+\PYG{n}{NO2} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{new\PYGZus{}output\PYGZus{}name}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{l+m+mi}{248}\PYG{p}{,} \PYG{l+m+mi}{188}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{)}
 \end{Verbatim}
 
 The different cell sizes are also represented in the output files:
@@ -521,7 +534,7 @@ The different cell sizes are also represented in the output files:
 
 \begin{Verbatim}[commandchars=\\\{\}]
 Model 1 contains a total of   72850 cells with a blocksize 200 m
-Model 2 contains a total of  582800 cells with a blocksize 100 m
+Model 2 contains a total of 4662400 cells with a blocksize 50 m
 \end{Verbatim}
 
 We can compare the effect of the different model discretisations in
@@ -535,24 +548,286 @@ comparison:
 \PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize} \PYG{o}{=} \PYG{p}{(}\PYG{l+m+mi}{15}\PYG{p}{,}\PYG{l+m+mi}{5}\PYG{p}{)}\PYG{p}{)}
 \PYG{n}{ax1} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{121}\PYG{p}{)}
 \PYG{n}{ax2} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{122}\PYG{p}{)}
-\PYG{n}{NO1}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{x}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{ax} \PYG{o}{=} \PYG{n}{ax1}\PYG{p}{,} \PYG{n}{colorbar}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Model 1}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
-\PYG{n}{NO2}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{x}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{ax} \PYG{o}{=} \PYG{n}{ax2}\PYG{p}{,} \PYG{n}{colorbar}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Model 2}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{NO1}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{x}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{position}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{ax} \PYG{o}{=} \PYG{n}{ax1}\PYG{p}{,} \PYG{n}{colorbar}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Low resolution}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{NO2}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{x}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{position}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{ax} \PYG{o}{=} \PYG{n}{ax2}\PYG{p}{,} \PYG{n}{colorbar}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{High resolution}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
 
 \PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{(}\PYG{p}{)}
 \end{Verbatim}
 
-\includegraphics{2-Adjust-input_14_0.png}
+\includegraphics{2-Adjust-input_17_0.png}
+
+Note: the following two subsections contain some slighly advanced
+examples on how to use the possibility to adjust cell sizes through
+scripts directly to autmote processes that are infeasible using the GUI
+version of Noddy - as a `peek preview' of the automation for uncertainty
+estimation that follows in a later section. Feel free to skip those two
+sections if you are only interested in the basic features so far.
 
 
-\section{(3) Change aspects of geological events}
-\label{notebooks/2-Adjust-input:change-aspects-of-geological-events}
-Ok, now from some basic settings to the things that we actually want to
-change: aspects of the geological history defined in Noddy. This can
-happen on two hierarchical levels: on the level of each single event
-(i.e. changing parameters relating to one event) and on the level of the
-events themselves (i.e. the order of the events).
+\section{Estimating computation time for a high-resolution model}
+\label{notebooks/2-Adjust-input:estimating-computation-time-for-a-high-resolution-model}
+You surely realised (if you ran these examples in an actual interactive
+ipython notebook) that the computation of the high-resolution model
+takes siginificantly longer than the low-resolution model. In a
+practical case, this can be very important.
 
-We will here have a look at the paramteres of the single events:
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZsh{} We use here simply the time() function to evaulate the simualtion time.}
+\PYG{c}{\PYGZsh{} This is not the best possible way to do it, but probably the simplest.}
+\PYG{k+kn}{import} \PYG{n+nn}{time}
+\PYG{n}{start\PYGZus{}time} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{history}\PYG{p}{,} \PYG{n}{output\PYGZus{}name}\PYG{p}{)}
+\PYG{n}{end\PYGZus{}time} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{(}\PYG{p}{)}
+
+\PYG{k}{print}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Simulation time for low\PYGZhy{}resolution model: }\PYG{l+s+si}{\PYGZpc{}5.2f}\PYG{l+s}{ seconds}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{p}{(}\PYG{n}{end\PYGZus{}time} \PYG{o}{\PYGZhy{}} \PYG{n}{start\PYGZus{}time}\PYG{p}{)}\PYG{p}{)}
+
+\PYG{n}{start\PYGZus{}time} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{,} \PYG{n}{new\PYGZus{}output\PYGZus{}name}\PYG{p}{)}
+\PYG{n}{end\PYGZus{}time} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{(}\PYG{p}{)}
+
+\PYG{k}{print}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Simulation time for high\PYGZhy{}resolution model: }\PYG{l+s+si}{\PYGZpc{}5.2f}\PYG{l+s}{ seconds}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{p}{(}\PYG{n}{end\PYGZus{}time} \PYG{o}{\PYGZhy{}} \PYG{n}{start\PYGZus{}time}\PYG{p}{)}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+Simulation time for low\PYGZhy{}resolution model:  0.08 seconds
+Simulation time for high\PYGZhy{}resolution model: 32.43 seconds
+\end{Verbatim}
+
+For an estimation of required computing time for a given discretisation,
+let's evaulate the time for a couple of steps, plot, and extrapolate:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZsh{} perform computation for a range of cube sizes}
+\PYG{n}{cube\PYGZus{}sizes} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{arange}\PYG{p}{(}\PYG{l+m+mi}{200}\PYG{p}{,}\PYG{l+m+mi}{49}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{5}\PYG{p}{)}
+\PYG{n}{times} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]}
+\PYG{n}{NH1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
+\PYG{n}{tmp\PYGZus{}history} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{tmp\PYGZus{}history}\PYG{l+s}{\PYGZdq{}}
+\PYG{n}{tmp\PYGZus{}output} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{tmp\PYGZus{}output}\PYG{l+s}{\PYGZdq{}}
+\PYG{k}{for} \PYG{n}{cube\PYGZus{}size} \PYG{o+ow}{in} \PYG{n}{cube\PYGZus{}sizes}\PYG{p}{:}
+    \PYG{n}{NH1}\PYG{o}{.}\PYG{n}{change\PYGZus{}cube\PYGZus{}size}\PYG{p}{(}\PYG{n}{cube\PYGZus{}size}\PYG{p}{)}
+    \PYG{n}{NH1}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{tmp\PYGZus{}history}\PYG{p}{)}
+    \PYG{n}{start\PYGZus{}time} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{(}\PYG{p}{)}
+    \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{tmp\PYGZus{}history}\PYG{p}{,} \PYG{n}{tmp\PYGZus{}output}\PYG{p}{)}
+    \PYG{n}{end\PYGZus{}time} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{(}\PYG{p}{)}
+    \PYG{n}{times}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{end\PYGZus{}time} \PYG{o}{\PYGZhy{}} \PYG{n}{start\PYGZus{}time}\PYG{p}{)}
+\PYG{n}{times} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{times}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZsh{} create plot}
+\PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{18}\PYG{p}{,}\PYG{l+m+mi}{4}\PYG{p}{)}\PYG{p}{)}
+\PYG{n}{ax1} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{131}\PYG{p}{)}
+\PYG{n}{ax2} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{132}\PYG{p}{)}
+\PYG{n}{ax3} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{133}\PYG{p}{)}
+
+\PYG{n}{ax1}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{cube\PYGZus{}sizes}\PYG{p}{,} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{times}\PYG{p}{)}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{ro\PYGZhy{}}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax1}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlabel}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{cubesize [m]}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax1}\PYG{o}{.}\PYG{n}{set\PYGZus{}ylabel}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{time [s]}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax1}\PYG{o}{.}\PYG{n}{set\PYGZus{}title}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Computation time}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax1}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlim}\PYG{p}{(}\PYG{n}{ax1}\PYG{o}{.}\PYG{n}{get\PYGZus{}xlim}\PYG{p}{(}\PYG{p}{)}\PYG{p}{[}\PYG{p}{:}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+
+\PYG{n}{ax2}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{cube\PYGZus{}sizes}\PYG{p}{,} \PYG{n}{times}\PYG{o}{*}\PYG{o}{*}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{/}\PYG{l+m+mf}{3.}\PYG{p}{)}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{bo\PYGZhy{}}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax2}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlabel}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{cubesize [m]}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax2}\PYG{o}{.}\PYG{n}{set\PYGZus{}ylabel}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{(time [s])**(1/3)}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax2}\PYG{o}{.}\PYG{n}{set\PYGZus{}title}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Computation time (cuberoot)}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax2}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlim}\PYG{p}{(}\PYG{n}{ax2}\PYG{o}{.}\PYG{n}{get\PYGZus{}xlim}\PYG{p}{(}\PYG{p}{)}\PYG{p}{[}\PYG{p}{:}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+
+\PYG{n}{ax3}\PYG{o}{.}\PYG{n}{semilogy}\PYG{p}{(}\PYG{n}{cube\PYGZus{}sizes}\PYG{p}{,} \PYG{n}{times}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{go\PYGZhy{}}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax3}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlabel}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{cubesize [m]}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax3}\PYG{o}{.}\PYG{n}{set\PYGZus{}ylabel}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{time [s]}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax3}\PYG{o}{.}\PYG{n}{set\PYGZus{}title}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Computation time (y\PYGZhy{}log)}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax3}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlim}\PYG{p}{(}\PYG{n}{ax3}\PYG{o}{.}\PYG{n}{get\PYGZus{}xlim}\PYG{p}{(}\PYG{p}{)}\PYG{p}{[}\PYG{p}{:}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{l+m+mf}{200.0}\PYG{p}{,} \PYG{l+m+mf}{40.0}\PYG{p}{)}
+\end{Verbatim}
+
+\includegraphics{2-Adjust-input_23_1.png}
+
+It is actually quite interesting that the computation time does not
+scale with cubesize to the power of three (as could be expected, given
+that we have a mesh in three dimensions). Or am I missing something?
+
+Anyway, just because we can: let's assume that the scaling is somehow
+exponential and try to fit a model for a time prediction. Given the last
+plot, it looks like we could fit a logarithmic model with probably an
+additional exponent (as the line is obviously not straight), so
+something like:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZsh{} perform curve fitting with scipy.optimize}
+\PYG{k+kn}{import} \PYG{n+nn}{scipy.optimize}
+\PYG{c}{\PYGZsh{} define function to be fit}
+\PYG{k}{def} \PYG{n+nf}{func}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{a}\PYG{p}{,}\PYG{n}{b}\PYG{p}{,}\PYG{n}{c}\PYG{p}{)}\PYG{p}{:}
+    \PYG{k}{return} \PYG{n}{a} \PYG{o}{+} \PYG{p}{(}\PYG{n}{b}\PYG{o}{*}\PYG{n}{np}\PYG{o}{.}\PYG{n}{log10}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{p}{)}\PYG{o}{*}\PYG{o}{*}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{c}\PYG{p}{)}
+
+\PYG{n}{popt}\PYG{p}{,} \PYG{n}{pcov} \PYG{o}{=} \PYG{n}{scipy}\PYG{o}{.}\PYG{n}{optimize}\PYG{o}{.}\PYG{n}{curve\PYGZus{}fit}\PYG{p}{(}\PYG{n}{func}\PYG{p}{,} \PYG{n}{cube\PYGZus{}sizes}\PYG{p}{,} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{times}\PYG{p}{)}\PYG{p}{)}
+\PYG{n}{popt}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{array}\PYG{p}{(}\PYG{p}{[} \PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{1.15814515e\PYGZhy{}02}\PYG{p}{,}   \PYG{l+m+mf}{4.94030524e\PYGZhy{}01}\PYG{p}{,}   \PYG{l+m+mf}{1.99015465e+01}\PYG{p}{]}\PYG{p}{)}
+\end{Verbatim}
+
+Interesting, it looks like Noody scales with something like:
+
+\textbf{Note}: if you understand more about computational complexity than me,
+it might not be that interesting to you at all - if this is the case,
+please contact me and tell me why this result could be expected...
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{a}\PYG{p}{,}\PYG{n}{b}\PYG{p}{,}\PYG{n}{c} \PYG{o}{=} \PYG{n}{popt}
+\PYG{n}{cube\PYGZus{}range} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{arange}\PYG{p}{(}\PYG{l+m+mi}{200}\PYG{p}{,}\PYG{l+m+mi}{20}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}
+\PYG{n}{times\PYGZus{}eval} \PYG{o}{=} \PYG{n}{func}\PYG{p}{(}\PYG{n}{cube\PYGZus{}range}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{c}\PYG{p}{)}
+\PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{ax} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{111}\PYG{p}{)}
+\PYG{n}{ax}\PYG{o}{.}\PYG{n}{semilogy}\PYG{p}{(}\PYG{n}{cube\PYGZus{}range}\PYG{p}{,} \PYG{n}{times\PYGZus{}eval}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{\PYGZhy{}}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax}\PYG{o}{.}\PYG{n}{semilogy}\PYG{p}{(}\PYG{n}{cube\PYGZus{}sizes}\PYG{p}{,} \PYG{n}{times}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{ko}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} reverse x\PYGZhy{}axis}
+\PYG{n}{ax}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlim}\PYG{p}{(}\PYG{n}{ax}\PYG{o}{.}\PYG{n}{get\PYGZus{}xlim}\PYG{p}{(}\PYG{p}{)}\PYG{p}{[}\PYG{p}{:}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{l+m+mf}{200.0}\PYG{p}{,} \PYG{l+m+mf}{20.0}\PYG{p}{)}
+\end{Verbatim}
+
+\includegraphics{2-Adjust-input_27_1.png}
+
+Not too bad... let's evaluate the time for a cube size of 40 m:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{cube\PYGZus{}size} \PYG{o}{=} \PYG{l+m+mi}{40} \PYG{c}{\PYGZsh{} m}
+\PYG{n}{time\PYGZus{}est} \PYG{o}{=} \PYG{n}{func}\PYG{p}{(}\PYG{n}{cube\PYGZus{}size}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{c}\PYG{p}{)}
+\PYG{k}{print}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Estimated time for a cube size of }\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s}{ m: }\PYG{l+s+si}{\PYGZpc{}.1f}\PYG{l+s}{ seconds}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{p}{(}\PYG{n}{cube\PYGZus{}size}\PYG{p}{,} \PYG{n}{time\PYGZus{}est}\PYG{p}{)}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+Estimated time for a cube size of 40 m: 105.0 seconds
+\end{Verbatim}
+
+Now let's check the actual simulation time:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{NH1}\PYG{o}{.}\PYG{n}{change\PYGZus{}cube\PYGZus{}size}\PYG{p}{(}\PYG{n}{cube\PYGZus{}size}\PYG{p}{)}
+\PYG{n}{NH1}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{tmp\PYGZus{}history}\PYG{p}{)}
+\PYG{n}{start\PYGZus{}time} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{tmp\PYGZus{}history}\PYG{p}{,} \PYG{n}{tmp\PYGZus{}output}\PYG{p}{)}
+\PYG{n}{end\PYGZus{}time} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{time\PYGZus{}comp} \PYG{o}{=} \PYG{n}{end\PYGZus{}time} \PYG{o}{\PYGZhy{}} \PYG{n}{start\PYGZus{}time}
+
+\PYG{k}{print}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Actual computation time for a cube size of }\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s}{ m: }\PYG{l+s+si}{\PYGZpc{}.1f}\PYG{l+s}{ seconds}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{p}{(}\PYG{n}{cube\PYGZus{}size}\PYG{p}{,} \PYG{n}{time\PYGZus{}comp}\PYG{p}{)}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+Actual computation time for a cube size of 40 m: 94.4 seconds
+\end{Verbatim}
+
+Not too bad, probably in the range of the inherent variability... and if
+we check it in the plot:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{ax} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{111}\PYG{p}{)}
+\PYG{n}{ax}\PYG{o}{.}\PYG{n}{semilogy}\PYG{p}{(}\PYG{n}{cube\PYGZus{}range}\PYG{p}{,} \PYG{n}{times\PYGZus{}eval}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{\PYGZhy{}}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax}\PYG{o}{.}\PYG{n}{semilogy}\PYG{p}{(}\PYG{n}{cube\PYGZus{}sizes}\PYG{p}{,} \PYG{n}{times}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{ko}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{ax}\PYG{o}{.}\PYG{n}{semilogy}\PYG{p}{(}\PYG{n}{cube\PYGZus{}size}\PYG{p}{,} \PYG{n}{time\PYGZus{}comp}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{ro}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} reverse x\PYGZhy{}axis}
+\PYG{n}{ax}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlim}\PYG{p}{(}\PYG{n}{ax}\PYG{o}{.}\PYG{n}{get\PYGZus{}xlim}\PYG{p}{(}\PYG{p}{)}\PYG{p}{[}\PYG{p}{:}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{l+m+mf}{200.0}\PYG{p}{,} \PYG{l+m+mf}{20.0}\PYG{p}{)}
+\end{Verbatim}
+
+\includegraphics{2-Adjust-input_33_1.png}
+
+Anyway, the point of this excercise was not a precise evaluation of
+Noddy's computational complexity, but to provide a simple means of
+evaluating computation time for a high resolution model, using the
+flexibility of writing simple scripts using pynoddy, and a couple of
+additional python modules.
+
+For a realistic case, it should, of course, be sufficient to determine
+the time based on a lot less computed points. If you like, test it with
+your favourite model and tell me if it proved useful (or not)!
+
+
+\section{Simple convergence study}
+\label{notebooks/2-Adjust-input:simple-convergence-study}
+So: why would we want to run a high-resolution model, anyway? Well, of
+course, it produces nicer pictures - but on a scientific level, that's
+completely irrelevant (haha, not true - so nice if it would be...).
+
+Anyway, if we want to use the model in a scientific study, for example
+to evaluate volume of specific units, or to estimate the geological
+topology (Mark is working on this topic with some cool ideas - example
+to be implemented here, ``soon''), we want to know if the resolution of
+the model is actually high enough to produce meaningful results.
+
+As a simple example of the evaluation of model resolution, we will here
+inlcude a volume convergence study, i.e. we will estimate at which level
+of increasing model resolution the estimated block volumes do not change
+anymore.
+
+The entire procedure is very similar to the computational time
+evaluation above, only that we now also analyse the output and determine
+the rock volumes of each defined geological unit:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZsh{} perform computation for a range of cube sizes}
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{p}{)}
+\PYG{n}{cube\PYGZus{}sizes} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{arange}\PYG{p}{(}\PYG{l+m+mi}{200}\PYG{p}{,}\PYG{l+m+mi}{49}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{5}\PYG{p}{)}
+\PYG{n}{all\PYGZus{}volumes} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]}
+\PYG{n}{N\PYGZus{}tmp} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
+\PYG{n}{tmp\PYGZus{}history} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{tmp\PYGZus{}history}\PYG{l+s}{\PYGZdq{}}
+\PYG{n}{tmp\PYGZus{}output} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{tmp\PYGZus{}output}\PYG{l+s}{\PYGZdq{}}
+\PYG{k}{for} \PYG{n}{cube\PYGZus{}size} \PYG{o+ow}{in} \PYG{n}{cube\PYGZus{}sizes}\PYG{p}{:}
+    \PYG{c}{\PYGZsh{} adjust cube size}
+    \PYG{n}{N\PYGZus{}tmp}\PYG{o}{.}\PYG{n}{change\PYGZus{}cube\PYGZus{}size}\PYG{p}{(}\PYG{n}{cube\PYGZus{}size}\PYG{p}{)}
+    \PYG{n}{N\PYGZus{}tmp}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{tmp\PYGZus{}history}\PYG{p}{)}
+    \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{tmp\PYGZus{}history}\PYG{p}{,} \PYG{n}{tmp\PYGZus{}output}\PYG{p}{)}
+    \PYG{c}{\PYGZsh{} open simulated model and determine volumes}
+    \PYG{n}{O\PYGZus{}tmp} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{tmp\PYGZus{}output}\PYG{p}{)}
+    \PYG{n}{O\PYGZus{}tmp}\PYG{o}{.}\PYG{n}{determine\PYGZus{}unit\PYGZus{}volumes}\PYG{p}{(}\PYG{p}{)}
+    \PYG{n}{all\PYGZus{}volumes}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{O\PYGZus{}tmp}\PYG{o}{.}\PYG{n}{unit\PYGZus{}volumes}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{all\PYGZus{}volumes} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{all\PYGZus{}volumes}\PYG{p}{)}
+\PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{16}\PYG{p}{,}\PYG{l+m+mi}{4}\PYG{p}{)}\PYG{p}{)}
+\PYG{n}{ax1} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{121}\PYG{p}{)}
+\PYG{n}{ax2} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{122}\PYG{p}{)}
+
+\PYG{c}{\PYGZsh{} separate into two plots for better visibility:}
+\PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{(}\PYG{n}{all\PYGZus{}volumes}\PYG{p}{)}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}\PYG{p}{:}
+    \PYG{k}{if} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{4}\PYG{p}{:}
+        \PYG{n}{ax1}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{cube\PYGZus{}sizes}\PYG{p}{,} \PYG{n}{all\PYGZus{}volumes}\PYG{p}{[}\PYG{p}{:}\PYG{p}{,}\PYG{n}{i}\PYG{p}{]}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{o\PYGZhy{}}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{label}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{unit }\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s}{\PYGZsq{}} \PYG{o}{\PYGZpc{}}\PYG{n}{i}\PYG{p}{)}
+    \PYG{k}{else}\PYG{p}{:}
+        \PYG{n}{ax2}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{cube\PYGZus{}sizes}\PYG{p}{,} \PYG{n}{all\PYGZus{}volumes}\PYG{p}{[}\PYG{p}{:}\PYG{p}{,}\PYG{n}{i}\PYG{p}{]}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{o\PYGZhy{}}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{label}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{unit }\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s}{\PYGZsq{}} \PYG{o}{\PYGZpc{}}\PYG{n}{i}\PYG{p}{)}
+
+\PYG{n}{ax1}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{(}\PYG{n}{loc}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{)}
+\PYG{n}{ax2}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{(}\PYG{n}{loc}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} reverse axes}
+\PYG{n}{ax1}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlim}\PYG{p}{(}\PYG{n}{ax1}\PYG{o}{.}\PYG{n}{get\PYGZus{}xlim}\PYG{p}{(}\PYG{p}{)}\PYG{p}{[}\PYG{p}{:}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+\PYG{n}{ax2}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlim}\PYG{p}{(}\PYG{n}{ax2}\PYG{o}{.}\PYG{n}{get\PYGZus{}xlim}\PYG{p}{(}\PYG{p}{)}\PYG{p}{[}\PYG{p}{:}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+
+\PYG{n}{ax1}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlabel}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Block size [m]}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{ax1}\PYG{o}{.}\PYG{n}{set\PYGZus{}ylabel}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Total unit volume [m**3]}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{ax2}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlabel}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Block size [m]}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{ax2}\PYG{o}{.}\PYG{n}{set\PYGZus{}ylabel}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Total unit volume [m**3]}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZlt{}matplotlib.text.Text at 0x1103cc810\PYGZgt{}
+\end{Verbatim}
+
+\includegraphics{2-Adjust-input_37_1.png}
+
+It looks like the volumes would start to converge from about a block
+size of 100 m. The example model is pretty small and simple, probably
+not the best example for this study. Try it out with your own, highly
+complex, favourite pet model :-)
 
 
 \chapter{Geological events in pynoddy: organisation and adpatiation}
@@ -579,7 +854,7 @@ object:
 \PYG{c}{\PYGZsh{} print rcParams}
 \PYG{n}{rcParams}\PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{font.size}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{15}
 \PYG{c}{\PYGZsh{} determine path of repository to set paths corretly below}
-\PYG{c}{\PYGZsh{} os.chdir(r\PYGZsq{}/Users/flow/git/pynoddy/docs/notebooks/\PYGZsq{})\PYGZsh{} some basic module imports}
+\PYG{n}{os}\PYG{o}{.}\PYG{n}{chdir}\PYG{p}{(}\PYG{l+s}{r\PYGZsq{}}\PYG{l+s}{/Users/Florian/git/pynoddy/docs/notebooks/}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}\PYG{c}{\PYGZsh{} some basic module imports}
 \PYG{n}{repo\PYGZus{}path} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{realpath}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{../..}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
 
 \PYG{k+kn}{import} \PYG{n+nn}{pynoddy}
@@ -592,15 +867,18 @@ object:
 \PYG{c}{\PYGZsh{} Path to exmaple directory in this repository}
 \PYG{n}{example\PYGZus{}directory} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{repo\PYGZus{}path}\PYG{p}{,}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{examples}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
 \PYG{c}{\PYGZsh{} Compute noddy model for history file}
-\PYG{n}{history\PYGZus{}file} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{simple\PYGZus{}two\PYGZus{}faults.his}\PYG{l+s}{\PYGZsq{}}
-\PYG{n}{history} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{example\PYGZus{}directory}\PYG{p}{,} \PYG{n}{history\PYGZus{}file}\PYG{p}{)}
+\PYG{n}{history} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{simple\PYGZus{}two\PYGZus{}faults.his}\PYG{l+s}{\PYGZsq{}}
+\PYG{n}{history\PYGZus{}ori} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{example\PYGZus{}directory}\PYG{p}{,} \PYG{n}{history\PYGZus{}file}\PYG{p}{)}
 \PYG{n}{output\PYGZus{}name} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{noddy\PYGZus{}out}\PYG{l+s}{\PYGZsq{}}
 \PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{p}{)}
-\PYG{n}{H1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{l+m+mi}{8}
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{events}\PYG{p}{)}
+\PYG{n}{H1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history\PYGZus{}ori}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} Before we do anything else, let\PYGZsq{}s actually define the cube size here to}
+\PYG{c}{\PYGZsh{} adjust the resolution for all subsequent examples}
+\PYG{n}{H1}\PYG{o}{.}\PYG{n}{change\PYGZus{}cube\PYGZus{}size}\PYG{p}{(}\PYG{l+m+mi}{100}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} compute model \PYGZhy{} note: not strictly required, here just to ensure changed cube size}
+\PYG{n}{H1}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
+\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{history}\PYG{p}{,} \PYG{n}{output\PYGZus{}name}\PYG{p}{)}
 \end{Verbatim}
 
 Events are stored in the object dictionary ``events'' (who would have
@@ -611,9 +889,9 @@ thought), where the key corresponds to the position in the timeline:
 \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYGZob{}1: \PYGZlt{}pynoddy.events.Stratigraphy instance at 0x10fc90680\PYGZgt{},
- 2: \PYGZlt{}pynoddy.events.Fault instance at 0x10fc90098\PYGZgt{},
- 3: \PYGZlt{}pynoddy.events.Fault instance at 0x10fc906c8\PYGZgt{}\PYGZcb{}
+\PYGZob{}1: \PYGZlt{}pynoddy.events.Stratigraphy instance at 0x1046863b0\PYGZgt{},
+ 2: \PYGZlt{}pynoddy.events.Fault instance at 0x1046863f8\PYGZgt{},
+ 3: \PYGZlt{}pynoddy.events.Fault instance at 0x104686950\PYGZgt{}\PYGZcb{}
 \end{Verbatim}
 
 We can see here that three events are defined in the history. Events are
@@ -656,16 +934,31 @@ defined as:
 So what we now want to do, of course, is to change aspects of these
 events and to evaluate the effect on the resulting geological model.
 
-Changes can be performed directly on the level of the Fault.properties
-dictionary:
+Changes are best
 
 \begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{p}{)}
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{events}\PYG{p}{)}
+\PYG{n}{H1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
 \PYG{c}{\PYGZsh{} get the original dip of the fault}
 \PYG{n}{dip\PYGZus{}ori} \PYG{o}{=} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{]}\PYG{o}{.}\PYG{n}{properties}\PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Dip}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]}
+\PYG{c}{\PYGZsh{} dip\PYGZus{}ori1 = H1.events[2].properties[\PYGZsq{}Dip\PYGZsq{}]}
 \PYG{c}{\PYGZsh{} add 10 degrees to dip}
-\PYG{n}{dip\PYGZus{}new} \PYG{o}{=} \PYG{n}{dip\PYGZus{}ori} \PYG{o}{+} \PYG{l+m+mi}{10}
+\PYG{n}{add\PYGZus{}dip} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{10}
+\PYG{n}{dip\PYGZus{}new} \PYG{o}{=} \PYG{n}{dip\PYGZus{}ori} \PYG{o}{+} \PYG{n}{add\PYGZus{}dip}
+\PYG{c}{\PYGZsh{} dip\PYGZus{}new1 = dip\PYGZus{}ori1 + add\PYGZus{}dip}
+
 \PYG{c}{\PYGZsh{} and assign back to properties dictionary:}
 \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{]}\PYG{o}{.}\PYG{n}{properties}\PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Dip}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{dip\PYGZus{}new}
+\PYG{c}{\PYGZsh{} H1.events[2].properties[\PYGZsq{}Dip\PYGZsq{}] = dip\PYGZus{}new1}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{]}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZlt{}pynoddy.events.Fault instance at 0x10437e950\PYGZgt{}
 \end{Verbatim}
 
 What is left now is to write the model back to a new history file, to
@@ -673,62 +966,26 @@ recompute the model, and then visualise the output, as before, to
 compare the results:
 
 \begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{p}{)}
+\PYG{n}{new\PYGZus{}history} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{dip\PYGZus{}changed}\PYG{l+s}{\PYGZdq{}}
+\PYG{n}{new\PYGZus{}output} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{dip\PYGZus{}changed\PYGZus{}out}\PYG{l+s}{\PYGZdq{}}
 \PYG{n}{H1}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{)}
 \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{,} \PYG{n}{new\PYGZus{}output}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} load output from both models}
+\PYG{n}{NO1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{output\PYGZus{}name}\PYG{p}{)}
+\PYG{n}{NO2} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{new\PYGZus{}output}\PYG{p}{)}
+
+\PYG{c}{\PYGZsh{} create basic figure layout}
+\PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize} \PYG{o}{=} \PYG{p}{(}\PYG{l+m+mi}{15}\PYG{p}{,}\PYG{l+m+mi}{5}\PYG{p}{)}\PYG{p}{)}
+\PYG{n}{ax1} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{121}\PYG{p}{)}
+\PYG{n}{ax2} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{122}\PYG{p}{)}
+\PYG{n}{NO1}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{x}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{position}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{ax} \PYG{o}{=} \PYG{n}{ax1}\PYG{p}{,} \PYG{n}{colorbar}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Dip = }\PYG{l+s+si}{\PYGZpc{}.0f}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{n}{dip\PYGZus{}ori}\PYG{p}{)}
+\PYG{n}{NO2}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{x}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{position}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{ax} \PYG{o}{=} \PYG{n}{ax2}\PYG{p}{,} \PYG{n}{colorbar}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Dip = }\PYG{l+s+si}{\PYGZpc{}.0f}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{n}{dip\PYGZus{}new}\PYG{p}{)}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{(}\PYG{p}{)}
 \end{Verbatim}
 
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{H1}\PYG{o}{.}\PYG{n}{all\PYGZus{}events\PYGZus{}end}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{l+m+mi}{761}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-n\PYGZus{}lines = 0
-for ev in H1.events.values:
-    ev.
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-  File \PYGZdq{}\PYGZlt{}ipython\PYGZhy{}input\PYGZhy{}96\PYGZhy{}da469714939a\PYGZgt{}\PYGZdq{}, line 3
-    ev.
-       \PYGZca{}
-SyntaxError: invalid syntax
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{k}{print} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{history\PYGZus{}lines}\PYG{p}{[}\PYG{n}{H1}\PYG{o}{.}\PYG{n}{all\PYGZus{}events\PYGZus{}begin}\PYG{p}{]}
-\PYG{k}{print} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{history\PYGZus{}lines}\PYG{p}{[}\PYG{n}{H1}\PYG{o}{.}\PYG{n}{all\PYGZus{}events\PYGZus{}end}\PYG{p}{]}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-Event \PYGZsh{}1    = STRATIGRAPHY
-
-    Name    = Fault1
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{a} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{]}
-\PYG{n}{b} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{l+m+mi}{5}\PYG{p}{]}
-\PYG{n}{c} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]}
-\PYG{n}{c}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{p}{[}\PYG{n}{a1} \PYG{k}{for} \PYG{n}{a1} \PYG{o+ow}{in} \PYG{n}{a}\PYG{p}{]}\PYG{p}{)}
-\PYG{n}{c}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{b}\PYG{p}{[}\PYG{p}{:}\PYG{p}{]}\PYG{p}{)}
-\PYG{n}{c}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{p}{[}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{]}\PYG{p}{,} \PYG{p}{[}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{]}\PYG{p}{]}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{a}\PYG{o}{.}\PYG{n}{pop}\PYG{p}{(}\PYG{p}{)}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{l+m+mi}{3}
-\end{Verbatim}
+\includegraphics{3-Events_13_0.png}
 
 
 \section{Changing the order of geological events}
@@ -756,25 +1013,23 @@ history object:
 \PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{p}{)}
 \PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{events}\PYG{p}{)}
 \PYG{n}{H1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
-\end{Verbatim}
+\PYG{n}{H1}\PYG{o}{.}\PYG{n}{change\PYGZus{}cube\PYGZus{}size}\PYG{p}{(}\PYG{l+m+mi}{100}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} compute model \PYGZhy{} note: not strictly required, here just to ensure changed cube size}
 
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{l+m+mi}{8}
+\PYG{n}{H1}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
+\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{history}\PYG{p}{,} \PYG{n}{output\PYGZus{}name}\PYG{p}{)}
 \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{c}{\PYGZsh{} The names of the two fault events defined in the history file are:}
 \PYG{k}{print} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{o}{.}\PYG{n}{name}
 \PYG{k}{print} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{]}\PYG{o}{.}\PYG{n}{name}
-\PYG{k}{print} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{o}{.}\PYG{n}{event\PYGZus{}lines}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{4}\PYG{p}{:}\PYG{p}{]}
-\PYG{k}{print} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{]}\PYG{o}{.}\PYG{n}{event\PYGZus{}lines}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{4}\PYG{p}{:}\PYG{p}{]}
 \end{Verbatim}
-\begin{alltt}
-Fault1
-Fault2
-{[}'tSurface XDimt= 0.000000rn', `tSurface YDimt= 0.000000rn', `tSurface ZDimt= 0.000000rn', `tNamet= Fault1rn'{]}
-{[}'tSurface XDimt= 0.000000rn', `tSurface YDimt= 0.000000rn', `tSurface ZDimt= 0.000000rn', `tNamet= Fault2rn'{]}
-\end{alltt}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{Fault2}
+\PYG{n}{Fault1}
+\end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{c}{\PYGZsh{} Now: swap the events:}
@@ -785,15 +1040,12 @@ Fault2
 \PYG{c}{\PYGZsh{} And let\PYGZsq{}s check if this is correctly relfected in the events order now:}
 \PYG{k}{print} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{o}{.}\PYG{n}{name}
 \PYG{k}{print} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{]}\PYG{o}{.}\PYG{n}{name}
-\PYG{k}{print} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{o}{.}\PYG{n}{event\PYGZus{}lines}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{4}\PYG{p}{:}\PYG{p}{]}
-\PYG{k}{print} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{]}\PYG{o}{.}\PYG{n}{event\PYGZus{}lines}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{4}\PYG{p}{:}\PYG{p}{]}
 \end{Verbatim}
-\begin{alltt}
-Fault1
-Fault2
-{[}'tSurface XDimt= 0.000000rn', `tSurface YDimt= 0.000000rn', `tSurface ZDimt= 0.000000rn', `tNamet= Fault1rn'{]}
-{[}'tSurface XDimt= 0.000000rn', `tSurface YDimt= 0.000000rn', `tSurface ZDimt= 0.000000rn', `tNamet= Fault2rn'{]}
-\end{alltt}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{Fault1}
+\PYG{n}{Fault2}
+\end{Verbatim}
 
 Now let's create a new history file and evaluate the effect of the
 changed order in a cross section view:
@@ -806,9 +1058,10 @@ changed order in a cross section view:
 \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{p}{)}
 \PYG{c}{\PYGZsh{} Load and compare both models}
-\PYG{n}{NO2} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{output\PYGZus{}name}\PYG{p}{)}
-\PYG{n}{NO2} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{new\PYGZus{}output}\PYG{p}{)}
+\PYG{n}{NO1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{output\PYGZus{}name}\PYG{p}{)}
+\PYG{n}{NO2} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{new\PYGZus{}output}\PYG{p}{)}
 \PYG{c}{\PYGZsh{} create basic figure layout}
 \PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize} \PYG{o}{=} \PYG{p}{(}\PYG{l+m+mi}{15}\PYG{p}{,}\PYG{l+m+mi}{5}\PYG{p}{)}\PYG{p}{)}
 \PYG{n}{ax1} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{121}\PYG{p}{)}
@@ -819,7 +1072,44 @@ changed order in a cross section view:
 \PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{(}\PYG{p}{)}
 \end{Verbatim}
 
-\includegraphics{3-Events_25_0.png}
+\includegraphics{3-Events_21_0.png}
+
+
+\section{Determining the stratigraphic difference between two models}
+\label{notebooks/3-Events:determining-the-stratigraphic-difference-between-two-models}
+Just as another quick example of a possible application of pynoddy to
+evaluate aspects that are not simply possible with, for example, the GUI
+version of Noddy itself. In the last example with the changed order of
+the faults, we might be interested to determine where in space this
+change had an effect. We can test this quite simply using the
+\code{NoddyOutput} objects.
+
+The geology data is stored in the \code{NoddyOutput.block} attribute. To
+evaluate the difference between two models, we can therefore simply
+compute:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{diff} \PYG{o}{=} \PYG{p}{(}\PYG{n}{NO2}\PYG{o}{.}\PYG{n}{block} \PYG{o}{\PYGZhy{}} \PYG{n}{NO1}\PYG{o}{.}\PYG{n}{block}\PYG{p}{)}
+\end{Verbatim}
+
+And create a simple visualisation of the difference in a slice plot
+with:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{ax} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{111}\PYG{p}{)}
+\PYG{n}{ax}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{diff}\PYG{p}{[}\PYG{l+m+mi}{10}\PYG{p}{,}\PYG{p}{:}\PYG{p}{,}\PYG{p}{:}\PYG{p}{]}\PYG{o}{.}\PYG{n}{transpose}\PYG{p}{(}\PYG{p}{)}\PYG{p}{,} \PYG{n}{interpolation}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{nearest}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZlt{}matplotlib.image.AxesImage at 0x104651b90\PYGZgt{}
+\end{Verbatim}
+
+\includegraphics{3-Events_25_1.png}
+
+(Adding a meaningful title and axis labels to the plot is left to the
+reader as simple excercise :-) Future versions of pynoddy might provide
+an automatic implementation for this step...)
 
 
 \chapter{Stochastic events}
@@ -927,6 +1217,22 @@ Swap two geological events in the timeline
 
 \end{fulllineitems}
 
+\index{update\_all\_event\_properties() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.update_all_event_properties}\pysiglinewithargsret{\bfcode{update\_all\_event\_properties}}{}{}
+Update properties of all events - in case changes were made
+
+\end{fulllineitems}
+
+\index{update\_event\_numbers() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.update_event_numbers}\pysiglinewithargsret{\bfcode{update\_event\_numbers}}{}{}
+Update event numbers in `Event \#' line in noddy history file
+
+\end{fulllineitems}
+
 \index{write\_history() (pynoddy.history.NoddyHistory method)}
 
 \begin{fulllineitems}
@@ -963,6 +1269,14 @@ Created on 24/03/2014
 \begin{fulllineitems}
 \phantomsection\label{pynoddy:pynoddy.output.NoddyOutput}\pysiglinewithargsret{\strong{class }\code{pynoddy.output.}\bfcode{NoddyOutput}}{\emph{output\_name}}{}
 Class definition for Noddy output analysis
+\index{determine\_unit\_volumes() (pynoddy.output.NoddyOutput method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyOutput.determine_unit_volumes}\pysiglinewithargsret{\bfcode{determine\_unit\_volumes}}{}{}
+Determine volumes of geological units in the discretized block model
+
+\end{fulllineitems}
+
 \index{export\_to\_vtk() (pynoddy.output.NoddyOutput method)}
 
 \begin{fulllineitems}
@@ -1044,12 +1358,6 @@ or identifier (default: `center')
 
 \end{description}
 
-\end{fulllineitems}
-
-\index{test() (pynoddy.output.NoddyOutput method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.output.NoddyOutput.test}\pysiglinewithargsret{\bfcode{test}}{}{}
 \end{fulllineitems}
 
 

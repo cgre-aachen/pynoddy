@@ -1,0 +1,363 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Geological events in pynoddy: organisation and adpatiation &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../index.html" />
+    <link rel="next" title="Stochastic events" href="4-Stochastic-Events.html" />
+    <link rel="prev" title="Change Noddy input file and recompute model" href="2-Adjust-input.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="4-Stochastic-Events.html" title="Stochastic events"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="2-Adjust-input.html" title="Change Noddy input file and recompute model"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="geological-events-in-pynoddy-organisation-and-adpatiation">
+<h1>Geological events in pynoddy: organisation and adpatiation<a class="headerlink" href="#geological-events-in-pynoddy-organisation-and-adpatiation" title="Permalink to this headline">¶</a></h1>
+<p>We will here describe how the single geological events of a Noddy
+history are organised within pynoddy. We will then evaluate in some more
+detail how aspects of events can be adapted and their effect evaluated.</p>
+<div class="section" id="loading-events-from-a-noddy-history">
+<h2>Loading events from a Noddy history<a class="headerlink" href="#loading-events-from-a-noddy-history" title="Permalink to this headline">¶</a></h2>
+<p>In the current set-up of pynoddy, we always start with a pre-defined
+Noddy history loaded from a file, and then change aspects of the history
+and the single events. The first step is therefore to load the history
+file and to extract the single geological events. This is done
+automatically as default when loading the history file into the History
+object:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="c"># adjust some settings for matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="c"># print rcParams</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="c"># determine path of repository to set paths corretly below</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">r&#39;/Users/Florian/git/pynoddy/docs/notebooks/&#39;</span><span class="p">)</span><span class="c"># some basic module imports</span>
+<span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">&#39;../..&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pynoddy</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Change to sandbox directory to store results</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s">&#39;sandbox&#39;</span><span class="p">))</span>
+
+<span class="c"># Path to exmaple directory in this repository</span>
+<span class="n">example_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span><span class="s">&#39;examples&#39;</span><span class="p">)</span>
+<span class="c"># Compute noddy model for history file</span>
+<span class="n">history</span> <span class="o">=</span> <span class="s">&#39;simple_two_faults.his&#39;</span>
+<span class="n">history_ori</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">example_directory</span><span class="p">,</span> <span class="n">history_file</span><span class="p">)</span>
+<span class="n">output_name</span> <span class="o">=</span> <span class="s">&#39;noddy_out&#39;</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
+<span class="n">H1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history_ori</span><span class="p">)</span>
+<span class="c"># Before we do anything else, let&#39;s actually define the cube size here to</span>
+<span class="c"># adjust the resolution for all subsequent examples</span>
+<span class="n">H1</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="c"># compute model - note: not strictly required, here just to ensure changed cube size</span>
+<span class="n">H1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Events are stored in the object dictionary &#8220;events&#8221; (who would have
+thought), where the key corresponds to the position in the timeline:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">H1</span><span class="o">.</span><span class="n">events</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>{1: &lt;pynoddy.events.Stratigraphy instance at 0x1046863b0&gt;,
+ 2: &lt;pynoddy.events.Fault instance at 0x1046863f8&gt;,
+ 3: &lt;pynoddy.events.Fault instance at 0x104686950&gt;}
+</pre></div>
+</div>
+<p>We can see here that three events are defined in the history. Events are
+organised as objects themselves, containing all the relevant properties
+and information about the events. For example, the second fault event is
+defined as:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">H1</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&#39;Amplitude&#39;</span><span class="p">:</span> <span class="mf">2000.0</span><span class="p">,</span>
+ <span class="s">&#39;Blue&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+ <span class="s">&#39;Color Name&#39;</span><span class="p">:</span> <span class="s">&#39;Custom Colour 5&#39;</span><span class="p">,</span>
+ <span class="s">&#39;Cyl Index&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+ <span class="s">&#39;Dip&#39;</span><span class="p">:</span> <span class="mf">60.0</span><span class="p">,</span>
+ <span class="s">&#39;Dip Direction&#39;</span><span class="p">:</span> <span class="mf">270.0</span><span class="p">,</span>
+ <span class="s">&#39;Event #3&#39;</span><span class="p">:</span> <span class="s">&#39;FAULT&#39;</span><span class="p">,</span>
+ <span class="s">&#39;Geometry&#39;</span><span class="p">:</span> <span class="s">&#39;Translation&#39;</span><span class="p">,</span>
+ <span class="s">&#39;Green&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+ <span class="s">&#39;Movement&#39;</span><span class="p">:</span> <span class="s">&#39;Hanging Wall&#39;</span><span class="p">,</span>
+ <span class="s">&#39;Pitch&#39;</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">,</span>
+ <span class="s">&#39;Profile Pitch&#39;</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">,</span>
+ <span class="s">&#39;Radius&#39;</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">,</span>
+ <span class="s">&#39;Red&#39;</span><span class="p">:</span> <span class="mf">254.0</span><span class="p">,</span>
+ <span class="s">&#39;Rotation&#39;</span><span class="p">:</span> <span class="mf">30.0</span><span class="p">,</span>
+ <span class="s">&#39;Slip&#39;</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">,</span>
+ <span class="s">&#39;X&#39;</span><span class="p">:</span> <span class="mf">5500.0</span><span class="p">,</span>
+ <span class="s">&#39;XAxis&#39;</span><span class="p">:</span> <span class="mf">2000.0</span><span class="p">,</span>
+ <span class="s">&#39;Y&#39;</span><span class="p">:</span> <span class="mf">7000.0</span><span class="p">,</span>
+ <span class="s">&#39;YAxis&#39;</span><span class="p">:</span> <span class="mf">2000.0</span><span class="p">,</span>
+ <span class="s">&#39;Z&#39;</span><span class="p">:</span> <span class="mf">5000.0</span><span class="p">,</span>
+ <span class="s">&#39;ZAxis&#39;</span><span class="p">:</span> <span class="mf">2000.0</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="changing-aspects-of-geological-events">
+<h2>Changing aspects of geological events<a class="headerlink" href="#changing-aspects-of-geological-events" title="Permalink to this headline">¶</a></h2>
+<p>So what we now want to do, of course, is to change aspects of these
+events and to evaluate the effect on the resulting geological model.</p>
+<p>Changes are best</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
+<span class="n">H1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="c"># get the original dip of the fault</span>
+<span class="n">dip_ori</span> <span class="o">=</span> <span class="n">H1</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;Dip&#39;</span><span class="p">]</span>
+<span class="c"># dip_ori1 = H1.events[2].properties[&#39;Dip&#39;]</span>
+<span class="c"># add 10 degrees to dip</span>
+<span class="n">add_dip</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+<span class="n">dip_new</span> <span class="o">=</span> <span class="n">dip_ori</span> <span class="o">+</span> <span class="n">add_dip</span>
+<span class="c"># dip_new1 = dip_ori1 + add_dip</span>
+
+<span class="c"># and assign back to properties dictionary:</span>
+<span class="n">H1</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;Dip&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dip_new</span>
+<span class="c"># H1.events[2].properties[&#39;Dip&#39;] = dip_new1</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">H1</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>&lt;pynoddy.events.Fault instance at 0x10437e950&gt;
+</pre></div>
+</div>
+<p>What is left now is to write the model back to a new history file, to
+recompute the model, and then visualise the output, as before, to
+compare the results:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="n">new_history</span> <span class="o">=</span> <span class="s">&quot;dip_changed&quot;</span>
+<span class="n">new_output</span> <span class="o">=</span> <span class="s">&quot;dip_changed_out&quot;</span>
+<span class="n">H1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">new_history</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">new_history</span><span class="p">,</span> <span class="n">new_output</span><span class="p">)</span>
+<span class="c"># load output from both models</span>
+<span class="n">NO1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">NO2</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">new_output</span><span class="p">)</span>
+
+<span class="c"># create basic figure layout</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">NO1</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax1</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Dip = </span><span class="si">%.0f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">dip_ori</span><span class="p">)</span>
+<span class="n">NO2</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Dip = </span><span class="si">%.0f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">dip_new</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/3-Events_13_0.png" src="../_images/3-Events_13_0.png" />
+</div>
+<div class="section" id="changing-the-order-of-geological-events">
+<h2>Changing the order of geological events<a class="headerlink" href="#changing-the-order-of-geological-events" title="Permalink to this headline">¶</a></h2>
+<p>The geological history is parameterised as single events in a timeline.
+Changing the order of events can be performed with two basic methods:</p>
+<ol class="arabic simple">
+<li>Swapping two events with a simple command</li>
+<li>Adjusting the entire timeline with a complete remapping of events</li>
+</ol>
+<p>The first method is probably the most useful to test how a simple change
+in the order of events will effect the final geological model. We will
+use it here with our example to test how the model would change if the
+timing of the faults is swapped.</p>
+<p>The method to swap two geological events is defined on the level of the
+history object:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
+<span class="n">H1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">H1</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="c"># compute model - note: not strictly required, here just to ensure changed cube size</span>
+
+<span class="n">H1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># The names of the two fault events defined in the history file are:</span>
+<span class="k">print</span> <span class="n">H1</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="k">print</span> <span class="n">H1</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Fault2</span>
+<span class="n">Fault1</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Now: swap the events:</span>
+<span class="n">H1</span><span class="o">.</span><span class="n">swap_events</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># And let&#39;s check if this is correctly relfected in the events order now:</span>
+<span class="k">print</span> <span class="n">H1</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="k">print</span> <span class="n">H1</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Fault1</span>
+<span class="n">Fault2</span>
+</pre></div>
+</div>
+<p>Now let&#8217;s create a new history file and evaluate the effect of the
+changed order in a cross section view:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">new_history</span> <span class="o">=</span> <span class="s">&quot;faults_changed_order.his&quot;</span>
+<span class="n">new_output</span> <span class="o">=</span> <span class="s">&quot;faults_out&quot;</span>
+<span class="n">H1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">new_history</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">new_history</span><span class="p">,</span> <span class="n">new_output</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="c"># Load and compare both models</span>
+<span class="n">NO1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">NO2</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">new_output</span><span class="p">)</span>
+<span class="c"># create basic figure layout</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">NO1</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax1</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Model 1&quot;</span><span class="p">)</span>
+<span class="n">NO2</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Model 2&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/3-Events_21_0.png" src="../_images/3-Events_21_0.png" />
+</div>
+<div class="section" id="determining-the-stratigraphic-difference-between-two-models">
+<h2>Determining the stratigraphic difference between two models<a class="headerlink" href="#determining-the-stratigraphic-difference-between-two-models" title="Permalink to this headline">¶</a></h2>
+<p>Just as another quick example of a possible application of pynoddy to
+evaluate aspects that are not simply possible with, for example, the GUI
+version of Noddy itself. In the last example with the changed order of
+the faults, we might be interested to determine where in space this
+change had an effect. We can test this quite simply using the
+<tt class="docutils literal"><span class="pre">NoddyOutput</span></tt> objects.</p>
+<p>The geology data is stored in the <tt class="docutils literal"><span class="pre">NoddyOutput.block</span></tt> attribute. To
+evaluate the difference between two models, we can therefore simply
+compute:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">NO2</span><span class="o">.</span><span class="n">block</span> <span class="o">-</span> <span class="n">NO1</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And create a simple visualisation of the difference in a slice plot
+with:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="mi">10</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&#39;nearest&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>&lt;matplotlib.image.AxesImage at 0x104651b90&gt;
+</pre></div>
+</div>
+<img alt="../_images/3-Events_25_1.png" src="../_images/3-Events_25_1.png" />
+<p>(Adding a meaningful title and axis labels to the plot is left to the
+reader as simple excercise :-) Future versions of pynoddy might provide
+an automatic implementation for this step...)</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Geological events in pynoddy: organisation and adpatiation</a><ul>
+<li><a class="reference internal" href="#loading-events-from-a-noddy-history">Loading events from a Noddy history</a></li>
+<li><a class="reference internal" href="#changing-aspects-of-geological-events">Changing aspects of geological events</a></li>
+<li><a class="reference internal" href="#changing-the-order-of-geological-events">Changing the order of geological events</a></li>
+<li><a class="reference internal" href="#determining-the-stratigraphic-difference-between-two-models">Determining the stratigraphic difference between two models</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="2-Adjust-input.html"
+                        title="previous chapter">Change Noddy input file and recompute model</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="4-Stochastic-Events.html"
+                        title="next chapter">Stochastic events</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/notebooks/3-Events.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="4-Stochastic-Events.html" title="Stochastic events"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="2-Adjust-input.html" title="Change Noddy input file and recompute model"
+             >previous</a> |</li>
+        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Florian Wellmann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

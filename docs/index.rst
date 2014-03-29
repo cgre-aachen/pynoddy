@@ -20,6 +20,7 @@ Contents:
    notebooks/5-Uncertainties
 
    pynoddy
+   pynoddy.events
 
 
 Indices and tables

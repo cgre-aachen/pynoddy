@@ -1,16 +1,18 @@
-\indexentry{pynoddy.history (module)|hyperpage}{21}
-\indexentry{NoddyHistory (class in pynoddy.history)|hyperpage}{21}
-\indexentry{change\_cube\_size() (pynoddy.history.NoddyHistory method)|hyperpage}{21}
-\indexentry{determine\_events() (pynoddy.history.NoddyHistory method)|hyperpage}{21}
-\indexentry{load\_history() (pynoddy.history.NoddyHistory method)|hyperpage}{21}
-\indexentry{swap\_events() (pynoddy.history.NoddyHistory method)|hyperpage}{21}
-\indexentry{write\_history() (pynoddy.history.NoddyHistory method)|hyperpage}{21}
-\indexentry{pynoddy.output (module)|hyperpage}{22}
-\indexentry{NoddyOutput (class in pynoddy.output)|hyperpage}{22}
-\indexentry{export\_to\_vtk() (pynoddy.output.NoddyOutput method)|hyperpage}{22}
-\indexentry{load\_geology() (pynoddy.output.NoddyOutput method)|hyperpage}{22}
-\indexentry{load\_model\_info() (pynoddy.output.NoddyOutput method)|hyperpage}{22}
-\indexentry{plot\_section() (pynoddy.output.NoddyOutput method)|hyperpage}{22}
-\indexentry{test() (pynoddy.output.NoddyOutput method)|hyperpage}{22}
-\indexentry{pynoddy (module)|hyperpage}{23}
-\indexentry{compute\_model() (in module pynoddy)|hyperpage}{23}
+\indexentry{pynoddy.history (module)|hyperpage}{27}
+\indexentry{NoddyHistory (class in pynoddy.history)|hyperpage}{27}
+\indexentry{change\_cube\_size() (pynoddy.history.NoddyHistory method)|hyperpage}{27}
+\indexentry{determine\_events() (pynoddy.history.NoddyHistory method)|hyperpage}{27}
+\indexentry{load\_history() (pynoddy.history.NoddyHistory method)|hyperpage}{27}
+\indexentry{swap\_events() (pynoddy.history.NoddyHistory method)|hyperpage}{27}
+\indexentry{update\_all\_event\_properties() (pynoddy.history.NoddyHistory method)|hyperpage}{27}
+\indexentry{update\_event\_numbers() (pynoddy.history.NoddyHistory method)|hyperpage}{27}
+\indexentry{write\_history() (pynoddy.history.NoddyHistory method)|hyperpage}{27}
+\indexentry{pynoddy.output (module)|hyperpage}{28}
+\indexentry{NoddyOutput (class in pynoddy.output)|hyperpage}{28}
+\indexentry{determine\_unit\_volumes() (pynoddy.output.NoddyOutput method)|hyperpage}{28}
+\indexentry{export\_to\_vtk() (pynoddy.output.NoddyOutput method)|hyperpage}{28}
+\indexentry{load\_geology() (pynoddy.output.NoddyOutput method)|hyperpage}{28}
+\indexentry{load\_model\_info() (pynoddy.output.NoddyOutput method)|hyperpage}{28}
+\indexentry{plot\_section() (pynoddy.output.NoddyOutput method)|hyperpage}{28}
+\indexentry{pynoddy (module)|hyperpage}{29}
+\indexentry{compute\_model() (in module pynoddy)|hyperpage}{29}

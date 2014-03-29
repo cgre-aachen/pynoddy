@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pynoddy &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="index.html" />
+    <link rel="next" title="Simulation of a Noddy history and visualisation of output" href="notebooks/1-Simulation.html" />
+    <link rel="prev" title="Welcome to pynoddy’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="notebooks/1-Simulation.html" title="Simulation of a Noddy history and visualisation of output"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to pynoddy’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pynoddy">
+<h1>pynoddy<a class="headerlink" href="#pynoddy" title="Permalink to this headline">¶</a></h1>
+<p>pynoddy is a python package to write, change, and analyse kinematic
+geological modelling simulations performed with Noddy (see below for
+more infomration on Noddy).</p>
+<div class="section" id="how-does-it-work">
+<h2>How does it work?<a class="headerlink" href="#how-does-it-work" title="Permalink to this headline">¶</a></h2>
+<p>At this stage, pynoddy provides wrapper modules for existing Noddy
+history (.his) and result files (.g00, etc.). It is</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>To install pynoddy simply run:</p>
+<div class="highlight-python"><div class="highlight"><pre>python setup.py install
+</pre></div>
+</div>
+<p>Note:</p>
+<ul class="simple">
+<li>sufficient priviledges are required (i.e. run in sudo with MacOSX/
+Linux and set permissions on Windows)</li>
+</ul>
+<p>Important: the Noddy executable has to be in a directory defined in the
+PATH variable!!</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="tutorial">
+<h2>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h2>
+<p>A tutorial starting with simple examples for changing the geological
+history and visualisation of output, as well as the implementation of
+stochastic simulations and uncertainty visualisation are available as
+interactive ipython notebooks.</p>
+<p>These notebooks are also included in this documentation as
+non-interactive versions.</p>
+</div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>pynoddy depends on several standard Python packages that should be
+shipped with any standard distribution (and are easy to install,
+otherwise):</p>
+<ul class="simple">
+<li>numpy</li>
+<li>matplotlib</li>
+<li>pickle</li>
+</ul>
+<p>The uncertainty anaysis, quantification, and visualisation methods based
+on information theory are implemented in the python package pygeoinfo.
+This package is available on github and part of the python package
+index. It is automatically installed with the setup script provided with
+this package. For more information, please see:</p>
+<p>(todo: include package info!)</p>
+<p>In addition, to export model results for full 3-D visualisation with
+VTK, the pyevtk package is used, available on bitbucket:</p>
+<p><a class="reference external" href="https://bitbucket.org/pauloh/pyevtk/src/9c19e3a54d1e?at=v0.1.0">https://bitbucket.org/pauloh/pyevtk/src/9c19e3a54d1e?at=v0.1.0</a></p>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>pynoddy is free software and published under a MIT license (see license
+file included in the repository). Please attribute the work when you use
+it, feel free to change and adapt it otherwise!</p>
+</div>
+<div class="section" id="what-is-noddy">
+<h2>What is Noddy?<a class="headerlink" href="#what-is-noddy" title="Permalink to this headline">¶</a></h2>
+<p>Noddy itself is a kinematic modelling program written by Mark Jessell
+[1] to simulate the effect of subsequent geological events (folding,
+unconformities, faulting, etc.) on a primary sedimentary pile. A typical
+example would be:</p>
+<ol class="arabic simple">
+<li>Create a sedimentary pile with defined thicknesses for multiple
+formations</li>
+<li>Add a folding event (for example simple sinoidal folding, but complex
+methods are possible!)</li>
+<li>Add an unconformity and, above it, a new sedimentary pile</li>
+<li>Finally, add a sequence of late faults affecting the entire system.</li>
+</ol>
+<p>The result could look something like this:</p>
+<div class="figure">
+<img alt="" src="_images/noddy_block_example.png" />
+</div>
+<p>The software runs on Windows only, but the source files (written in C)
+are available for download to generate a command line version of the
+modelling step alone:</p>
+<p><a class="reference external" href="https://github.com/markjessell/functionNoddy">https://github.com/markjessell/functionNoddy</a></p>
+<p>It has been tested and compiled on MacOSX, Windows and Linux.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[1] Mark W. Jessell, Rick K. Valenta, Structural geophysics: Integrated
+structural and geophysical modelling, In: Declan G. De Paor, Editor(s),
+Computer Methods in the Geosciences, Pergamon, 1996, Volume 15, Pages
+303-324, ISSN 1874-561X, ISBN 9780080424309,
+<a class="reference external" href="http://dx.doi.org/10.1016/S1874-561X(96)80027-7">http://dx.doi.org/10.1016/S1874-561X(96)80027-7</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pynoddy</a><ul>
+<li><a class="reference internal" href="#how-does-it-work">How does it work?</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#tutorial">Tutorial</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#what-is-noddy">What is Noddy?</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to pynoddy&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="notebooks/1-Simulation.html"
+                        title="next chapter">Simulation of a Noddy history and visualisation of output</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/readme.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="notebooks/1-Simulation.html" title="Simulation of a Noddy history and visualisation of output"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to pynoddy’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Florian Wellmann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
