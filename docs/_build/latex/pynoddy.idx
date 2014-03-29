@@ -1,14 +1,16 @@
-\indexentry{pynoddy.history (module)|hyperpage}{3}
-\indexentry{NoddyHistory (class in pynoddy.history)|hyperpage}{3}
-\indexentry{change\_cube\_size() (pynoddy.history.NoddyHistory method)|hyperpage}{3}
-\indexentry{determine\_events() (pynoddy.history.NoddyHistory method)|hyperpage}{3}
-\indexentry{load\_history() (pynoddy.history.NoddyHistory method)|hyperpage}{3}
-\indexentry{write\_history() (pynoddy.history.NoddyHistory method)|hyperpage}{3}
-\indexentry{pynoddy.output (module)|hyperpage}{4}
-\indexentry{NoddyOutput (class in pynoddy.output)|hyperpage}{4}
-\indexentry{export\_to\_vtk() (pynoddy.output.NoddyOutput method)|hyperpage}{4}
-\indexentry{load\_geology() (pynoddy.output.NoddyOutput method)|hyperpage}{4}
-\indexentry{load\_model\_info() (pynoddy.output.NoddyOutput method)|hyperpage}{4}
-\indexentry{plot\_section() (pynoddy.output.NoddyOutput method)|hyperpage}{4}
-\indexentry{pynoddy (module)|hyperpage}{4}
-\indexentry{compute\_model() (in module pynoddy)|hyperpage}{4}
+\indexentry{pynoddy.history (module)|hyperpage}{21}
+\indexentry{NoddyHistory (class in pynoddy.history)|hyperpage}{21}
+\indexentry{change\_cube\_size() (pynoddy.history.NoddyHistory method)|hyperpage}{21}
+\indexentry{determine\_events() (pynoddy.history.NoddyHistory method)|hyperpage}{21}
+\indexentry{load\_history() (pynoddy.history.NoddyHistory method)|hyperpage}{21}
+\indexentry{swap\_events() (pynoddy.history.NoddyHistory method)|hyperpage}{21}
+\indexentry{write\_history() (pynoddy.history.NoddyHistory method)|hyperpage}{21}
+\indexentry{pynoddy.output (module)|hyperpage}{22}
+\indexentry{NoddyOutput (class in pynoddy.output)|hyperpage}{22}
+\indexentry{export\_to\_vtk() (pynoddy.output.NoddyOutput method)|hyperpage}{22}
+\indexentry{load\_geology() (pynoddy.output.NoddyOutput method)|hyperpage}{22}
+\indexentry{load\_model\_info() (pynoddy.output.NoddyOutput method)|hyperpage}{22}
+\indexentry{plot\_section() (pynoddy.output.NoddyOutput method)|hyperpage}{22}
+\indexentry{test() (pynoddy.output.NoddyOutput method)|hyperpage}{22}
+\indexentry{pynoddy (module)|hyperpage}{23}
+\indexentry{compute\_model() (in module pynoddy)|hyperpage}{23}

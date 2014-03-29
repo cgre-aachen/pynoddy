@@ -1,2 +1,3 @@
-{5: <pynoddy.events.Fault instance at 0x104f0b6c8>,
- 6: <pynoddy.events.Fault instance at 0x104f0b7a0>}
+{1: <pynoddy.events.Stratigraphy instance at 0x104f9b320>,
+ 2: <pynoddy.events.Fault instance at 0x104f9b368>,
+ 3: <pynoddy.events.Fault instance at 0x104f9b440>}

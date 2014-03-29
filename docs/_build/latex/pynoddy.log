@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/MacPorts 2013_5) (format=pdflatex 2014.1.31)  25 MAR 2014 12:04
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/MacPorts 2013_5) (format=pdflatex 2014.1.31)  29 MAR 2014 12:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -924,67 +924,124 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 127.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <24.88> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 127.
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 142.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 144.
 (/opt/local/share/texmf-texlive/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 142.
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 151.
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 150.
 
 
 (/opt/local/share/texmf-texlive/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [3]
-Overfull \hbox (37.30956pt too wide) in paragraph at lines 235--236
+<noddy_block_example.png, id=208, 856.19875pt x 533.995pt>
+File: noddy_block_example.png Graphic file (type png)
+
+<use noddy_block_example.png>
+Package pdftex.def Info: noddy_block_example.png used on input line 239.
+(pdftex.def)             Requested size: 856.19666pt x 533.9937pt.
+File: noddy_block_example.png Graphic file (type png)
+ <use noddy_block_example.png>
+Package pdftex.def Info: noddy_block_example.png used on input line 239.
+(pdftex.def)             Requested size: 469.755pt x 292.97298pt.
+ [4] [5 <./noddy_block_example.png>] [6
+
+]
+Chapter 2.
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 266.
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 267.
+[7] <1-Simulation_12_0.png, id=233, 556.0775pt x 355.3275pt>
+File: 1-Simulation_12_0.png Graphic file (type png)
+
+<use 1-Simulation_12_0.png>
+Package pdftex.def Info: 1-Simulation_12_0.png used on input line 356.
+(pdftex.def)             Requested size: 556.07614pt x 355.32661pt.
+File: 1-Simulation_12_0.png Graphic file (type png)
+ <use 1-Simulation_12_0.png>
+Package pdftex.def Info: 1-Simulation_12_0.png used on input line 356.
+(pdftex.def)             Requested size: 469.755pt x 300.1755pt.
+ [8 <./1-Simulation_12_0.png>] [9] [10
+
+]
+Chapter 3.
+[11] [12] <2-Adjust-input_14_0.png, id=257, 895.345pt x 275.0275pt>
+File: 2-Adjust-input_14_0.png Graphic file (type png)
+
+<use 2-Adjust-input_14_0.png>
+Package pdftex.def Info: 2-Adjust-input_14_0.png used on input line 544.
+(pdftex.def)             Requested size: 895.34282pt x 275.02682pt.
+File: 2-Adjust-input_14_0.png Graphic file (type png)
+ <use 2-Adjust-input_14_0.png>
+Package pdftex.def Info: 2-Adjust-input_14_0.png used on input line 544.
+(pdftex.def)             Requested size: 469.755pt x 144.29927pt.
+ [13 <./2-Adjust-input_14_0.png>] [14
+
+]
+Chapter 4.
+[15] [16]
+Overfull \hbox (190.245pt too wide) in paragraph at lines 775--775
+[]\T1/pcr/m/n/10 ['tSurface XDimt= 0.000000rn', `tSurface YDimt= 0.000000rn', `
+tSurface ZDimt= 0.000000rn', `tNamet= Fault1rn'][] 
+ []
+
+[17]
+Overfull \hbox (190.245pt too wide) in paragraph at lines 776--776
+[]\T1/pcr/m/n/10 ['tSurface XDimt= 0.000000rn', `tSurface YDimt= 0.000000rn', `
+tSurface ZDimt= 0.000000rn', `tNamet= Fault2rn'][] 
+ []
+
+
+Overfull \hbox (190.245pt too wide) in paragraph at lines 794--794
+[]\T1/pcr/m/n/10 ['tSurface XDimt= 0.000000rn', `tSurface YDimt= 0.000000rn', `
+tSurface ZDimt= 0.000000rn', `tNamet= Fault1rn'][] 
+ []
+
+
+Overfull \hbox (190.245pt too wide) in paragraph at lines 795--795
+[]\T1/pcr/m/n/10 ['tSurface XDimt= 0.000000rn', `tSurface YDimt= 0.000000rn', `
+tSurface ZDimt= 0.000000rn', `tNamet= Fault2rn'][] 
+ []
+
+<3-Events_25_0.png, id=282, 895.345pt x 275.0275pt>
+File: 3-Events_25_0.png Graphic file (type png)
+ <use 3-Events_25_0.png>
+Package pdftex.def Info: 3-Events_25_0.png used on input line 822.
+(pdftex.def)             Requested size: 895.34282pt x 275.02682pt.
+File: 3-Events_25_0.png Graphic file (type png)
+
+<use 3-Events_25_0.png>
+Package pdftex.def Info: 3-Events_25_0.png used on input line 822.
+(pdftex.def)             Requested size: 469.755pt x 144.29927pt.
+ [18 <./3-Events_25_0.png>]
+Chapter 5.
+[19
+
+] [20
+
+]
+Chapter 6.
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 866.
+[21]
+Overfull \hbox (37.30956pt too wide) in paragraph at lines 975--976
 []\T1/ptm/m/n/10 ..Note:: Re-quires pyevtk, avail-able for free on: [][]https:/
 /github.com/firedrakeproject/firedrake/tree/master/python/evtk[][] 
  []
 
 LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 274.
-[4]
-Chapter 2.
-LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 328.
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 329.
-[5
-
-] <1-Simulation_11_0.png, id=156, 556.0775pt x 355.3275pt>
-File: 1-Simulation_11_0.png Graphic file (type png)
-
-<use 1-Simulation_11_0.png>
-Package pdftex.def Info: 1-Simulation_11_0.png used on input line 410.
-(pdftex.def)             Requested size: 556.07614pt x 355.32661pt.
-File: 1-Simulation_11_0.png Graphic file (type png)
- <use 1-Simulation_11_0.png>
-Package pdftex.def Info: 1-Simulation_11_0.png used on input line 410.
-(pdftex.def)             Requested size: 469.755pt x 300.1755pt.
- [6 <./1-Simulation_11_0.png>] [7] [8
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1014.
+[22] [23] [24
 
 ]
-Chapter 3.
-[9] <2-Adjust-input_12_0.png, id=176, 895.345pt x 275.0275pt>
-File: 2-Adjust-input_12_0.png Graphic file (type png)
+Chapter 7.
+[25] [26
 
-<use 2-Adjust-input_12_0.png>
-Package pdftex.def Info: 2-Adjust-input_12_0.png used on input line 542.
-(pdftex.def)             Requested size: 895.34282pt x 275.02682pt.
-File: 2-Adjust-input_12_0.png Graphic file (type png)
- <use 2-Adjust-input_12_0.png>
-Package pdftex.def Info: 2-Adjust-input_12_0.png used on input line 542.
-(pdftex.def)             Requested size: 469.755pt x 144.29927pt.
- [10 <./2-Adjust-input_12_0.png>] [11] [12
-
-]
-Chapter 4.
-[13] [14
-
-] [15
+] [27
 
 
-] (./pynoddy.ind [16
+] (./pynoddy.ind [28
 
 
 ]
@@ -1002,27 +1059,28 @@ Underfull \hbox (badness 10000) in paragraph at lines 20--21
 []\T1/ptm/m/n/10 load_model_info() (pyn-oddy.output.NoddyOutput
  []
 
-[17
+[29
 
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 581.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 581.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1096.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1096.
  (./pynoddy.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 581.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 581.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1096.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1096.
+
 Package rerunfilecheck Info: File `pynoddy.out' has not changed.
-(rerunfilecheck)             Checksum: 3730DFED659826E85108713EC5B9E43C;1203.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 581.
+(rerunfilecheck)             Checksum: B0E0FBD55CE531FFCAD49F8C371D0846;2192.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1096.
  ) 
 Here is how much of TeX's memory you used:
- 9155 strings out of 494983
- 127788 string characters out of 6179239
- 222645 words of memory out of 5000000
- 12068 multiletter control sequences out of 15000+600000
+ 9235 strings out of 494983
+ 129242 string characters out of 6179239
+ 226628 words of memory out of 5000000
+ 12111 multiletter control sequences out of 15000+600000
  59883 words of font info for 69 fonts, out of 8000000 for 9000
  15 hyphenation exceptions out of 8191
- 36i,12n,45p,351b,397s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,11n,45p,520b,478s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/opt/local/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</opt/local/share
 /texmf-texlive/fonts/type1/urw/courier/ucrb8a.pfb></opt/local/share/texmf-texli
 ve/fonts/type1/urw/courier/ucrr8a.pfb></opt/local/share/texmf-texlive/fonts/typ
@@ -1033,10 +1091,10 @@ a.pfb></opt/local/share/texmf-texlive/fonts/type1/urw/helvetic/uhvr8a.pfb></opt
 exmf-texlive/fonts/type1/urw/times/utmbi8a.pfb></opt/local/share/texmf-texlive/
 fonts/type1/urw/times/utmr8a.pfb></opt/local/share/texmf-texlive/fonts/type1/ur
 w/times/utmri8a.pfb>
-Output written on pynoddy.pdf (21 pages, 154520 bytes).
+Output written on pynoddy.pdf (33 pages, 198929 bytes).
 PDF statistics:
- 278 PDF objects out of 1000 (max. 8388607)
- 233 compressed objects within 3 object streams
- 52 named destinations out of 1000 (max. 500000)
- 167 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 427 PDF objects out of 1000 (max. 8388607)
+ 366 compressed objects within 4 object streams
+ 87 named destinations out of 1000 (max. 500000)
+ 297 words of extra memory for PDF output out of 10000 (max. 10000000)
 

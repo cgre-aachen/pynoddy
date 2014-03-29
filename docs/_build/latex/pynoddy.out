@@ -1,17 +1,32 @@
-\BOOKMARK [0][-]{chapter.1}{pynoddy package}{}% 1
-\BOOKMARK [1][-]{section.1.1}{Submodules}{chapter.1}% 2
-\BOOKMARK [1][-]{section.1.2}{pynoddy.history module}{chapter.1}% 3
-\BOOKMARK [1][-]{section.1.3}{pynoddy.output module}{chapter.1}% 4
-\BOOKMARK [1][-]{section.1.4}{Module contents}{chapter.1}% 5
-\BOOKMARK [0][-]{chapter.2}{Simulation of a Noddy history and visualisation of output}{}% 6
-\BOOKMARK [1][-]{section.2.1}{\(1\) Compute the model}{chapter.2}% 7
-\BOOKMARK [1][-]{section.2.2}{\(2\) Loading Noddy output files}{chapter.2}% 8
-\BOOKMARK [1][-]{section.2.3}{\(3\) Plotting sections through the model}{chapter.2}% 9
-\BOOKMARK [1][-]{section.2.4}{\(4\) Export model to VTK}{chapter.2}% 10
-\BOOKMARK [0][-]{chapter.3}{Change Noddy input file and recompute model}{}% 11
-\BOOKMARK [1][-]{section.3.1}{\(1\) Get basic information on the model}{chapter.3}% 12
-\BOOKMARK [1][-]{section.3.2}{\(2\) Change model cube size and recompute model}{chapter.3}% 13
-\BOOKMARK [1][-]{section.3.3}{\(3\) Change aspects of geological events}{chapter.3}% 14
-\BOOKMARK [0][-]{chapter.4}{Indices and tables}{}% 15
-\BOOKMARK [0][-]{section*.14}{Python Module Index}{}% 16
-\BOOKMARK [0][-]{section*.15}{Index}{}% 17
+\BOOKMARK [0][-]{chapter.1}{pynoddy}{}% 1
+\BOOKMARK [1][-]{section.1.1}{How does it work?}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Installation}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.3}{Documentation}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.4}{Tutorial}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.5}{Dependencies}{chapter.1}% 6
+\BOOKMARK [1][-]{section.1.6}{License}{chapter.1}% 7
+\BOOKMARK [1][-]{section.1.7}{What is Noddy?}{chapter.1}% 8
+\BOOKMARK [1][-]{section.1.8}{References}{chapter.1}% 9
+\BOOKMARK [0][-]{chapter.2}{Simulation of a Noddy history and visualisation of output}{}% 10
+\BOOKMARK [1][-]{section.2.1}{\(1\) Compute the model}{chapter.2}% 11
+\BOOKMARK [1][-]{section.2.2}{\(2\) Loading Noddy output files}{chapter.2}% 12
+\BOOKMARK [1][-]{section.2.3}{\(3\) Plotting sections through the model}{chapter.2}% 13
+\BOOKMARK [1][-]{section.2.4}{\(4\) Export model to VTK}{chapter.2}% 14
+\BOOKMARK [0][-]{chapter.3}{Change Noddy input file and recompute model}{}% 15
+\BOOKMARK [1][-]{section.3.1}{\(1\) Get basic information on the model}{chapter.3}% 16
+\BOOKMARK [1][-]{section.3.2}{\(2\) Change model cube size and recompute model}{chapter.3}% 17
+\BOOKMARK [1][-]{section.3.3}{\(3\) Change aspects of geological events}{chapter.3}% 18
+\BOOKMARK [0][-]{chapter.4}{Geological events in pynoddy: organisation and adpatiation}{}% 19
+\BOOKMARK [1][-]{section.4.1}{Loading events from a Noddy history}{chapter.4}% 20
+\BOOKMARK [1][-]{section.4.2}{Changing aspects of geological events}{chapter.4}% 21
+\BOOKMARK [1][-]{section.4.3}{Changing the order of geological events}{chapter.4}% 22
+\BOOKMARK [0][-]{chapter.5}{Stochastic events}{}% 23
+\BOOKMARK [1][-]{section.5.1}{Definition of stochastic events}{chapter.5}% 24
+\BOOKMARK [0][-]{chapter.6}{pynoddy package}{}% 25
+\BOOKMARK [1][-]{section.6.1}{Submodules}{chapter.6}% 26
+\BOOKMARK [1][-]{section.6.2}{pynoddy.history module}{chapter.6}% 27
+\BOOKMARK [1][-]{section.6.3}{pynoddy.output module}{chapter.6}% 28
+\BOOKMARK [1][-]{section.6.4}{Module contents}{chapter.6}% 29
+\BOOKMARK [0][-]{chapter.7}{Indices and tables}{}% 30
+\BOOKMARK [0][-]{section*.16}{Python Module Index}{}% 31
+\BOOKMARK [0][-]{section*.17}{Index}{}% 32

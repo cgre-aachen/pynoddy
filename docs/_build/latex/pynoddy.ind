@@ -2,37 +2,45 @@
 \def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
 
   \bigletter C
-  \item change\_cube\_size() (pynoddy.history.NoddyHistory method), \hyperpage{3}
-  \item compute\_model() (in module pynoddy), \hyperpage{4}
+  \item change\_cube\_size() (pynoddy.history.NoddyHistory method), \hyperpage{21}
+  \item compute\_model() (in module pynoddy), \hyperpage{23}
 
   \indexspace
   \bigletter D
-  \item determine\_events() (pynoddy.history.NoddyHistory method), \hyperpage{3}
+  \item determine\_events() (pynoddy.history.NoddyHistory method), \hyperpage{21}
 
   \indexspace
   \bigletter E
-  \item export\_to\_vtk() (pynoddy.output.NoddyOutput method), \hyperpage{4}
+  \item export\_to\_vtk() (pynoddy.output.NoddyOutput method), \hyperpage{22}
 
   \indexspace
   \bigletter L
-  \item load\_geology() (pynoddy.output.NoddyOutput method), \hyperpage{4}
-  \item load\_history() (pynoddy.history.NoddyHistory method), \hyperpage{3}
-  \item load\_model\_info() (pynoddy.output.NoddyOutput method), \hyperpage{4}
+  \item load\_geology() (pynoddy.output.NoddyOutput method), \hyperpage{22}
+  \item load\_history() (pynoddy.history.NoddyHistory method), \hyperpage{21}
+  \item load\_model\_info() (pynoddy.output.NoddyOutput method), \hyperpage{22}
 
   \indexspace
   \bigletter N
-  \item NoddyHistory (class in pynoddy.history), \hyperpage{3}
-  \item NoddyOutput (class in pynoddy.output), \hyperpage{4}
+  \item NoddyHistory (class in pynoddy.history), \hyperpage{21}
+  \item NoddyOutput (class in pynoddy.output), \hyperpage{22}
 
   \indexspace
   \bigletter P
-  \item plot\_section() (pynoddy.output.NoddyOutput method), \hyperpage{4}
-  \item pynoddy (module), \hyperpage{4}
-  \item pynoddy.history (module), \hyperpage{3}
-  \item pynoddy.output (module), \hyperpage{4}
+  \item plot\_section() (pynoddy.output.NoddyOutput method), \hyperpage{22}
+  \item pynoddy (module), \hyperpage{23}
+  \item pynoddy.history (module), \hyperpage{21}
+  \item pynoddy.output (module), \hyperpage{22}
+
+  \indexspace
+  \bigletter S
+  \item swap\_events() (pynoddy.history.NoddyHistory method), \hyperpage{21}
+
+  \indexspace
+  \bigletter T
+  \item test() (pynoddy.output.NoddyOutput method), \hyperpage{22}
 
   \indexspace
   \bigletter W
-  \item write\_history() (pynoddy.history.NoddyHistory method), \hyperpage{3}
+  \item write\_history() (pynoddy.history.NoddyHistory method), \hyperpage{21}
 
 \end{theindex}

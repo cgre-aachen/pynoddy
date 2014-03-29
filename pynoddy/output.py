@@ -43,9 +43,6 @@ class NoddyOutput():
                                              self.extent_y / float(self.ny),
                                              self.extent_z / float(self.nz))
     
-    def test(self):
-        print "jawohl und jetzt? und jetzt? und jetzt?"
-    
     
     def load_geology(self):
         """Load block geology ids from .g12 output file"""
@@ -54,6 +51,25 @@ class NoddyOutput():
         # reshape to proper 3-D shape
         self.block = self.block.reshape((self.nz,self.ny,self.nx))
         self.block = np.swapaxes(self.block, 0, 2)
+        # self.block = np.swapaxes(self.block, 0, 1)
+        # print np.shape(self.block)
+    
+    def determine_unit_volumes(self):
+        """Determine volumes of geological units in the discretized block model
+        
+        """
+        #
+        # Note: for the time being, the following implementation is extremely simple
+        # and could be optimised, for example to test specifically for units defined
+        # in stratigraphies, intrusions, etc.!
+        # 
+        self.block_volume = self.delx * self.dely * self.delz
+        self.unit_ids = np.unique(self.block)
+        self.unit_volumes = np.empty(np.shape(self.unit_ids))
+        for i,unit_id in enumerate(self.unit_ids):
+            self.unit_volumes[i] = np.sum(self.block == unit_id) * self.block_volume
+        
+        
         
     def plot_section(self, direction='y', position='center', **kwds):
         """Create a section block through the model
@@ -68,9 +84,11 @@ class NoddyOutput():
             - *figsize* = (x,y) : matplotlib figsize
             - *colorbar* = bool : plot colorbar (default: True)
             - *title* = string : plot title
-            - *savefig* = bool : save figure to file (default: show directly on scren)
+            - *savefig* = bool : save figure to file (default: show directly on screen)
+            - *cmap* = matplotlib.cmap : colormap
             - *fig_filename* = string : figure filename
         """
+        cmap = kwds.get('cmap', 'jet')
         if kwds.has_key('ax'):
             # append plot to existing axis
             ax = kwds['ax']
@@ -111,7 +129,7 @@ class NoddyOutput():
 
         title = kwds.get("title", "Section in %s-direction, pos=%d" % (direction, cell_pos))
                 
-        im = ax.imshow(section_slice, interpolation='nearest', aspect=1., origin='lower left')
+        im = ax.imshow(section_slice, interpolation='nearest', aspect=1., cmap=cmap)
         if colorbar:
             cbar = plt.colorbar(im)
             _ = cbar
@@ -147,4 +165,39 @@ class NoddyOutput():
         z = np.arange(0, self.extent_z + 0.1*self.delz, self.delz, dtype='float64')
         
         gridToVTK(vtk_filename, x, y, z, cellData = {"geology" : self.block})         
+        
+        
+        
+if __name__ == '__main__':
+    # some testing and debugging functions...
+    import os
+    os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
+    NO = NoddyOutput("faults_out")
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
         

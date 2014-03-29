@@ -19,7 +19,7 @@ extensive uncertainty analysis, as we will see in the next section.
     # print rcParams
     rcParams['font.size'] = 15
     # determine path of repository to set paths corretly below
-    os.chdir(r'/Users/flow/git/pynoddy/docs/notebooks/')
+    # os.chdir(r'/Users/flow/git/pynoddy/docs/notebooks/')
     repo_path = os.path.realpath('../..')
     import pynoddy
 First step: load the history file into a Python object:
@@ -36,6 +36,12 @@ First step: load the history file into a Python object:
     history = os.path.join(example_directory, history_file)
     output_name = 'noddy_out'
     H1 = pynoddy.NoddyHistory(history)
+
+.. parsed-literal::
+
+    8
+
+
 (1) Get basic information on the model
 --------------------------------------
 
@@ -45,7 +51,7 @@ more will be added soon!):
 
 .. code:: python
 
-    history_file = 'two_faults_fold_unconformity_slice.his'
+    # history_file = 'two_faults_fold_unconformity_slice.his'
     history = os.path.join(example_directory, history_file)
     import pynoddy.history
     reload(pynoddy.history)
@@ -53,16 +59,18 @@ more will be added soon!):
     H1 = pynoddy.history.NoddyHistory(history)
     H1._raw_events
 
+.. parsed-literal::
+
+    8
+
+
 
 
 .. parsed-literal::
 
-    [{'line_end': 85, 'line_start': 7, 'num': 1, 'type': ' STRATIGRAPHY'},
-     {'line_end': 93, 'line_start': 86, 'num': 2, 'type': ' TILT'},
-     {'line_end': 377, 'line_start': 94, 'num': 3, 'type': ' UNCONFORMITY'},
-     {'line_end': 467, 'line_start': 378, 'num': 4, 'type': ' FOLD'},
-     {'line_end': 767, 'line_start': 468, 'num': 5, 'type': ' FAULT'},
-     {'line_end': 1068, 'line_start': 768, 'num': 6, 'type': ' FAULT'}]
+    [{'line_end': 161, 'line_start': 7, 'num': 1, 'type': ' STRATIGRAPHY'},
+     {'line_end': 461, 'line_start': 162, 'num': 2, 'type': ' FAULT'},
+     {'line_end': 762, 'line_start': 462, 'num': 3, 'type': ' FAULT'}]
 
 
 
@@ -74,18 +82,44 @@ more will be added soon!):
 
 .. parsed-literal::
 
-    {5: <pynoddy.events.Fault instance at 0x104f0b6c8>,
-     6: <pynoddy.events.Fault instance at 0x104f0b7a0>}
+    {1: <pynoddy.events.Stratigraphy instance at 0x104f9b320>,
+     2: <pynoddy.events.Fault instance at 0x104f9b368>,
+     3: <pynoddy.events.Fault instance at 0x104f9b440>}
 
 
 
 .. code:: python
 
-    print("a",2)
+    H1.events[2].properties
+    # print H1.events[5].properties.keys()
+
+
 
 .. parsed-literal::
 
-    ('a', 2)
+    {'Amplitude': 2000.0,
+     'Blue': 254.0,
+     'Color Name': 'Custom Colour 8',
+     'Cyl Index': 0.0,
+     'Dip': 60.0,
+     'Dip Direction': 90.0,
+     'Event #2': 'FAULT',
+     'Geometry': 'Translation',
+     'Green': 0.0,
+     'Movement': 'Hanging Wall',
+     'Pitch': 90.0,
+     'Profile Pitch': 90.0,
+     'Radius': 1000.0,
+     'Red': 0.0,
+     'Rotation': 30.0,
+     'Slip': 1000.0,
+     'X': 5500.0,
+     'XAxis': 2000.0,
+     'Y': 3968.0,
+     'YAxis': 2000.0,
+     'Z': 0.0,
+     'ZAxis': 2000.0}
+
 
 
 (2) Change model cube size and recompute model
@@ -106,10 +140,16 @@ A simple example to change the cube size and write a new history file:
     NH1 = pynoddy.NoddyHistory(history)
     pynoddy.compute_model(history, output_name) 
     NO1 = pynoddy.NoddyOutput(output_name)
+
+.. parsed-literal::
+
+    8
+
+
 .. code:: python
 
     # Now: change cubsize, write to new file and recompute
-    NH1.change_cube_size(100)
+    NH1.change_cube_size(50)
     # Save model to a new history file and recompute (Note: may take a while to compute now)
     new_history = "fault_model_changed_cubesize.his"
     new_output_name = "noddy_out_changed_cube"

@@ -52,7 +52,7 @@ class NoddyHistory():
                 self._raw_events.append(event)       
             # finally: if the definition for BlockOptions starts, the event definition is over
             elif "BlockOptions" in line:
-                last_event_stop = i-1
+                last_event_stop = i-2
         # now: find the line ends for the single event blocks
         for i,event in enumerate(self._raw_events[1:]):
             self._raw_events[i]['line_end'] = event['line_start']-1
@@ -64,23 +64,22 @@ class NoddyHistory():
         # to swap order later!
         # now create proper event objects for these events
         for e in self._raw_events:
+            event_lines = self.history_lines[e['line_start']:e['line_end']+1]
             if 'FAULT' in e['type']:
-                ev = events.Fault(lines = self.history_lines[e['line_start']:e['line_end']])
+                ev = events.Fault(lines = event_lines)
                 # set specific aspects first
                 
             elif 'STRATIGRAPHY' in e['type']:
-                ev = events.Stratigraphy(lines = self.history_lines[e['line_start']:e['line_end']])
+                ev = events.Stratigraphy(lines = event_lines)
             else: continue
                 
             # now set shared attributes (those defined in superclass Event)
             order = e['num']
-            ev.set_order(order)
             self.events[order] = ev
         
         # determine overall begin and end of the history events
         self.all_events_begin = self._raw_events[0]['line_start']
         self.all_events_end = self._raw_events[-1]['line_end']
-        
         
         
     def change_cube_size(self, cube_size):
@@ -110,8 +109,16 @@ class NoddyHistory():
         .. hint:: Just love it how easy it is to 'write history' with Noddy ;-)
         
         """
-        # First step: update history lines with events
+        # before saving: update all event properties (in case changes were made)
+        self.update_all_event_properties()
         
+        # First step: update history lines with events
+        all_event_lines = []
+        for event_id in sorted(self.events.keys()):
+            for line in self.events[event_id].event_lines:
+                all_event_lines.append(line)
+        # now substitute old with new lines:
+        self.history_lines[self.all_events_begin:self.all_events_end+1] = all_event_lines
         
         
         f = open(filename, 'w')
@@ -120,12 +127,40 @@ class NoddyHistory():
         f.close()
         
         
+    def swap_events(self, event_num_1, event_num_2):
+        """Swap two geological events in the timeline
+        
+        **Arguments**:
+            - *event_num_1/2* = int : number of events to be swapped ("order")
+        """
+        # events have to be copied, otherwise only a reference is passed!
+        event_tmp = self.events[event_num_1]
+        self.events[event_num_1] = self.events[event_num_2]
+        self.events[event_num_2] = event_tmp
+        self.update_event_numbers()
+        
+    def update_event_numbers(self):
+        """Update event numbers in 'Event #' line in noddy history file"""
+        for key, event in self.events.items():
+            event.set_event_number(key)
+        
+    def update_all_event_properties(self):
+        """Update properties of all events - in case changes were made"""
+        for event in self.events.values():
+            event.update_properties()
         
         
         
-        
-        
-        
+if __name__ == '__main__':
+    # some testing and debugging:
+    import os
+    os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
+    H1 = NoddyHistory("../examples/simple_two_faults.his")
+    H1.swap_events(2, 3)
+    H1.write_history("test")
+    H2 = NoddyHistory("test")
+    H2.events[2].properties['Dip'] = 12
+    H2.write_history("test2")
         
         
         

@@ -772,7 +772,7 @@ Event #3	= FAULT
 	Length Y	= 7000.00
 	Length Z	= 5000.00
 	Geology Cube Size	=  50.00
-	Geophysics Cube Size	= 200.00
+	Geophysics Cube Size	= 100.00
 
 #GeologyOptions
 	Scale	=  10.00
