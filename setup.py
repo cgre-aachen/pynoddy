@@ -11,7 +11,7 @@ def read(fname):
 
 
 setup(name='pynoddy',
-      version='0.1',
+      version='0.2',
       description='Python wrappers for kinematic geological simulations with Noddy',
       long_description=read('README.md'),
       classifiers=[
