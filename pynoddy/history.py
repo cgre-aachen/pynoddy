@@ -65,9 +65,14 @@ class NoddyHistory():
         # now create proper event objects for these events
         for e in self._raw_events:
             event_lines = self.history_lines[e['line_start']:e['line_end']+1]
+            print e['type']
             if 'FAULT' in e['type']:
                 ev = events.Fault(lines = event_lines)
                 # set specific aspects first
+            elif 'FOLD' in e['type']:
+                ev = events.Fold(lines = event_lines)
+            elif 'UNCONFORMITY' in e['type']:
+                ev = events.Unconformity(lines = event_lines)
                 
             elif 'STRATIGRAPHY' in e['type']:
                 ev = events.Stratigraphy(lines = event_lines)
