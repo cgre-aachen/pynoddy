@@ -19,7 +19,7 @@ def compute_model(history, output_name):
         - *history* = string : filename of history file
         - *output_name* = string : basename for output files
     """
-    subprocess.Popen(['noddy', history, output_name], 
+    subprocess.Popen(['noddy.exe', history, output_name, 'BLOCK'], 
                        shell=False, stderr=subprocess.PIPE, 
                        stdout=subprocess.PIPE).stdout.read()
         
