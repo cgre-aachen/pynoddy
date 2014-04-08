@@ -47,12 +47,52 @@ class NoddyOutput():
     def load_geology(self):
         """Load block geology ids from .g12 output file"""
         f = open(self.basename + ".g12")
-        self.block = np.loadtxt(f, dtype="int")
-        # reshape to proper 3-D shape
-        self.block = self.block.reshape((self.nz,self.ny,self.nx))
-        self.block = np.swapaxes(self.block, 0, 2)
-        # self.block = np.swapaxes(self.block, 0, 1)
-        # print np.shape(self.block)
+        method = 'standard' # standard method to read file
+        # method = 'numpy'    # using numpy should be faster - but it messes up the order... possible to fix?
+        if method == 'standard':
+            i = 0
+            j = 0
+            k = 0
+            self.block = np.ndarray((self.nx,self.ny,self.nz))
+            for line in f.readlines():
+                if line == '\n':
+                    # next z-slice
+                    k += 1
+                    # reset x counter
+                    i = 0
+                    continue
+                l = [int(l1) for l1 in line.strip().split("\t")]
+                self.block[i,:,self.nz-k-1] = np.array(l)[::-1]
+                i += 1
+              
+        
+        elif method == 'standard_old':
+            j = 0 
+            j_max = 0
+            k_max = 0
+            i_max = 0
+            self.block = np.ndarray((self.nz,self.ny,self.nx))
+            for k,line in enumerate(f.readlines()):
+                if line == '\n':
+                    # next y-slice
+                    j += 1
+                    if j > j_max : j_max = j
+                    continue
+                for i,l1 in enumerate(line.strip().split("\t")):
+                    if i > i_max: i_max = i
+                    if k/self.nz > k_max : k_max = k/self.nz
+                    self.block[j,i,k/self.nz-1] = int(l1)
+            print i_max, j_max, k_max
+                    
+        
+        elif method == 'numpy':
+            # old implementation - didn't work, but why?
+            self.block = np.loadtxt(f, dtype="int")
+            # reshape to proper 3-D shape
+            self.block = self.block.reshape((self.nz,self.ny,self.nx))
+            self.block = np.swapaxes(self.block, 0, 2)
+            # self.block = np.swapaxes(self.block, 0, 1)
+            # print np.shape(self.block)
     
     def determine_unit_volumes(self):
         """Determine volumes of geological units in the discretized block model
@@ -129,7 +169,7 @@ class NoddyOutput():
 
         title = kwds.get("title", "Section in %s-direction, pos=%d" % (direction, cell_pos))
                 
-        im = ax.imshow(section_slice, interpolation='nearest', aspect=1., cmap=cmap)
+        im = ax.imshow(section_slice, interpolation='nearest', aspect=1., cmap=cmap, origin = 'lower left')
         if colorbar:
             cbar = plt.colorbar(im)
             _ = cbar
@@ -164,6 +204,8 @@ class NoddyOutput():
         y = np.arange(0, self.extent_y + 0.1*self.dely, self.dely, dtype='float64')
         z = np.arange(0, self.extent_z + 0.1*self.delz, self.delz, dtype='float64')
         
+        # self.block = np.swapaxes(self.block, 0, 2)
+        
         gridToVTK(vtk_filename, x, y, z, cellData = {"geology" : self.block})         
         
         
@@ -172,7 +214,7 @@ if __name__ == '__main__':
     # some testing and debugging functions...
     import os
     os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
-    NO = NoddyOutput("faults_out")
+    NO = NoddyOutput("strike_slip_out")
     
     
     
