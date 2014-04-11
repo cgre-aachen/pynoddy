@@ -144,6 +144,18 @@ class NoddyHistory():
         self.events[event_num_2] = event_tmp
         self.update_event_numbers()
         
+    def reorder_events(self, reorder_dict):
+        """Reorder events accoring to assignment in reorder_dict
+        
+        **Arguments**:
+            - *reorder_dict* = dict : for example {1 : 2, 2 : 3, 3 : 1}
+        """
+        tmp_events = self.events.copy()
+        for key, value in reorder_dict.items():
+            tmp_events[value] = self.events[key]
+        self.events = tmp_events.copy()
+        self.update_event_numbers()
+        
     def update_event_numbers(self):
         """Update event numbers in 'Event #' line in noddy history file"""
         for key, event in self.events.items():
