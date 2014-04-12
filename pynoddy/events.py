@@ -170,10 +170,25 @@ class Unconformity(Event):
         # Mark if this is really the case!    
         self.name = self.event_lines[-1].split("=")[1].strip()
     
-    
-
-
+    def change_height(self, val):
+        """Change the vertical position (i.e. height) of the entire stratigraphic pile
+        above the unconformity
         
+        .. note:: This is not identical to changing only the 'Z' property as
+                    the height of all layers has to be adjusted for (geological)
+                    consistency
+                    
+        **Arguments**:
+            - *val* = float : value added to current z-values
+        """
+        # first step: adjust z-value of unconformity
+        self.properties['Z'] += val
+        for i,line in enumerate(self.event_lines):
+            if "Unit" in line:
+                l = self.event_lines[i+1].strip().split("=")
+                self.event_lines[i+1] = "\t%s = %f\n" % (l[0], float(l[1]) + val)
+
+
 class Fault(Event):
     """Fault event
     
