@@ -4,6 +4,8 @@
 sandbox/*
 !sandbox/README.txt
 
+examples/tmp
+
 # C extensions
 *.so
 
