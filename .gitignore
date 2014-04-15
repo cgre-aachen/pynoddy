@@ -5,6 +5,12 @@ sandbox/*
 !sandbox/README.txt
 
 examples/tmp
+examples/*vtr
+examples/*pkl
+examples/*g00
+examples/*g01
+examples/*g02
+examples/*g12
 
 # C extensions
 *.so
