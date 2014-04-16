@@ -35,13 +35,28 @@ class GUncert():
         
     def define_parameters(self):
         """Define parameters for uncertainty study"""
-        # set fault dip stdev
-        self.dip_stdev = 5.
-        # stdev of unconformities
-        self.unconf_stdev = 50.
-        # fold parameters
-        self.fold_amplitude = 100.
-        self.fold_wavelength = 250.
+        # Settings for different scenarios:
+        # - low: as in first iteration, used by Mark for topology
+        # - high: to test info entropy
+        scenario = 'high'
+        if scenario == 'low':
+            # set fault dip stdev
+            self.dip_stdev = 5.
+            # stdev of unconformities
+            self.unconf_stdev = 50.
+            # fold parameters
+            self.fold_amplitude = 100.
+            self.fold_wavelength = 250.
+            self.fold_position = 0.
+        elif scenario == 'high':
+            # set fault dip stdev
+            self.dip_stdev = 10.
+            # stdev of unconformities
+            self.unconf_stdev = 400.
+            # fold parameters
+            self.fold_amplitude = 200.
+            self.fold_wavelength = 500.
+            self.fold_position = 250.
         
     def perform_sampling(self, **kwds):
         """perform sampling step and save all history files"""
@@ -68,10 +83,13 @@ class GUncert():
                 elif event.event_type == 'FOLD':
                     fold_wavelength = np.random.randn() * self.fold_wavelength
                     fold_amplitude = np.random.randn() * self.fold_amplitude
+                    fold_position = np.random.randn() * self.fold_position
                     event.properties['Wavelength'] += fold_wavelength
                     event.properties['Amplitude'] += fold_amplitude
+                    event.properties['X'] += fold_position
                     step_samples.append(fold_wavelength)
                     step_samples.append(fold_amplitude)
+                    step_samples.append(fold_position)
             #===================================================================
             # Second step: Resample fault event order
             #===================================================================
