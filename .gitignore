@@ -48,3 +48,4 @@ nosetests.xml
 .pydevproject
 GBasin_uncertainty.zip
 *.zip
+noddy.exe
