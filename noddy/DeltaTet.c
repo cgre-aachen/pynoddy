@@ -356,16 +356,20 @@ double Points[8][3];
 		   if((Exevent->shape == STRATIGRAPHY) || (Exevent->shape == UNCONFORMITY))
 			   exRock=sMin+sMax-exRock+1;
 
-	   if(inRock < exRock)
-		   if(SeqCode[t->InCode]< SeqCode[t->ExCode])
-			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->InCode], SeqCode[t->ExCode],inRock,exRock);
+	   if(inRock == exRock)
+		   if(SeqCode[t->InCode] > SeqCode[t->ExCode])
+				   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->InCode], SeqCode[t->ExCode],inRock,exRock);
 		   else
-			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->ExCode], SeqCode[t->InCode], inRock,exRock);
-	   else
+			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->ExCode],SeqCode[t->InCode], inRock,exRock);
+	   else if(inRock < exRock)
+			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->InCode], SeqCode[t->ExCode],inRock,exRock);
+		  else
+			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->ExCode], SeqCode[t->InCode],exRock, inRock);
+	  /*  else
 		   if(SeqCode[t->InCode]< SeqCode[t->ExCode])
 			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->InCode], SeqCode[t->ExCode],exRock,inRock);
 		   else
-			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode, SeqCode[t->ExCode],SeqCode[t->InCode],exRock,inRock);
+			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode, SeqCode[t->ExCode],SeqCode[t->InCode],exRock,inRock);*/
 
 	for(mm=0;mm<3;mm++)
    {

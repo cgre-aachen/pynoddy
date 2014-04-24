@@ -125,16 +125,20 @@ TETINFO *t;
     			   exRock=sMin+sMax-exRock+1;
 
 
-    	   if(inRock < exRock)
-    		   if(vert1 < vert2)
+    	   if(inRock == exRock)
+    	   		   if(vert1 > vert2)
+    	   				   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert1, vert2,inRock,exRock);
+    	   		   else
+    	   			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert2,vert1,inRock,exRock);
+    	   	   else if(inRock < exRock)
     			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert1, vert2,inRock,exRock);
     		   else
-    			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert2,vert1,  inRock,exRock);
-    	   else
+    			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert2,vert1,exRock,  inRock);
+    	/*   else
     		   if(vert1 < vert2)
     			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert1, vert2,exRock,inRock);
     		   else
-    			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode, vert2,vert1, exRock,inRock);
+    			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode, vert2,vert1, exRock,inRock);*/
 
     	  EpsilonBreakClean(Points, MidPoints, Centroid, mm, t);
      // }
