@@ -85,9 +85,9 @@ TETINFO *t;
    {
       vert1 = SeqCode[LINES[TETLINES[t->tinc][mm]][0]]; 
       vert2 = SeqCode[LINES[TETLINES[t->tinc][mm]][1]];
-      if (object = SetCLayer((unsigned char *) &(t->cypher[vert1]),
+     /* if (object = SetCLayer((unsigned char *) &(t->cypher[vert1]),
                     (unsigned char *) &(t->cypher[vert2]), vert1, vert2))
-      {                                  /* draw break surfaces */
+      {    */                              /* draw break surfaces */
 
     	  taste(numEvents, t->cypher[vert1], &InrockType, &IneventIndex);
     	  taste(numEvents, t->cypher[vert2], &ExrockType, &ExeventIndex);
@@ -130,7 +130,7 @@ TETINFO *t;
      			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode, vert2,vert1, exRock,inRock);
 
     	  EpsilonBreakClean(Points, MidPoints, Centroid, mm, t);
-      }
+     // }
    }
    return (TRUE);
 }
