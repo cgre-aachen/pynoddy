@@ -85,9 +85,9 @@ TETINFO *t;
    {
       vert1 = SeqCode[LINES[TETLINES[t->tinc][mm]][0]]; 
       vert2 = SeqCode[LINES[TETLINES[t->tinc][mm]][1]];
-      //if (object = SetCLayer((unsigned char *) &(t->cypher[vert1]),
-      //              (unsigned char *) &(t->cypher[vert2]), vert1, vert2))
-      //{                                  /* draw break surfaces */
+     /* if (object = SetCLayer((unsigned char *) &(t->cypher[vert1]),
+                    (unsigned char *) &(t->cypher[vert2]), vert1, vert2))
+      {    */                              /* draw break surfaces */
 
     	  taste(numEvents, t->cypher[vert1], &InrockType, &IneventIndex);
     	  taste(numEvents, t->cypher[vert2], &ExrockType, &ExeventIndex);
@@ -95,7 +95,6 @@ TETINFO *t;
     	  exLayer=whichLayer(ExeventIndex, Points[LINES[TETLINES[t->tinc][mm]][1]][0], Points[LINES[TETLINES[t->tinc][mm]][1]][1], Points[LINES[TETLINES[t->tinc][mm]][1]][2]);
     	  break_code = lastdiff((unsigned char *) &(t->cypher[vert1]),
                   (unsigned char *) &(t->cypher[vert2]));
-    	  //sprintf(clayer,"BE_%03d_%c%c_%c%c",break_code,inLayer->unitName[0],inLayer->unitName[1],exLayer->unitName[0],exLayer->unitName[1]);
 
     	   whichRock( Points[LINES[TETLINES[t->tinc][mm]][0]][0], Points[LINES[TETLINES[t->tinc][mm]][0]][1], Points[LINES[TETLINES[t->tinc][mm]][0]][2], &inRock, &IneventIndex);
     	   whichRock( Points[LINES[TETLINES[t->tinc][mm]][1]][0], Points[LINES[TETLINES[t->tinc][mm]][1]][1], Points[LINES[TETLINES[t->tinc][mm]][1]][2], &exRock, &ExeventIndex);
@@ -125,20 +124,10 @@ TETINFO *t;
     			   exRock=sMin+sMax-exRock+1;
 
 
-    	   if(inRock == exRock)
-    	   		   if(vert1 > vert2)
-    	   				   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert1, vert2,inRock,exRock);
-    	   		   else
-    	   			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert2,vert1,inRock,exRock);
-    	   	   else if(inRock < exRock)
-    			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert1, vert2,inRock,exRock);
-    		   else
-    			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert2,vert1,exRock,  inRock);
-    	/*   else
     		   if(vert1 < vert2)
-    			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert1, vert2,exRock,inRock);
-    		   else
-    			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode, vert2,vert1, exRock,inRock);*/
+    			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,vert1, vert2,inRock,exRock);
+    	       else
+     			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode, vert2,vert1, exRock,inRock);
 
     	  EpsilonBreakClean(Points, MidPoints, Centroid, mm, t);
      // }

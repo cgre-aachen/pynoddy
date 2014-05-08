@@ -791,7 +791,6 @@ char *filename;
    double blockSize;
    double xLoc, yLoc, zLoc;
    BLOCK_VIEW_OPTIONS *viewOptions = getViewOptions ();
-   int bbox=0;
 
    xLoc = viewOptions->originX;
    yLoc = viewOptions->originY;
@@ -876,15 +875,6 @@ char *filename;
          }
       }
       reverseEvents (dots, histoire[z+1], yMax, xMax);
-
-      for (y = 0; y < yMax; y++)
-          for (x = 0; x < xMax; x++)
-        	  	 if(( x==0 || y==0 || z==0 || x==xMax-1 || y==yMax-1 || z==zMax -1 ) && bbox==1)
-        	  	 {
-        	  		 dots[y+1][x+1][3] = -99999999999999999999999999; /* to provide bounding box triangles mwj_hack*/
-        	  		 histoire[z+1][y+1][x+1].again=1;
-        	  		 histoire[z+1][y+1][x+1].sequence[0]=(unsigned char)3;
-        	  	 }
 
       for (y = 0; y < yMax; y++)
       {

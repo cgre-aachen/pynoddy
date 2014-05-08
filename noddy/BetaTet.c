@@ -1,6 +1,6 @@
 /* ************************************************************************
 ** If one apex has a different discontinuity code, any stratigraphic level
-** can only cut two eges (unless it cuts all 3 good apices). If the former,
+** can only cut two edges (unless it cuts all 3 good apices). If the former,
 ** we have to project the line onto the break plane which divides the AAA
 ** apices from the B apex. This break plane is a triangle and a series of
 ** parallel lines from successive stratigraphic levels may end up cutting it,
@@ -76,11 +76,11 @@ int oneBetaPlane(double [8][3], double [6][3], TETINFO *, int [6], double [4][3]
 int storeBreakMids(double [4][3],int);
 int BetaBreakClean(double [8][3], TETINFO *, int [8], OBJECT *);
 int BetaBreakPlane( double [8][3], TETINFO *, int [8]);
-int BetaBreakDirty(double [8][3], TETINFO *, OBJECT *);
-int DoEndTrapezoid(double [8][3], TETINFO *, int);
-int DoPentagon(double [8][3], TETINFO *, int);
-int DoTrapezoids(double [8][3], TETINFO *, int);
-int DoEndTriangle(double [8][3], TETINFO *, int, int);
+int BetaBreakDirty(double [8][3], TETINFO *, int [8], OBJECT *);
+int DoEndTrapezoid(double [8][3], TETINFO *, int, int [8]);
+int DoPentagon(double [8][3], TETINFO *, int, int [8]);
+int DoTrapezoids(double [8][3], TETINFO *, int, int [8]);
+int DoEndTriangle(double [8][3], TETINFO *, int, int, int [8]);
 int GetOrder( double [8][3], TETINFO *);
 int Shortest(TETINFO *);
 int GetCommonVertex(int);
@@ -104,6 +104,7 @@ int Shortest();
 int GetCommonVertex();
 int GetCommonPentagonVertex();
 int SameSide();
+void getseq();
 #endif
 
 double breakmp[100][2][3]; /* 7 because only 7 layers in one strat but now 100 possible! mwj*/
@@ -518,32 +519,16 @@ int SeqCode[8];
    OBJECT *object,*Inevent,*Exevent;
    int Inindex,Exindex;
    unsigned int pflavor=0;
-   int a,b,c;
-   int lutindex;
-   int break_code,InCode,ExCode;
-   LAYER_PROPERTIES *inLayer,*exLayer;
-   unsigned char *cypher;
-   unsigned int InrockType,ExrockType;
+   int break_code;
    int ExeventIndex,IneventIndex;
    int numEvents = countObjects(NULL_WIN);
    int inRock,exRock;
    int lDiff,eventCode,rock1,rock2;
-   STRATIGRAPHY_OPTIONS *InstratOptions,*ExstratOptions;
    int sMax,sMin;
 
-   if (t->ExCode < t->InCode)
-   {
-      InCode=t->ExCode;
-      ExCode=t->InCode;
-   }
+
    break_code = lastdiff((unsigned char *) &(t->cypher[SeqCode[t->InCode]]),
            (unsigned char *) &(t->cypher[SeqCode[t->ExCode]]));
-
-
-   /*if (!(object = SetCLayer((unsigned char *) &(t->cypher[SeqCode[t->InCode]]),
-                  (unsigned char *) &(t->cypher[SeqCode[t->ExCode]]),
-                  SeqCode[t->InCode], SeqCode[t->ExCode])))
-      return (FALSE);*/
 
    whichRock( Points[t->InCode][0], Points[t->InCode][1], Points[t->InCode][2], &inRock, &IneventIndex);
    whichRock( Points[t->ExCode][0], Points[t->ExCode][1], Points[t->ExCode][2], &exRock, &ExeventIndex);
@@ -572,26 +557,15 @@ int SeqCode[8];
 		   exRock=sMin+sMax-exRock+1;
 
 
-   if(inRock == exRock)
-	   if(SeqCode[t->InCode] > SeqCode[t->ExCode])
-			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->InCode], SeqCode[t->ExCode],inRock,exRock);
-	   else
-		   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->ExCode],SeqCode[t->InCode], inRock,exRock);
-   else if(inRock < exRock)
-		   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->InCode], SeqCode[t->ExCode],inRock,exRock);
-   else
-		   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->ExCode], SeqCode[t->InCode], exRock, inRock);
-  /* else
 	   if(SeqCode[t->InCode]< SeqCode[t->ExCode])
-		   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->InCode], SeqCode[t->ExCode],exRock,inRock);
-	   else
-		   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode, SeqCode[t->ExCode],SeqCode[t->InCode],exRock,inRock);*/
-
+		   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->InCode], SeqCode[t->ExCode],inRock,exRock);
+       else
+		   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode, SeqCode[t->ExCode],SeqCode[t->InCode],exRock,inRock);
 
    if (t->pC == 0)
       BetaBreakClean(Points, t, SeqCode, object);
    else
-      BetaBreakDirty(Points, t, object);
+      BetaBreakDirty(Points, t, SeqCode, object);
    
    return (TRUE);
 }
@@ -602,11 +576,12 @@ int SeqCode[8];
 /* assumes triangle is split by sequential parallel lines */
 int
 #if XVT_CC_PROTO
-BetaBreakDirty(double Points[8][3], TETINFO *t, OBJECT *object)
+BetaBreakDirty(double Points[8][3], TETINFO *t, int SeqCode[8], OBJECT *object)
 #else
-BetaBreakDirty(Points, t, object)
+BetaBreakDirty(Points, t, SeqCode, object)
 double Points[8][3];
 TETINFO *t;
+int SeqCode[8];
 OBJECT *object;
 #endif
 {
@@ -614,32 +589,32 @@ OBJECT *object;
    
    GetOrder(Points, t);  /* find a vertex and reorder midpts if nec */
    
-   DoEndTriangle(Points,t,pCount,t->apexfirst); /* 1st triangle */
+   DoEndTriangle(Points,t,pCount,t->apexfirst,SeqCode); /* 1st triangle */
    
    pCount++;
    
    while(SameSide(pCount) && pCount < t->pC-1)  /* keep calving off trapezoids until 2nd vertex is reached */
    {
-      DoTrapezoids(Points,t,pCount);
+      DoTrapezoids(Points,t,pCount,SeqCode);
       pCount++;
    }
    
    if(pCount<t->pC && !t->exact)
    {
-      DoPentagon(Points,t,pCount); /* handle middle pentagonal shape */
+      DoPentagon(Points,t,pCount,SeqCode); /* handle middle pentagonal shape */
       pCount++;
    }
    
    for (mm = pCount; mm < t->pC-1; mm++)
    {
-      DoTrapezoids(Points,t,pCount);  /* keep calving off trapezoids until last vertex is reached */
+      DoTrapezoids(Points,t,pCount,SeqCode);  /* keep calving off trapezoids until last vertex is reached */
       pCount++;
    }
    
    if(t->apexfirst!=t->apexlast)  /* do last triangle */
-      DoEndTriangle(Points,t,pCount-1,t->apexlast);
+      DoEndTriangle(Points,t,pCount-1,t->apexlast,SeqCode);
    else   /* do last trapezoid if 2nd vertex never reached */
-      DoEndTrapezoid(Points,t,pCount);
+      DoEndTrapezoid(Points,t,pCount,SeqCode);
    return (TRUE);
 }  
 
@@ -648,12 +623,13 @@ OBJECT *object;
 */
 int
 #if XVT_CC_PROTO
-DoEndTrapezoid(double Points[8][3], TETINFO *t, int count)
+DoEndTrapezoid(double Points[8][3], TETINFO *t, int count, int SeqCode[8])
 #else
-DoEndTrapezoid(Points, t, count)
+DoEndTrapezoid(Points, t, count, SeqCode)
 double Points[8][3];
 TETINFO *t;
 int count;
+int SeqCode[8];
 #endif
 {
    int mm,nn,icon;
@@ -673,6 +649,8 @@ int count;
    for(mm=0,icon=2;mm<3;mm++)
       conlist[icon][mm]=MidVal(Points[endv[0]][mm],Points[t->ExCode][mm],0.5);
    
+   SetTriBreakLabel( Points, t, conlist,SeqCode);
+
    allDrawPlane(conlist);
    
    if(LINES[breakline[count-1][0]][0] == endv[0] ||
@@ -694,12 +672,13 @@ int count;
 */
 int
 #if XVT_CC_PROTO
-DoPentagon(double Points[8][3], TETINFO *t, int count)
+DoPentagon(double Points[8][3], TETINFO *t, int count, int SeqCode[8])
 #else
-DoPentagon(Points, t, count)
+DoPentagon(Points, t, count, SeqCode)
 double Points[8][3];
 TETINFO *t;
 int count;
+int SeqCode[8];
 #endif
 {
    int vertex,icon,sidecode,mm,nn,tempbm[3];
@@ -740,9 +719,11 @@ int count;
    for(mm=0,icon=2;mm<3;mm++)
       conlist[icon][mm]=MidVal(Points[vertex][mm],Points[t->ExCode][mm],0.5);
    
+   SetTriBreakLabel( Points, t, conlist,SeqCode);
+
    allDrawPlane(conlist);
    
-   DoTrapezoids(Points,t,count);
+   DoTrapezoids(Points, t, count, SeqCode);
    
    return (TRUE);
 }
@@ -753,12 +734,13 @@ int count;
 */
 int
 #if XVT_CC_PROTO
-DoTrapezoids(double Points[8][3], TETINFO *t, int count)
+DoTrapezoids(double Points[8][3], TETINFO *t, int count, int SeqCode[8])
 #else
-DoTrapezoids(Points, t, count)
+DoTrapezoids(Points, t, count, SeqCode)
 double Points[8][3];
 TETINFO *t;
 int count;
+int SeqCode[8];
 #endif
 {
    double conlist[4][3]; 
@@ -773,6 +755,8 @@ int count;
    for(mm=0,icon=2;mm<3;mm++)
       conlist[icon][mm]=breakmp[count][0][mm];
    
+   SetTriBreakLabel( Points, t, conlist,SeqCode);
+
    allDrawPlane(conlist);
    
    for(mm=0,icon=0;mm<3;mm++)
@@ -788,12 +772,13 @@ int count;
 */
 int
 #if XVT_CC_PROTO
-DoEndTriangle(double Points[8][3], TETINFO *t, int count, int apexno)
+DoEndTriangle(double Points[8][3], TETINFO *t, int count, int apexno, int SeqCode[8])
 #else
-DoEndTriangle(Points, t, count, apexno)
+DoEndTriangle(Points, t, count, apexno, SeqCode)
 double Points[8][3];
 TETINFO *t;
 int count, apexno;
+int SeqCode[8];
 #endif
 {
    double conlist[4][3]; 
@@ -808,6 +793,8 @@ int count, apexno;
    for(mm=0,icon=2;mm<3;mm++)
       conlist[icon][mm]=MidVal(Points[apexno][mm],Points[t->ExCode][mm],0.5);
    
+   SetTriBreakLabel( Points, t, conlist,SeqCode);
+
    allDrawPlane(conlist);
       
    return (TRUE);
@@ -985,4 +972,108 @@ int pCount;
    v2=GetCommonVertex(pCount);
    
    return(v1==v2);
+}
+
+void SetTriBreakLabel( Points, t, conlist, SeqCode)
+double  Points[8][3];
+TETINFO *t;
+int SeqCode[8];
+double conlist[4][3];
+{
+	   int i;
+	   int break_code;
+	   int inRock,exRock;
+	   int eventCode;
+       double proj[3],midtri[3];
+       STORY **histoire;
+
+       histoire = (STORY **) create2DArray (2, 2, sizeof(STORY));
+
+       for(i=0;i<3;i++)
+    	  midtri[i]=0;
+
+       for(i=0;i<3;i++)
+       {
+        	  midtri[0]+=conlist[i][0]/3;
+           	  midtri[1]+=conlist[i][1]/3;
+           	  midtri[2]+=conlist[i][2]/3;
+       }
+
+       for(i=0;i<3;i++)
+          proj[i]=((midtri[i]-Points[t->ExCode][i])*2)+Points[t->ExCode][i];
+
+       getseq(Points, t, SeqCode, proj, &break_code,&inRock,&exRock,&eventCode);
+
+	   if(SeqCode[t->InCode]< SeqCode[t->ExCode])
+			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode,SeqCode[t->InCode], SeqCode[t->ExCode],inRock,exRock);
+	   else
+			   sprintf(clayer,"B_%03d_%03d_%03d_%03d_%03d_%03d",break_code,eventCode, SeqCode[t->ExCode],SeqCode[t->InCode],exRock,inRock);
+
+}
+
+void getseq(Points, t, SeqCode, proj, break_code,inRock2,exRock2,eventCode2)
+double  Points[8][3];
+TETINFO *t;
+int SeqCode[8];
+double proj[3];
+int *break_code,*inRock2,*exRock2,*eventCode2;
+{
+	int Inindex,Exindex;
+	unsigned int pflavor=0;
+    int numEvents = countObjects(NULL_WIN);
+    LAYER_PROPERTIES *properties[50];
+	double ***xyzLoc;
+	STORY **histoire;
+	int ExeventIndex,IneventIndex;
+	OBJECT *Inevent,*Exevent;
+    int sMax,sMin;
+	int inRock,exRock,eventCode,lDiff,rock1,rock2;
+
+
+	xyzLoc = (double ***) create3DArray (2, 2, 4, sizeof(double));
+    histoire = (STORY **) create2DArray (2, 2, sizeof(STORY));
+
+    xyzLoc[1][1][1] = proj[0];
+    xyzLoc[1][1][2] = proj[1];
+    xyzLoc[1][1][3] = proj[2];
+
+    histoire[1][1].again = TRUE;
+    izero(histoire[1][1].sequence);
+    reverseEvents (xyzLoc, histoire, 1, 1);
+
+    whichRock( proj[0], proj[1], proj[2], &inRock, &IneventIndex);
+    whichRock( Points[t->ExCode][0], Points[t->ExCode][1], Points[t->ExCode][2], &exRock, &ExeventIndex);
+
+    taste(numEvents, (unsigned char *) &(histoire[1][1].sequence), &pflavor, &Inindex);
+    taste(numEvents, (unsigned char *) &(t->cypher[SeqCode[t->ExCode]]), &pflavor, &Exindex);
+
+   whatDiff(proj[0],proj[1],proj[2], Points[t->ExCode][0], Points[t->ExCode][1], Points[t->ExCode][2],&lDiff,&eventCode,&rock1,&rock2);
+
+   sMax=getStratMax (Inindex);
+   if(Inindex-1>=0)
+	   sMin=getStratMax (Inindex-1);
+   else
+	   sMin=0;
+   if (Inevent = (OBJECT *) nthObject (NULL_WIN, Inindex))
+	   if((Inevent->shape == STRATIGRAPHY) || (Inevent->shape == UNCONFORMITY))
+		   inRock=sMin+sMax-inRock+1;
+
+   sMax=getStratMax (Exindex);
+   if(Exindex-1>=0)
+	   sMin=getStratMax (Exindex-1);
+   else
+	   sMin=0;
+
+   if (Exevent = (OBJECT *) nthObject (NULL_WIN, Exindex))
+	   if((Exevent->shape == STRATIGRAPHY) || (Exevent->shape == UNCONFORMITY))
+		   exRock=sMin+sMax-exRock+1;
+
+   *break_code = lastdiff((unsigned char *) &(histoire[1][1].sequence),
+			   (unsigned char *) &(t->cypher[SeqCode[t->ExCode]]));
+    destroy3DArray ((char ***) xyzLoc,  2, 2, 4);
+    destroy2DArray ((char **) histoire, 2, 2);
+
+    *inRock2=inRock;
+    *exRock2=exRock;
+    *eventCode2=eventCode;
 }

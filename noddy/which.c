@@ -17,6 +17,7 @@
 #include "xvt.h"
 #include "noddy.h"
 #include "nodInc.h"
+#include "nodStruc.h"
 #include <math.h>
 #include "scales.h"
 
@@ -487,12 +488,12 @@ double *xLoc, *yLoc, *zLoc;
 int *rockType;
 int *index;
 {
-	   STORY **histoire;
 	   double ***xyzLoc;
 	   int numEvents = countObjects(NULL_WIN);
 	   LAYER_PROPERTIES *alayer=NULL,*properties[50];
        int i,numProps;
        OBJECT *event;
+	   STORY **histoire;
 
        numProps = assignPropertiesForStratLayers (properties, 50);
 
@@ -529,6 +530,8 @@ int *index;
 	    destroy2DArray ((char **) histoire, 2, 2);
 }
 
+
+
 void whatDiff(xLoc1, yLoc1, zLoc1, xLoc2, yLoc2, zLoc2,lDiff,eventCode,rock1,rock2)
 double xLoc1, yLoc1, zLoc1,xLoc2, yLoc2, zLoc2;
 int *lDiff,*eventCode,*rock1,*rock2;
@@ -538,11 +541,11 @@ int *lDiff,*eventCode,*rock1,*rock2;
     int numEvents = countObjects(NULL_WIN);
     LAYER_PROPERTIES *alayer=NULL,*properties[50];
 	int i,numProps;
+	numProps = assignPropertiesForStratLayers (properties, 50);
 	int ind;
 	OBJECT *p = NULL;
 	WINDOW listWindow;
 
-	numProps = assignPropertiesForStratLayers (properties, 50);
 	listWindow = (WINDOW) getEventDrawingWindow ();
 
 	xyzLoc1 = (double ***) create3DArray (2, 2, 4, sizeof(double));
