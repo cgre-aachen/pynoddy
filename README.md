@@ -68,7 +68,7 @@ Noddy itself is a kinematic modelling program written by Mark Jessell [1][2] to 
 
 1. Create a sedimentary pile with defined thicknesses for multiple formations
 2. Add a folding event (for example simple sinoidal folding, but complex methods are possible!)
-3. Add an unconformity and, above it, a new sedimentary pile
+3. Add an unconformity and, above it, a new stratigraphy
 4. Finally, add a sequence of late faults affecting the entire system.
 
 The result could look something like this:
