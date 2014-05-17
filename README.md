@@ -64,7 +64,7 @@ pynoddy is free software and published under a MIT license (see license file inc
 What is Noddy?
 -------------
 
-Noddy itself is a kinematic modelling program written by Mark Jessell [1] to simulate the effect of subsequent geological events (folding, unconformities, faulting, etc.) on a primary sedimentary pile. A typical example would be:
+Noddy itself is a kinematic modelling program written by Mark Jessell [1][2] to simulate the effect of subsequent geological events (folding, unconformities, faulting, etc.) on a primary sedimentary pile. A typical example would be:
 
 1. Create a sedimentary pile with defined thicknesses for multiple formations
 2. Add a folding event (for example simple sinoidal folding, but complex methods are possible!)
@@ -79,14 +79,15 @@ The result could look something like this:
 
 The software runs on Windows only, but the source files (written in C) are available for download to generate a command line version of the modelling step alone:
 
-https://github.com/markjessell/functionNoddy
+https://github.com/flohorovicic/pynoddy
 
 It has been tested and compiled on MacOSX, Windows and Linux.
 
 References
 ----------
 
-[1] Mark W. Jessell, Rick K. Valenta, Structural geophysics: Integrated structural and geophysical modelling, In: Declan G. De Paor, Editor(s), Computer Methods in the Geosciences, Pergamon, 1996, Volume 15, Pages 303-324, ISSN 1874-561X, ISBN 9780080424309, http://dx.doi.org/10.1016/S1874-561X(96)80027-7.
+[1] Mark W. Jessell. Noddy, an interactive map creation package. Unpublished MSc Thesis, University of London. 1981.
+[2] Mark W. Jessell, Rick K. Valenta, Structural geophysics: Integrated structural and geophysical modelling, In: Declan G. De Paor, Editor(s), Computer Methods in the Geosciences, Pergamon, 1996, Volume 15, Pages 303-324, ISSN 1874-561X, ISBN 9780080424309, http://dx.doi.org/10.1016/S1874-561X(96)80027-7.
 
 
 
