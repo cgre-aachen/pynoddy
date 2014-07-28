@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<experiment>
+
+<!-- Define all experiments as potentially stochastic -->
+
+<history_file>
+<!-- Base history file for experiment -->
+<filename>GBasi123.his</filename>
+<filepath>/Users/flow/git/pynoddy/examples</filepath>
+
+</history_file>
+
+<noddy_settings>
+<!-- Settings for the base Noddy simulation -->
+<cellsize>100</cellsize>
+
+<!-- Note: include possibility to create a cellsize discretisation study? -->
+
+</noddy_settings>
+
+<simulations>
+<!-- Number of simulations -->
+<n>1</n>
+
+<!-- Define probability distributions for events -->
+
+
+
+
+</simulations>
+
+
+<!-- Postprocessing for single results and stochastic simulations -->
+<postprocessing active="True">
+<slice2D active="True">
+<direction>y</direction>
+<position>10</position>
+<export_grid active="True">
+<format>
+ascii_grid
+</format>
+<filename>
+slice2D_y_pos_10
+</filename>
+
+</export_grid>
+<export_figure active="False">
+<format>png</format>
+</export_figure>
+
+</slice2D>
+
+<model3D active="False">
+<export_voxet>
+
+<format>gocad</format>
+
+</export_voxet>
+
+</model3D>
+
+</postprocessing>
+
+</experiment>

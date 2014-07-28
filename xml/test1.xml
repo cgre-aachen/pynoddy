@@ -1,0 +1,57 @@
+<experiment>
+
+
+
+<noddy_settings>
+
+<cellsize>100</cellsize>
+
+
+
+</noddy_settings>
+
+
+
+
+
+<simulations>
+
+<n>2</n>
+
+
+
+</simulations>
+
+
+
+<postprocessing active="True">
+<slice2D active="True">
+<direction>y</direction>
+<position>10</position>
+<export_grid active="True">
+<format>
+ascii_grid
+</format>
+<filename>
+slice2D_y_pos_10
+</filename>
+
+</export_grid>
+<export_figure active="False">
+<format>png</format>
+</export_figure>
+
+</slice2D>
+
+<model3D active="False">
+<export_voxet>
+
+<format>gocad</format>
+
+</export_voxet>
+
+</model3D>
+
+</postprocessing>
+
+</experiment>
