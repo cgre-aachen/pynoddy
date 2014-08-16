@@ -22,7 +22,38 @@ class NoddyHistory():
         """
         self.load_history(history)
         self.determine_events()
+        
+    def info(self):
+        """Print out model information"""
+        
+    def get_origin(self):
+        """Get coordinates of model origin and return and store in local variables
+        
+        **Returns**: (origin_x, origin_y, origin_z)
+        """
+        for i,line in enumerate(self.history_lines):
+            if "Origin X" in line:
+                self.origin_x = float(self.history_lines[i].split("=")[1])
+                self.origin_y = float(self.history_lines[i+1].split("=")[1])
+                self.origin_z = float(self.history_lines[i+2].split("=")[1])
+                break
+                
+        return(self.origin_x, self.origin_y, self.origin_z)
     
+    def get_extent(self):
+        """Get model extent and return and store in local variables
+        
+        **Returns**: (extent_x, extent_y, extent_z)
+        """
+        for i,line in enumerate(self.history_lines):
+            if "Length X" in line:
+                self.extent_x = float(self.history_lines[i].split("=")[1])
+                self.extent_y = float(self.history_lines[i+1].split("=")[1])
+                self.extent_z = float(self.history_lines[i+2].split("=")[1])
+                break
+                
+        return(self.extent_x, self.extent_y, self.extent_z)
+        
     
     def load_history(self, history):
         """Load Noddy history

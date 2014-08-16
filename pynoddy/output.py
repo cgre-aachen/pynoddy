@@ -127,7 +127,9 @@ class NoddyOutput():
             - *savefig* = bool : save figure to file (default: show directly on screen)
             - *cmap* = matplotlib.cmap : colormap
             - *fig_filename* = string : figure filename
+            - *ve* = float : vertical exaggeration
         """
+        ve = kwds.get("ve", 1.)
         cmap = kwds.get('cmap', 'jet')
         if kwds.has_key('ax'):
             # append plot to existing axis
@@ -169,7 +171,7 @@ class NoddyOutput():
 
         title = kwds.get("title", "Section in %s-direction, pos=%d" % (direction, cell_pos))
                 
-        im = ax.imshow(section_slice, interpolation='nearest', aspect=1., cmap=cmap, origin = 'lower left')
+        im = ax.imshow(section_slice, interpolation='nearest', aspect=ve, cmap=cmap, origin = 'lower left')
         if colorbar:
             cbar = plt.colorbar(im)
             _ = cbar
