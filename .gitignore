@@ -12,6 +12,11 @@ examples/*g01
 examples/*g02
 examples/*g12
 
+docs/notebooks/*g00
+docs/notebooks/*g01
+docs/notebooks/*g02
+docs/notebooks/*g12
+
 # C extensions
 *.so
 

@@ -130,7 +130,7 @@ class NoddyOutput():
             - *ve* = float : vertical exaggeration
         """
         ve = kwds.get("ve", 1.)
-        cmap = kwds.get('cmap', 'jet')
+        cmap_type = kwds.get('cmap', 'jet')
         if kwds.has_key('ax'):
             # append plot to existing axis
             ax = kwds['ax']
@@ -171,10 +171,25 @@ class NoddyOutput():
 
         title = kwds.get("title", "Section in %s-direction, pos=%d" % (direction, cell_pos))
                 
-        im = ax.imshow(section_slice, interpolation='nearest', aspect=ve, cmap=cmap, origin = 'lower left')
+        im = ax.imshow(section_slice, interpolation='nearest', aspect=ve, cmap=cmap_type, origin = 'lower left')
         if colorbar:
-            cbar = plt.colorbar(im)
-            _ = cbar
+#            cbar = plt.colorbar(im)
+#            _ = cbar
+#        
+            # create a second axes for the colorbar
+            ax2 = fig.add_axes([0.95, 0.165, 0.03, 0.69])
+            # define the bins and normalize
+    
+            import matplotlib as mpl
+            bounds = np.linspace(0,np.max(section_slice),np.max(section_slice)+1)
+            cmap = plt.cm.jet
+            norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
+    
+            cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap_type, norm=norm, spacing='proportional', 
+                                           ticks=bounds-0.5, boundaries=bounds) # , format='%s')
+            if kwds.has_key("layer_labels"):
+                cb.set_ticklabels(kwds["layer_labels"])
+
         ax.set_title(title)
         ax.set_xlabel(xlabel)
         ax.set_ylabel(ylabel)

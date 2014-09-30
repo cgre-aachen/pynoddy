@@ -53,7 +53,12 @@ class Event():
 
     def set_event_number(self, num):
         """Set number in 'Event #' line to num"""
-        self.event_lines[0] = "Event #%d = %s\n" % (num, self.event_type)
+        self.event_lines[0] = "Event #%d\t= %s\n" % (num, self.event_type)
+        
+    def set_event_lines(self, lines):
+        """Explicitly define event lines"""
+        self.event_lines = lines
+
 
 class Stratigraphy(Event):
     """Sedimentary pile with defined stratigraphy
@@ -80,6 +85,8 @@ class Stratigraphy(Event):
         self.num_layers = int(self.event_lines[1].split("=")[1])
         for line in lines:
             l = line.split("=")
+            
+        
             
 class Fold(Event):
     """Folding event
@@ -235,7 +242,6 @@ class Fault(Event):
         # Mark if this is really the case!    
         self.name = self.event_lines[-1].split("=")[1].strip()
         
-      
         
         
 if __name__ == '__main__':
