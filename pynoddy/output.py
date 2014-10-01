@@ -189,6 +189,9 @@ class NoddyOutput():
                                            ticks=bounds-0.5, boundaries=bounds) # , format='%s')
             if kwds.has_key("layer_labels"):
                 cb.set_ticklabels(kwds["layer_labels"])
+                
+            # invert axis to have "correct" stratigraphic order
+            cb.ax.invert_yaxis()
 
         ax.set_title(title)
         ax.set_xlabel(xlabel)
@@ -198,7 +201,7 @@ class NoddyOutput():
             return ax
         elif savefig:
             fig_filename = kwds.get("fig_filename", "%s_section_%s_pos_%d" % (self.basename, direction, cell_pos))
-            plt.savefig(fig_filename)
+            plt.savefig(fig_filename, bbox_inches="tight")
         else:
             plt.show()
             

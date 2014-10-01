@@ -38,6 +38,8 @@ class NoddyHistory():
         if not hasattr(self, 'cube_size'): self.get_cube_size()
         if not hasattr(self, 'filename'): self.get_filename()
         if not hasattr(self, 'date_saved'): self.get_date_saved()
+        print(60 * "*" + "\n\t\t\tModel Information\n" + 60 * "*")
+        print("\n")
         if self.n_events == 0:
             print("The model does not yet contain any events\n")
         else:
@@ -56,6 +58,8 @@ class NoddyHistory():
         
         print("The cubesize for model export is: \n\t%d m" % self.cube_size)
         # and now some metadata
+        print("\n")
+        print(60 * "*" + "\n\t\t\tMeta Data\n" + 60 * "*")
         print("\n")
         print("The filename of the model is:\n\t%s" % self.filename)
         print("It was last saved (if origin was a history file!) at:\n\t%s\n" % self.date_saved)
