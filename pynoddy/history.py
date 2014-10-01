@@ -314,6 +314,8 @@ Version = 7.11
             Options are:
             'name' = string : name of fault event
             'pos' = (x,y,z) : position of reference point (floats)
+                .. note::     for convenience, it is possible to assign 'top' to z
+                              for position at "surface"
             'dip_dir' = [0,360] : dip direction of fault
             'dip' = [0,90] : dip angle of fault
             'slip' = float : slip along fault
@@ -325,7 +327,12 @@ Version = 7.11
         fault_lines = fault_lines.replace("$NAME$", event_options['name'])
         fault_lines = fault_lines.replace("$POS_X$", "%.1f" % event_options['pos'][0])
         fault_lines = fault_lines.replace("$POS_Y$", "%.1f" % event_options['pos'][1])
-        fault_lines = fault_lines.replace("$POS_Z$", "%.1f" % event_options['pos'][2])
+        if event_options['pos'] == 'top':
+            # recalculate z-value to be at top of model
+            z = self.zmax
+            fault_lines = fault_lines.replace("$POS_Z$", "%.1f" % z)
+        else:
+            fault_lines = fault_lines.replace("$POS_Z$", "%.1f" % event_options['pos'][2])
         fault_lines = fault_lines.replace("$DIP_DIR$", "%.1f" % event_options['dip_dir'])
         fault_lines = fault_lines.replace("$DIP$", "%.1f" % event_options['dip'])
         fault_lines = fault_lines.replace("$SLIP$", "%.1f" % event_options['slip'])
@@ -778,7 +785,7 @@ Version = 7.11"""
     Chair_Z    = 2500.00
 
 #GeophysicsOptions
-    GPSRange     = 1200
+    GPSRange     = 0
     Declination    =   0.00
     Inclination    = -67.00
     Intensity    = 63000.00
