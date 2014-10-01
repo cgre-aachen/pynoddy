@@ -15,15 +15,20 @@ import events
 class NoddyHistory():
     """Class container for Noddy history files"""
     
-    def __init__(self, history):
+    def __init__(self, history=None):
         """Methods to analyse and change Noddy history files
         
         **Arguments**:
             - *history* = string : Name of Noddy history file
         
         """
-        self.load_history(history)
-        self.determine_events()
+        if history is None:
+            # generate a new history
+            pass
+        else:
+            # load existing history
+            self.load_history(history)
+            self.determine_events()
         
     def info(self):
         """Print out model information"""
