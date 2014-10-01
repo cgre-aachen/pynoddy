@@ -32,6 +32,33 @@ class NoddyHistory():
         
     def info(self):
         """Print out model information"""
+        # First: check if all information available
+        if not hasattr(self, 'extent_x'): self.get_extent()
+        if not hasattr(self, 'origin_x'): self.get_origin()
+        if not hasattr(self, 'cube_size'): self.get_cube_size()
+        if not hasattr(self, 'filename'): self.get_filename()
+        if not hasattr(self, 'date_saved'): self.get_date_saved()
+        if self.n_events == 0:
+            print("The model does not yet contain any events\n")
+        else:
+            print("This model consists of %d events:" % self.n_events)
+            for k,ev in self.events.items():
+                print("\t(%d) - %s" % (k,ev.event_type))
+                
+        print("The model extent is:")
+        print("\tx - %.1f m" % self.extent_x)
+        print("\ty - %.1f m" % self.extent_y)
+        print("\tz - %.1f m" % self.extent_z)
+        
+        print("The model origin is located at: \n\t(%.1f, %.1f, %.1f)" % (self.origin_x,
+                                                                      self.origin_y,
+                                                                      self.origin_z))
+        
+        print("The cubesize for model export is: \n\t%d m" % self.cube_size)
+        # and now some metadata
+        print("\n")
+        print("The filename of the model is:\n\t%s" % self.filename)
+        print("It was last saved (if origin was a history file!) at:\n\t%s\n" % self.date_saved)
         
     def get_origin(self):
         """Get coordinates of model origin and return and store in local variables
@@ -123,8 +150,21 @@ class NoddyHistory():
         # determine overall begin and end of the history events
         self.all_events_begin = self._raw_events[0]['line_start']
         self.all_events_end = self._raw_events[-1]['line_end']
+       
+    def get_cube_size(self):
+        """Determine cube size for model export"""
+        for line in self.history_lines:
+            if 'Geophysics Cube Size' in line: 
+                self.cube_size = float(line.split('=')[1].rstrip())
+         
+    def get_filename(self):
+        """Determine model filename from history file/ header"""
+        self.filename = self.history_lines[0].split('=')[1].rstrip()
         
-        
+    def get_date_saved(self):
+        """Determine the last savepoint of the file"""
+        self.date_saved = self.history_lines[1].split('=')[1].rstrip()    
+    
     def change_cube_size(self, cube_size):
         """Change the model cube size (isotropic)
         
