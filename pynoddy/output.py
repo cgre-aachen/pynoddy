@@ -123,6 +123,8 @@ class NoddyOutput():
             - *ax* = matplotlib.axis : append plot to axis (default: create new plot)
             - *figsize* = (x,y) : matplotlib figsize
             - *colorbar* = bool : plot colorbar (default: True)
+            - *colorbar_orientation* = 'horizontal' or 'vertical' : orientation of colorbar
+                    (default: 'vertical')
             - *title* = string : plot title
             - *savefig* = bool : save figure to file (default: show directly on screen)
             - *cmap* = matplotlib.cmap : colormap
@@ -131,6 +133,7 @@ class NoddyOutput():
             - *layer_labels* = list of strings: labels for each unit in plot
             - *layers_from* = noddy history file : get labels automatically from history file
         """
+        cbar_orientation = kwds.get("colorbar_orientation", 'vertical')
         ve = kwds.get("ve", 1.)
         cmap_type = kwds.get('cmap', 'jet')
         if kwds.has_key('ax'):
@@ -178,17 +181,25 @@ class NoddyOutput():
 #            cbar = plt.colorbar(im)
 #            _ = cbar
 #        
-            # create a second axes for the colorbar
-            ax2 = fig.add_axes([0.95, 0.165, 0.03, 0.69])
-            # define the bins and normalize
-    
             import matplotlib as mpl
             bounds = np.linspace(0,np.max(section_slice),np.max(section_slice)+1)
             cmap = plt.cm.jet
             norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
     
-            cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap_type, norm=norm, spacing='proportional', 
-                                           ticks=bounds-0.5, boundaries=bounds) # , format='%s')
+            if cbar_orientation == 'horizontal':
+                ax2 = fig.add_axes([0.125, 0.18, 0.775, 0.04])
+                cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap_type, norm=norm, spacing='proportional', 
+                                           ticks=bounds-0.5, boundaries=bounds,
+                                           orientation = 'horizontal') # , format='%s')
+                
+            else: # default is vertical 
+                # create a second axes for the colorbar
+                ax2 = fig.add_axes([0.95, 0.165, 0.03, 0.69])
+                cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap_type, norm=norm, spacing='proportional', 
+                                           ticks=bounds-0.5, boundaries=bounds,
+                                           orientation = 'vertical') # , format='%s')
+            # define the bins and normalize
+    
             if kwds.has_key("layer_labels"):
                 cb.set_ticklabels(kwds["layer_labels"])
                 
