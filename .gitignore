@@ -11,11 +11,18 @@ examples/*g00
 examples/*g01
 examples/*g02
 examples/*g12
+examlpes/*dxf
+examples/*grv
+examples/*mag
 
 docs/notebooks/*g00
 docs/notebooks/*g01
 docs/notebooks/*g02
 docs/notebooks/*g12
+
+docs/notebooks/*dxf
+docs/notebooks/*grv
+docs/notebooks/*mag
 
 # C extensions
 *.so

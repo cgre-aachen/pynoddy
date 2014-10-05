@@ -83,10 +83,13 @@ class Stratigraphy(Event):
         self.event_lines = lines
         # self.properties = {}
         self.num_layers = int(self.event_lines[1].split("=")[1])
+        # determine layer names:
+        self.layer_names = []
         for line in lines:
             l = line.split("=")
+            if "Unit Name" in l[0]: 
+                self.layer_names.append(l[1].rstrip())
             
-        
             
 class Fold(Event):
     """Folding event

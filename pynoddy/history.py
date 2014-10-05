@@ -15,20 +15,32 @@ import events
 class NoddyHistory():
     """Class container for Noddy history files"""
     
-    def __init__(self, history=None):
+    def __init__(self, history=None, **kwds):
         """Methods to analyse and change Noddy history files
         
         **Arguments**:
             - *history* = string : Name of Noddy history file
-        
+            
+        **Optional Keywords**:
+            - *url* = url : link to history file on web (e.g. to download 
+            and open directly from Atlas of Structural Geophysics,
+            http://virtualexplorer.com.au/special/noddyatlas/index.html
+            
+        Note: if both a (local) history is given and a URL, the local
+        file is opened!
         """
         if history is None:
-            # generate a new history
-            pass
+            if kwds.has_key("url"):
+                self.load_history_from_url(kwds['url'])
+                self.determine_events()
+            else:
+                # generate a new history
+                self.create_new_history()
         else:
             # load existing history
             self.load_history(history)
             self.determine_events()
+            
         
     def info(self):
         """Print out model information"""
@@ -100,7 +112,34 @@ class NoddyHistory():
             - *history* = string : Name of Noddy history file
         """
         self.history_lines = open(history, 'r').readlines()
-    
+        
+    def load_history_from_url(self, url):
+        """Directly load a Noddy history from a URL
+        
+        This method is useful to load a model from the Structural Geophysics
+        Atlas on the pages of the Virtual Explorer.
+        See: http://virtualexplorer.com.au/special/noddyatlas/index.html
+        
+        **Arguments**:
+            - *url* : url of history file
+        """
+        import urllib2
+        response = urllib2.urlopen(url)
+        tmp_lines = response.read().split("\n")
+        self.history_lines = []
+        for line in tmp_lines:
+            # append EOL again for consistency
+            self.history_lines.append(line + "\n")
+            
+            
+    def determine_model_stratigraphy(self): 
+        """Determine stratigraphy of entire model from all events"""
+        self.model_stratigraphy = []
+        for e in np.sort(self.events.keys()):
+            if self.events[e].event_type == 'STRATIGRAPHY':
+                self.model_stratigraphy += self.events[e].layer_names
+            
+            
     def determine_events(self):
         """Determine events and save line numbers
         
@@ -248,11 +287,11 @@ class NoddyHistory():
         for event in self.events.values():
             event.update_properties()
         
-
-class NewHistory():
-    """Methods to create a Noddy model"""
-    
-    def __init__(self):
+#
+#class NewHistory():
+#    """Methods to create a Noddy model"""
+#    
+    def create_new_history(self):
         """Methods to create a Noddy model
         
         """
@@ -300,6 +339,11 @@ class NewHistory():
             
         # update beginning and ending of events in history
         self.all_events_end = self.all_events_end + len(ev.event_lines)
+        
+        # add event to history lines, as well (for consistency with other methods)
+        self.history_lines[:self.all_events_begin] + \
+        ev.event_lines + \
+        self.history_lines[self.all_events_end:]
             
     def _create_header(self):
         """Create model header, include actual date"""
@@ -402,7 +446,7 @@ Version = 7.11
         
         
     
-    def write_history(self, filename):
+    def write_history_tmp(self, filename):
         """Write history to new file
         
         **Arguments**:

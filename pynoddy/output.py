@@ -128,6 +128,8 @@ class NoddyOutput():
             - *cmap* = matplotlib.cmap : colormap
             - *fig_filename* = string : figure filename
             - *ve* = float : vertical exaggeration
+            - *layer_labels* = list of strings: labels for each unit in plot
+            - *layers_from* = noddy history file : get labels automatically from history file
         """
         ve = kwds.get("ve", 1.)
         cmap_type = kwds.get('cmap', 'jet')
