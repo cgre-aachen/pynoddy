@@ -11,15 +11,20 @@ from output import NoddyOutput
 # Some helper functions are defined directly here:
 
 
-def compute_model(history, output_name):
+def compute_model(history, output_name, **kwds):
     import subprocess, os
     """Call Noddy and compute the history file
     
     **Arguments**:
         - *history* = string : filename of history file
         - *output_name* = string : basename for output files
+    
+    **Optional Keywords**:
+        - *type* = 'BLOCK', 'GEOPHYSICS', 'SURFACES', 'BLOCK_GEOPHYS', 'BLOCK_SURFACES', 'ALL':
+            type of Noddy simulation (default: 'BLOCK')
     """
-    subprocess.Popen(['noddy.exe', history, output_name, 'BLOCK'], 
+    sim_type = kwds.get("type", 'BLOCK')
+    subprocess.Popen(['noddy.exe', history, output_name, sim_type], 
                        shell=False, stderr=subprocess.PIPE, 
                        stdout=subprocess.PIPE).stdout.read()
         
