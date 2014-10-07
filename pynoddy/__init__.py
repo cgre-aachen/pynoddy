@@ -20,10 +20,10 @@ def compute_model(history, output_name, **kwds):
         - *output_name* = string : basename for output files
     
     **Optional Keywords**:
-        - *type* = 'BLOCK', 'GEOPHYSICS', 'SURFACES', 'BLOCK_GEOPHYS', 'BLOCK_SURFACES', 'ALL':
+        - *sim_type* = 'BLOCK', 'GEOPHYSICS', 'SURFACES', 'BLOCK_GEOPHYS', 'BLOCK_SURFACES', 'ALL':
             type of Noddy simulation (default: 'BLOCK')
     """
-    sim_type = kwds.get("type", 'BLOCK')
+    sim_type = kwds.get("sim_type", 'BLOCK')
     subprocess.Popen(['noddy.exe', history, output_name, sim_type], 
                        shell=False, stderr=subprocess.PIPE, 
                        stdout=subprocess.PIPE).stdout.read()

@@ -241,7 +241,39 @@ class NoddyOutput():
         
         gridToVTK(vtk_filename, x, y, z, cellData = {"geology" : self.block})         
         
+class NoddyGeophysics():
+    """Definition to read, analyse, and visualise calculated geophysical responses"""
+     
+    def __init__(self, output_name):
+        """Methods to read, analyse, and visualise calculated geophysical responses
+         
+        .. note:: The geophysical responses have can be computed with a keyword in the
+        function `compute_model`, e.g.:
+        ``pynoddy.compute_model(history_name, output, type = 'GEOPHYSICS')``
+        """
+        self.basename = output_name
+        self.read_gravity()
+        self.read_magnetics()
+         
+    def read_gravity(self):
+        """Read calculated gravity response"""
+        grv_lines = open(self.basename + ".grv", 'r').readlines()
+        self.grv_header = grv_lines[:8]
+        # read in data
+        print len(grv_lines) - 8
+        dx = len(grv_lines) - 8
+        dy = len(grv_lines[8].rstrip().split("\t"))
+        self.grv_data = np.ndarray((dx, dy))
+        for i,line in enumerate(grv_lines[8:]):
+            self.grv_data[i,:] = np.array([float(x) for x in line.rstrip().split("\t")])
+            
+            
         
+    def read_magnetics(self):
+        """Read caluclated magnetic field response"""
+        pass
+    
+
         
 if __name__ == '__main__':
     # some testing and debugging functions...
