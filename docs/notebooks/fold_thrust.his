@@ -1448,7 +1448,7 @@ Event #6	= FOLD
 	Chair_Z	= 5000.00
 
 #GeophysicsOptions
-	GPSRange	 = 0
+	GPSRange	 = 1200
 	Declination	=   0.00
 	Inclination	= -50.00
 	Intensity	= 50000.00
