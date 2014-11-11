@@ -444,7 +444,18 @@ Version = 7.11
         return ev
          
         
+    def change_event_params(self, changes_dict):
+        """Change multiple event parameters according to settings in changes_dict
         
+        **Arguments**:
+            - *changes_dict* = dictionary : entries define relative changes for (multiple) parameters
+            
+        Per default, the values in the dictionary are added to the event parameters.
+        """
+        print changes_dict 
+        for key,sub_dict in changes_dict.items():
+            for sub_key, val in sub_dict.items():
+                self.events[key].properties[sub_key] += val
     
     def write_history_tmp(self, filename):
         """Write history to new file
