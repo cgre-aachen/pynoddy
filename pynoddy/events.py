@@ -136,12 +136,54 @@ class Fold(Event):
         # Mark if this is really the case!    
         self.name = self.event_lines[-1].split("=")[1].strip()
 
+
+# AK 2014-10
+class Tilt(Event):
+    """Tilt event
+    
+    """
+    
+    def __init__(self, **kwds):
+        """Tilt event
+        
+        """
+        if kwds.has_key("lines") :
+            self.parse_event_lines(kwds['lines'])
+            self.event_type = self.event_lines[0].split("=")[1].strip()
+            
+    def parse_event_lines(self, lines):
+        """Read specific event lines from history file
+        
+        **Arguments**:
+            - *lines* = list of lines : lines with event information (as stored in .his file)         
+        """
+        self.event_lines = lines
+        self.properties = {}
+        self.property_lines = {} # required to reassign properties later!
+        for i,line in enumerate(lines):
+            l = line.split("=")
+            if "Event #" in line: continue
+            # convert value to float if it is not a string
+            value = l[1].strip()
+            try:
+                value = float(value)
+            except ValueError:
+                # not a number, so just keep float
+                pass
+            self.properties[l[0].strip()] = value
+            self.property_lines[l[0].strip()] = i
+        
+        # the event name always seems to be in the last line - check with
+        # Mark if this is really the case!    
+        self.name = self.event_lines[-1].split("=")[1].strip()
+
+
 class Unconformity(Event):
     """Unconformity event
     
     """
     def __init__(self, **kwds):
-        """Folding event
+        """Unconformity event
         
         """
         if kwds.has_key("lines") :

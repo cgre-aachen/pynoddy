@@ -184,6 +184,8 @@ class NoddyHistory():
                 
             elif 'STRATIGRAPHY' in e['type']:
                 ev = events.Stratigraphy(lines = event_lines)
+            elif 'TILT' in e['type']: # AK
+                ev = events.Tilt(lines = event_lines)
             else: continue
                 
             # now set shared attributes (those defined in superclass Event)
@@ -330,6 +332,15 @@ class NoddyHistory():
         elif event_type == 'fault':
             ev = self._create_fault(event_options)
             ev.event_type = 'FAULT'
+
+        elif event_type == 'tilt': # AK
+            ev = self._create_tilt(event_options)
+            ev.event_type = 'TILT'
+        
+        elif event_type == 'unconformity': # AK
+            ev = self._create_unconformity(event_options)
+            ev.event_type = 'UNCONFORMITY'
+        
         
         else:
             raise NameError('Event type %s not (yet) implemented' % event_type)
@@ -443,6 +454,115 @@ Version = 7.11
         ev.set_event_lines(tmp_lines_list)
         return ev
          
+    # AK 2014-10    
+    def _create_tilt(self, event_options):
+        """Create a tilt event
+        
+        **Arguments**:
+            - *event_options* = list : list of required and optional settings for event;
+            Options are:
+            'name' = string : name of fault event
+            'pos' = (x,y,z) : position of reference point (floats)
+                .. note::     for convenience, it is possible to assign 'top' to z
+                              for position at "surface"
+            'rotation' = [0,360] : dip?
+            'plunge_direction' = [0,360] : strike of plunge, measured from x axis
+            'plunge' = float : ?
+        """
+        ev = events.Tilt()
+        tmp_lines = [""]
+        tilt_lines = _Templates.tilt
+        # substitute text with according values
+        tilt_lines = tilt_lines.replace("$NAME$", event_options['name'])
+        tilt_lines = tilt_lines.replace("$POS_X$", "%.1f" % event_options['pos'][0])
+        tilt_lines = tilt_lines.replace("$POS_Y$", "%.1f" % event_options['pos'][1])
+        if event_options['pos'] == 'top':
+            # recalculate z-value to be at top of model
+            z = self.zmax
+            tilt_lines = tilt_lines.replace("$POS_Z$", "%.1f" % z)
+        else:
+            tilt_lines = tilt_lines.replace("$POS_Z$", "%.1f" % event_options['pos'][2])
+        tilt_lines = tilt_lines.replace("$ROTATION$", "%.1f" % event_options['rotation'])
+        tilt_lines = tilt_lines.replace("$PLUNGE_DIRECTION$", "%.1f" % event_options['plunge_direction'])
+        tilt_lines = tilt_lines.replace("$PLUNGE$", "%.1f" % event_options['plunge'])
+        
+        # now split lines and add as list entries to event lines
+        # event lines are defined in list:
+
+        # split lines and add to event lines list:
+        for tilt_line in tilt_lines.split("\n"):
+            tmp_lines.append(tilt_line)
+
+        tmp_lines_list = []
+        for line in tmp_lines:
+            tmp_lines_list.append(line + "\n")
+        ev.set_event_lines(tmp_lines_list)
+        return ev
+         
+        
+        
+    
+    # AK 2014-10    
+    def _create_unconformity(self, event_options):
+        """Create a unconformity event
+        
+        **Arguments**:
+            - *event_options* = list : list of required and optional settings for event;
+            Options are:
+            'name' = string : name of unconformity event
+            'pos' = (x,y,z) : position of reference point (floats)
+                .. note::     for convenience, it is possible to assign 'top' to z
+                              for position at "surface"
+            'rotation' = [0,360] : dip?
+            'plunge_direction' = [0,360] : strike of plunge, measured from x axis
+            'plunge' = float : ?
+        """
+        ev = events.Unconformity()
+        tmp_lines = [""]
+        unconformity_lines = _Templates.unconformity
+        # substitute text with according values
+        unconformity_lines = unconformity_lines.replace("$NAME$", event_options['name'])
+        unconformity_lines = unconformity_lines.replace("$POS_X$", "%.1f" % event_options['pos'][0])
+        unconformity_lines = unconformity_lines.replace("$POS_Y$", "%.1f" % event_options['pos'][1])
+        if event_options['pos'] == 'top':
+            # recalculate z-value to be at top of model
+            z = self.zmax
+            unconformity_lines = unconformity_lines.replace("$POS_Z$", "%.1f" % z)
+        else:
+            unconformity_lines = unconformity_lines.replace("$POS_Z$", "%.1f" % event_options['pos'][2])
+        unconformity_lines = unconformity_lines.replace("$DIP_DIRECTION$", "%.1f" % event_options['dip_direction'])
+        unconformity_lines = unconformity_lines.replace("$DIP$", "%.1f" % event_options['dip'])
+
+        # split lines and add to event lines list:
+        for unconformity_line in unconformity_lines.split("\n"):
+            tmp_lines.append(unconformity_line)
+
+        # unconformity has a stratigraphy block
+        tmp_lines.append("\tNum Layers\t= %d" % event_options['num_layers'])
+        for i in range(event_options['num_layers']):
+            """Add stratigraphy layers"""
+            layer_name = event_options['layer_names'][i]
+            cum_thickness = np.cumsum(event_options['layer_thickness'])
+            layer_lines = _Templates().strati_layer
+            # now replace required variables
+            layer_lines = layer_lines.replace("$NAME$", layer_name)
+            layer_lines = layer_lines.replace("$HEIGHT$", "%.1f" % cum_thickness[i])
+            layer_lines = layer_lines.replace("    ", "\t")
+            # split lines and add to event lines list:
+            for layer_line in layer_lines.split("\n"):
+                tmp_lines.append(layer_line)
+        
+        # append event name
+        tmp_lines.append("""\tName\t= Strat""")        
+
+        tmp_lines_list = []
+        for line in tmp_lines:
+            tmp_lines_list.append(line + "\n")
+        ev.set_event_lines(tmp_lines_list)
+        return ev
+         
+        
+
         
     def change_event_params(self, changes_dict):
         """Change multiple event parameters according to settings in changes_dict
@@ -844,7 +964,83 @@ Version = 7.11"""
     Surface YDim    = 0.000000
     Surface ZDim    = 0.000000
     Name    = $NAME$"""
-    
+
+    # AK 2014-10
+    tilt = """X    =   $POS_X$
+    Y    =   $POS_Y$
+    Z    =   $POS_Z$
+    Rotation     =  $ROTATION$
+    Plunge Direction     = $PLUNGE_DIRECTION$
+    Plunge     =   $PLUNGE$
+    Name    = $NAME$"""
+ 
+    unconformity = """X    =   $POS_X$
+    Y    =   $POS_Y$
+    Z    = $POS_Z$
+    Dip Direction    =  $DIP_DIRECTION$
+    Dip    =   $DIP$
+    Alteration Type     = NONE
+    Num Profiles    = 1
+    Name    =    
+    Type    = 0
+    Join Type     = LINES
+    Graph Length    = 0.000000
+    Min X    = 0.000000
+    Max X    = 0.000000
+    Min Y Scale    = 0.000000
+    Max Y Scale    = 0.000000
+    Scale Origin    = 0.000000
+    Min Y Replace    = 0.000000
+    Max Y Replace    = 0.000000
+    Num Points    = 0
+    Surface Type    = FLAT_SURFACE
+    Surface Filename    =       
+    Surface Directory    = /tmp_mnt/sci6/users/mark/Atlas/case
+    Surface XDim    = 0.000000
+    Surface YDim    = 0.000000
+    Surface ZDim    = 0.000000"""
+    temp = """
+    Num Layers    = 5
+    Unit Name    = UC Base
+    Height    = -32000
+    Apply Alterations    = ON
+    Density    = 3.50e+00
+    Anisotropic Field    = 0
+    MagSusX    = 1.50e-06
+    MagSusY    = 1.60e-03
+    MagSusZ    = 1.60e-03
+    MagSus Dip    = 9.00e+01
+    MagSus DipDir    = 9.00e+01
+    MagSus Pitch    = 0.00e+00
+    Remanent Magnetization    = 0
+    Inclination    =  30.00
+    Angle with the Magn. North    =  30.00
+    Strength    = 1.60e-03
+    Color Name    = Color 98
+    Red    = 84
+    Green    = 153
+    Blue    = 0
+    Unit Name    = UC Layer 1
+    Height    = 5650
+    Apply Alterations    = ON
+    Density    = 3.50e+00
+    Anisotropic Field    = 0
+    MagSusX    = 1.50e-06
+    MagSusY    = 1.60e-03
+    MagSusZ    = 1.60e-03
+    MagSus Dip    = 9.00e+01
+    MagSus DipDir    = 9.00e+01
+    MagSus Pitch    = 0.00e+00
+    Remanent Magnetization    = 0
+    Inclination    =  30.00
+    Angle with the Magn. North    =  30.00
+    Strength    = 1.60e-03
+    Color Name    = Color 68
+    Red    = 204
+    Green    = 117
+    Blue    = 0
+    Name    = $NAME$"""
+       
     # everything below events
     footer = """#BlockOptions
     Number of Views    = 1
