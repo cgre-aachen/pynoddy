@@ -90,6 +90,28 @@ class NoddyHistory():
                 
         return(self.origin_x, self.origin_y, self.origin_z)
     
+    def set_origin(self, origin_x, origin_y, origin_z):
+        """Set coordinates of model origin and update local variables
+        
+        **Arguments**:
+            - *origin_x* = float : x-location of model origin
+            - *origin_y* = float : y-location of model origin
+            - *origin_z* = float : z-location of model origin
+        """
+        self.origin_x = origin_x
+        self.origin_y = origin_y
+        self.origin_z = origin_z
+        origin_x_line = "    Origin X    =   %.2f\n" % origin_x
+        origin_y_line = "    Origin Y    =   %.2f\n" % origin_y
+        origin_z_line = "    Origin Z    =   %.2f\n" % origin_z
+        
+        for i,line in enumerate(self.history_lines):
+            if "Origin X" in line:
+                self.history_lines[i] = origin_x_line
+                self.history_lines[i+1] = origin_y_line
+                self.history_lines[i+2] = origin_z_line
+                break
+    
     def get_extent(self):
         """Get model extent and return and store in local variables
         
@@ -103,8 +125,79 @@ class NoddyHistory():
                 break
                 
         return(self.extent_x, self.extent_y, self.extent_z)
-        
     
+    def set_extent(self, extent_x, extent_y, extent_z):
+        """Set model extent and update local variables
+        
+        **Arguments**:
+            - *extent_x* = float : extent in x-direction
+            - *extent_y* = float : extent in y-direction
+            - *extent_z* = float : extent in z-direction
+        """
+        self.extent_x = extent_x
+        self.extent_y = extent_y
+        self.extent_z = extent_z
+        extent_x_line = "    Length X    =   %.2f\n" % extent_x
+        extent_y_line = "    Length Y    =   %.2f\n" % extent_y
+        extent_z_line = "    Length Z    =   %.2f\n" % extent_z
+        
+        for i,line in enumerate(self.history_lines):
+            if "Length X" in line:
+                self.history_lines[i] = extent_x_line
+                self.history_lines[i+1] = extent_y_line
+                self.history_lines[i+2] = extent_z_line
+                break
+            
+    def get_drillhole_data(self, x, y, **kwds):
+        """Get geology values along 1-D profile at position x,y with a 1 m resolution
+        
+        The following steps are performed:
+        1. creates a copy of the entire object,
+        2. sets values of origin, extent and geology cube size, 
+        3. saves model to a temporary file, 
+        4. runs Noddy on that file
+        5. opens and analyses output
+        6. deletes temporary files
+        
+        Note: this method only works if write access to current directory
+        is enabled and noddy can be executed!
+        
+        **Arguments**:
+            - *x* = float: x-position of drillhole
+            - *y* = float: y-positoin of drillhole
+        
+        **Optional Arguments**:
+            - *z_min* = float : minimum depth of drillhole (default: model range)
+            - *z_max* = float : maximum depth of drillhole (default: model range)
+            - *resolution* = float : resolution along profile (default: 1 m)
+        """
+        # resolve keywords
+        resolution = kwds.get("resolution", 1)
+        self.get_extent()
+        self.get_origin()
+        z_min = kwds.get("z_min", self.origin_z)
+        z_max = kwds.get("z_max", self.extent_z)
+        # 1. create copy
+        import copy
+        tmp_his = copy.deepcopy(self)
+        # 2. set values
+        tmp_his.set_origin(x, y, z_min)
+        tmp_his.set_extent(resolution, resolution, z_max)
+        tmp_his.change_cube_size(resolution)
+        # 3. save temporary file
+        tmp_his_file = "tmp_1D_drillhole.his"
+        tmp_his.write_history(tmp_his_file)
+        tmp_out_file = "tmp_1d_out"
+        # 4. run noddy
+        import pynoddy
+        import pynoddy.output
+        pynoddy.compute_model(tmp_his_file, tmp_out_file)
+        # 5. open output
+        tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)
+        # 6. 
+        return tmp_out.block[0,0,:]
+        
+        
     def load_history(self, history):
         """Load Noddy history
         
