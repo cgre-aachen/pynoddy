@@ -127,7 +127,7 @@ class NoddyOutput():
                     (default: 'vertical')
             - *title* = string : plot title
             - *savefig* = bool : save figure to file (default: show directly on screen)
-            - *cmap* = matplotlib.cmap : colormap
+            - *cmap* = matplotlib.cmap : colormap (default: YlOrRd)
             - *fig_filename* = string : figure filename
             - *ve* = float : vertical exaggeration
             - *layer_labels* = list of strings: labels for each unit in plot
@@ -135,7 +135,7 @@ class NoddyOutput():
         """
         cbar_orientation = kwds.get("colorbar_orientation", 'vertical')
         ve = kwds.get("ve", 1.)
-        cmap_type = kwds.get('cmap', 'jet')
+        cmap_type = kwds.get('cmap', 'YlOrRd')
         if kwds.has_key('ax'):
             # append plot to existing axis
             ax = kwds['ax']
