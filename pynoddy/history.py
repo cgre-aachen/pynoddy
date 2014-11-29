@@ -217,6 +217,10 @@ class NoddyHistory():
             - *history* = string : Name of Noddy history file
         """
         self.history_lines = open(history, 'r').readlines()
+        # set flag for model loaded from file
+        self._from_file = True
+        # get footer lines 
+        self.get_footer_lines()
         
     def load_history_from_url(self, url):
         """Directly load a Noddy history from a URL
@@ -235,7 +239,10 @@ class NoddyHistory():
         for line in tmp_lines:
             # append EOL again for consistency
             self.history_lines.append(line + "\n")
-            
+        # set flag for model loaded from URL
+        self._from_url = True
+        # get footer lines 
+        self.get_footer_lines()
             
     def determine_model_stratigraphy(self): 
         """Determine stratigraphy of entire model from all events"""
@@ -332,33 +339,15 @@ class NoddyHistory():
         # assign changed lines back to object
         self.history_lines = lines_new[:]        
         
-                
-    def write_history_bak(self, filename):
-        """Write history to new file
+    def get_footer_lines(self):
+        """Get the footer lines from self.history_lines
         
-        **Arguments**:
-            - *filename* = string : filename of new history file
-            
-        .. hint:: Just love it how easy it is to 'write history' with Noddy ;-)
-        
-        """
-        # before saving: update all event properties (in case changes were made)
-        self.update_all_event_properties()
-        
-        # First step: update history lines with events
-        all_event_lines = []
-        for event_id in sorted(self.events.keys()):
-            for line in self.events[event_id].event_lines:
-                all_event_lines.append(line)
-        # now substitute old with new lines:
-        self.history_lines[self.all_events_begin:self.all_events_end+1] = all_event_lines
-        
-        
-        f = open(filename, 'w')
-        for line in self.history_lines:
-            f.write(line)
-        f.close()
-        
+        The footer contains everything below events (all settings, etc.)"""
+        # get id of footer from history lines
+        for i,line in enumerate(self.history_lines):
+            if "#BlockOptions" in line:
+                break
+        self.footer_lines = self.history_lines[i:]
         
     def swap_events(self, event_num_1, event_num_2):
         """Swap two geological events in the timeline
@@ -691,8 +680,12 @@ Version = 7.11
         .. hint:: Just love it how easy it is to 'write history' with Noddy ;-)
         
         """
+        # before saving: update all event properties (in case changes were made)
+        self.update_all_event_properties()        
+        
         # first: create header
-        self.filename = filename
+        if not hasattr(self, "filename"):
+            self.filename = filename
         self._create_header()
         
         # initialise history lines
@@ -709,11 +702,16 @@ Version = 7.11
             for line in self.events[event_id].event_lines:
                 history_lines.append(line)
         
-        # add footer
-        for line in _Templates().footer.split("\n"):
-            line = line.replace("    ", "\t")
-            history_lines.append(line + "\n")    
-        
+        # add footer: from original footer or from template (if new file):
+        if not hasattr(self,"footer_lines"):
+            # create footer lines from template
+            for line in _Templates().footer.split("\n"):
+                line = line.replace("    ", "\t")
+                history_lines.append(line + "\n")    
+        else: # add from variable:
+            for line in self.footer_lines:
+                history_lines.append(line)
+                
         f = open(filename, 'w')
         for line in history_lines:
             f.write(line)
