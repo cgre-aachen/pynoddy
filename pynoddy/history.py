@@ -93,11 +93,16 @@ class NoddyHistory():
         
         **Returns**: (origin_x, origin_y, origin_z)
         """
-        for i,line in enumerate(self.history_lines):
+        # check if footer_lines exist (e.g. read in from file)
+        # if not: create from template
+        if not hasattr(self, "footer_lines"):
+            self.create_footer_from_template()
+
+        for i,line in enumerate(self.footer_lines):
             if "Origin X" in line:
-                self.origin_x = float(self.history_lines[i].split("=")[1])
-                self.origin_y = float(self.history_lines[i+1].split("=")[1])
-                self.origin_z = float(self.history_lines[i+2].split("=")[1])
+                self.origin_x = float(self.footer_lines[i].split("=")[1])
+                self.origin_y = float(self.footer_lines[i+1].split("=")[1])
+                self.origin_z = float(self.footer_lines[i+2].split("=")[1])
                 break
                 
         return(self.origin_x, self.origin_y, self.origin_z)
@@ -110,6 +115,11 @@ class NoddyHistory():
             - *origin_y* = float : y-location of model origin
             - *origin_z* = float : z-location of model origin
         """
+        # check if footer_lines exist (e.g. read in from file)
+        # if not: create from template
+        if not hasattr(self, "footer_lines"):
+            self.create_footer_from_template()
+            
         self.origin_x = origin_x
         self.origin_y = origin_y
         self.origin_z = origin_z
@@ -117,11 +127,11 @@ class NoddyHistory():
         origin_y_line = "    Origin Y    =   %.2f\n" % origin_y
         origin_z_line = "    Origin Z    =   %.2f\n" % origin_z
         
-        for i,line in enumerate(self.history_lines):
+        for i,line in enumerate(self.footer_lines):
             if "Origin X" in line:
-                self.history_lines[i] = origin_x_line
-                self.history_lines[i+1] = origin_y_line
-                self.history_lines[i+2] = origin_z_line
+                self.footer_lines[i] = origin_x_line
+                self.footer_lines[i+1] = origin_y_line
+                self.footer_lines[i+2] = origin_z_line
                 break
     
     def get_extent(self):
@@ -129,11 +139,16 @@ class NoddyHistory():
         
         **Returns**: (extent_x, extent_y, extent_z)
         """
-        for i,line in enumerate(self.history_lines):
+        # check if footer_lines exist (e.g. read in from file)
+        # if not: create from template
+        if not hasattr(self, "footer_lines"):
+            self.create_footer_from_template()
+
+        for i,line in enumerate(self.footer_lines):
             if "Length X" in line:
-                self.extent_x = float(self.history_lines[i].split("=")[1])
-                self.extent_y = float(self.history_lines[i+1].split("=")[1])
-                self.extent_z = float(self.history_lines[i+2].split("=")[1])
+                self.extent_x = float(self.footer_lines[i].split("=")[1])
+                self.extent_y = float(self.footer_lines[i+1].split("=")[1])
+                self.extent_z = float(self.footer_lines[i+2].split("=")[1])
                 break
                 
         return(self.extent_x, self.extent_y, self.extent_z)
@@ -146,6 +161,11 @@ class NoddyHistory():
             - *extent_y* = float : extent in y-direction
             - *extent_z* = float : extent in z-direction
         """
+        # check if footer_lines exist (e.g. read in from file)
+        # if not: create from template
+        if not hasattr(self, "footer_lines"):
+            self.create_footer_from_template()
+
         self.extent_x = extent_x
         self.extent_y = extent_y
         self.extent_z = extent_z
@@ -153,11 +173,11 @@ class NoddyHistory():
         extent_y_line = "    Length Y    =   %.2f\n" % extent_y
         extent_z_line = "    Length Z    =   %.2f\n" % extent_z
         
-        for i,line in enumerate(self.history_lines):
+        for i,line in enumerate(self.footer_lines):
             if "Length X" in line:
-                self.history_lines[i] = extent_x_line
-                self.history_lines[i+1] = extent_y_line
-                self.history_lines[i+2] = extent_z_line
+                self.footer_lines[i] = extent_x_line
+                self.footer_lines[i+1] = extent_y_line
+                self.footer_lines[i+2] = extent_z_line
                 break
             
     def get_drillhole_data(self, x, y, **kwds):
@@ -203,6 +223,7 @@ class NoddyHistory():
         # 4. run noddy
         import pynoddy
         import pynoddy.output
+        
         pynoddy.compute_model(tmp_his_file, tmp_out_file)
         # 5. open output
         tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)
