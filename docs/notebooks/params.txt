@@ -1,0 +1,6 @@
+dip_change_fault_1 -5.0 5.0
+dip_dir_change_fault_1 -5.0 5.0
+slip_change_fault_1 -100. 100.
+dip_change_fault_2 -5.0 5.0
+dip_dir_change_fault_2 -5.0 5.0
+slip_change_fault_2 -100. 100.

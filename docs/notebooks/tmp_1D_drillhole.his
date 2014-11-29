@@ -3034,13 +3034,13 @@ Event #14	= FOLD
 	Current View	= 0
 	NAME	= Default
     Origin X    =   10000.00
-    Origin Y    =   10000.00
+    Origin Y    =   5000.00
     Origin Z    =   1500.00
-    Length X    =   100.00
-    Length Y    =   100.00
-    Length Z    =   1500.00
+    Length X    =   1.00
+    Length Y    =   1.00
+    Length Z    =   1000.00
 	Geology Cube Size	=  50.00
-	Geophysics Cube Size	= 100.00
+	Geophysics Cube Size	=   1.00
 
 #GeologyOptions
 	Scale	=  10.00

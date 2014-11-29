@@ -19,6 +19,7 @@ docs/notebooks/*g00
 docs/notebooks/*g01
 docs/notebooks/*g02
 docs/notebooks/*g12
+docs/notebooks/*g??
 
 docs/notebooks/*dxf
 docs/notebooks/*grv
@@ -63,3 +64,4 @@ GBasin_uncertainty.zip
 noddy.exe
 *.swp
 *.vtr
+docs/notebooks/SALib-sensitivity-analysis_files

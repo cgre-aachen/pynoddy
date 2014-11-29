@@ -24,7 +24,7 @@ def compute_model(history, output_name, **kwds):
             type of Noddy simulation (default: 'BLOCK')
     """
     sim_type = kwds.get("sim_type", 'BLOCK')
-    print subprocess.Popen(['noddy.exe', history, output_name, sim_type], 
+    out =  subprocess.Popen(['noddy.exe', history, output_name, sim_type], 
                        shell=False, stderr=subprocess.PIPE, 
                        stdout=subprocess.PIPE).stdout.read()
-        
+    # if out != "\n": print out

@@ -310,9 +310,14 @@ class NoddyHistory():
        
     def get_cube_size(self):
         """Determine cube size for model export"""
-        for line in self.history_lines:
+        # check if footer exists, if not: create from template
+        if not hasattr(self, "footer_lines"):
+            self.create_footer_from_template()
+        
+        for line in self.footer_lines:
             if 'Geophysics Cube Size' in line: 
                 self.cube_size = float(line.split('=')[1].rstrip())
+        return self.cube_size
          
     def get_filename(self):
         """Determine model filename from history file/ header"""
@@ -328,16 +333,21 @@ class NoddyHistory():
         **Arguments**:
             - *cube_size* = float : new model cube size
         """
-        # create local copy of history
-        lines_new = self.history_lines[:]
-        for i,line in enumerate(self.history_lines):
+        # check if footer_lines exist (e.g. read in from file)
+        # if not: create from template
+        if not hasattr(self, "footer_lines"):
+            self.create_footer_from_template()
+            
+        
+#        lines_new = self.history_lines[:]
+        for i,line in enumerate(self.footer_lines):
             if 'Geophysics Cube Size' in line: 
                 l = line.split('=')
                 l_new = '%7.2f\r\n' % cube_size
                 line_new = l[0] + "=" + l_new
-                lines_new[i] = line_new
+                self.footer_lines[i] = line_new
         # assign changed lines back to object
-        self.history_lines = lines_new[:]        
+#        self.history_lines = lines_new[:]        
         
     def get_footer_lines(self):
         """Get the footer lines from self.history_lines
@@ -348,6 +358,13 @@ class NoddyHistory():
             if "#BlockOptions" in line:
                 break
         self.footer_lines = self.history_lines[i:]
+    
+    def create_footer_from_template(self):
+        """Create model footer (with all settings) from template"""
+        self.footer_lines = []
+        for line in _Templates().footer.split("\n"):
+            line = line.replace("    ", "\t")
+            self.footer_lines.append(line + "\n")    
         
     def swap_events(self, event_num_1, event_num_2):
         """Swap two geological events in the timeline
@@ -704,37 +721,21 @@ Version = 7.11
         
         # add footer: from original footer or from template (if new file):
         if not hasattr(self,"footer_lines"):
-            # create footer lines from template
-            for line in _Templates().footer.split("\n"):
-                line = line.replace("    ", "\t")
-                history_lines.append(line + "\n")    
-        else: # add from variable:
-            for line in self.footer_lines:
-                history_lines.append(line)
+            self.create_footer_from_template()
+            
+        # add footer
+        for line in self.footer_lines:
+            history_lines.append(line)
                 
         f = open(filename, 'w')
         for line in history_lines:
             f.write(line)
         f.close()
-#        print history_lines
-
-        
-#        
-#        # First step: update history lines with events
-#        all_event_lines = []
-#        for event_id in sorted(self.events.keys()):
-#            for line in self.events[event_id].event_lines:
-#                all_event_lines.append(line)
-#        # now substitute old with new lines:
-#        self.history_lines[self.all_events_begin:self.all_events_end+1] = all_event_lines
-#        
-#        
-#        f = open(filename, 'w')
-#        for line in self.history_lines:
-#            f.write(line)
-#        f.close()
-#        
  
+ 
+#===============================================================================
+# End of NoddyHistory
+#===============================================================================
 
 
 #===============================================================================
