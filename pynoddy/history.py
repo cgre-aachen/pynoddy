@@ -702,7 +702,16 @@ Version = 7.11
         ev.set_event_lines(tmp_lines_list)
         return ev
          
+    def set_event_params(self, params_dict):
+        """set multiple event parameters according to settings in params_dict
         
+        **Arguments**:
+            - *params_dict* = dictionary : entries to set (multiple) parameters
+            
+        """
+        for key,sub_dict in params_dict.items():
+            for sub_key, val in sub_dict.items():
+                self.events[key].properties[sub_key] += val
 
         
     def change_event_params(self, changes_dict):
@@ -713,7 +722,7 @@ Version = 7.11
             
         Per default, the values in the dictionary are added to the event parameters.
         """
-        # print changes_dict 
+        print changes_dict 
         for key,sub_dict in changes_dict.items():
             for sub_key, val in sub_dict.items():
                 self.events[key].properties[sub_key] += val
@@ -1176,7 +1185,8 @@ Version = 7.11"""
     Name    = $NAME$"""
        
     # everything below events
-    footer = """#BlockOptions
+    footer = """
+#BlockOptions
     Number of Views    = 1
     Current View    = 0
     NAME    = Default
