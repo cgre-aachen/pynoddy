@@ -711,7 +711,7 @@ Version = 7.11
         """
         for key,sub_dict in params_dict.items():
             for sub_key, val in sub_dict.items():
-                self.events[key].properties[sub_key] += val
+                self.events[key].properties[sub_key] = val
 
         
     def change_event_params(self, changes_dict):

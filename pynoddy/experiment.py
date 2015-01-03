@@ -34,7 +34,6 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
     
     classdocs
     '''
-    pass
 
     def __init__(self, history=None, **kwds):
         '''Combination of input and output methods for complete kinematic experiments with NOddy
@@ -202,23 +201,25 @@ class SensitivityAnalysis(Experiment):
     '''
     from SALib.sample import saltelli
     
-    def __init__(self, **kwds):
-        """Sensitivity analysis for kinematic models
+
+    def __init__(self, history=None, **kwds):
+        '''Combination of input and output methods for complete kinematic experiments with NOddy
         
         **Optional Keywords**:
             - *his_file* = string : filename of Noddy history input file
-        """
-        if kwds.has_key("his_file"):
-            self.load_history(kwds['his_file'])
-            self.determine_events()
-            
+        '''
+        super(Experiment, self).__init__(history)
+#        super(Experiment, self).test()
+#        if kwds.has_key("history"):
+#            self.load_history(kwds['history'])
+#            print("Determine events")
+#            self.determine_events()
+      
     def create_params_file(self, **kwds):
         """Create params file from defined parameter statistics for SALib analysis
         
         Note: parameter statistics have to be defined in self.param_stats dictionary
         (use self.set_parameter_statistics)
-        
-        Changes are expressed as relative changes of the parameter with respect to the initial value.
         
         **Optional keywords**:
             - *filename* = string : name of parameter file (default: params_file_tmp.txt)
@@ -235,7 +236,7 @@ class SensitivityAnalysis(Experiment):
         for param in self.param_stats:
             # create a meaningful name for the parameter
             par_name = "ev_%d_%s" % (param['event'], param['parameter'].replace (" ", "_"))
-            f.write("%s %f %f\n" % (par_name, param['min'] - param['initial'], param['max'] - param['initial']))
+            f.write("%s %f %f\n" % (par_name, param['min'], param['max']))
                 
         f.close()
     
@@ -321,9 +322,12 @@ class SensitivityAnalysis(Experiment):
         
         distances = []
         
+        # only for test - remove later!!
+#        import copy
+        
         # create model for each parameter set and calculate distance
         for param_set in param_values:
-            param_changes = {}
+            param_values = {}
             
             for i,param_val in enumerate(param_set):
                 
@@ -331,13 +335,15 @@ class SensitivityAnalysis(Experiment):
                 param = self.param_stats[i]
                 
                 # initialise parameter changes dictionary if it doesn't exist:
-                if not param_changes.has_key(param['event']):
-                    param_changes[param['event']] = {}
-                param_changes[param['event']][param['parameter']] = param_val
+                if not param_values.has_key(param['event']):
+                    param_values[param['event']] = {}
+                param_values[param['event']][param['parameter']] = param_val
+                
+#            self.events = copy.deepcopy(self.base_events)
                 
             # apply change to model:
-            self.change_event_params(param_changes)
-
+            self.set_event_params(param_values)
+            
             # calculated distance to base model for given resolution
             distances.append(self.distance(resolution = resolution))
         
