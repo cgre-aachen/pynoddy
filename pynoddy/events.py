@@ -4,7 +4,7 @@ Created on Mar 26, 2014
 @author: Florian Wellmann
 '''
 
-class Event():
+class Event(object):
     '''Main class container for geological events
     
     Include here all elements that events have in common (position, etc. - 
@@ -89,7 +89,6 @@ class Stratigraphy(Event):
             l = line.split("=")
             if "Unit Name" in l[0]: 
                 self.layer_names.append(l[1].rstrip())
-            
             
 class Fold(Event):
     """Folding event

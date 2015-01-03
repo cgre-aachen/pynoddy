@@ -12,7 +12,7 @@ import numpy as np
 import events
 
 
-class NoddyHistory():
+class NoddyHistory(object):
     """Class container for Noddy history files"""
     
     def __init__(self, history=None, **kwds):
@@ -196,7 +196,7 @@ class NoddyHistory():
         
         **Arguments**:
             - *x* = float: x-position of drillhole
-            - *y* = float: y-positoin of drillhole
+            - *y* = float: y-position of drillhole
         
         **Optional Arguments**:
             - *z_min* = float : minimum depth of drillhole (default: model range)
@@ -212,6 +212,7 @@ class NoddyHistory():
         # 1. create copy
         import copy
         tmp_his = copy.deepcopy(self)
+        tmp_his.write_history("test.his")
         # 2. set values
         tmp_his.set_origin(x, y, z_min)
         tmp_his.set_extent(resolution, resolution, z_max)
@@ -328,6 +329,11 @@ class NoddyHistory():
         # determine overall begin and end of the history events
         self.all_events_begin = self._raw_events[0]['line_start']
         self.all_events_end = self._raw_events[-1]['line_end']
+        
+    def copy_events(self):
+        """Create a copy of the current event state"""
+        import copy
+        return copy.deepcopy(self.events)
        
     def get_cube_size(self):
         """Determine cube size for model export"""
@@ -407,7 +413,10 @@ class NoddyHistory():
         """
         tmp_events = self.events.copy()
         for key, value in reorder_dict.items():
-            tmp_events[value] = self.events[key]
+            try:
+                tmp_events[value] = self.events[key]
+            except KeyError:
+                print("Event with id %d is not defined, please check!" % value)
         self.events = tmp_events.copy()
         self.update_event_numbers()
         

@@ -7,7 +7,7 @@ Created on 24/03/2014
 import numpy as np
 import matplotlib.pyplot as plt
 
-class NoddyOutput():
+class NoddyOutput(object):
     """Class definition for Noddy output analysis"""
     
     def __init__(self, output_name):
@@ -241,7 +241,7 @@ class NoddyOutput():
         
         gridToVTK(vtk_filename, x, y, z, cellData = {"geology" : self.block})         
         
-class NoddyGeophysics():
+class NoddyGeophysics(object):
     """Definition to read, analyse, and visualise calculated geophysical responses"""
      
     def __init__(self, output_name):
