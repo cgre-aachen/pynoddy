@@ -66,8 +66,8 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
     def set_parameter_statistics(self, param_stats):
         """Define parameter statistics for uncertainty simulation and sensitivity analysis
         
-        param_stats = dict : dictionary with relevant statistics defined for event parameters
-        dictionary is organised as:
+        param_stats = list : list with relevant statistics defined for event parameters
+        list is organised as:
         param_stats[event_id][parameter_name][stats_type] = value
         
         Example:
@@ -81,9 +81,61 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         """
         self.param_stats = param_stats
         
+    def load_parameter_file(self, filename, **kwds):
+        """Load parameter statistics from external csv file
+        
+        The csv file should contain a header row with the relevant keywords identifying columns. 
+        In order to be read in correctly, the header should contain the labels:
+        
+        - 'event' : event id
+        - 'parameter' : Noddy parameter ('Dip', 'Dip Direction', etc.)
+        - 'min' : minimum value
+        - 'max' : maximum value
+        - 'initial' : initial value
+        
+        In addition, it is possible to define PDF type and parameters. For now, the following settings are supported:
+        
+        - 'type' = 'normal' 
+        - 'stdev' : standard deviation
+        - 'mean' : mean value (default: 'initial' value)
+
+        **Arguments**:
+            - *filename* = string : filename
+            
+        **Optional arguments**:
+            - *delim* = string : delimiter (default: ',' or ';', both checked)
+        """
+        lines = open(filename).readlines()
+        delim = kwds.get("delim", ",")
+        # test if "," is actually the delimiter - if not, try ';' (stupid Excel standard...)
+        header = lines[0].rstrip().split(delim)
+        if len(header) == 1:
+            delim = ';'
+            header = lines[0].rstrip().split(delim)
+        
+        # set up parameter list
+        self.param_stats = []
+        
+        for line in lines[1:]:
+            l = line.rstrip().split(delim)
+            # set up parameter dictionary
+            param_dict = {}
+            for ele in header:
+                try:
+                    param_dict[ele] = float(l[header.index(ele)])
+                except ValueError: # not a number
+                    param_dict[ele] = l[header.index(ele)]
+            self.param_stats.append(param_dict)
+        
+        
     def freeze(self, **kwds):
         """Freeze the current model state: store the event settings for later comparison"""
         self.base_events = self.copy_events()
+
+
+    def reset_base(self):
+        """Set events back to base model (stored in self.base_events)"""
+        self.events = self.base_events.copy()
 
         
     def random_perturbation(self, **kwds):
@@ -192,6 +244,10 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         # 6. 
         tmp_out.plot_section(layer_labels = self.model_stratigraphy, **kwds)
         # return tmp_out.block
+        
+        # remove temorary file
+        import os
+        os.remove(tmp_out_file)
     
 class SensitivityAnalysis(Experiment):
     '''Sensitivity analysis experiments for kinematic models
@@ -406,7 +462,109 @@ class SensitivityAnalysis(Experiment):
         
         return current_lines
     
+    def perform_analsis(self, n=10, **kwds):
+        """Perform Sobol sensitivity analysis with SALib methods
+        
+        **Arguments**:
+            - *n* = int : number of sobol iterations (default: 10)
+            
+        **Optional keywords**:
+            - *calc_second_order* = bool : second order stats (default: True)
+        """
+        calc_second_order = kwds.get("calc_second_order", True)
+        # freeze base stats
+        self.freeze()
+        # import SALib method
+        from SALib.sample import saltelli
+        from SALib.analyze import sobol
+        # create temporary parameter file
+        param_file = "params_file_tmp.txt"
+        self.create_params_file(filename = param_file)
+        # perform sampling
+        self.param_values = saltelli.sample(10, param_file, calc_second_order = calc_second_order)
+        # calculate distances - compute intensive step!
+        self.distances = self.determine_distances()
+        # save results
+        results_file = 'dist_tmp.txt'
+        np.savetxt(results_file, self.distances, delimiter=' ')
+        # perform sobol analysis
+        Si = sobol.analyze(param_file, results_file, 
+                           column = 0, 
+                           conf_level = 0.95,
+                           calc_second_order = calc_second_order, 
+                           print_to_console=False)
+        # create composite matrix for sensitivities
+        n_params = len(self.param_stats)
+        self.comp_matrix = np.ndarray(shape = (n_params,n_params))
+        for j in range(n_params):
+            for i in range(n_params):
+                if i == j:
+                    self.comp_matrix[i,j] = Si['S1'][i]
+                else:
+                    self.comp_matrix[i,j] = Si['S2'][i,j]
+                    self.comp_matrix[j,i] = Si['S2'][i,j]
+                    
+        # remove temporary files
+        import os
+        os.remove(results_file)
+        os.remove(param_file)
+    
+    def plot_sensitivity_matrix(self, **kwds):
+        """Create a plot of the sensitivity matrix
+        
+        **Optional keywords**:
+            - *savefig* = bool : save figure to file (default: show)
+            - *fig_filename* = string : figure filename (default: distances.png)
+        """
+        import matplotlib.pyplot as plt
+        
+        savefig = kwds.get("savefig", False)
+        fig_filename = kwds.get("fig_filename", "distances.png")
+        
+        plt.rcParams['font.size'] = 15
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
 
+        im = ax.imshow(self.comp_matrix, interpolation='nearest', cmap='RdBu_r', 
+                       vmax = np.max(np.abs(self.comp_matrix)),
+                        vmin = -np.max(np.abs(self.comp_matrix)))
+        
+        ax.yaxis.set_ticks_position("both")
+        ax.xaxis.set_ticks_position("top")
+        ax.set_xlabel("Parameter Sensitivities")
+        fig.colorbar(im)
+        plt.tight_layout()
+        
+        if savefig:
+            plt.savefig(fig_filename)
+        else:
+            plt.show()
+        
+    def plot_distances(self, **kwds):
+        """Create diagnostic plot of calculated distances
+        
+        **Optional keywords**:
+            - *savefig* = bool : save figure to file (default: show)
+            - *fig_filename* = string : figure filename (default: distances.png)
+        """
+        import matplotlib.pyplot as plt
+        
+        savefig = kwds.get("savefig", False)
+        fig_filename = kwds.get("fig_filename", "distances.png")
+        
+        plt.rcParams['font.size'] = 15
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(self.distances, '.-k')
+        ax.set_title("Calculated distances")
+        ax.set_xlabel("Sensitivity step")
+        ax.set_ylabel("Distance")
+        plt.tight_layout()
+        
+        if savefig:
+            plt.savefig(fig_filename)
+        else:
+            plt.show()
 
 
 
