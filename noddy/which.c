@@ -700,3 +700,81 @@ int getStratMax (int stratEvent)
 
    return (totalLayers);
 }
+
+
+
+int write_rocks(int nx, int ny, int nz, char *outputFilename)
+{
+   int numLayers, layer;
+   OBJECT *event;
+   STRATIGRAPHY_OPTIONS *stratOptions;
+   LAYER_PROPERTIES *layerProp = NULL;
+   int layerIndex;
+   int numEvents = countObjects(NULL_WIN);
+   int events,layers,allLayers=1;
+   FILE *novella;
+   char shortfname[100];
+
+   sprintf(shortfname,"%s.g20",outputFilename);
+   novella=fopen(shortfname,"w");
+   fprintf(novella,"num events %d\n",numEvents);
+   fprintf(novella,"dimensions %d %d %d\n",nx,ny,nz);
+
+
+   for(events=0;events<numEvents;events++)
+   {
+   if (!(event = (OBJECT *) nthObject (NULL_WIN, events)))
+      if (!(event = (OBJECT *) nthObject (NULL_WIN, 0)))
+			return (NULL);
+
+        /* Just a Stratigraphy or a SEE THROUGH of an Import block */
+ 	   	   fprintf(novella,"%d %d\n",events,(int)event->shape);
+   }
+
+   for(events=0;events<numEvents;events++)
+   {
+   if (!(event = (OBJECT *) nthObject (NULL_WIN, events)))
+      if (!(event = (OBJECT *) nthObject (NULL_WIN, 0)))
+			return (NULL);
+
+        /* Just a Stratigraphy or a SEE THROUGH of an Import block */
+      if ((event->shape == STRATIGRAPHY)
+                            || (event->shape == UNCONFORMITY))
+      {
+         if (!(stratOptions = (STRATIGRAPHY_OPTIONS *)
+                        getStratigraphyOptionsStructure (event)))
+            return ((LAYER_PROPERTIES *) NULL);
+
+         numLayers = stratOptions->numLayers;
+
+         for(layers=numLayers-1;layers>-1;layers--)
+         {
+            layerProp = &(stratOptions->properties[layers]);
+            fprintf(novella,"%d %d %s\n",allLayers++,events,layerProp->unitName);
+         }
+       }
+
+
+   }
+
+   for(events=0;events<numEvents;events++)
+   {
+   if (!(event = (OBJECT *) nthObject (NULL_WIN, events)))
+      if (!(event = (OBJECT *) nthObject (NULL_WIN, 0)))
+			return (NULL);
+
+        /* Just a Stratigraphy or a SEE THROUGH of an Import block */
+	   if ((event->shape == PLUG)
+	                                || (event->shape == DYKE))
+	     {
+	        layerProp = getLayerPropertiesStructure (event);
+            fprintf(novella,"%d %d %s\n",allLayers++,events,layerProp->unitName);
+
+	     }
+
+       }
+
+
+   fclose (novella);
+
+}

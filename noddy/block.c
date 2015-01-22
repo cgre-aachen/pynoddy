@@ -333,6 +333,212 @@ int numColors;
 
 
 /* ======================================================================
+FUNCTION        calcTopology
+
+DESCRIPTION
+        Calc the topology codes for a given layer height
+
+RETURNED
+   TRUE - sucess, FALSE - error
+====================================================================== */
+int
+#if XVT_CC_PROTO
+calcTopology(LAYER_PROPERTIES ***blockLayer, int nx, int ny,
+    double xLoc, double yLoc, double zLoc, int blockSize, int useTopo,
+    int numProps, LAYER_PROPERTIES **rockProps, int deformRemanence,
+    int deformAnisotropy, int alterationZones, int zIndex, short ***indexData,
+    float ***densityData,    float ***magSusData,     float ***remSusDecData,
+    float ***remSusAziData,  float ***remSusStrData,  float ***aniSusDipData,
+    float ***aniSusDDirData, float ***aniSusPitchData,float ***aniSusAxis1Data,
+    float ***aniSusAxis2Data,float ***aniSusAxis3Data, FILE *topo_out)
+#else
+calcTopology(blockLayer, nx, ny, xLoc, yLoc, zLoc, blockSize, useTopo,
+               numProps, rockProps, deformRemanence, deformAnisotropy,
+               alterationZones, zIndex, indexData, densityData, magSusData,
+               remSusDecData, remSusAziData, remSusStrData,
+               aniSusDipData, aniSusDDirData, aniSusPitchData,
+               aniSusAxis1Data, aniSusAxis2Data, aniSusAxis3Data, *topo_out)
+LAYER_PROPERTIES ***blockLayer;
+int nx, ny;
+double xLoc, yLoc, zLoc;
+int blockSize, useTopo, numProps;
+LAYER_PROPERTIES **rockProps;
+int deformRemanence, deformAnisotropy, alterationZones, zIndex;
+short ***indexData;
+float ***densityData,     ***magSusData,      ***remSusDecData,
+      ***remSusAziData,   ***remSusStrData,   ***aniSusDipData,
+      ***aniSusDDirData,  ***aniSusPitchData, ***aniSusAxis1Data,
+      ***aniSusAxis2Data, ***aniSusAxis3Data;
+FILE *topo_out;
+#endif
+{
+   int numEvents = countObjects(NULL_WIN);
+   unsigned int rockType;
+   int eventIndex;
+	double zLocBase;
+   int x, y,codes;
+   double ***xyzLoc = NULL, **topoOverlay = NULL;
+   STORY **histoire = NULL;
+   int tempcode;
+
+	zLocBase = (double) zLoc - blockSize;
+
+	 /* NOTE all the +1's on array dimensions and
+    ** Index's is because the original reverseEvents
+    ** call that is still used requires the xyzLoc
+    ** and historie arrays to start at 1 (a hang over
+    ** from when this code was in "Fortran" no less.
+    ** Anyway the xyz Locations are also from index 1
+    ** that is why xyzLoc has a third dim of 4 and not 3
+    */
+
+   xyzLoc = (double ***) create3DArray (nx+1, ny+1, 4, sizeof(double));
+   histoire = (STORY **) create2DArray (nx+1, ny+1, sizeof(STORY));
+   if (!xyzLoc || !histoire)
+   {
+      destroy3DArray ((char ***) xyzLoc, nx+1, ny+1, 4);
+      destroy2DArray ((char **) histoire, nx+1, ny+1);
+      if (batchExecution)
+         fprintf (stderr, "Error, Not enough memory to calculate block Layer");
+      else
+         //xvt_dm_post_error ("Error, Not enough memory to calculate block Layer");
+      return (FALSE);
+   }
+
+                       /* *********************************** */
+                       /* Allocate Topography if it is needed */
+   if (useTopo && geologyOptions.useTopography)
+   {
+      topoOverlay = (double **) create2DArray (nx+1, ny+1, sizeof(double));
+      overlayTopoOnArray (topographyMap, TopoCol, TopoRow,
+                          TopomapYW, TopomapYE, TopomapXW, TopomapXE,
+                          topoOverlay, nx, ny,
+                          yLoc-blockSize/2.0, (yLoc-blockSize/2.0) + (ny)*blockSize,  /* give full extents, not 1/2 blocksize in */
+                          xLoc-blockSize/2.0, (xLoc-blockSize/2.0) + (nx)*blockSize);
+/*
+                          yLoc-blockSize, yLoc + (ny-1)*blockSize,
+                          xLoc-blockSize, xLoc + (nx-1)*blockSize);
+*/
+	}
+
+                                    /* **************** */
+                                    /* Initialise Layer */
+   for (x = 0; x < nx; x++)
+   {
+      for (y = 0; y < ny; y++)
+      {
+         xyzLoc[x+1][y+1][1] = (x*blockSize) + xLoc;
+         xyzLoc[x+1][y+1][2] = ((ny-y-1)*blockSize) + yLoc;
+         xyzLoc[x+1][y+1][3] = zLoc;
+         histoire[x+1][y+1].again = TRUE;
+         izero(histoire[x+1][y+1].sequence);
+      }
+   }
+
+   if (abortLongJob ())
+      return (FALSE);
+                       /* ************************************ */
+                       /* Do the forward modeling of the layer */
+   reverseEvents (xyzLoc, histoire, nx, ny);
+   for (y = 0; y < ny; y++)
+    {
+       for (x = 0; x < nx; x++)
+       {
+    	   for(codes=0;codes<numEvents;codes++)
+    		   {
+    		   	   if(G2Bits(histoire[x+1][y+1].sequence,codes) == BASE_STRAT)
+    		   		   tempcode=0;
+    		   	   else if(G2Bits(histoire[x+1][y+1].sequence,codes) == UNC_STRAT)
+		   		   	   tempcode=3;
+    		   	   else if(G2Bits(histoire[x+1][y+1].sequence,codes) == FAULT1_STRAT)
+		   		   	   tempcode=2;
+    		   	   else if(G2Bits(histoire[x+1][y+1].sequence,codes) == IGNEOUS_STRAT)
+		   		   	   tempcode=5;
+    		   	   else if(G2Bits(histoire[x+1][y+1].sequence,codes) == FAULT2_STRAT)
+		   		   	   tempcode=7;
+    		   	   else if(G2Bits(histoire[x+1][y+1].sequence,codes) == FAULT3_STRAT)
+		   		   	   tempcode=8;
+    		   	   else
+		   		   	   tempcode=9;
+
+    		   	   fprintf(topo_out,"%0d",tempcode);
+    		   }
+
+    		   fprintf(topo_out,"\t");
+       }
+	   fprintf(topo_out,"\n");
+      }
+   fprintf(topo_out,"\n");
+
+                       /* ***************************** */
+                       /* Assign the block layer values */
+   for (y = 0; y < ny; y++)
+   {
+      for (x = 0; x < nx; x++)
+      {
+								/* Clear block if any of it is above topo */
+         if (topoOverlay && (zLocBase > topoOverlay[x+1][y+1]))
+            blockLayer[x][y] = (LAYER_PROPERTIES *) NULL;
+         else
+         {
+            taste(numEvents, histoire[x+1][y+1].sequence,
+                             &rockType, &eventIndex);
+            blockLayer[x][y] = whichLayer (eventIndex, xyzLoc[x+1][y+1][1],
+                                        xyzLoc[x+1][y+1][2], xyzLoc[x+1][y+1][3]);
+         }
+      }
+   }
+
+                       /* ************************************* */
+                       /* Assign Deformable Remenance if needed */
+   if (deformRemanence && remSusDecData && remSusAziData)
+      calcDeformRemanence(blockLayer, xyzLoc, histoire, nx, ny,
+                remSusDecData[zIndex], remSusAziData[zIndex]);
+
+                       /* ************************************* */
+                       /* Assign Deformable Remenance if needed */
+   if (deformAnisotropy && aniSusDipData && aniSusDDirData && aniSusPitchData)
+      calcDeformAnisotropy(blockLayer, xyzLoc, histoire, nx, ny,
+                aniSusDipData[zIndex], aniSusDDirData[zIndex], aniSusPitchData[zIndex]);
+
+                       /* ******************************************** */
+                       /* Assign The storing arrays the correct values */
+   assignLayerInBlockModels (blockLayer,
+               zIndex, nx, ny, numProps, rockProps,
+               deformRemanence,  deformAnisotropy,
+               indexData, densityData, magSusData, remSusDecData,
+               remSusAziData,   remSusStrData,   aniSusDipData,
+               aniSusDDirData,  aniSusPitchData, aniSusAxis1Data,
+               aniSusAxis2Data, aniSusAxis3Data);
+
+                       /* ********************************* */
+                       /* Assign Alteration Zones if needed */
+   if (alterationZones)
+      calcAlterationZone(blockLayer, xyzLoc, histoire,
+               zIndex, nx, ny,  numProps,        rockProps,
+               densityData,     magSusData,      remSusDecData,
+               remSusAziData,   remSusStrData,   aniSusDipData,
+               aniSusDDirData,  aniSusPitchData, aniSusAxis1Data,
+               aniSusAxis2Data, aniSusAxis3Data);
+
+                                 /* ************************ */
+                                 /* Free any memory Alocated */
+   if (xyzLoc)
+      destroy3DArray ((char ***) xyzLoc, nx+1, ny+1, 4);
+   if (histoire)
+      destroy2DArray ((char **) histoire, nx+1, ny+1);
+   if (topoOverlay)
+      destroy2DArray ((char **) topoOverlay, nx, ny);
+
+#ifdef _MPL
+   printf(" Done."); fflush (stdout);
+#endif
+
+   return (TRUE);
+}
+
+
+/* ======================================================================
 FUNCTION        calcBlockLayer
 
 DESCRIPTION
@@ -2584,10 +2790,10 @@ LAYER_PROPERTIES **layerProps;
    fprintf (fo, "INDEXED DATA FORMAT = %s\n", indexedPtr);
    if (indexCalc)
    {
-      fprintf (fo, "NUM ROCK TYES = %d\n", numProps);
+      fprintf (fo, "NUM ROCK TYPES = %d\n", numProps);
       for (i = 0; i < numProps; i++)
       {
-         fprintf (fo, "ROCK DEFINITION = %d\n", i+1);
+         fprintf (fo, "ROCK DEFINITION %s = %d\n", layerProps[i]->unitName,i+1);
          if (densityCalc)
             fprintf (fo, "\tDensity = %lf\n", layerProps[i]->density);
 

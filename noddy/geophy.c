@@ -954,6 +954,8 @@ DOUBLE_2D_IMAGE *magImage, *grvImage;
    int defRem, defAni, altZones;
    double xLoc, yLoc, zLoc;
    int calcRangeInCubes;
+   FILE *outfile;
+   char topofname[100];
    
    strcpy (memLabel, "Anom");
      
@@ -1109,6 +1111,13 @@ DOUBLE_2D_IMAGE *magImage, *grvImage;
          jobLength = jobLength + totalY;
          initLongJob (0, jobLength, "Calculating Block...", memLabel);
          break;
+      case (TOPOLOGY):
+         readBlocks = FALSE; calcBlocks = TRUE;  writeBlocks = TRUE;
+         calcMag    = FALSE; calcGrav   = FALSE; xyzCalc = FALSE;
+
+         jobLength = jobLength + totalY;
+         initLongJob (0, jobLength, "Calculating Block...", memLabel);
+         break;
       default:
          memManagerFreeAfterLabel (memLabel);
          return (FALSE);
@@ -1182,6 +1191,12 @@ DOUBLE_2D_IMAGE *magImage, *grvImage;
    
                                      /* *************** */
                                      /* Calculate Block */
+
+   if(calcType == TOPOLOGY)
+   {
+	   sprintf(topofname,"%s.g21",outputFilename);
+	   outfile=fopen(topofname,"w");
+   }
    if (calcBlocks)
    {
       LAYER_PROPERTIES ***blockLayer;
@@ -1198,7 +1213,19 @@ DOUBLE_2D_IMAGE *magImage, *grvImage;
          {
             zLoc = zLoc - cubeSizes[z]/2.0;
 
-            if (!calcBlockLayer (blockLayer,
+            if(calcType == TOPOLOGY)
+            {
+            	calcTopology(blockLayer,
+                        layerDimensions[z][0], layerDimensions[z][1],
+                        xLoc, yLoc, zLoc, cubeSizes[z], geologyOptions.useTopography,
+                        numProps, stratArray, defRem, defAni, altZones, z, indexData,
+                        densityData,     magSusData,      remSusDecData,
+                        remSusAziData,   remSusStrData,   aniSusDipData,
+                        aniSusDDirData,  aniSusPitchData, aniSusAxis1Data,
+                        aniSusAxis2Data, aniSusAxis3Data, outfile);
+            	write_rocks(layerDimensions[z][0], layerDimensions[z][1],numLayers, outputFilename);
+            }
+            else if (!calcBlockLayer (blockLayer,
                layerDimensions[z][0], layerDimensions[z][1],
                xLoc, yLoc, zLoc, cubeSizes[z], geologyOptions.useTopography,
                numProps, stratArray, defRem, defAni, altZones, z, indexData,
@@ -1219,6 +1246,10 @@ DOUBLE_2D_IMAGE *magImage, *grvImage;
       }
    }
    
+   if(calcType == TOPOLOGY)
+   {
+	   fclose(outfile);
+   }
                                      /* ******************** */
                                      /* Write Out Block File */
    if (writeBlocks)
