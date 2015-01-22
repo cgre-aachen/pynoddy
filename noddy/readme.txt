@@ -16,10 +16,13 @@ SURFACES
 BLOCK_GEOPHYS
 BLOCK_SURFACES
 ALL 
+TOPOLOGY
 
 If SURFACES, BLOCK_SURFACES, or ALL is selected, the resulting DXF file has each surface (and triangle) coded according to the following information-
 For discontinuities (coded as faults=1,  unconformities=2, dykes=4, plugs=8, stratigraphic=16): age of discontinuity, code of discontinuity ,contiguous volume code #1, contiguous volume code #2,rock #1 adjacent to triangle,rock #2 adjacent to triangle 
 For stratigraphic surfaces: stratigraphic series code, unit in series, lithological code, rock #1 adjacent to triangle,rock #2 adjacent to triangle 
+
+If TOPOLOGY is chosen, it provides the block model plus a block model of unique topological codes for each contiguous area, for use in subsequent topological analysis.
 
 This code is open source blah blah blah...
 
