@@ -778,4 +778,9 @@ int write_rocks(int nx, int ny, int nz, double xoff, double yoff, double zoff, d
 
    fclose (novella);
 
+   sprintf(shortfname,"%s.g22",outputFilename);
+   novella=fopen(shortfname,"w");
+   fprintf(novella,"%d\n",allLayers-1);
+   fclose (novella);
+
 }
