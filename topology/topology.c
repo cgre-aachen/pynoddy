@@ -622,7 +622,7 @@ void unique_models(char *root, int files, int nlitho) //find topologically uniqu
 	{
     	sprintf(rootname,"%s_%04d_am.bin",root,n);
     	in=fopen(rootname,"rb");
-    	fread(&(am[n][0]), sizeof(char), nlitho*nlitho, in);
+    	fread(&(am[n-1][0]), sizeof(char), nlitho*nlitho, in);
     	//printf("%d %s %d %s\n",nlitho,rootname,n,&(am[n]));
         fclose(in);
 	}
@@ -679,7 +679,7 @@ void maxLitho(char *root, int *nlitho, int files) // find max litho number acros
 
     	fclose(in);
    }
-   //printf("max litho %d\n",*nlitho);
+   printf("max litho %d\n",*nlitho);
 }
 
 /************************************************************************
