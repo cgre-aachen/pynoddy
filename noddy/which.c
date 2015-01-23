@@ -703,7 +703,7 @@ int getStratMax (int stratEvent)
 
 
 
-int write_rocks(int nx, int ny, int nz, char *outputFilename)
+int write_rocks(int nx, int ny, int nz, double xoff, double yoff, double zoff, double blocksize, char *outputFilename)
 {
    int numLayers, layer;
    OBJECT *event;
@@ -719,6 +719,7 @@ int write_rocks(int nx, int ny, int nz, char *outputFilename)
    novella=fopen(shortfname,"w");
    fprintf(novella,"num events %d\n",numEvents);
    fprintf(novella,"dimensions %d %d %d\n",nx,ny,nz);
+   fprintf(novella,"offset scale %lf %lf %lf %lf\n",xoff,  yoff,  zoff,  blocksize);
 
 
    for(events=0;events<numEvents;events++)

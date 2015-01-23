@@ -1223,7 +1223,7 @@ DOUBLE_2D_IMAGE *magImage, *grvImage;
                         remSusAziData,   remSusStrData,   aniSusDipData,
                         aniSusDDirData,  aniSusPitchData, aniSusAxis1Data,
                         aniSusAxis2Data, aniSusAxis3Data, outfile);
-            	write_rocks(layerDimensions[z][0], layerDimensions[z][1],numLayers, outputFilename);
+            	write_rocks(layerDimensions[z][0], layerDimensions[z][1],numLayers, xLoc, yLoc, zLoc, blockView->geophysicsCubeSize, outputFilename);
             }
             else if (!calcBlockLayer (blockLayer,
                layerDimensions[z][0], layerDimensions[z][1],
