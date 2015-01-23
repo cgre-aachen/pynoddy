@@ -67,13 +67,13 @@ char **argv;
 
      maxLitho(root, &nlitho, files);
 
-     for(n=0;n<files;n++)
+     for(n=1;n<files+1;n++)
      {
          sprintf(rootname,"%s_%04d",root,n);
     	 read_header(rootname, &nx,&ny,&nz,&nevents, &xOff,&yOff,&zOff,&scale);
 
-         printf("%d %d %d %d\n", nevents, nx,ny,nz);
-         printf("%lf %lf %lf %lf\n", xOff,yOff,zOff,scale);
+         //printf("%d %d %d %d\n", nevents, nx,ny,nz);
+         //printf("%lf %lf %lf %lf\n", xOff,yOff,zOff,scale);
 
          topo = (TOPO ***) topotrimat(0,nx,0,ny,0,nz);
          ucodes = (TOPO *) topomat(0,ARRAYSIZE);
@@ -113,7 +113,7 @@ void read_header(char *rootname, int *nx, int *ny, int *nz, int *nevents, double
     char  dum1[250],dum2[250];
 
 	sprintf(fname, "%s.g20",rootname);
-	printf("%s %s\n",fname, rootname);
+	//printf("%s %s\n",fname, rootname);
 
 	in=fopen(fname, "r");
 
@@ -206,7 +206,7 @@ void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes,
 						break;
 					}
 
-	printf("%d\n",*ncodes);
+	//printf("%d\n",*ncodes);
 
 	for(n=0;n<*ncodes;n++)
 	{
@@ -214,7 +214,7 @@ void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes,
 		centroids[n].x=centroids[n].x/centroids[n].npoints;
 		centroids[n].y=centroids[n].y/centroids[n].npoints;
 		centroids[n].z=centroids[n].z/centroids[n].npoints;
-		printf("%d\t%d_%s\t%d\t%lf\t%lf\t%lf\n",n,ucodes[n].litho,ucodes[n].code, centroids[n].npoints, centroids[n].x,centroids[n].y,centroids[n].z);
+		//printf("%d\t%d_%s\t%d\t%lf\t%lf\t%lf\n",n,ucodes[n].litho,ucodes[n].code, centroids[n].npoints, centroids[n].x,centroids[n].y,centroids[n].z);
 	}
 
 }
@@ -476,10 +476,10 @@ void calc_topology(struct topology ***topo, int nx, int ny, int nz, int nevents,
 				}
 			}
 
-	printf("%d %d\n",*npairs, nevents);
+	//printf("%d %d\n",*npairs, nevents);
 
-	for(n=0;n<*npairs;n++)
-		printf("%d\t%d\t%d\t%d_%s\t%d_%s\t%d\n",n,pairs[n][0].diffage,pairs[n][0].difftype,pairs[n][0].litho,pairs[n][0].code,pairs[n][1].litho,pairs[n][1].code,pairsize[n]);
+	//for(n=0;n<*npairs;n++)
+		//printf("%d\t%d\t%d\t%d_%s\t%d_%s\t%d\n",n,pairs[n][0].diffage,pairs[n][0].difftype,pairs[n][0].litho,pairs[n][0].code,pairs[n][1].litho,pairs[n][1].code,pairsize[n]);
 
 
 }
@@ -589,13 +589,13 @@ void adjacency_matrices(char *rootname, struct topology ***topo, struct topology
     {
     	for(ylitho=1;ylitho<nlitho+1;ylitho++)
     	{
-    		printf("%d\t",amn[xlitho][ylitho]);
+    		//printf("%d\t",amn[xlitho][ylitho]);
  			fprintf(out_amn,"%04d\t",amn[xlitho][ylitho]);
  			fwrite(&(am_code[xlitho][ylitho]), sizeof(char), 1, out_am);
 
     	}
 
-		printf("\n");
+		//printf("\n");
 		fprintf(out_amn,"\n");
     }
 
@@ -618,12 +618,12 @@ void unique_models(char *root, int files, int nlitho) //find topologically uniqu
     am = (unsigned char **) cbimat(0,files,0,nlitho*nlitho);
     uam = (unsigned char **) cbimat(0,files,0,nlitho*nlitho);
 
-	for(n=0;n<files;n++)
+	for(n=1;n<files+1;n++)
 	{
     	sprintf(rootname,"%s_%04d_am.bin",root,n);
     	in=fopen(rootname,"rb");
     	fread(&(am[n][0]), sizeof(char), nlitho*nlitho, in);
-    	printf("%d %s %d %s\n",nlitho,rootname,n,&(am[n]));
+    	//printf("%d %s %d %s\n",nlitho,rootname,n,&(am[n]));
         fclose(in);
 	}
 
@@ -665,10 +665,12 @@ void maxLitho(char *root, int *nlitho, int files) // find max litho number acros
 
     *nlitho=0;
 
-    for(n=0;n<files;n++)
+    for(n=1;n<files+1;n++)
     {
     	sprintf(rootname,"%s_%04d.g22",root,n);
-    	in=fopen(rootname,"r");
+    	//printf("%s\n",rootname);
+
+   	    in=fopen(rootname,"r");
 
     	fscanf(in,"%d",&localnlitho);
 
@@ -677,8 +679,7 @@ void maxLitho(char *root, int *nlitho, int files) // find max litho number acros
 
     	fclose(in);
    }
-   printf("max litho %d\n",*nlitho);
-
+   //printf("max litho %d\n",*nlitho);
 }
 
 /************************************************************************
