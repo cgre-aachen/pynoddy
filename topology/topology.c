@@ -1,10 +1,10 @@
 /*
  ============================================================================
- Name        : t3.c
- Author      : 
- Version     :
- Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
+ Name        : topology.c
+ Author      : Mark Jessell
+ Version     : 1.0
+ Copyright   : No restrictions
+ Description : Voxel-based topology calculations for Noddy models
  ============================================================================
  */
 
@@ -91,6 +91,13 @@ char **argv;
          gocad_network(rootname, topo, ucodes, ncodes, pairs, pairsize, npairs, centroids);
 
          adjacency_matrices(rootname, topo, ucodes, ncodes, pairs, pairsize, npairs, centroids, nlitho);
+
+         free_trimat((char *) topo,0,nx,0,ny,0,nz);
+         free_mat((char *) ucodes,0,ARRAYSIZE);
+         free_mat((char *) centroids, 0,ARRAYSIZE);
+         free_bimat((char *) pairs, 0,ARRAYSIZE,0,2);
+         free_mat((char *) pairsize, 0,ARRAYSIZE);
+
      }
 
      unique_models(root,files,nlitho);
@@ -595,6 +602,9 @@ void adjacency_matrices(char *rootname, struct topology ***topo, struct topology
 	fclose(out_amn);
  	fclose(out_am);
 
+    free_bimat(amn, 0,nlitho+1,0,nlitho+1);
+    free_bimat(am_code, 0,nlitho+1,0,nlitho+1);
+
 }
 
 void unique_models(char *root, int files, int nlitho) //find topologically unique models
@@ -642,6 +652,8 @@ void unique_models(char *root, int files, int nlitho) //find topologically uniqu
 
 	fclose(out);
 
+    free_bimat(am, 0,files,0,nlitho*nlitho);
+    free_bimat(uam, 0,files,0,nlitho*nlitho);
 
 }
 
@@ -893,4 +905,42 @@ int nrl,nrh;
    {
       return m;
    }
+}
+
+
+void free_trimat(m,nrl,nrh,ncl,nch,nzl,nzh)
+char ***m;
+int nrl,nrh,ncl,nch,nzl,nzh;
+{
+   register int i, j;
+
+
+   for(i=nrl;i<=nrh;i++)
+   {
+      for(j=ncl;j<=nch;j++)
+      {
+         free((char *) m[i][j]);
+      }
+      free ((char *) m[i]);
+   }
+
+   free ((char *) m);
+}
+
+void free_bimat(m,nrl,nrh,ncl,nch)
+char **m;
+int nrl,nrh,ncl,nch;
+{
+   register int i;
+
+   for(i=nrh;i>=nrl;i--) free((struct topology *) (m[i]+ncl));
+   free((char *) (m+nrl));
+}
+
+void free_mat(m,nrl,nrh)
+char **m;
+int nrl,nrh;
+{
+
+   free((char *) (m));
 }
