@@ -246,8 +246,11 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         # return tmp_out.block
         
         # remove temorary file
+        # find all files that match base name of output file (depends on Noddy compute type!)
         import os
-        os.remove(tmp_out_file)
+        for f in os.listdir('.'):
+            if os.path.splitext(f)[0] == tmp_out_file:
+                os.remove(f)
     
 class SensitivityAnalysis(Experiment):
     '''Sensitivity analysis experiments for kinematic models
