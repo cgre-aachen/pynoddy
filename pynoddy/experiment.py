@@ -39,7 +39,7 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         '''Combination of input and output methods for complete kinematic experiments with NOddy
         
         **Optional Keywords**:
-            - *his_file* = string : filename of Noddy history input file
+            - *history* = string : filename of Noddy history input file
         '''
         super(Experiment, self).__init__(history)
 #        super(Experiment, self).test()
@@ -147,25 +147,30 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         """
         store_params = kwds.get("store_params", True)
         # create a dictionary for event parameter changes:
+        # The *changes_dict* has the structure:
+        # changes_dict[event_id][property] = additive value
+
         param_changes = {}
-        for param in self.param_stats:
+        # determine events with defined statistics
+        for key, param in self.param_stats.items():
             # assign new value, according to statistics
-            param_changes[param['event']] = {}
-            # get original value:
-            ori_val = self.events[param['event']].properties[param['parameter']]
-            # check distribution type:
-            if param.has_key("type"):
-                if param['type'] == 'normal':
+            param_changes[key] = {}
+            # now: determine properties in event
+            for subkey, subparam in param.items():
+                ori_val = self.events[key].properties[subkey]
+                # now: determine statistics
+                if subparam['type'] == 'normal':
                     # draw value of normal distribution:
-                    mean = param.get("mean", ori_val) # default mean is original value
-                    if not param.has_key('stdev'):
+                    mean = subparam.get("mean", ori_val) # default mean is original value
+                    if not subparam.has_key('stdev'):
                         raise AttributeError("Please assign standard deviation value (as 'stdev' entry)!")
-                    stdev = param.get("stdev")
+                    stdev = subparam.get("stdev")
                     random_val = np.random.normal(mean, stdev)
                     # assign relative change
-                    param_changes[param['event']][param['parameter']] = random_val - ori_val
+                    param_changes[key][subkey] = random_val - ori_val
                 else:
-                    raise AttributeError("Sampling for type %s not yet implemented, sorry." % param['type'])
+                    raise AttributeError("Sampling for type %s not yet implemented, sorry." % subparam['type'])
+
         # assign changes to model:
         self.change_event_params(param_changes)
         # store results for later analysis
@@ -237,6 +242,7 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         # 4. run noddy
         import pynoddy
         import pynoddy.output
+        import os
         
         pynoddy.compute_model(tmp_his_file, tmp_out_file)
         # 5. open output
@@ -247,7 +253,10 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         
         # remove temorary file
         import os
-        os.remove(tmp_out_file)
+        # find all files that match base name of output file (depends on Noddy compute type!)
+        for f in os.listdir('.'):
+            if os.path.splitext(f)[0] == tmp_out_file:
+                os.remove(f)
     
 class SensitivityAnalysis(Experiment):
     '''Sensitivity analysis experiments for kinematic models
@@ -567,8 +576,16 @@ class SensitivityAnalysis(Experiment):
             plt.show()
 
 
-
-
+if __name__ == '__main__':
+    # run module - only for testing purposes
+    import os
+    print os.environ['PATH']
+    os.environ['PATH'] += ":/Users/flow/bin"
+    print os.environ['PATH']
+    his_filename = "../examples/two_faults_sensi.his"
+    his_filename = "../examples/simple_two_faults.his"
+    ex1 = Experiment(history = his_filename)
+    ex1.plot_section()
 
 
 
