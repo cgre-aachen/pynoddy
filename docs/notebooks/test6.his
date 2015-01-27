@@ -1,5 +1,5 @@
-#Filename = simple_model.his 
-#Date Saved = 27/1/2015 15:32:59
+#Filename = test6.his 
+#Date Saved = 27/1/2015 12:4:58
 FileType = 111
 Version = 7.11
 
@@ -772,7 +772,7 @@ Event #3	= FAULT
 	Length Y	= 7000.00
 	Length Z	= 5000.00
 	Geology Cube Size	=  50.00
-	Geophysics Cube Size	=  50.00
+	Geophysics Cube Size	= 50.00
 
 #GeologyOptions
 	Scale	=  10.00

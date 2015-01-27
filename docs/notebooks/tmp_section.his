@@ -1,5 +1,5 @@
 #Filename = tmp_section.his 
-#Date Saved = 27/1/2015 11:47:10
+#Date Saved = 27/1/2015 15:33:29
 FileType = 111
 Version = 7.11
 
@@ -11,13 +11,13 @@ No of Events	= 0
 	Current View	= 0
 	NAME	= Default
     Origin X    =   0.00
-    Origin Y    =   3490.00
+    Origin Y    =   3475.00
     Origin Z    =   5000.00
     Length X    =   10000.00
-    Length Y    =   20.00
+    Length Y    =   50.00
     Length Z    =   5000.00
 	Geology Cube Size	=  50.00
-	Geophysics Cube Size	=  20.00
+	Geophysics Cube Size	=  50.00
 
 #GeologyOptions
 	Scale	=  10.00

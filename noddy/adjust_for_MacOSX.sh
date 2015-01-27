@@ -6,6 +6,7 @@ touch malloc.h
      mv $fl $fl.old
      LANG=C sed 's/<malloc.h>/"malloc.h"/g' $fl.old > $fl
      rm -f $fl.old
+
      done
      for fl in *.h; do
      mv $fl $fl.old
