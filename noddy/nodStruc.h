@@ -175,7 +175,7 @@ enum {    LINE,     TOPOMAP,  BLOCK,    STRATKEY,
                           /* Anomilies that can be calculated */
 enum {    ANOM,               ANOM_FROM_BLOCK,
           BLOCK_AND_ANOM,     BLOCK_ONLY,
-          XYZ_ANOM
+          XYZ_ANOM, TOPOLOGY
 };
                           /* PROFILES THAT OBJECTS CAN HAVE */
 enum {    STANDARD_PROFILE,   ALTERATION_PROFILE
