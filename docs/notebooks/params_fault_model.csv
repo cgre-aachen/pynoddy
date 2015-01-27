@@ -1,0 +1,7 @@
+event;parameter;min;max;initial;type;stdev;mean
+2;Dip;55;65;60;normal;10;60
+2;Dip Direction;85;95;90;normal;10;90
+2;Slip;900;1100;1000;normal;500;1000
+3;Dip;55;65;60;normal;10;60
+3;Dip Direction;265;275;270;normal;10;270
+3;Slip;900;1100;1000;normal;500;1000
