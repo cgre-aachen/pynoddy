@@ -22,9 +22,16 @@ def compute_model(history, output_name, **kwds):
     **Optional Keywords**:
         - *sim_type* = 'BLOCK', 'GEOPHYSICS', 'SURFACES', 'BLOCK_GEOPHYS', 'BLOCK_SURFACES', 'ALL':
             type of Noddy simulation (default: 'BLOCK')
+        - *program_name* = string : name of program (default: noddy.exe or noddy, both checked)
     """
     sim_type = kwds.get("sim_type", 'BLOCK')
-    out =  subprocess.Popen(['noddy.exe', history, output_name, sim_type], 
-                       shell=False, stderr=subprocess.PIPE, 
-                       stdout=subprocess.PIPE).stdout.read()
-    # if out != "\n": print out
+    
+    try:
+        out =  subprocess.Popen(['noddy.exe', history, output_name, sim_type], 
+                           shell=False, stderr=subprocess.PIPE, 
+                           stdout=subprocess.PIPE).stdout.read()
+    except OSError:
+        out =  subprocess.Popen(['noddy', history, output_name, sim_type], 
+                           shell=False, stderr=subprocess.PIPE, 
+                           stdout=subprocess.PIPE).stdout.read()
+            
