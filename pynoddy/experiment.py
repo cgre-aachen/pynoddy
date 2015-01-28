@@ -120,7 +120,12 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
             l = line.rstrip().split(delim)
             # set up parameter dictionary
             param_dict = {}
+            if l[0] == '': break # end of entries
             for ele in header:
+                if ele == '': continue # empty column in header
+                if ele == 'event':
+                    param_dict[ele] = int(l[header.index(ele)])
+                    continue
                 try:
                     param_dict[ele] = float(l[header.index(ele)])
                 except ValueError: # not a number
@@ -183,6 +188,8 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
                     param_changes[param['event']][param['parameter']] = random_val - ori_val
                 else:
                     raise AttributeError("Sampling for type %s not yet implemented, sorry." % param['type'])
+            else:
+                raise AttributeError("Please define type of parameter statistics ('type' keyword in table)")
         # assign changes to model:
         self.change_event_params(param_changes)
         # store results for later analysis
