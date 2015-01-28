@@ -136,6 +136,23 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
     def reset_base(self):
         """Set events back to base model (stored in self.base_events)"""
         self.events = self.base_events.copy()
+        
+        
+    def set_random_seed(self, random_seed):
+        """Set random seed for reproducible experiments
+        
+        **Arguments**:
+            - *random_seed* = int (or array-like) : define seed
+        """
+        self.seed = random_seed
+        # apply random seed
+        np.random.seed(random_seed)
+        
+    def reset_random_seed(self):
+        """Reset random seed to defined value (stored in self.seed, set with self.set_random_seed)"""
+        if not hasattr(self, 'seed'):
+            raise AttributeError("Random seed not defined! Set with self.set_random_seed()")
+        np.random.seed(self.seed)
 
         
     def random_perturbation(self, **kwds):
@@ -216,16 +233,35 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         self.get_origin()
         z_min = kwds.get("z_min", self.origin_z)
         z_max = kwds.get("z_max", self.extent_z)
-        x_min = self.origin_x
-        x_max = self.extent_x
-        y_pos = (self.extent_y - self.origin_y - resolution) / 2. 
+
         # 1. create copy
         import copy
         tmp_his = copy.deepcopy(self)
+
         # 2. set values
-        tmp_his.set_origin(x_min, y_pos, z_min) # z_min)
-        tmp_his.set_extent(x_max, resolution, z_max)
-        tmp_his.change_cube_size(resolution)
+        
+        if direction == 'y':
+            x_min = self.origin_x
+            x_max = self.extent_x
+            if position == 'center' or position == 'centre':
+                y_pos = (self.extent_y - self.origin_y - resolution) / 2. 
+            else: # set position excplicity to cell
+                y_pos = position
+            tmp_his.set_origin(x_min, y_pos, z_min) # z_min)
+            tmp_his.set_extent(x_max, resolution, z_max)
+            tmp_his.change_cube_size(resolution)
+
+        elif direction == 'x':
+            y_min = self.origin_y
+            y_max = self.extent_y
+            if position == 'center' or position == 'centre':
+                x_pos = (self.extent_x - self.origin_x - resolution) / 2. 
+            else: # set position excplicity to cell
+                x_pos = position
+            tmp_his.set_origin(x_pos, y_min, z_min) # z_min)
+            tmp_his.set_extent(resolution, y_max, z_max)
+            tmp_his.change_cube_size(resolution)
+           
         
         if model_type == 'base':
             tmp_his.events = self.base_events.copy()
@@ -242,7 +278,7 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         # 5. open output
         tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)
         # 6. 
-        tmp_out.plot_section(layer_labels = self.model_stratigraphy, **kwds)
+        tmp_out.plot_section(direction = direction, player_labels = self.model_stratigraphy, **kwds)
         # return tmp_out.block
         
         # remove temorary file
