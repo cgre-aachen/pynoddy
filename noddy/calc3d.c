@@ -880,7 +880,7 @@ char *filename;
 			for (x = 0; x < xMax; x++)
 				if(( x==0 || y==0 || z==0 || x==xMax-1 || y==yMax-1 || z==zMax -1 ) && bbox==1)
 				{
-					dots[y+1][x+1][3] = -99999999999999999999999999; /* to provide bounding box triangles mwj_hack*/
+					dots[y+1][x+1][3] = -99999999999999999999999999.0; /* to provide bounding box triangles mwj_hack*/
 					histoire[z+1][y+1][x+1].again=1;
 					histoire[z+1][y+1][x+1].sequence[0]=(unsigned char)3;
 				}
