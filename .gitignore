@@ -67,3 +67,4 @@ noddy.exe
 docs/notebooks/SALib-sensitivity-analysis_files
 9-Sensitivity-Analysis-checkpoint.ipynb
 8-Experiments-checkpoint.ipynb
+*.o
