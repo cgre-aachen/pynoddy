@@ -293,15 +293,10 @@ class NoddyTopology(object):
         # read in data
 
         for line in ml_lines:
-			maxlitho = line 
-			print "maxlitho =", maxlitho
+			self.maxlitho = line 
+			print "maxlitho =", self.maxlitho
 		
-        am = open(self.basename + "_am.bin", "rb").read()
-        
-        for b in am:
-			print ord(b)
-				        
-        return am  
+          
     
 
         
