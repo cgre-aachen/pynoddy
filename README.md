@@ -21,6 +21,10 @@ Note:
 
 Important: the Noddy executable has to be in a directory defined in the PATH variable!!
 
+Important: the topology executable has to be in a directory defined in the PATH variable!!
+
+
+
 
 
 Documentation
