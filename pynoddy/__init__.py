@@ -7,6 +7,7 @@
 from history import NoddyHistory
 # from . import output
 from output import NoddyOutput
+from output import NoddyTopology
 
 # Some helper functions are defined directly here:
 
@@ -35,3 +36,20 @@ def compute_model(history, output_name, **kwds):
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
             
+def compute_topology(rootname, files):
+    import subprocess, os
+    """Call topology to compute the voxel topologies
+    
+    **Arguments**:
+        - *rootname* = string : rootname of sequence of calculated models
+        - *files* = int : number of calculated models
+    """
+     
+    try:
+        out =  subprocess.Popen(['topology.exe', rootname, "1"], 
+                           shell=False, stderr=subprocess.PIPE, 
+                           stdout=subprocess.PIPE).stdout.read()
+    except OSError:
+        out =  subprocess.Popen(['topology', rootname, "1"], 
+                           shell=False, stderr=subprocess.PIPE, 
+                           stdout=subprocess.PIPE).stdout.read()

@@ -272,6 +272,36 @@ class NoddyGeophysics(object):
     def read_magnetics(self):
         """Read caluclated magnetic field response"""
         pass
+
+class NoddyTopology(object):
+    """Definition to read, analyse, and visualise calculated voxel topology"""
+     
+    def __init__(self, output_name):
+        """Methods to read, analyse, and visualise calculated voxel topology
+         
+        .. note:: The voxel topology have can be computed with a keyword in the
+        function `compute_model`, e.g.:
+        ``pynoddy.compute_model(history_name, output, type = 'TOPOLOGY')``
+        """
+        self.basename = output_name
+        self.read_adjacency_matrix()
+        
+         
+    def read_adjacency_matrix(self):
+        """Read max number of lithologies aross all models"""
+        ml_lines = open(self.basename + ".g22", 'r').readlines()
+        # read in data
+
+        for line in ml_lines:
+			maxlitho = line 
+			print "maxlitho =", maxlitho
+		
+        am = open(self.basename + "_am.bin", "rb").read()
+        
+        for b in am:
+			print ord(b)
+				        
+        return am  
     
 
         
