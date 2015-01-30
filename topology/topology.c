@@ -86,7 +86,7 @@ char **argv;
 
          unique_codes(topo, &ncodes, ucodes, nx,ny,nz, xOff,yOff,zOff,scale, centroids);
 
-         calc_topology(topo, nx,ny,nz, nevents, pairs, pairsize, &npairs);
+         calc_topology(rootname, topo, nx,ny,nz, nevents, pairs, pairsize, &npairs);
 
          gocad_network(rootname, topo, ucodes, ncodes, pairs, pairsize, npairs, centroids);
 
@@ -220,8 +220,10 @@ void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes,
 }
 
 
-void calc_topology(struct topology ***topo, int nx, int ny, int nz, int nevents, struct topology **pairs, int *pairsize, int *npairs)
+void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int nz, int nevents, struct topology **pairs, int *pairsize, int *npairs)
 {
+	FILE * out;
+	char fname[250];
 	int x,y,z;
 	int n, same;
     int intcode1,intcode2, order;
@@ -478,9 +480,13 @@ void calc_topology(struct topology ***topo, int nx, int ny, int nz, int nevents,
 
 	//printf("%d %d\n",*npairs, nevents);
 
-	//for(n=0;n<*npairs;n++)
-		//printf("%d\t%d\t%d\t%d_%s\t%d_%s\t%d\n",n,pairs[n][0].diffage,pairs[n][0].difftype,pairs[n][0].litho,pairs[n][0].code,pairs[n][1].litho,pairs[n][1].code,pairsize[n]);
+	sprintf(fname, "%s.g23",rootname);
+	out=fopen(fname, "w");
 
+	for(n=0;n<*npairs;n++)
+		fprintf(out,"%03d_%s\t%03d_%s\n",pairs[n][0].litho,pairs[n][0].code,pairs[n][1].litho,pairs[n][1].code);
+
+	fclose(out);
 
 }
 
@@ -497,8 +503,8 @@ void gocad_network(char *rootname, struct topology ***topo, struct topology *uco
     sprintf(fname_vs,"%s_v.vs",rootname);
     out_vs=fopen(fname_vs,"w");
 
-    fprintf(out_pl,"GOCAD PLine 1\nHEADER {name: %s_p\n}\nPROPERTIES Difftype Num\nPROPERTY_CLASSES contact contact\n\n",rootname);
-    fprintf(out_vs,"GOCAD Vset 1\nHEADER {name: %s_v\n}\nPROPERTIES Litho  Number\nPROPERTY_CLASSES litho litho\n\n",rootname);
+    fprintf(out_pl,"GOCAD PLine 1\nHEADER {name: %s_p\n}\nPROPERTIES DiffType DiffAge Num \nPROPERTY_CLASSES DiffType DiffAge Num\n\n",rootname);
+    fprintf(out_vs,"GOCAD Vset 1\nHEADER {name: %s_v\n}\nPROPERTIES Litho  Number\nPROPERTY_CLASSES Litho  Number\n\n",rootname);
 
     for(n=0;n<ncodes;n++) // write out vertices
     {
@@ -516,8 +522,8 @@ void gocad_network(char *rootname, struct topology ***topo, struct topology *uco
   	  }
 
   	  fprintf(out_pl,"ILINE\n");
-   	  fprintf(out_pl,"PVRTX 1 %lf %lf %lf %d %d\n",centroids[pair0].x,centroids[pair0].y,centroids[pair0].z,pairs[n][0].difftype,pairsize[n]);
-   	  fprintf(out_pl,"PVRTX 2 %lf %lf %lf %d %d\n",centroids[pair1].x,centroids[pair1].y,centroids[pair1].z,pairs[n][0].difftype,pairsize[n]);
+   	  fprintf(out_pl,"PVRTX 1 %lf %lf %lf %d %d %d\n",centroids[pair0].x,centroids[pair0].y,centroids[pair0].z,pairs[n][0].difftype,pairs[n][0].diffage,pairsize[n]);
+   	  fprintf(out_pl,"PVRTX 2 %lf %lf %lf %d %d %d\n",centroids[pair1].x,centroids[pair1].y,centroids[pair1].z,pairs[n][0].difftype,pairs[n][0].diffage,pairsize[n]);
    	  fprintf(out_pl,"SEG 1 2\n");
 
     }
@@ -545,9 +551,9 @@ void adjacency_matrices(char *rootname, struct topology ***topo, struct topology
     int **amn;
     unsigned char **am_code;
 
-    sprintf(fname_am,"%s_am.bin",rootname);
+    sprintf(fname_am,"%s.g24",rootname);
     out_am=fopen(fname_am,"wb");
-    sprintf(fname_amn,"%s_amn.txt",rootname);
+    sprintf(fname_amn,"%s.g25",rootname);
     out_amn=fopen(fname_amn,"w");
 
 
@@ -612,15 +618,17 @@ void unique_models(char *root, int files, int nlitho) //find topologically uniqu
 	int n,m,uniquemodels,x,y,same;
     char rootname[250],*model;
     FILE *in,*out;
-    unsigned char **am,**uam;
+    unsigned char **am,**uam, *cam,*dam;  //one adj mat; unique adj mat; common adj mat; diff adj mat
 
 
     am = (unsigned char **) cbimat(0,files,0,nlitho*nlitho);
     uam = (unsigned char **) cbimat(0,files,0,nlitho*nlitho);
+    cam = (unsigned char *) cmat(0,nlitho*nlitho);
+    dam = (unsigned char *) cmat(0,nlitho*nlitho);
 
 	for(n=1;n<files+1;n++)
 	{
-    	sprintf(rootname,"%s_%04d_am.bin",root,n);
+    	sprintf(rootname,"%s_%04d.g24",root,n);
     	in=fopen(rootname,"rb");
     	fread(&(am[n-1][0]), sizeof(char), nlitho*nlitho, in);
     	//printf("%d %s %d %s\n",nlitho,rootname,n,&(am[n]));
@@ -652,8 +660,46 @@ void unique_models(char *root, int files, int nlitho) //find topologically uniqu
 
 	fclose(out);
 
+	memcpy(&(cam[0]),&(uam[0][0]),nlitho*nlitho);
+
+	for(x=0;x<nlitho*nlitho;x++)
+	{
+		for(m=1,same=1;m<uniquemodels;m++)
+		{
+			if(uam[m][x]!=cam[x])
+			{
+				same=0;
+				break;
+			}
+		}
+		if(same==1)
+		{
+			dam[x]='\0';
+		}
+		else
+		{
+			cam[x]='\0';
+			dam[x]='\1';
+
+		}
+	}
+
+	sprintf(rootname,"%s_cam.bin",root);
+	out=fopen(rootname,"wb");
+	fwrite(&(cam[0]), sizeof(char), nlitho*nlitho, out);
+	fclose(out);
+
+	sprintf(rootname,"%s_dam.bin",root);
+	out=fopen(rootname,"wb");
+	fwrite(&(dam[0]), sizeof(char), nlitho*nlitho, out);
+	fclose(out);
+
+
+
     free_bimat(am, 0,files,0,nlitho*nlitho);
     free_bimat(uam, 0,files,0,nlitho*nlitho);
+    free_mat(cam,nlitho*nlitho);
+    free_mat(dam, nlitho*nlitho);
 
 }
 
