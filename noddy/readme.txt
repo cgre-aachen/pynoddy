@@ -16,6 +16,7 @@ SURFACES
 BLOCK_GEOPHYS
 BLOCK_SURFACES
 TOPOLOGY
+ANOM_FROM_BLOCK
 ALL 
 
 If SURFACES, BLOCK_SURFACES, or ALL is selected, the resulting DXF file has each surface (and triangle) coded according to the following information-
@@ -42,6 +43,8 @@ If TOPOLOGY is chosen, noddy outputs a standard block model, plus three new file
 		   a code of 2300 shows a voxel created at time step 3 by an igenous event and then to one side of a fault in time step 4 (0300 would therefre have 
 		   been the other side of the fault)
 		   
-*.g22 The number of lithological units defined in the history		
+*.g22 The number of lithological units defined in the history	
+
+If ANOM_FROM_BLOCK is chosen, there should be a history file called, for example test.his, a block header called test.g00 and at least one other block model file, and the	calculation will produce both gravity and magnetics outputs based on the geophysics calculation mode set in the history file (which needs to have been used to export a block model).
 
 Code developed by Mark Jessell, Paul Manser, and Sue Farrell

@@ -3583,6 +3583,10 @@ GEOPHYSICS_OPTIONS *geophOptions;
 	   sprintf((char *) dxfname,"%s.dxf",output);
 	   doGeophysics (TOPOLOGY, viewOptions, geophOptions, output, output, NULL, 0, NULL, NULL, NULL);
    }
+   if(operation == 256)
+   {
+	   doGeophysics (ANOM_FROM_BLOCK, viewOptions, geophOptions, output, output, NULL, 0, NULL, NULL, NULL);
+   }
    //memManagerFreeAll ();
    
    return (TRUE);
