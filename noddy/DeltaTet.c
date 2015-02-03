@@ -81,6 +81,15 @@ double dbreakmids[100][2][3][3];   /* 7 because only 7 layers in one strat but n
 double dbreakdel[100][2];   /* 7 because only 7 layers in one strat but now 100 mwj*/
 double dEdgeMids[4][3];
 
+/* Added declarations for compilation on MacOSX
+ *
+ */
+
+void getseqD(double proja[3], double projb[3], int *break_code, int *Inindex2, int *Exindex2);
+void SetTriBreakLabelD(double Points[8][3], TETINFO *t, double conlist[4][3], int SeqCode[8],
+		int pp, int nn);
+
+
 /*
 ** calculate strat surfaces if 2 sets of 2 corners of tet are part of same
 ** contiguous volume

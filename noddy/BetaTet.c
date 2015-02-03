@@ -110,6 +110,28 @@ void getseq();
 double breakmp[100][2][3]; /* 7 because only 7 layers in one strat but now 100 possible! mwj*/
 int    breakline[100][3];  /* 7 because only 7 layers in one strat but now 100 possible! mwj*/
 int whichRock(double xLoc, double yLoc, double zLoc, int *rockType,int *index);
+
+/* Added JFW
+ *
+double  Points[8][3];
+TETINFO *t;
+int SeqCode[8];
+double conlist[4][3];
+
+and for setseq:
+double  Points[8][3];
+TETINFO *t;
+int SeqCode[8];
+double proj[3];
+int *break_code,*inRock2,*exRock2,*eventCode2;
+
+ */
+
+void SetTriBreakLabel(double Points[8][3], TETINFO *t, double conlist[4][3], int SeqCode[8]);
+void getseq(double Points[8][3], TETINFO *t, int SeqCode[8], double proj[3],
+		int *break_code, int *inRock2, int *exRock2, int *eventCode2);
+
+
  
 /*
 ** calculate strat surfaces if only 3 corners of tet are part of same

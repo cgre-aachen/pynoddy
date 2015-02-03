@@ -95,6 +95,15 @@ int AddEndMids();
 int AddEndMidsClean();
 #endif
 
+/* Added declarations for compilation on MacOSX
+ *
+ */
+void getseqg(double Points[8][3], TETINFO *t, int SeqCode[8], double proj[3], int vertcode,
+		int *break_code, int *inRock2, int *exRock2, int *eventCode2);
+
+void SetTriBreakLabelG( double Points[8][3], TETINFO *t, double conlist[8][3],
+		int SeqCode[8], int pCount, int vertcode);
+
 /*
 ** calculate strat surfaces if 2  corners of tet are part of same contiguous
 ** volume & 2 diff
