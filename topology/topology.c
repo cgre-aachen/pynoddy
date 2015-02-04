@@ -271,7 +271,11 @@ void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int 
 								pairs[*npairs][0].diffage=n+1;
 								codeseq1=topo[x][y][z].code[n]-'0';
 								codeseq2=topo[x][y][z+1].code[n]-'0';
-								pairs[*npairs][0].difftype=(int)fabs(codeseq1-codeseq2);
+								if(codeseq1 > codeseq2)
+									pairs[*npairs][0].difftype=codeseq1;
+								else
+									pairs[*npairs][0].difftype=codeseq2;
+
 								samecode=1;
 								break;
 							}
@@ -348,7 +352,11 @@ void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int 
 								pairs[*npairs][0].diffage=n+1;
 								codeseq1=topo[x][y][z].code[n]-'0';
 								codeseq2=topo[x][y+1][z].code[n]-'0';
-								pairs[*npairs][0].difftype=(int)fabs(codeseq1-codeseq2);
+								if(codeseq1 > codeseq2)
+									pairs[*npairs][0].difftype=codeseq1;
+								else
+									pairs[*npairs][0].difftype=codeseq2;
+								
 								samecode=1;
 								break;
 							}
@@ -425,7 +433,11 @@ void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int 
 								pairs[*npairs][0].diffage=n+1;
 								codeseq1=topo[x][y][z].code[n]-'0';
 								codeseq2=topo[x+1][y][z].code[n]-'0';
-								pairs[*npairs][0].difftype=(int)fabs(codeseq1-codeseq2);
+								if(codeseq1 > codeseq2)
+									pairs[*npairs][0].difftype=codeseq1;
+								else
+									pairs[*npairs][0].difftype=codeseq2;
+
 								samecode=1;
 								break;
 							}
@@ -484,7 +496,8 @@ void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int 
 	out=fopen(fname, "w");
 
 	for(n=0;n<*npairs;n++)
-		fprintf(out,"%03d_%s\t%03d_%s\n",pairs[n][0].litho,pairs[n][0].code,pairs[n][1].litho,pairs[n][1].code);
+		fprintf(out,"%03d_%s\t%03d_%s\t%d\t%d\t%d\n",pairs[n][0].litho,pairs[n][0].code,pairs[n][1].litho,pairs[n][1].code,pairs[n][0].difftype,pairs[n][0].diffage,pairsize[n]);
+		//fprintf(out,"%03d_%s\t%03d_%s\n",pairs[n][0].litho,pairs[n][0].code,pairs[n][1].litho,pairs[n][1].code);
 
 	fclose(out);
 
