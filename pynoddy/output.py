@@ -303,9 +303,10 @@ class NoddyTopology(object):
 if __name__ == '__main__':
     # some testing and debugging functions...
     import os
-    os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
-    NO = NoddyOutput("strike_slip_out")
-    
+#     os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
+#     NO = NoddyOutput("strike_slip_out")
+    os.chdir(r'/Users/flow/git/paper_sandstone/notebooks')
+    NO = NoddyOutput("geogrid")
     
     
     

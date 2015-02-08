@@ -17,12 +17,11 @@ To install pynoddy simply run:
 
 Note:
 
-- sufficient priviledges are required (i.e. run in sudo with MacOSX/ Linux and set permissions on Windows)
+- sufficient privileges are required (i.e. run in sudo with MacOSX/ Linux and set permissions on Windows)
 
 Important: the Noddy executable has to be in a directory defined in the PATH variable!!
 
 Important: the topology executable has to be in a directory defined in the PATH variable!!
-
 
 
 
@@ -34,12 +33,7 @@ Documentation
 Tutorial
 --------
 
-A tutorial starting with simple examples for changing the geological history and visualisation of output, as well as the implementation of stochastic simulations and uncertainty visualisation are available as interactive ipython notebooks:
-
-(todo: implement links to notebooks - host notebooks online, as well?)
-
-These notebooks are also included in the documentation as non-interactive versions.
-
+A tutorial starting with simple examples for changing the geological history and visualisation of output, as well as the implementation of stochastic simulations and uncertainty visualisation are available as interactive ipython notebooks.
 
 
 Dependencies
@@ -58,6 +52,8 @@ The uncertainty anaysis, quantification, and visualisation methods based on info
 In addition, to export model results for full 3-D visualisation with VTK, the pyevtk package is used, available on bitbucket:
 
 https://bitbucket.org/pauloh/pyevtk/src/9c19e3a54d1e?at=v0.1.0
+
+The package is automatically downloaded and installed when running python setup.py install.
 
 License
 -------
