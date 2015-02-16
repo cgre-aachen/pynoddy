@@ -260,18 +260,25 @@ class NoddyGeophysics(object):
         grv_lines = open(self.basename + ".grv", 'r').readlines()
         self.grv_header = grv_lines[:8]
         # read in data
-        print len(grv_lines) - 8
+        # print len(grv_lines) - 8
         dx = len(grv_lines) - 8
         dy = len(grv_lines[8].rstrip().split("\t"))
         self.grv_data = np.ndarray((dx, dy))
         for i,line in enumerate(grv_lines[8:]):
             self.grv_data[i,:] = np.array([float(x) for x in line.rstrip().split("\t")])
             
-            
-        
     def read_magnetics(self):
         """Read caluclated magnetic field response"""
-        pass
+        mag_lines = open(self.basename + ".mag", 'r').readlines()
+        self.mag_header = mag_lines[:8]
+        # read in data
+        # print len(mag_lines) - 8
+        dx = len(mag_lines) - 8
+        dy = len(mag_lines[8].rstrip().split("\t"))
+        self.mag_data = np.ndarray((dx, dy))
+        for i,line in enumerate(mag_lines[8:]):
+            self.mag_data[i,:] = np.array([float(x) for x in line.rstrip().split("\t")])
+
 
 class NoddyTopology(object):
     """Definition to read, analyse, and visualise calculated voxel topology"""
