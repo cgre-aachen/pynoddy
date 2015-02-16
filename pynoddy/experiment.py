@@ -18,15 +18,15 @@ import numpy as np
 import history
 import output
 
-class C(object):
-    def getx(self): return self.__x
-    def setx(self, value): 
-        if type(value) == int:
-            self.__x = value
-        else:
-            print("Please provide an integer value")
-    def delx(self): del self.__x
-    x = property(getx, setx, delx, "I'm the 'x' property.")    
+# class C(object):
+#     def getx(self): return self.__x
+#     def setx(self, value): 
+#         if type(value) == int:
+#             self.__x = value
+#         else:
+#             print("Please provide an integer value")
+#     def delx(self): del self.__x
+#     x = property(getx, setx, delx, "I'm the 'x' property.")    
 
 
 class Experiment(history.NoddyHistory, output.NoddyOutput):
@@ -47,6 +47,7 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
 #            self.load_history(kwds['history'])
 #            print("Determine events")
 #            self.determine_events()
+
     
     def update(self):
         """Update model computation"""
