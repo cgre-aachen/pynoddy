@@ -225,6 +225,36 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
     def plot_section(self, direction='y', position='center', **kwds):
         """Extended version of plot_section method from pynoddy.output class
         
+        **Arguments**:
+            - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
+            - *position* = int or 'center' : cell position of section as integer value
+                or identifier (default: 'center')
+        
+        **Optional Keywords**:
+            - *ax* = matplotlib.axis : append plot to axis (default: create new plot)
+            - *figsize* = (x,y) : matplotlib figsize
+            - *colorbar* = bool : plot colorbar (default: True)
+            - *colorbar_orientation* = 'horizontal' or 'vertical' : orientation of colorbar
+                    (default: 'vertical')
+            - *title* = string : plot title
+            - *savefig* = bool : save figure to file (default: show directly on screen)
+            - *cmap* = matplotlib.cmap : colormap (default: YlOrRd)
+            - *fig_filename* = string : figure filename
+            - *ve* = float : vertical exaggeration
+            - *layer_labels* = list of strings: labels for each unit in plot
+            - *layers_from* = noddy history file : get labels automatically from history file
+            - *resolution* = float : set resolution for section (default: self.cube_size)
+            - *model_type* = 'current', 'base' : model type (base "freezed" model can be plotted for comparison)
+        """
+        # get model as section
+        tmp_out = self.get_section(direction, position, **kwds)
+        self.determine_model_stratigraphy()
+        tmp_out.plot_section(direction = direction, layer_labels = self.model_stratigraphy, **kwds)
+ 
+ 
+    def get_section(self, direction='y', position='center', **kwds):
+        """Get geological section of the model (re-computed at required resolution) as noddy object
+        
         **Optional arguments**:
             - *resolution* = float : set resolution for section (default: self.cube_size)
             - *model_type* = 'current', 'base' : model type (base "freezed" model can be plotted for comparison)
@@ -234,7 +264,7 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         resolution = kwds.get("resolution", self.cube_size)
         model_type = kwds.get("model_type", 'current')
         
-        self.determine_model_stratigraphy()
+#         self.determine_model_stratigraphy()
         
         # code copied from noddy.history.HistoryFile.get_drillhole_data()
         self.get_origin()
@@ -285,7 +315,7 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         # 5. open output
         tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)
         # 6. 
-        tmp_out.plot_section(direction = direction, player_labels = self.model_stratigraphy, **kwds)
+#         tmp_out.plot_section(direction = direction, player_labels = self.model_stratigraphy, **kwds)
         # return tmp_out.block
         
         # remove temorary file
@@ -294,7 +324,11 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         for f in os.listdir('.'):
             if os.path.splitext(f)[0] == tmp_out_file:
                 os.remove(f)
-    
+        
+        return tmp_out
+       
+        
+        
 class SensitivityAnalysis(Experiment):
     '''Sensitivity analysis experiments for kinematic models
     
