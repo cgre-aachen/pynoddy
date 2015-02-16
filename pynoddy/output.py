@@ -20,6 +20,88 @@ class NoddyOutput(object):
         self.load_model_info()
         self.load_geology()
         
+    def __add__(self, other):
+        """Define addition as addition of grid block values
+        
+        Note: Check first if model dimensions and settings are the same
+        """
+        # check dimensions
+        self.compare_dimensions_to(other)
+        # 1. create copy
+        import copy
+        tmp_his = copy.deepcopy(self)
+        # 2. perform operation
+        tmp_his.block = self.block + other.block
+        return tmp_his
+
+    def __sub__(self, other):
+        """Define subtraction as subtraction of grid block values
+        
+        Note: Check first if model dimensions and settings are the same
+        """
+        # check dimensions
+        self.compare_dimensions_to(other)
+        # 1. create copy
+        import copy
+        tmp_his = copy.deepcopy(self)
+        # 2. perform operation
+        tmp_his.block = self.block - other.block
+        return tmp_his
+
+    def __iadd__(self, x):
+        """Augmented assignment addtition: add value to all grid blocks
+        
+        **Arguments**:
+            - *x*: can be either a numerical value (int, float, ...) *or* another
+            NoddyOutput object! Note that, in both cases, the own block is updated
+            and no new object is created (compare to overwritten addition operator!)
+        
+        Note: This method is changing the object *in place*!
+        """
+        # if x is another pynoddy output object, then add values to own grid in place!
+        if isinstance(x, NoddyOutput):
+            self.block += x.block
+        else:
+            self.block += x
+        # update grid values
+        
+        return self
+
+    def __isub__(self, x):
+        """Augmented assignment addtition: add value(s) to all grid blocks
+        
+        **Arguments**:
+            - *x*: can be either a numerical value (int, float, ...) *or* another
+            NoddyOutput object! Note that, in both cases, the own block is updated
+            and no new object is created (compare to overwritten addition operator!)
+        
+        Note: This method is changing the object *in place*!
+        """
+        # if x is another pynoddy output object, then add values to own grid in place!
+        if isinstance(x, NoddyOutput):
+            self.block -= x.block
+        else:
+            self.block -= x
+        # update grid values
+        
+        return self
+        
+        
+    def compare_dimensions_to(self, other):
+        """Compare model dimensions to another model"""
+        try:
+            assert((self.nx, self.ny, self.nz) == (other.nx, other.ny, other.nz))
+        except AssertionError:
+            raise AssertionError("Model dimensions do not seem to agree, please check!\n")
+        try:
+            assert((self.delx, self.dely, self.delz) == (other.delx, other.dely, other.delz))
+        except AssertionError:
+            raise AssertionError("Model dimensions do not seem to agree, please check!\n")
+        try:
+            assert((self.xmin, self.ymin, self.zmin) == (other.xmin, other.ymin, other.zmin))
+        except AssertionError:
+            raise AssertionError("Model dimensions do not seem to agree, please check!\n")
+        
     def load_model_info(self):
         """Load information about model discretisation from .g00 file"""
         filelines = open(self.basename + ".g00").readlines() 
@@ -182,7 +264,7 @@ class NoddyOutput(object):
 #            _ = cbar
 #        
             import matplotlib as mpl
-            bounds = np.linspace(0,np.max(section_slice),np.max(section_slice)+1)
+            bounds = np.arange(np.min(section_slice),np.max(section_slice)+1)
             cmap = plt.cm.jet
             norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
     
