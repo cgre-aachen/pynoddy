@@ -1,5 +1,5 @@
 #Filename = fold_thrust.his 
-#Date Saved = 29/11/2014 11:4:46
+#Date Saved = 10/2/2015 10:35:58
 FileType = 111
 Version = 7.11
 
@@ -1406,7 +1406,7 @@ Event #6	= FOLD
 	Length Y	= 7000.00
 	Length Z	= 5000.00
 	Geology Cube Size	= 500.00
-	Geophysics Cube Size	= 200.00
+	Geophysics Cube Size	=  50.00
 	NAME	= Geophysics View
 	Origin X	=   0.00
 	Origin Y	= -2000.00
@@ -1415,7 +1415,7 @@ Event #6	= FOLD
 	Length Y	= 12000.00
 	Length Z	= 3000.00
 	Geology Cube Size	= 100.00
-	Geophysics Cube Size	= 100.00
+	Geophysics Cube Size	=  50.00
 
 #GeologyOptions
 	Scale	=  10.00
