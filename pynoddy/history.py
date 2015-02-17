@@ -737,7 +737,7 @@ Version = 7.11
             
         Per default, the values in the dictionary are added to the event parameters.
         """
-        print changes_dict 
+#         print changes_dict 
         for key,sub_dict in changes_dict.items():
             for sub_key, val in sub_dict.items():
                 self.events[key].properties[sub_key] += val

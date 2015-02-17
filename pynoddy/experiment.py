@@ -41,7 +41,7 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         **Optional Keywords**:
             - *his_file* = string : filename of Noddy history input file
         '''
-        super(Experiment, self).__init__(history)
+        super(Experiment, self).__init__(history, **kwds)
 #        super(Experiment, self).test()
 #        if kwds.has_key("history"):
 #            self.load_history(kwds['history'])
@@ -141,7 +141,8 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
 
     def reset_base(self):
         """Set events back to base model (stored in self.base_events)"""
-        self.events = self.base_events.copy()
+        import copy
+        self.events = copy.deepcopy(self.base_events)
         
         
     def set_random_seed(self, random_seed):
@@ -160,6 +161,14 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
             raise AttributeError("Random seed not defined! Set with self.set_random_seed()")
         np.random.seed(self.seed)
 
+    def random_draw(self, **kwds):
+        """Perform a random draw for parameter distributions as defined, and calculate model
+        
+        This method is based on the model "base-state", and not the current state (as opposed to
+        the self.random_perturbation() method).
+        """
+        self.reset_base()
+        self.random_perturbation()
         
     def random_perturbation(self, **kwds):
         """Perform a random perturbation of the model according to parameter statistics
@@ -169,6 +178,8 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
             - *store_params* = bool : store random parameter set (default: True)
         """
         store_params = kwds.get("store_params", True)
+        if store_params:
+            all_param_changes = [] # dictionary to store all changes
         # create a dictionary for event parameter changes:
         param_changes = {}
         for param in self.param_stats:
@@ -192,14 +203,14 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
             else:
                 raise AttributeError("Please define type of parameter statistics ('type' keyword in table)")
         # assign changes to model:
-        self.change_event_params(param_changes)
+            self.change_event_params(param_changes)
         # store results for later analysis
         if store_params:
             if not hasattr(self, 'random_parameter_changes'):
                 # initialise array
-                self.random_parameter_changes = [param_changes]
+                self.random_parameter_changes = [all_param_changes]
             else:
-                self.random_parameter_changes.append(param_changes)
+                self.random_parameter_changes.append(all_param_changes)
         
     def shuffle_event_order(self, event_ids):
         """Randomly shuffle order of events
@@ -246,15 +257,71 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
             - *layers_from* = noddy history file : get labels automatically from history file
             - *resolution* = float : set resolution for section (default: self.cube_size)
             - *model_type* = 'current', 'base' : model type (base "freezed" model can be plotted for comparison)
+            - *data* = np.array : data to plot, if different to block data itself
         """
-        # get model as section
-        tmp_out = self.get_section(direction, position, **kwds)
-        self.determine_model_stratigraphy()
-        tmp_out.plot_section(direction = direction, layer_labels = self.model_stratigraphy, **kwds)
+        if kwds.has_key("data"):
+            super(Experiment, self).plot_section(direction, position, **kwds)
+        else:
+            # get model as section
+            tmp_out = self.get_section(direction, position, **kwds)
+            self.determine_model_stratigraphy()
+            tmp_out.plot_section(direction = direction, layer_labels = self.model_stratigraphy, **kwds)
  
+    def export_to_vtk(self, **kwds):
+        """Export model to VTK
+        
+        Export the geology blocks to VTK for visualisation of the entire 3-D model in an
+        external VTK viewer, e.g. Paraview.
+        
+        ..Note:: Requires pyevtk, available for free on: https://github.com/firedrakeproject/firedrake/tree/master/python/evtk
+        
+        **Optional keywords**:
+            - *vtk_filename* = string : filename of VTK file (default: output_name)
+            - *data* = np.array : data array to export to VKT (default: entire block model)
+            - *recompute* = bool : recompute the block model (default: True)
+            - *model_type* = 'current', 'base' : model type (base "freezed" model can be plotted for comparison)
+            
+        ..Note:: If data is defined, the model is not recomputed and the data from this array is plotted
+        """
+        if kwds.has_key("data"):
+            super(Experiment, self).export_to_vtk(**kwds)
+        else:
+            recompute = kwds.get("recompute", True) # recompute by default
+            if recompute:
+                import pynoddy
+                import pynoddy.output
+                # re-compute noddy model
+                #  save temporary file
+                tmp_his_file = "tmp_section.his"
+                tmp_out_file = "tmp_section_out"
+
+                # reset to base model?
+                if kwds.has_key("model_type") and (kwds['model_type'] == 'base'):
+                    # 1. create copy
+                    import copy
+                    tmp_his = copy.deepcopy(self)
+                    tmp_his.events = self.base_events.copy()
+                    tmp_his.write_history(tmp_his_file)
+                else:
+                    self.write_history(tmp_his_file)
+                
+                pynoddy.compute_model(tmp_his_file, tmp_out_file)
+                # open output
+                # tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)
+                # tmp_out.export_to_vtk(**kwds)
+                super(Experiment, self).set_basename(tmp_out_file)
+                super(Experiment, self).load_model_info()
+                super(Experiment, self).load_geology()
+            super(Experiment, self).export_to_vtk(**kwds)
+
  
     def get_section(self, direction='y', position='center', **kwds):
         """Get geological section of the model (re-computed at required resolution) as noddy object
+
+        **Arguments**:
+            - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
+            - *position* = int or 'center' : cell position of section as integer value
+                or identifier (default: 'center')
         
         **Optional arguments**:
             - *resolution* = float : set resolution for section (default: self.cube_size)
@@ -281,7 +348,7 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         if direction == 'y':
             x_min = self.origin_x
             x_max = self.extent_x
-            if position == 'center' or position == 'centre':
+            if position == 'center' or position == 'centre': # AE and BE friendly :-)
                 y_pos = (self.extent_y - self.origin_y - resolution) / 2. 
             else: # set position excplicity to cell
                 y_pos = position
@@ -328,6 +395,17 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         
         return tmp_out
        
+       
+class UncertaintyAnalysis(Experiment):
+    '''Perform uncertainty analysis experiments for kinematic models'''
+    
+    def __init__(self, history = None, **kwds):
+        """Define an experiment class for uncertainty analysis methods for kinematic models
+
+        """
+        super(Experiment, self).__init__(history, **kwds)
+        
+        
         
         
 class SensitivityAnalysis(Experiment):

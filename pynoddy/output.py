@@ -85,6 +85,10 @@ class NoddyOutput(object):
         # update grid values
         
         return self
+    
+    def set_basename(self, name):
+        """Set model basename"""
+        self.basename = name
         
         
     def compare_dimensions_to(self, other):
@@ -214,8 +218,12 @@ class NoddyOutput(object):
             - *ve* = float : vertical exaggeration
             - *layer_labels* = list of strings: labels for each unit in plot
             - *layers_from* = noddy history file : get labels automatically from history file
+            - *data* = np.array : data to plot, if different to block data itself
         """
         cbar_orientation = kwds.get("colorbar_orientation", 'vertical')
+        # determine if data are passed - if not, then recompute model
+        if kwds.has_key("data"):
+            data = kwds["data"]
         ve = kwds.get("ve", 1.)
         cmap_type = kwds.get('cmap', 'YlOrRd')
         if kwds.has_key('ax'):
@@ -236,7 +244,10 @@ class NoddyOutput(object):
                 cell_pos = self.nx / 2
             else:
                 cell_pos = position
-            section_slice = self.block[cell_pos,:,:].transpose()
+            if kwds.has_key('data'):
+                section_slice = data[cell_pos,:,:].transpose()
+            else:
+                section_slice = self.block[cell_pos,:,:].transpose()
             xlabel = "y"
             ylabel = "z"
         if direction == 'y':
@@ -244,7 +255,10 @@ class NoddyOutput(object):
                 cell_pos = self.ny / 2
             else:
                 cell_pos = position
-            section_slice = self.block[:,cell_pos,:].transpose()
+            if kwds.has_key('data'):
+                section_slice = data[:,cell_pos,:].transpose()
+            else:
+                section_slice = self.block[:,cell_pos,:].transpose()
             xlabel = "x"
             ylabel = "z"
         if direction == 'z':
@@ -252,7 +266,10 @@ class NoddyOutput(object):
                 cell_pos = self.nz / 2
             else:
                 cell_pos = position
-            section_slice = self.block[:,:,cell_pos].transpose()
+            if kwds.has_key('data'):
+                section_slice = data[:,:,cell_pos].transpose()
+            else:
+                section_slice = self.block[:,:,cell_pos].transpose()
             xlabel = "x"
             ylabel = "y"
 
@@ -310,6 +327,7 @@ class NoddyOutput(object):
         
         **Optional keywords**:
             - *vtk_filename* = string : filename of VTK file (default: output_name)
+            - *data* = np.array : data array to export to VKT (default: entire block model)
         """
         vtk_filename = kwds.get("vtk_filename", self.basename)
         
@@ -321,7 +339,10 @@ class NoddyOutput(object):
         
         # self.block = np.swapaxes(self.block, 0, 2)
         
-        gridToVTK(vtk_filename, x, y, z, cellData = {"geology" : self.block})         
+        if kwds.has_key("data"):
+            gridToVTK(vtk_filename, x, y, z, cellData = {"data" : kwds['data']})         
+        else:
+            gridToVTK(vtk_filename, x, y, z, cellData = {"geology" : self.block})         
         
 class NoddyGeophysics(object):
     """Definition to read, analyse, and visualise calculated geophysical responses"""
