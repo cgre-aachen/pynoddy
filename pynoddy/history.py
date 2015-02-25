@@ -780,9 +780,12 @@ Version = 7.11
         # add footer
         for line in self.footer_lines:
             history_lines.append(line)
-                
+                            
         f = open(filename, 'w')
-        for line in history_lines:
+        for i,line in enumerate(history_lines):
+            # add empty line before "BlockOptions", if not there:
+            if ('BlockOptions' in line) and (self.history_lines[i-1] != "\n"):
+                f.write("\n")
             f.write(line)
         f.close()
  
