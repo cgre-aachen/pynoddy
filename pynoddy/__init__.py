@@ -35,6 +35,7 @@ def compute_model(history, output_name, **kwds):
         out =  subprocess.Popen(['noddy', history, output_name, sim_type], 
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
+    print out
             
 def compute_topology(rootname, files):
     import subprocess, os
