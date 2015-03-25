@@ -1395,6 +1395,7 @@ Event #6	= FOLD
 		Point X	= 628
 		Point Y	= -1
 	Name	= Fold
+
 #BlockOptions
 	Number of Views	= 2
 	Current View	= 1
