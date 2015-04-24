@@ -177,6 +177,12 @@ class Tilt(Event):
         self.name = self.event_lines[-1].split("=")[1].strip()
 
 
+class Dykes(Event):
+    pass
+
+class Plugs(Event):
+    pass
+
 class Unconformity(Event):
     """Unconformity event
     

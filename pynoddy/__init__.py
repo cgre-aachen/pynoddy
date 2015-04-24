@@ -24,8 +24,10 @@ def compute_model(history, output_name, **kwds):
         - *sim_type* = 'BLOCK', 'GEOPHYSICS', 'SURFACES', 'BLOCK_GEOPHYS', 'BLOCK_SURFACES', 'ALL':
             type of Noddy simulation (default: 'BLOCK')
         - *program_name* = string : name of program (default: noddy.exe or noddy, both checked)
+        - *output* = True/ False : provide output of command line (default: True)
     """
     sim_type = kwds.get("sim_type", 'BLOCK')
+    output = kwds.get("output", True)
     
     try:
         out =  subprocess.Popen(['noddy.exe', history, output_name, sim_type], 
@@ -35,7 +37,8 @@ def compute_model(history, output_name, **kwds):
         out =  subprocess.Popen(['noddy', history, output_name, sim_type], 
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
-    print out
+    if output:
+        print out
             
 def compute_topology(rootname, files):
     import subprocess, os

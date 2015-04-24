@@ -1,5 +1,5 @@
 #Filename = tmp_1D_drillhole.his 
-#Date Saved = 27/1/2015 17:18:41
+#Date Saved = 10/4/2015 11:9:16
 FileType = 111
 Version = 7.11
 
@@ -168,9 +168,9 @@ Event #2	= FAULT
 	Y = 3500.000000
 	Z = 5000.000000
 	Dip Direction = 90.000000
-	Dip = 60.000000
+	Dip = 44.326842
 	Pitch = 90.000000
-	Slip = 1000.000000
+	Slip = 993.771716
 	Rotation = 30.000000
 	Amplitude = 2000.000000
 	Radius = 1000.000000
@@ -468,9 +468,9 @@ Event #3	= FAULT
 	Y = 3500.000000
 	Z = 5000.000000
 	Dip Direction = 270.000000
-	Dip = 60.000000
+	Dip = 54.534336
 	Pitch = 90.000000
-	Slip = 1000.000000
+	Slip = 1184.862853
 	Rotation = 30.000000
 	Amplitude = 2000.000000
 	Radius = 1000.000000
@@ -761,11 +761,12 @@ Event #3	= FAULT
     Surface YDim    = 0.000000
     Surface ZDim    = 0.000000
     Name    = Fault_E
+
 #BlockOptions
 	Number of Views	= 1
 	Current View	= 0
 	NAME	= Default
-    Origin X    =   7500.00
+    Origin X    =   5000.00
     Origin Y    =   3500.00
     Origin Z    =   5000.00
     Length X    =   1.00
