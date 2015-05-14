@@ -751,7 +751,7 @@ int write_rocks(int nx, int ny, int nz, double xoff, double yoff, double zoff, d
          for(layers=numLayers-1;layers>-1;layers--)
          {
             layerProp = &(stratOptions->properties[layers]);
-            fprintf(novella,"%d %d %s\n",allLayers++,events,layerProp->unitName);
+            fprintf(novella,"%d %d %s %d %d %d\n",allLayers++,events,layerProp->unitName,layerProp->color.red,layerProp->color.green,layerProp->color.blue);
          }
        }
 
@@ -769,7 +769,7 @@ int write_rocks(int nx, int ny, int nz, double xoff, double yoff, double zoff, d
 	                                || (event->shape == DYKE))
 	     {
 	        layerProp = getLayerPropertiesStructure (event);
-            fprintf(novella,"%d %d %s\n",allLayers++,events,layerProp->unitName);
+            fprintf(novella,"%d %d %s %d %d %d\n",allLayers++,events,layerProp->unitName,layerProp->color.red,layerProp->color.green,layerProp->color.blue);
 
 	     }
 
