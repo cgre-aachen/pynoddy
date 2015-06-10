@@ -177,11 +177,94 @@ class Tilt(Event):
         self.name = self.event_lines[-1].split("=")[1].strip()
 
 
-class Dykes(Event):
-    pass
-
-class Plugs(Event):
-    pass
+class Dyke(Event):
+    """Dyke event
+    
+    """
+    def __init__(self, **kwds):
+        """init dyke event
+        
+        """
+        #iterate through lines and determine attributes
+        if kwds.has_key("lines"):
+            self.parse_event_lines(kwds['lines'])
+            self.event_type = self.event_lines[0].split("=")[1].strip() #='DYKE'
+        else:
+            print("Warning, lines argument not passed. Null event (dyke) created")
+    def parse_event_lines(self,lines):
+        """Read specific event lines from history file
+        **Arguments**:
+            - *lines* = list of lines : lines with event information (as stored in .his file)
+        """
+        geometry_info_finished = False
+        self.event_lines = lines #store a copy of original lines
+        self.properties = {} #properties dict
+        self.property_lines = {} #so that properties can be changed later
+        for i, line in enumerate(lines):
+            l = line.split("=")
+            if "Event #" in line: continue #first line
+            if "Alteration Type" in line: #end of geometry properties
+                geometry_info_finished = True
+                break #we don't need to look at any more lines
+            if not geometry_info_finished: #parse geometry properties
+                # convert value to float if it is not a string
+                value = l[1].strip()
+                #print("Adding property \"%s\" with value \"%s\"." % (l[0].strip(),value))
+                try:
+                    value = float(value)
+                except ValueError:
+                    # not a number, so just keep string
+                    pass
+                self.properties[l[0].strip()] = value #store property (key) and value
+                self.property_lines[l[0].strip()] = i #store line number of property
+        # the event name always seems to be in the last line - check with
+        # Mark if this is really the case!    
+        self.name = self.event_lines[-1].split("=")[1].strip()
+        
+class Plug(Event):
+    pass #not implemented yet
+    
+class Strain(Event):
+    """Strain event
+    
+    """
+    def __init__(self, **kwds):
+        """init strain event
+        
+        """
+        #iterate through lines and determine attributes
+        if kwds.has_key("lines"):
+            self.parse_event_lines(kwds['lines'])
+            self.event_type = self.event_lines[0].split("=")[1].strip() #='STRAIN'
+        else:
+            print("Warning, lines argument not passed. Null event (strain) created")
+            
+    def parse_event_lines(self,lines):
+        """Read specific event lines from history file
+        **Arguments**:
+            - *lines* = list of lines : lines with event information (as stored in .his file)
+        """
+        self.event_lines = lines #store a copy of original lines
+        self.properties = {} #properties dict
+        self.property_lines = {} #so that properties can be changed later
+        for i, line in enumerate(lines):
+            l = line.split("=")
+            if "Event #" in line: continue #first line
+            if "Name" in line: #last line
+                break
+            else: #all other lines
+                # convert value to float if it is not a string
+                value = l[1].strip()
+                try:
+                    value = float(value)
+                except ValueError:
+                    # not a number, so just keep string
+                    pass
+                self.properties[l[0].strip()] = value #store property (key) and value
+                self.property_lines[l[0].strip()] = i #store line number of property
+        # the event name always seems to be in the last line - check with
+        # Mark if this is really the case!    
+        self.name = self.event_lines[-1].split("=")[1].strip()
 
 class Unconformity(Event):
     """Unconformity event
