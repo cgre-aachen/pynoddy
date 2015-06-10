@@ -188,6 +188,7 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
             # get original value:
             ori_val = self.events[param['event']].properties[param['parameter']]
             # check distribution type:
+            random_val = 0 #dont make changes by default
             if param.has_key("type"):
                 if param['type'] == 'normal':
                     # draw value of normal distribution:
@@ -196,18 +197,44 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
                         raise AttributeError("Please assign standard deviation value (as 'stdev' entry)!")
                     stdev = param.get("stdev")
                     random_val = np.random.normal(mean, stdev)
-                    # assign relative change
-                    param_changes[param['event']][param['parameter']] = random_val - ori_val
-                else:
+                    #print ("sample normal (%f,%f) = %f" % (mean,stdev,random_val))
+                if param['type'] == 'vonmises':
+                    #draw value of vonmises distribution
+                    ##NB: numpy's implementation of vonmises works in radians, hence values are converted into radians, 
+                    #     sampled and then converted back to degrees
+                    
+                    mu = np.radians(param.get("mean",ori_val)) #default mode is original value
+                    if not param.has_key('stdev'):
+                        raise AttributeError("Please assign standard deviation value (as 'stdev' entry)!")
+                    kappa = 1.0 / (np.radians(param.get("stdev") * param.get("stdev"))) #kappa approximates 1 / stdev squared
+                    random_val = np.degrees(np.random.vonmises(mu,kappa))
+                    print ("sample vonmises (%f,%f) = %f" % (mu,kappa,random_val))
+                if param['type'] == 'uniform':
+                    #draw from a uniform distribution
+                    if not param.has_key("min"):
+                        raise AttributeError("Please assign a minimum value (as 'min' entry)!")
+                    if not param.has_key("max"):
+                        raise AttributeError("Please assign a minimum value (as 'max' entry)!")
+                    
+                    min = param.get("min")
+                    max = param.get("max")
+                    random_val = np.random.uniform(min,max)
+                if param['type'] != 'normal' and param['type'] != 'vonmises' and param['type'] != 'uniform':
                     raise AttributeError("Sampling for type %s not yet implemented, sorry." % param['type'])
+                
+                # assign relative changes
+                param_changes[param['event']][param['parameter']] = random_val - ori_val
+                print('Changing %s to %s' % (param['parameter'],random_val))
+                
             else:
                 raise AttributeError("Please define type of parameter statistics ('type' keyword in table)")
-        # assign changes to model:
+        
+            # assign changes to model:
             self.change_event_params(param_changes)
+        
         # store results for later analysis
         if store_params:
-            if not hasattr(self, 'random_parameter_changes'):
-                # initialise array
+            if not hasattr(self, 'random_parameter_changes'): # initialise array
                 self.random_parameter_changes = [all_param_changes]
             else:
                 self.random_parameter_changes.append(all_param_changes)
@@ -467,9 +494,7 @@ class MonteCarlo(Experiment):
                     results[id] += sec1.block == id
         
         return results
-            
-        
-        
+             
 class SensitivityAnalysis(Experiment):
     '''Sensitivity analysis experiments for kinematic models
     
