@@ -330,16 +330,20 @@ class NoddyHistory(object):
                 ev = events.Fold(lines = event_lines)
             elif 'UNCONFORMITY' in e['type']:
                 ev = events.Unconformity(lines = event_lines)
-                
             elif 'STRATIGRAPHY' in e['type']:
                 ev = events.Stratigraphy(lines = event_lines)
             elif 'TILT' in e['type']: # AK
                 ev = events.Tilt(lines = event_lines)
-            else: continue
-                
+            elif 'DYKE' in e['type']:
+                ev = events.Dyke(lines = event_lines)
+            elif 'STRAIN' in e['type']:
+                ev = events.Strain(lines = event_lines)
+            else:
+                print "Warning: event of type %s has not been implemented in PyNoddy yet" % e['type']
+                continue
             # now set shared attributes (those defined in superclass Event)
-            order = e['num']
-            self.events[order] = ev
+            order = e['num'] #retrieve event number
+            self.events[order] = ev #store events sequentially
         
         # determine overall begin and end of the history events
         self.all_events_begin = self._raw_events[0]['line_start']
@@ -350,16 +354,26 @@ class NoddyHistory(object):
         import copy
         return copy.deepcopy(self.events)
        
-    def get_cube_size(self):
-        """Determine cube size for model export"""
+    def get_cube_size(self, **kwds):
+        """Determine cube size for model export
+           **Optional Args**
+            -type: choose geology or geophysics cube size to return. Should be either 'Geology' (default) or 'Geophysics'
+        """
+        
+        #get args
+        sim_type = kwds.get("type", 'Geology')
+        cube_string = 'Geology Cube Size' #get geology cube size by default
+        if ('Geophysics' in sim_type):
+            cube_string = 'Geophysics Cube Size' #instead get geophysics cube size
+            
         # check if footer exists, if not: create from template
         if not hasattr(self, "footer_lines"):
             self.create_footer_from_template()
         
         for line in self.footer_lines:
-            if 'Geophysics Cube Size' in line: 
+            if cube_string in line: 
                 self.cube_size = float(line.split('=')[1].rstrip())
-        return self.cube_size
+                return self.cube_size
          
     def get_filename(self):
         """Determine model filename from history file/ header"""
@@ -374,16 +388,23 @@ class NoddyHistory(object):
         
         **Arguments**:
             - *cube_size* = float : new model cube size
+        **Optional Args**
+            -type: choose geology or geophysics cube size to return. Should be either 'Geology' (default) or 'Geophysics'
         """
+        #get args
+        sim_type = kwds.get("type", 'Geology')
+        cube_string = 'Geology Cube Size' #get geology cube size by default
+        if ('Geophysics' in sim_type):
+            cube_string = 'Geophysics Cube Size' #instead get geophysics cube size
+        
         # check if footer_lines exist (e.g. read in from file)
         # if not: create from template
         if not hasattr(self, "footer_lines"):
             self.create_footer_from_template()
             
-        
 #        lines_new = self.history_lines[:]
         for i,line in enumerate(self.footer_lines):
-            if 'Geophysics Cube Size' in line: 
+            if cube_string in line:  #correct line, make change
                 l = line.split('=')
                 l_new = '%7.2f\r\n' % cube_size
                 line_new = l[0] + "=" + l_new
@@ -737,9 +758,9 @@ Version = 7.11
             
         Per default, the values in the dictionary are added to the event parameters.
         """
-#         print changes_dict 
-        for key,sub_dict in changes_dict.items():
-            for sub_key, val in sub_dict.items():
+        #print changes_dict 
+        for key,sub_dict in changes_dict.items(): #loop through events (key)
+            for sub_key, val in sub_dict.items(): #loop through parameters being changed (sub_key)
                 self.events[key].properties[sub_key] += val
     
     def write_history(self, filename):
