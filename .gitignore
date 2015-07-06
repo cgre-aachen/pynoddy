@@ -68,3 +68,4 @@ docs/notebooks/SALib-sensitivity-analysis_files
 9-Sensitivity-Analysis-checkpoint.ipynb
 8-Experiments-checkpoint.ipynb
 *.o
+pynoddy/sampling-SamT15.py

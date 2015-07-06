@@ -383,7 +383,7 @@ class NoddyHistory(object):
         """Determine the last savepoint of the file"""
         self.date_saved = self.history_lines[1].split('=')[1].rstrip()    
     
-    def change_cube_size(self, cube_size):
+    def change_cube_size(self, cube_size, **kwds):
         """Change the model cube size (isotropic)
         
         **Arguments**:

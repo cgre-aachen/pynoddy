@@ -17,6 +17,7 @@ import numpy as np
 
 import history
 import output
+import sampling as Sample
 
 # class C(object):
 #     def getx(self): return self.__x
@@ -176,68 +177,93 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         
         **Optional arguments**:
             - *store_params* = bool : store random parameter set (default: True)
+            - *verbose* = bool: print out parameter changes as they happen (default: True)
         """
         store_params = kwds.get("store_params", True)
-        if store_params:
-            all_param_changes = [] # dictionary to store all changes
+        verbose = kwds.get("verbose",True)
+        
         # create a dictionary for event parameter changes:
-        param_changes = {}
-        for param in self.param_stats:
-            # assign new value, according to statistics
-            param_changes[param['event']] = {}
-            # get original value:
+        param_changes = {} #relative parameter changes
+        absolute_changes = {} #absolute parameter changes
+        
+        #calculate new values according to 'statistics'
+        for param in self.param_stats: 
+                        
+            if not param_changes.has_key(param['event']): #initialise dictionary for this event if necessary
+                param_changes[param['event']] = {}
+                absolute_changes[param['event']] = {}
+
+            # get original value: NB - this is the current model state, not the initial model state - beware of random walk!
             ori_val = self.events[param['event']].properties[param['parameter']]
-            # check distribution type:
-            random_val = 0 #dont make changes by default
+            
+            #sample value from appropriate distribution
+            random_val = 0
             if param.has_key("type"):
                 if param['type'] == 'normal':
                     # draw value of normal distribution:
                     mean = param.get("mean", ori_val) # default mean is original value
-                    if not param.has_key('stdev'):
-                        raise AttributeError("Please assign standard deviation value (as 'stdev' entry)!")
-                    stdev = param.get("stdev")
-                    random_val = np.random.normal(mean, stdev)
-                    #print ("sample normal (%f,%f) = %f" % (mean,stdev,random_val))
+                    
+                    #use assigned standard deviation    
+                    if param.has_key('stdev'):
+                        stdev = param.get("stdev")
+                        random_val = np.random.normal(mean,stdev)
+                    elif param.has_key('+-'):
+                        ci = param.get('+-')
+                        random_val = Sample.Normal(mean,ci,1)
+                    else: #not enough information to calculate standard deviation
+                        raise AttributeError("Error: Normal distribution is underdefined. Please assign either a 'stdev' value or a '+-' value (defining the interval between the 2.5th and 97.25th quantile)")
+
                 if param['type'] == 'vonmises':
-                    #draw value of vonmises distribution
-                    ##NB: numpy's implementation of vonmises works in radians, hence values are converted into radians, 
-                    #     sampled and then converted back to degrees
+                    mean = param.get("mean",ori_val)
                     
-                    mu = np.radians(param.get("mean",ori_val)) #default mode is original value
-                    if not param.has_key('stdev'):
-                        raise AttributeError("Please assign standard deviation value (as 'stdev' entry)!")
-                    kappa = 1.0 / (np.radians(param.get("stdev") * param.get("stdev"))) #kappa approximates 1 / stdev squared
-                    random_val = np.degrees(np.random.vonmises(mu,kappa))
-                    print ("sample vonmises (%f,%f) = %f" % (mu,kappa,random_val))
+                    #sample distribution
+                    if param.has_key('+-'):
+                        ci = param.get('+-')
+                        random_val = Sample.VonMises(mean,ci,1)
+                    else: #+- needs to be defined
+                        raise AttributeError("Error: Von-Mises distribution is underdefined. Please assign either a '+-' value (defining the interval between the 2.5th and 97.25th quantile)")                 
+                    
                 if param['type'] == 'uniform':
-                    #draw from a uniform distribution
-                    if not param.has_key("min"):
-                        raise AttributeError("Please assign a minimum value (as 'min' entry)!")
-                    if not param.has_key("max"):
-                        raise AttributeError("Please assign a minimum value (as 'max' entry)!")
+                    #retrieve specified min/max values
+                    if param.has_key("min") and param.has_key("max"):
+                        minimum = param.get("min")
+                        maximum = param.get("max")
+                        random_val = np.random.uniform(minimum,maximum)
+                    elif param.has_key("+-") and param.has_key("mean"): 
+                        #retrieve mean and confidence interval
+                        mean = param.get("mean")
+                        ci = param.get("+-")                        
+                        random_val = Sample.Uniform(mean,ci,1)
+                    else:
+                        raise AttributeError("Error: Sampling from a uniform distribution requires either a specified range ('min' and 'max' values) or a mean and '+-' value (95% confidence interval)")
                     
-                    min = param.get("min")
-                    max = param.get("max")
-                    random_val = np.random.uniform(min,max)
+                #throw error for other types of distribution
                 if param['type'] != 'normal' and param['type'] != 'vonmises' and param['type'] != 'uniform':
                     raise AttributeError("Sampling for type %s not yet implemented, sorry." % param['type'])
                 
-                # assign relative changes
+                #store relative changes
                 param_changes[param['event']][param['parameter']] = random_val - ori_val
-                print('Changing %s to %s' % (param['parameter'],random_val))
+
+                #store absolute changes
+                absolute_changes[param['event']][param['parameter']] = random_val
+
+                #print changes
+                if verbose:
+                    print('Changing %s to %s' % (param['parameter'],random_val))
                 
             else:
                 raise AttributeError("Please define type of parameter statistics ('type' keyword in table)")
         
-            # assign changes to model:
-            self.change_event_params(param_changes)
-        
+        # assign changes to model:
+        print param_changes
+        self.change_event_params(param_changes)
+    
         # store results for later analysis
         if store_params:
             if not hasattr(self, 'random_parameter_changes'): # initialise array
-                self.random_parameter_changes = [all_param_changes]
+                self.random_parameter_changes = [absolute_changes]
             else:
-                self.random_parameter_changes.append(all_param_changes)
+                self.random_parameter_changes.append(absolute_changes)
         
     def shuffle_event_order(self, event_ids):
         """Randomly shuffle order of events
@@ -425,7 +451,41 @@ class Experiment(history.NoddyHistory, output.NoddyOutput):
         
         return tmp_out
        
-       
+    def write_parameter_changes(self, filepath):
+        if hasattr(self, 'random_parameter_changes'): #if parameter changes have been stored
+            f = open(filepath,'w')
+            
+            #todo: write initial values
+                        
+            #write header
+            f.write("ChangeNumber")
+            change_list = []
+            for e, c in self.random_parameter_changes[0].iteritems(): #NB: This only works if the same parameters have been changed at each step!
+                     for p, v in c.iteritems():
+                         f.write(",Event_%s_%s" % (e,p)) #write parameter: eg. Event_1_Amplitude
+            
+            #retrieve values
+            i = 0
+            for change in self.random_parameter_changes:
+                change_list.append([]) #list of changes
+                for e, c in change.iteritems():
+                     for p, v in c.iteritems():
+                         change_list[i].append(v) #store value
+                i = i + 1
+                
+            #write values
+            for i in range(0,len(change_list)):
+                #write ChangeNumber
+                f.write("\n%d" % (i+1))
+                
+                #write change values
+                for v in change_list[i]:
+                    f.write(",%f" % v)
+                    
+            f.close()        
+        else:
+            print ("This experiment has no stored changes")
+        
 class UncertaintyAnalysis(Experiment):
     '''Perform uncertainty analysis experiments for kinematic models'''
     
@@ -811,8 +871,6 @@ class SensitivityAnalysis(Experiment):
             plt.savefig(fig_filename)
         else:
             plt.show()
-
-
 
 
 
