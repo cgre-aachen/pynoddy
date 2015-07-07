@@ -51,7 +51,7 @@ int *imat();*/
 void read_header(char *rootname, int *nx, int *ny, int *nz, int *nevents, double *xOff, double *yOff, double *zOff, double *scale);
 void read_litho(char *rootname, struct topology ***topo, int nx, int ny, int nz);
 void read_codes(char *rootname, struct topology ***topo, int nx, int ny, int nz);
-void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes, int nx, int ny, int nz, double xOff, double yOff, double zOff, double scale, struct point *centroids);
+void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes, int nx, int ny, int nz, double xOff, double yOff, double zOff, double scale, struct point *centroids, int dvol);
 BOOL match(int x, int y, int z, struct topology ***topo, int lith, char* code);
 int grow(int sx, int sy, int sz, int nx, int ny, int nz, struct topology ***topo, char label, int lith, char *code);
 void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int nz, int nevents, struct topology **pairs, int *pairsize, int *npairs);
@@ -74,13 +74,14 @@ void free_bimat(char **m,int nrl,int nrh,int ncl,int nch);
 void free_mat(char **m,int nrl,int nrh);
 
 
-
+//args: root number_of_models discrete_volumes
+//eg:   "my_model 1 1" to processes one model called  my_model with discrete_volumes enforced
 int main(argc, argv)
 int argc;
 char **argv;
 {
      char rootname[250],root[250]; //root: the name of noddy project to look at (minus the file extension): ie. path/my_project
-     int litho, files;
+     int litho, files, dvol;
      struct topology ***topo;
      int nevents, nx,ny,nz;
      int ncodes;
@@ -94,33 +95,33 @@ char **argv;
 
 	 //Resize Stack (Linux Only)
      #ifdef __unix__
-	 printf("Running topology. Checking stack size.... ");
-     //set stack size
-     const rlim_t kStackSize = STACKSIZE;
-     struct rlimit rl;
-     int result;
-     
-     result = getrlimit(RLIMIT_STACK, &rl);
-     if (result == 0)
-     {
-       printf("Initial stack size = %d. Increasing to %dMb... \n",rl.rlim_cur,kStackSize);
-       if ((int)rl.rlim_cur < (int)kStackSize)
-       {
-         rl.rlim_cur = kStackSize;
-         result = setrlimit(RLIMIT_STACK, &rl);
-         if (result != 0) //error
+         printf("Running topology. Checking stack size.... ");
+         //set stack size
+         const rlim_t kStackSize = STACKSIZE;
+         struct rlimit rl;
+         int result;
+         
+         result = getrlimit(RLIMIT_STACK, &rl);
+         if (result == 0)
          {
-           printf("Error: Could not set stack size. Setrlimit returned result = %d\n",result);
+           printf("Initial stack size = %d. Increasing to %dMb... \n",rl.rlim_cur,kStackSize);
+           if ((int)rl.rlim_cur < (int)kStackSize)
+           {
+             rl.rlim_cur = kStackSize;
+             result = setrlimit(RLIMIT_STACK, &rl);
+             if (result != 0) //error
+             {
+               printf("Error: Could not set stack size. Setrlimit returned result = %d\n",result);
+             }
+             printf("Stack size changed to %d\n",rl.rlim_cur);
+           } else
+           {
+             printf("Stack size sufficient, not changing. Stack size = %d\n",rl.rlim_cur);
+           }
+         } else
+         {
+           printf("Error - Could not retrieve stack information. Stack size not increased.");
          }
-         printf("Stack size changed to %d\n",rl.rlim_cur);
-       } else
-       {
-         printf("Stack size sufficient, not changing. Stack size = %d\n",rl.rlim_cur);
-       }
-     } else
-     {
-       printf("Error - Could not retrieve stack information. Stack size not increased.");
-     }
 	 #endif
      
      if(argc < 3)
@@ -130,7 +131,8 @@ char **argv;
      	}
      sscanf(argv[1],"%s",&root); //root file
      sscanf(argv[2],"%d",&files); //number of files
-
+     sscanf(argv[3],"%d",&dvol); //1 = ensure discrete volumes, 0 = don't ensure discrete volumes
+     
      maxLitho(root, &nlitho, files); //find maximum number of lithologies in all files related to root
 	 
 	 printf("Looking for %d files in %s",files,root);
@@ -158,7 +160,7 @@ char **argv;
 
 		 printf("loaded lithologies & codes");
 		fflush(stdout);
-         unique_codes(topo, &ncodes, ucodes, nx,ny,nz, xOff,yOff,zOff,scale, centroids); //condense 3D voxel model into list of unique topology codes
+         unique_codes(topo, &ncodes, ucodes, nx,ny,nz, xOff,yOff,zOff,scale, centroids,dvol); //condense 3D voxel model into list of unique topology codes
 
 		 printf("loaded unique codes");
 		fflush(stdout);
@@ -238,7 +240,7 @@ void read_codes(char *rootname, struct topology ***topo, int nx, int ny, int nz)
                 fscanf(in,"%s",&topo[x][y][z].code);
 }
 
-void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes, int nx, int ny, int nz, double xOff, double yOff, double zOff, double scale, struct point *centroids)
+void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes, int nx, int ny, int nz, double xOff, double yOff, double zOff, double scale, struct point *centroids,int dvol)
 {
 
 	int x,y,z,n;
@@ -254,82 +256,101 @@ void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes,
 
 	*ncodes=0;
 
-    //old code, that does not ensure topological entities are spatial continuous.
-	/*for(z=0;z<nz;z++) //find unique codes
-		for(y=0;y<ny;y++)
-			for(x=0;x<nx;x++)
-			{
-				for(n=0,same=0;n<*ncodes;n++) //loop through unique codes & see if the next one is new
-					if(match(x,y,z,topo,ucodes[n].litho,ucodes[n].code) == TRUE)//topo[x][y][z].litho==ucodes[n].litho && strcmp(topo[x][y][z].code,ucodes[n].code)==0) //already loaded this code
-					{
-					    ucodes[n].numVoxels++; //keep track of number of voxels per code
-						same=1;
-						break;
-					}
-                //this is a new code, add to ucodes list
-                if(same==0)
+    //old code, that does not ensure topological entities are spatial continuous - use if dvol == 0
+    if (dvol == 0){
+    //dvol = false, hence topo_codes are not checked for spatial continuity. In rare cases (eg. a folded unit that has been truncated by an unconformity) these
+    //units may not be spatially continuous, and hence a single topological unit (incorrectly) represents two separate volumes.
+    
+        for(z=0;z<nz;z++) //find unique codes
+            for(y=0;y<ny;y++)
+                for(x=0;x<nx;x++)
                 {
-                    ucodes[*ncodes].litho=topo[x][y][z].litho;
-                    strcpy((char *)ucodes[*ncodes].code,(char *)topo[x][y][z].code);
-                    ucodes[*ncodes].numVoxels=1; //this code is represented by 1 voxel
-
-                    printf("added lithology %d and code %s \n", ucodes[*ncodes].litho, ucodes[*ncodes].code);
-                    *ncodes=*ncodes+1;
-                }
-			}*/
-
-    TOPO *fcodes = (TOPO *) topomat(0,ARRAYSIZE); //list of different codes in the file
-    char code[250];
-
-    int nfcodes = 0;
-    int numVoxels;
-
-    char c;
-    for (z=0;z < nz; z++) //loop through the voxels
-        for (y=0;y < ny; y++)
-            for (x=0;x < nx; x++)
-                if (isdigit(topo[x][y][z].code[strlen(topo[x][y][z].code) - 1])) //the last character of the code is a digit - ie. the voxel has not been visited yet, therefore this is a new code
-                {
-                    c = 'a'; //reset character counter
-
-                    //has this code been seen before?
-                    for(n=0,same=0;n<nfcodes;n++) //loop through unique codes & see if the next one is new
-                        if(match(x,y,z,topo,fcodes[n].litho,fcodes[n].code) == TRUE)
+                    //add 'a' character to the end of the topo code - ensures compatability with algorithm below that splits volumes
+                    //based on spatial continuity into separate volumes ('a', 'b', 'c' etc.)
+                    int len = strlen(topo[x][y][z].code);
+                    topo[x][y][z].code[len] = 'a'; //append label
+                    topo[x][y][z].code[len+1] = '\0'; //add null terminatinon
+                    
+                    //loop through known codes & see if this one is new
+                    for(n=0,same=0;n<*ncodes;n++) 
+                        if(match(x,y,z,topo,ucodes[n].litho,ucodes[n].code) == TRUE)//topo[x][y][z].litho==ucodes[n].litho && strcmp(topo[x][y][z].code,ucodes[n].code)==0) //already loaded this code
                         {
-                            //yes it has
+                            ucodes[n].numVoxels++; //keep track of number of voxels per code
                             same=1;
-                            c += fcodes[n].numVolumes; //increment c by number of volumes (used to seperate different volumes)
-                            fcodes[n].numVolumes++; //this is a new volume, so increment also
                             break;
                         }
-                    if (same != 1) //no it hasn't, so add it to the list
+                        
+                    //this is a new code, add to ucodes list
+                    if(same==0)
                     {
-                        fcodes[nfcodes].litho=topo[x][y][z].litho;
-                        strcpy((char *)fcodes[nfcodes].code,(char *)topo[x][y][z].code);
-                        fcodes[nfcodes].numVolumes=1;
-                        //printf("foustrlen(topo[sx][sy][sz].code)nd new lithology %d and code %s. ID = %d \n", fcodes[nfcodes].litho, fcodes[nfcodes].code,nfcodes);
-                        nfcodes++;
+                        ucodes[*ncodes].litho=topo[x][y][z].litho;
+                        strcpy((char *)ucodes[*ncodes].code,(char *)topo[x][y][z].code);
+                        ucodes[*ncodes].numVoxels=1; //this code is represented by 1 voxel
+
+                        printf("added lithology %d and code %s \n", ucodes[*ncodes].litho, ucodes[*ncodes].code);
+                        *ncodes=*ncodes+1;
+                    }
+                }
+    } else {
+        //dvol == true, hence a 'corrected' algorithm is used. This is essentially the same as above except a flood fill algorithm is used to label discrete volumes as 
+        //'a', 'b' 'c' etc, hence ensuring that topological units are spatially continuous (which is not guaranteed in the above implementation, e.g.. if a unconformity divides a folded
+        //lithology into separate volumes). Unfortunately this algorithm is sensitive to pixilation artefacts (floating pixels). To help avoid this the SEARCHDISTANCE flag can be used
+        //to increase the separation between voxels required to consider them as different volumes.
+
+        TOPO *fcodes = (TOPO *) topomat(0,ARRAYSIZE); //list of different codes in the file
+        char code[250];
+
+        int nfcodes = 0;
+        int numVoxels;
+
+        char c;
+        for (z=0;z < nz; z++) //loop through the voxels
+            for (y=0;y < ny; y++)
+                for (x=0;x < nx; x++)
+                    if (isdigit(topo[x][y][z].code[strlen(topo[x][y][z].code) - 1])) //the last character of the code is a digit - ie. the voxel has not been visited yet, therefore this is a new code
+                    {
+                        c = 'a'; //reset character counter
+
+                        //has this code been seen before?
+                        for(n=0,same=0;n<nfcodes;n++) //loop through unique codes & see if the next one is new
+                            if(match(x,y,z,topo,fcodes[n].litho,fcodes[n].code) == TRUE)
+                            {
+                                //yes it has
+                                same=1;
+                                c += fcodes[n].numVolumes; //increment c by number of volumes (used to seperate different volumes)
+                                fcodes[n].numVolumes++; //this is a new volume, so increment also
+                                break;
+                            }
+                        if (same != 1) //no it hasn't, so add it to the list
+                        {
+                            fcodes[nfcodes].litho=topo[x][y][z].litho;
+                            strcpy((char *)fcodes[nfcodes].code,(char *)topo[x][y][z].code);
+                            fcodes[nfcodes].numVolumes=1;
+                            //printf("foustrlen(topo[sx][sy][sz].code)nd new lithology %d and code %s. ID = %d \n", fcodes[nfcodes].litho, fcodes[nfcodes].code,nfcodes);
+                            nfcodes++;
+                        }
+
+                        //make a copy of code
+                        strcpy(code,(char *)topo[x][y][z].code);
+
+
+                        //find all adjacent voxels with this code
+                        numVoxels = grow(x, y, z, nx, ny, nz, topo, c, topo[x][y][z].litho,code);
+
+                        //add this code to ucode
+                        ucodes[*ncodes].litho=topo[x][y][z].litho;
+                        strcpy((char *)ucodes[*ncodes].code,(char *)topo[x][y][z].code);
+                        ucodes[*ncodes].numVoxels=numVoxels;
+
+                        printf("added new lithology %d and code %s with %d voxels. ID = %d \n", ucodes[*ncodes].litho,ucodes[*ncodes].code,ucodes[*ncodes].numVoxels,*ncodes);
+                        *ncodes=*ncodes + 1;
                     }
 
-                    //make a copy of code
-                    strcpy(code,(char *)topo[x][y][z].code);
-
-
-                    //find all adjacent voxels with this code
-                    numVoxels = grow(x, y, z, nx, ny, nz, topo, c, topo[x][y][z].litho,code);
-
-                    //add this code to ucode
-                    ucodes[*ncodes].litho=topo[x][y][z].litho;
-                    strcpy((char *)ucodes[*ncodes].code,(char *)topo[x][y][z].code);
-                    ucodes[*ncodes].numVoxels=numVoxels;
-
-                    printf("added new lithology %d and code %s with %d voxels. ID = %d \n", ucodes[*ncodes].litho,ucodes[*ncodes].code,ucodes[*ncodes].numVoxels,*ncodes);
-                    *ncodes=*ncodes + 1;
-                }
-
-    free_mat((char *) fcodes,0,ARRAYSIZE); //free fcodes
-
-	for(z=0;z<nz;z++) //find centroids of unique codes
+        free_mat((char *) fcodes,0,ARRAYSIZE); //free fcodes
+    }
+    
+    //find centroids of unique codes
+	for(z=0;z<nz;z++) 
 		for(y=0;y<ny;y++)
 			for(x=0;x<nx;x++)
 				for(n=0,same=0;n<*ncodes;n++)
@@ -354,7 +375,6 @@ void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes,
 	}
 
 }
-
 
 BOOL match(int x, int y, int z, struct topology ***topo, int lith, char* code)
 {

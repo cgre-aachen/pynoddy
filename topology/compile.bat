@@ -1,3 +1,3 @@
-gcc -Wl,--stack,100000000 -g -o topology.exe topology.c
+gcc -Wl,--stack,1073741824 -w -g -o topology.exe topology.c
 
 pause
