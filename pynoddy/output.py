@@ -574,8 +574,6 @@ class NoddyTopology(object):
                 intersection+=1
             else: #edge is new, add to union
                 union += 1
-            
-        print intersection / float(union)
         return intersection / float(union)
 
     def is_unique(self, known ):
