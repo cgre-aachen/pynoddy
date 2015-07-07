@@ -384,43 +384,480 @@ class NoddyGeophysics(object):
 
 
 class NoddyTopology(object):
-    """Definition to read, analyse, and visualise calculated voxel topology"""
-     
+    """Definition to read, analyse, and visualise calculated voxel topology"""        
     def __init__(self, output_name):
         """Methods to read, analyse, and visualise calculated voxel topology
-         
         .. note:: The voxel topology have can be computed with a keyword in the
-        function `compute_model`, e.g.:
-        ``pynoddy.compute_model(history_name, output, type = 'TOPOLOGY')``
+        function `compute_model`, e.g.: ``pynoddy.compute_model(history_name, output, type = 'TOPOLOGY')``
+        
+        **Arguments**
+         - *output_name* = the name of the noddy output to run topology on. Note that this output must end with
+                           _0001.* in order to process correctly (TODO: fix this in topology.c code).
         """
         self.basename = output_name
-        self.read_adjacency_matrix()
         
-         
+        #todo: run topology
+        
+        if not "_0001" in output_name:
+            print "Warning: Topology output files need to end in _0001.* in order to process correctly. This should be fixed (eventually...)."
+        
+        #load network
+        self.loadNetwork()
+        
+    def loadNetwork(self):
+        '''
+        Loads the topology network into a NetworkX datastructure
+        '''
+        
+        #import networkx
+        try:
+            import networkx as nx
+        except ImportError:
+            print "Warning: NetworkX module could not be loaded. Please install NetworkX from https://networkx.github.io/ to perform topological analyses in PyNoddy"
+        
+        #initialise new networkX graph
+        self.graph = nx.Graph()
+        self.graph.name = self.basename
+
+        #load lithology properties
+        self.read_properties()
+               
+        #load graph
+        f = open(self.basename + ".g23",'r')
+        lines = f.readlines() #read lines
+        
+        for l in lines: #load edges
+            l=l.rstrip()
+            data=l.split('\t')
+    
+            #calculate edge colors
+            topoCode1 = data[0].split('_')[1]
+            topoCode2 = data[1].split('_')[1]
+            lithoCode1 = data[0].split('_')[0]
+            lithoCode2 = data[1].split('_')[0]
+            count = int(data[-1]) #number of voxels with this neibour relationship (proxy of surface area)
+            
+            #calculate edge type (dyke, fault etc)
+            eCode=0
+            eType = 'stratigraphic' #default is stratigraphy
+            eColour='k' #black
+            for i in range(0,len(topoCode1) - 1): #-1 removes the trailing character
+                if (topoCode1[i] != topoCode2[i]): #find the difference
+                    if int(topoCode2[i]) > int(topoCode1[i]):
+                        eCode=topoCode2[i]
+                    else:
+                       eCode=topoCode1[i]
+                       
+                    if int(eCode) == 0: #stratigraphic contact
+                        eColour = 'k' #black
+                        eType = 'stratigraphic'
+                    elif int(eCode) == 2 or int(eCode) == 7 or int(eCode) == 8: #various types of faults
+                        eColour = 'r' #red
+                        eType = 'fault'
+                    elif int(eCode) == 3: #unconformity
+                        eColour = 'b' #blue
+                        eType = 'unconformity'
+                    elif int(eCode) == 5: #plug/dyke
+                        eColour = 'y' #yellow
+                        eType = 'intrusive'
+                    else:
+                        eColour = 'g' #green
+                        eType = 'unknown' 
+            
+            #create nodes & associated properties
+            self.graph.add_node(data[0], lithology=lithoCode1, name=self.lithology_properties[int(lithoCode1)]['name'])
+            self.graph.node[data[0]]['colour']=self.lithology_properties[int(lithoCode1)]['colour']
+            self.graph.node[data[0]]['centroid']=self.node_properties[ "%d_%s" % (int(lithoCode1),topoCode1) ]['centroid']
+            self.graph.node[data[0]]['volume'] = self.node_properties[ "%d_%s" % (int(lithoCode1),topoCode1) ]['volume']
+            
+            self.graph.add_node(data[1], lithology=lithoCode2, name=self.lithology_properties[int(lithoCode2)]['name'])
+            self.graph.node[data[1]]['colour']=self.lithology_properties[int(lithoCode2)]['colour']
+            self.graph.node[data[1]]['centroid']=self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['centroid']
+            self.graph.node[data[1]]['volume'] = self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['volume']
+           
+            #add edge
+            self.graph.add_edge(data[0],data[1],edgeCode=eCode,edgeType=eType, colour=eColour, area=count, weight=1)
+    
+    def read_properties( self ):
+        
+        #initialise properties dict
+        self.lithology_properties = {}
+        
+        #open & parse properties file
+        f = open(self.basename + ".g20", 'r')
+        lines = f.readlines()   
+        nevents = int(lines[0].split(' ')[2]) #number of events
+    
+        for i in range(nevents + 3,len(lines)): #loop through lithology definitions
+            l = (lines[i].strip()).split(' ')
+        
+            #load lithology parameters
+            params = {}
+            params['code'] = int(l[0])
+            params['name'] = ' '.join(l[2:-3])
+            #colours are the last 3 values
+            params['colour'] = [ float(l[-3]) / 255.0, float(l[-2]) / 255.0, float(l[-1]) / 255.0 ]
+        
+            #store lithology parameters (using lithocode as key)
+            self.lithology_properties[params['code']] = params
+            
+        #close properties file
+        f.close
+        
+        #load node locations from .vs file
+        self.node_properties = {}
+        f = open(self.basename + "_v.vs", 'r')
+        lines =f.readlines()
+        for l in lines:
+            if "PVRTX" in l: #this is a vertex
+                data = l.split(' ')
+                params = {}
+                params['centroid']=[ float(data[2]), float(data[3]), float(data[4])]
+                params['litho'] = int(data[5])
+                params['topo'] = data[6]
+                params['volume'] = int(data[7]) #number of voxels of this type
+                
+                #save (key = LITHO_TOPO (eg. 2_001a))
+                self.node_properties[ '%d_%s' % (params['litho'],params['topo']) ] = params
+        f.close()
+        
     def read_adjacency_matrix(self):
-        """Read max number of lithologies aross all models"""
+        """**DEPRECIATED**
+        Read max number of lithologies aross all models"""
         ml_lines = open(self.basename + ".g22", 'r').readlines()
         # read in data
-
+        
         for line in ml_lines:
-			self.maxlitho = line 
-			print "maxlitho =", self.maxlitho
-		
-          
+            self.maxlitho = line 
+            
+        print "maxlitho =", self.maxlitho
     
+    def filter_node_volumes(self,min_volume=100):
+        '''
+        Removes all nodes with volumes less than the specified size
+        
+        **Arguments**:
+         - *min_volume* = the threshold volume. Nodes with smaller volumes are deleted.
+         
+        **Returns**
+         - returns the number of deleted nodes
+        '''
+        
+        count = 0
+        for n in self.graph.nodes():
+            if self.graph.node[n]['volume'] < min_volume:
+                self.graph.remove_node(n)
+                count+=1
+        
+        return count
+    
+    def jaccard_coefficient(self,G2):
+        '''
+        Calculates the Jaccard Coefficient (ratio between the intersection & union) of the graph representing this NOddyTopology and G2.
+        
+        **Arguments**
+         - *G2* = a valid NoddyTopology object or NetworkX graph that this topology is to be compared with
+         
+        **Returns**
+          - The jaccard_coefficient
+        '''
+        
+        intersection=0
+        union=self.graph.number_of_edges()
+        
+        #ensure G2 is a graph object
+        if (isinstance(G2,NoddyTopology)):
+            G2 = G2.graph #we want the graph bit
+        
+        for e in self.graph.edges_iter():
+            if (G2.has_edge(e[0],e[1])): #edge is shared
+                intersection+=1
+            else: #edge is new, add to union
+                union += 1
+            
+        print intersection / float(union)
+        return intersection / float(union)
 
+    def is_unique(self, known ):
+        '''
+        Returns True if the topology of this model is different (ie. forms a different network) to a list of models.
+        
+        **Arguments**:
+            -*known* = a list of valid NoddyTopology objects or NetworkX graphs to compare with.
+        
+        **Returns**:
+         - Returns true if this topology is unique, otherwise false
+        '''
+        for g2 in known:
+            if self.jaccard_coefficient(g2) == 1:
+                return False #the models match
+        return True
+    
+    def calculate_overlap(self, G2):
+        '''
+        Calculates the overlap between this NoddyTopology and another NoddyTopology or networkX graph
+        
+        **Arguments**
+         - *G2* = a valid NoddyTopology object or NetworkX graph that this topology is to be compared with
+         
+        **Returns**
+          - The number of overlapping edges 
+          
+        '''
+        
+        #ensure G2 is a graph object
+        if (isinstance(G2,NoddyTopology)):
+            G2 = G2.graph #we want the graph bit
+        
+        similarity=0
+        for e in self.graph.edges_iter():
+            if (G2.has_edge(e[0],e[1])):
+                similarity+=1
+        return similarity
+        
+        
+    def find_matching(self,known):
+        '''
+        Finds the first matching NoddyTopology (or NetworkX graph) in the specified list
+        
+        **Arguments**:
+            -*known* = a list of valid NoddyTopology objects or NetworkX graphs to compare with.
+        
+        **Returns**:
+         - Returns the first matching object (jaccard coefficient = 1), or otherwise None
+        
+        '''
+        for g1 in known:
+            if self.jaccard_coefficient(g1) == 1.0:
+                return g1 #return the match
+        return None #no match
+       
+    def draw_matrix_image( self, outputname="" ):
+        '''
+        Draws an (adjacency) matrix representing this NoddyTopology object.
+        
+        **Arguments**
+         - *outputname* = the path of the image to be written. If left as '' the image is written to the same directory as the basename.
+        '''
+        
+        #try importing matplotlib
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
+            print ("Could not draw image as matplotlib is not installed. Please install matplotlib")
+            
+        #get output path
+        if outputname == "":
+            outputname = self.basename + "_matrix.jpg"
+            
+        #open the matrix file
+        f = open(self.basename + '.g25','r')
+        lines = f.readlines()
+        rows = []
+        for l in lines:
+            l = l.rstrip()
+            row = []
+            for e in l.split('\t'):
+                row.append(int(e))
+            rows.append(row)
+    
+        #draw & save
+        print "Saving matrix image to... " + outputname
+        cmap=plt.get_cmap('Paired')
+        cmap.set_under('white')  # Color for values less than vmin
+        plt.imshow(rows, interpolation="nearest", vmin=1, cmap=cmap)
+        plt.savefig(outputname)
+        plt.clf()
+    
+    def draw_network_image(self, outputname="", **kwds ):
+        '''
+        Draws a network diagram of this NoddyTopology to the specified image
+        
+        **Arguments**
+         - *outputname* = the path of the image being written. If left as '' the image is written to the same directory as the basename.
+        **Optional Keywords**
+         - *dimension* = '2D' for a 2D network diagram or '3D' for a 3D network diagram. Default is '2D'.
+         - *axis* = the axis to view on for 3D network diagrams
+         - *perspective* = True to use perspective projection, or False for orthographic projection. Default is False.
+         - *node_size* = The size that nodes are drawn. Default is 1500.
+         - *layout* = The layout algorithm used in 2D. Options are 'spring_layout' (default), 'shell_layout', 'circular_layout' 
+                      and 'spectral_layout'.
+         - *verbose* = True if this function is allowed to write to the print buffer, otherwise false. Default is true
+        '''
+        
+        #import networkx
+        import networkx as nx
+        
+        #try importing matplotlib
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
+            print ("Could not draw image as matplotlib is not installed. Please install matplotlib")
+            
+            
+        #get args
+        dims=kwds.get("dimension",'2D')    
+        view_axis=kwds.get("axis",'y') #default view along y axis
+        perspective=kwds.get("perspective",False)
+        node_size = kwds.get("node_size",1500)
+        layout = kwds.get("layout",'spring_layout')
+        verbose = kwds.get("verbose",True)
+        
+        #get output path
+        if outputname == "":
+            outputname = self.basename + "_graph.jpg"
+        
+        #setup node colours (by lithologies)
+        #nCols = map(int,[G.node[n]['lithology'] for n in G.nodes()])
+        nCols = []
+        for n in self.graph.nodes():
+            nCols.append(self.graph.node[n]['colour'])
+            
+        #setup colors (by type)
+        eCols = []#map(int,[G.edge[e[0]][e[1]]['edgeType'] for e in G.edges()])
+        for e in self.graph.edges():
+            eCols.append(self.graph.edge[e[0]][e[1]]['colour'])
+        
+        
+        #calculate node positions & sizes
+        size = [node_size] * nx.number_of_nodes(self.graph)
+        pos = {}
+        
+        if '3D' in dims: #3D layout
+            size_dict = {}
+            for n in self.graph.nodes():
+                #initialise size array
+                size_dict[n] = node_size
+                dz=1 #z buffer
+                
+                #calculate 2D location (orthographic)
+                if view_axis == 'x' or view_axis == 'side': #side view
+                    pos[n]=[self.graph.node[n]['centroid'][1],self.graph.node[n]['centroid'][2]]
+                    dz=self.graph.node[n]['centroid'][0]
+                elif view_axis == 'y' or view_axis == 'front': #front view
+                    pos[n]=[self.graph.node[n]['centroid'][0],self.graph.node[n]['centroid'][2]]
+                    dz=self.graph.node[n]['centroid'][1]
+                elif view_axis == 'z' or view_axis == 'top': #top view
+                    pos[n]=[self.graph.node[n]['centroid'][0],self.graph.node[n]['centroid'][1]]
+                    dz=self.graph.node[n]['centroid'][2]
+                
+                #apply perspective correction if necessary
+                if perspective==True:
+                    pos[n][0] = pos[n][0] / (dz)
+                    pos[n][1] = pos[n][1] / (dz)
+                    size_dict[n] = (size_dict[n] / dz) * 500
+                
+            #store size array
+            size = size_dict.values()
+            
+        else: #2D layout
+            if 'shell_layout' in layout: #layouts: spring_layout, shell_layout, circular_layout, spectral_layout
+                pos = nx.shell_layout(self.graph)
+            if 'circular_layout' in layout:
+                pos = nx.circular_layout(self.graph)
+            if 'circular_layout' in layout:
+                pos = nx.spectral_layout(self.graph)
+            else:
+                pos = nx.spring_layout(self.graph)
+            
+        #print "Position = " + str(pos)
+        
+        #draw & save
+        if verbose:
+            print "Saving network image to..." + outputname
+        
+        nx.draw(self.graph,pos,node_color=nCols,node_size=size, edge_color=eCols) #cmap=cm
+        
+        #nx.draw_networkx_labels(G,pos,font_size=8)
+        
+        plt.savefig(outputname)
+        plt.clf()
+    def draw_3d_network( self, **kwds ):
+        '''
+        Draws a 3D network using Mayavi.
+        
+        **Optional Keywords**:
+         - *show* = If True, the 3D network is displayed immediatly on-screen in an
+                    interactive mayavi viewer. Default is True.
+         - *output* = If defined an image of the network is saved to this location.
+         - *vtk* = A path to save a .vtk model of the network (for later viewing). If
+                   undefined a vtk is not saved (default)
+        '''
+        
+        #import mayavi & networkx
+        import networkx as nx
+        
+        try:
+            from mayavi import mlab
+            import numpy as np
+        except:
+            print("Error drawing interactive network: Mayavi is not installed")
+            return
+        
+        show = kwds.get("show",True)
+        outputname = kwds.get("output",'')
+        vtk = kwds.get("vtk",'')
+        
+        #convert node labels to integers
+        G2 = nx.convert_node_labels_to_integers(self.graph)
+        
+        #load positions
+        x = []
+        y = []
+        z = []
+        nCols = []
+        for n in G2.nodes():
+            x.append(G2.node[n]['centroid'][0])
+            y.append(G2.node[n]['centroid'][1])
+            z.append(G2.node[n]['centroid'][2])
+            nCols.append(int(G2.node[n]['lithology']))
+        
+        #make figure
+        mlab.figure(1, bgcolor=(1,1,1))
+        mlab.clf()
+        
+        pts = mlab.points3d(x,y,z,nCols, scale_factor=250, scale_mode='none',resolution=20)
+    
+        pts.mlab_source.dataset.lines = np.array(G2.edges())
+        tube = mlab.pipeline.tube(pts,tube_radius=10)
+        mlab.pipeline.surface(tube,color=(0.3,0.3,0.3))
+        
+        #show
+        if show:
+            mlab.show()
+            
+        #save
+        if outputname != '':
+            mlab.savefig(outputname)
+        
+        if vtk!='':
+            try:
+                from tvtk.api import write_data
+            except:
+                print("Warning: tvtk not installed - cannot write vtk file.")
+                return
+    
+            write_data(pts.mlab_source.dataset,outputname)
         
 if __name__ == '__main__':
     # some testing and debugging functions...
     import os
 #     os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
 #     NO = NoddyOutput("strike_slip_out")
-    os.chdir(r'/Users/flow/git/paper_sandstone/notebooks')
-    NO = NoddyOutput("geogrid")
+    os.chdir('C:/Users/Sam/SkyDrive/Documents/Masters/Models/Primitive/Fold+Unconformity+Intrusion+Fault/vary_fault_dip_only/12476/2')
+    NO = "out_0001"
     
+    #create NoddyTopology
+    topo = NoddyTopology(NO)
     
+    #draw network
+    topo.draw_network_image(dimension='3D',perspective=False,axis='x')
     
+    #draw matrix
+    topo.draw_matrix_image()
     
+    #draw 3D network
+    topo.draw_3d_network()
     
     
     
