@@ -388,15 +388,8 @@ class NoddyHistory(object):
         
         **Arguments**:
             - *cube_size* = float : new model cube size
-        **Optional Args**
-            -type: choose geology or geophysics cube size to return. Should be either 'Geology' (default) or 'Geophysics'
         """
-        #get args
-        sim_type = kwds.get("type", 'Geology')
-        cube_string = 'Geology Cube Size' #get geology cube size by default
-        if ('Geophysics' in sim_type):
-            cube_string = 'Geophysics Cube Size' #instead get geophysics cube size
-        
+               
         # check if footer_lines exist (e.g. read in from file)
         # if not: create from template
         if not hasattr(self, "footer_lines"):
@@ -404,7 +397,13 @@ class NoddyHistory(object):
             
 #        lines_new = self.history_lines[:]
         for i,line in enumerate(self.footer_lines):
-            if cube_string in line:  #correct line, make change
+            if "Geophysics Cube Size" in line:  #correct line, make change
+                l = line.split('=')
+                l_new = '%7.2f\r\n' % cube_size
+                line_new = l[0] + "=" + l_new
+                self.footer_lines[i] = line_new
+                
+            if "Geology Cube Size" in line: #change geology cube size also
                 l = line.split('=')
                 l_new = '%7.2f\r\n' % cube_size
                 line_new = l[0] + "=" + l_new
