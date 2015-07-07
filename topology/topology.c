@@ -153,16 +153,16 @@ char **argv;
          pairs=(TOPO **) topobimat(0,ARRAYSIZE,0,2); //matrix containing topology (pairs (ie. topo unit A contacts of topo unit B)
          pairsize=(int *) imat(0,ARRAYSIZE); //matrix counting number of voxel pairs each topology pair is represented by (ie. 'surface area')
 
-		 printf("done allocating....");
+		 printf("done allocating....\n");
 		fflush(stdout);
          read_litho(rootname, topo, nx,ny,nz); //load lithologies into topo voxel model
          read_codes(rootname, topo, nx,ny,nz); //load topology codes int topo voxel model
 
-		 printf("loaded lithologies & codes");
+		 printf("loaded lithologies & codes\n");
 		fflush(stdout);
          unique_codes(topo, &ncodes, ucodes, nx,ny,nz, xOff,yOff,zOff,scale, centroids,dvol); //condense 3D voxel model into list of unique topology codes
 
-		 printf("loaded unique codes");
+		 printf("loaded unique codes\n");
 		fflush(stdout);
          calc_topology(rootname, topo, nx,ny,nz, nevents, pairs, pairsize, &npairs); //calculate topology pairs/pairsizes from voxel model
 

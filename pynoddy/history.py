@@ -26,16 +26,21 @@ class NoddyHistory(object):
             and open directly from Atlas of Structural Geophysics,
             http://virtualexplorer.com.au/special/noddyatlas/index.html
             
+            - *verbose* = True if this function should print output to the printstream. Default is True.
+            
         Note: if both a (local) history is given and a URL, the local
         file is opened!
         """
+        
+        vb = kwds.get('verbose',True)
+        
         if history is None:
             if kwds.has_key("url"):
                 self.load_history_from_url(kwds['url'])
-                self.determine_events()
+                self.determine_events(verbose = vb)
             else:
                 # generate a new history
-                self.create_new_history()
+                self.create_new_history(verbose = vb)
         else:
             # load existing history
             self.load_history(history)
@@ -289,14 +294,19 @@ class NoddyHistory(object):
                 self.model_stratigraphy += self.events[e].layer_names
             
             
-    def determine_events(self):
+    def determine_events(self, **kwds):
         """Determine events and save line numbers
         
         .. note:: Parsing of the history file is based on a fixed Noddy output order. 
                   If this is, for some reason (e.g. in a changed version of Noddy) not the case, then
                   this parsing might fail!
         
+          **Optional Keywords**:
+           - verbose = True if this function is should write to the print bufffer, otherwise False. Default is true.
         """
+        
+        vb = kwds.get('verbose',True)
+        
         self._raw_events = []
         for i,line in enumerate(self.history_lines):
             if "No of Events" in line:
@@ -320,9 +330,15 @@ class NoddyHistory(object):
         self.events = {} # idea: create events as dictionary so that it is easier
         # to swap order later!
         # now create proper event objects for these events
+        if vb:
+            print "Loaded model with the following events:"
+        
         for e in self._raw_events:
             event_lines = self.history_lines[e['line_start']:e['line_end']+1]
-            print e['type']
+            
+            if vb:
+                print e['type']
+            
             if 'FAULT' in e['type']:
                 ev = events.Fault(lines = event_lines)
                 # set specific aspects first

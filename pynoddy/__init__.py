@@ -34,7 +34,7 @@ def compute_model(history, output_name, **kwds):
         - *output_name* = string : basename for output files
     
     **Optional Keywords**:
-        - *sim_type* = 'BLOCK', 'GEOPHYSICS', 'SURFACES', 'BLOCK_GEOPHYS', 'BLOCK_SURFACES', 'ALL':
+        - *sim_type* = 'BLOCK', 'GEOPHYSICS', 'SURFACES', 'BLOCK_GEOPHYS', 'TOPOLOGY', 'BLOCK_SURFACES', 'ALL':
             type of Noddy simulation (default: 'BLOCK')
         - *program_name* = string : name of program (default: noddy.exe or noddy, both checked)
     **Returns**:
@@ -82,11 +82,11 @@ def compute_topology(rootname, files, **kwds):
         
     out = "Running topology exectuable at %s(.exe)\n" % topologyPath
     try: #try running .exe file (windows only)
-        out =  subprocess.Popen([topologyPath+".exe", rootname, "1", dvol], 
+        out =  subprocess.Popen([topologyPath+".exe", rootname, str(files), dvol], 
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
     except OSError: #obviously not running windows - try just the binary
-        out =  subprocess.Popen([topologyPath, rootname, "1", dvol], 
+        out =  subprocess.Popen([topologyPath, rootname, str(files), dvol], 
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
     return out
