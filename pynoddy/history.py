@@ -26,13 +26,13 @@ class NoddyHistory(object):
             and open directly from Atlas of Structural Geophysics,
             http://virtualexplorer.com.au/special/noddyatlas/index.html
             
-            - *verbose* = True if this function should print output to the printstream. Default is True.
+            - *verbose* = True if this function should print output to the printstream. Default is False.
             
         Note: if both a (local) history is given and a URL, the local
         file is opened!
         """
         
-        vb = kwds.get('verbose',True)
+        vb = kwds.get('verbose',False)
         
         if history is None:
             if kwds.has_key("url"):
@@ -40,11 +40,11 @@ class NoddyHistory(object):
                 self.determine_events(verbose = vb)
             else:
                 # generate a new history
-                self.create_new_history(verbose = vb)
+                self.create_new_history()
         else:
             # load existing history
             self.load_history(history)
-            self.determine_events()
+            self.determine_events(verbose = vb)
             
     def __repr__(self):
         """Print out model information"""

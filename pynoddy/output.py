@@ -396,11 +396,6 @@ class NoddyTopology(object):
         """
         self.basename = output_name
         
-        #todo: run topology
-        
-        if not "_0001" in output_name:
-            print "Warning: Topology output files need to end in _0001.* in order to process correctly. This should be fixed (eventually...)."
-        
         #load network
         self.loadNetwork()
         
@@ -532,7 +527,7 @@ class NoddyTopology(object):
             
         print "maxlitho =", self.maxlitho
     
-    def filter_node_volumes(self,min_volume=100):
+    def filter_node_volumes(self,min_volume=50):
         '''
         Removes all nodes with volumes less than the specified size
         
@@ -566,7 +561,7 @@ class NoddyTopology(object):
         union=self.graph.number_of_edges()
         
         #ensure G2 is a graph object
-        if (isinstance(G2,NoddyTopology)):
+        if isinstance(G2,NoddyTopology):
             G2 = G2.graph #we want the graph bit
         
         for e in self.graph.edges_iter():
