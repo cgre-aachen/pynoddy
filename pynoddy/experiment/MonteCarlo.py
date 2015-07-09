@@ -1,5 +1,6 @@
 import sys, os, platform
 
+import pynoddy
 from pynoddy.experiment import Experiment
 
 class MonteCarlo(Experiment):
@@ -129,6 +130,8 @@ class MonteCarlo(Experiment):
                        often a limiting factor (at this point every thread requires at least ~1Gb of ram).
         - *sim_type* = The type of simulation to run. This can be any of: 'BLOCK', 'GEOPHYSICS', 'SURFACES', 
                        'BLOCK_GEOPHYS', 'TOPOLOGY', 'BLOCK_SURFACES', 'ALL'. Default is 'BLOCK'.
+        - *write_changes* = A file (path) to write the parameters used in each model realisation to (minus the extension). 
+                       The default is a file called 'parameters.csv'. Set as None to disable writing.
         - *verbose* = True if this function sends output to the print buffer. Default is True.
         '''
         
@@ -136,6 +139,13 @@ class MonteCarlo(Experiment):
         vb = kwds.get("verbose",True)
         stype = kwds.get("sim_type","BLOCK")
         threads = kwds.get("threads",1)
+        changes = kwds.get("write_changes","parameters")
+        
+        #get start time (for timing runs)
+        if vb:
+            import time
+            start_time = time.time()
+        
         
         #calculate & create node directory (for multi-node instances)  
         nodename = ""
@@ -170,8 +180,14 @@ class MonteCarlo(Experiment):
                 if (t == 0): #first thread gets remainder
                     n = n + count % threads
                 
+                #calculate changes path
+                change_path = None
+                if not changes is None:
+                    change_path = "%s_thread%d" % (changes,t)
+                
                 #initialise thread
-                t = Thread(target=t_his.generate_model_instances,args=(threadpath,n),kwargs={'sim_type' : stype, 'verbose' : vb})
+                t = Thread(target=t_his.generate_model_instances,args=(threadpath,n),kwargs={'sim_type' : stype, 'verbose' : vb, 'write_changes' : change_path})
+                
                 thread_list.append(t)
                 
                 #start thread
@@ -186,6 +202,9 @@ class MonteCarlo(Experiment):
             #now everything is finished!
             if vb:
                 print "Finito!"
+                
+                elapsed = time.time() - start_time
+                print "Generated %d models in %d seconds\n\n" % (count,elapsed)
                 
         else: #only 1 thread (or instance of a thread), so run noddy
             for n in range(1,count+1): #numbering needs to start at 1 for topology
@@ -221,7 +240,13 @@ class MonteCarlo(Experiment):
                         
                 #flush print buffer
                 sys.stdout.flush()
-                     
+                   
+            #write changes
+            if not (changes is None):
+                print "Writing parameter changes to %s..." % (changes + ".csv")
+                self.write_parameter_changes(changes+".csv")
+                print "Complete."
+            
     @staticmethod
     def load_topology_realisations(path,**args):
         '''
