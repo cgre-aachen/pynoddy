@@ -391,8 +391,7 @@ class NoddyTopology(object):
         function `compute_model`, e.g.: ``pynoddy.compute_model(history_name, output, type = 'TOPOLOGY')``
         
         **Arguments**
-         - *output_name* = the name of the noddy output to run topology on. Note that this output must end with
-                           _0001.* in order to process correctly (TODO: fix this in topology.c code).
+         - *output_name* = the name of the noddy output to run topology on.
         """
         self.basename = output_name
         
@@ -545,6 +544,37 @@ class NoddyTopology(object):
                 count+=1
         
         return count
+        
+    def collapse_stratigraphy(self):
+        '''
+        Collapses all stratigraphic edges in this network to produce a network that only contains
+        structurally bound rock volumes. Essentially this is a network built only with Topology codes
+        and ignoring lithology
+        
+        **Returns**
+         - a new NoddyTopology object containing the collapsed graph. The original object is not modified.
+        '''  
+        
+        #make copy of this object
+        import copy
+        topo = copy.deepcopy(self)
+        
+        #retrieve list of edges, ignoring lithology
+        edges = []
+        for e in topo.graph.edges_iter():
+            
+            code1 = e[0].split("_")[1] #topology code of node 1
+            code2 = e[1].split("_")[1] #topology code of node 2
+            
+            edges.append( (code1,code2) ) #add edge tuple to edges array
+            
+        #remake graph
+        topo.graph.clear()
+        
+        topo.graph.add_edges_from(edges)
+        
+        return topo
+       
     
     def jaccard_coefficient(self,G2):
         '''
@@ -557,7 +587,10 @@ class NoddyTopology(object):
           - The jaccard_coefficient
         '''
         
+        #intersection is initially zero
         intersection=0
+        
+        #add edges from this graph to union
         union=self.graph.number_of_edges()
         
         #ensure G2 is a graph object
@@ -565,10 +598,10 @@ class NoddyTopology(object):
             G2 = G2.graph #we want the graph bit
         
         for e in self.graph.edges_iter():
-            if (G2.has_edge(e[0],e[1])): #edge is shared
-                intersection+=1
-            else: #edge is new, add to union
-                union += 1
+            if (G2.has_edge(e[0],e[1])): #edge present in both graphs
+                intersection+=1 #add this edge to intersection
+            else:
+                union += 1 #edge is new, add to union
         return intersection / float(union)
 
     def is_unique(self, known ):
@@ -585,6 +618,39 @@ class NoddyTopology(object):
             if self.jaccard_coefficient(g2) == 1:
                 return False #the models match
         return True
+    
+    @staticmethod
+    def combine_topologies(topology_list):
+        '''
+        Combines a list of topology networks into a weighted 'super-network'. This is designed for
+        estimating the likelyhood of a given edge occuring using a series of networks generated in
+        a Monte-Carlo type analysis.
+        
+        **Arguments**
+         - *topology_list* = A list of networkX graphs or NoddyTopology objects to build supernetwork from.
+        **Returns**
+         - A NetworkX graph object containing all edges from the input graphs and weighted ('weight' parameter)
+           according to their observed frequency.
+        '''
+        
+        import networkx as nx
+        
+        S = nx.Graph()
+        for G in topology_list:
+            
+            #ensure G is a Graph
+            if isinstance(G,NoddyTopology):
+                G = G.graph #we want the graph bit
+                
+            #loop through edges
+            for e in G.edges(data=True):
+                 if (S.has_edge(e[0],e[1])): #edge already exists
+                     S.edge[e[0]][e[1]]['weight'] = S.edge[e[0]][e[1]]['weight'] + 1 #increment weight
+                 else: #otherwise add edge
+                     S.add_edge(e[0],e[1],edgeCode=e[2]['edgeCode'],edgeType=e[2]['edgeType'], colour=e[2]['colour'], weight=1)
+
+        #return the graph
+        return S
     
     @staticmethod
     def calculate_unique_topologies(topology_list, **kwds):
@@ -621,7 +687,8 @@ class NoddyTopology(object):
             f.close()
             
         return uTopo
-        
+       
+      
     def calculate_overlap(self, G2):
         '''
         Calculates the overlap between this NoddyTopology and another NoddyTopology or networkX graph
