@@ -80,7 +80,7 @@ int main(argc, argv)
 int argc;
 char **argv;
 {
-     char root[250]; //root: the name of noddy project to look at (minus the file extension): ie. path/my_project
+     root[250]; //root: the name of noddy project to look at (minus the file extension): ie. path/my_project
      int litho, files, dvol;
      struct topology ***topo;
      int nevents, nx,ny,nz;
@@ -95,7 +95,7 @@ char **argv;
 
 	 //Resize Stack (Linux Only)
      #ifdef __unix__
-         printf("Running topology. Checking stack size.... \n");
+         printf("Running topology. Checking stack size.... ");
          //set stack size
          const rlim_t kStackSize = STACKSIZE;
          struct rlimit rl;
@@ -120,7 +120,7 @@ char **argv;
            }
          } else
          {
-           printf("Error - Could not retrieve stack information. Stack size not increased.\n");
+           printf("Error - Could not retrieve stack information. Stack size not increased.");
          }
 	 #endif
      
@@ -135,27 +135,27 @@ char **argv;
      if (argc > 2)
         sscanf(argv[2],"%d",&dvol); //1 = ensure discrete volumes, 0 = don't ensure discrete volumes
 	 else
-        dvol = 1; //default is 1
+        dvol = 1 //default is 1
      
-     printf("Calculating topology for %s...\n",root);
+     printf("Calculating topology for %s...",root);
      fflush(stdout);
     
      //get model information from header file
      read_header(root, &nx,&ny,&nz,&nevents, &xOff,&yOff,&zOff,&scale);
     
      //print model information
-     printf("Model information:\n Events=%d\n Grid size = (%d,%d,%d)\n", nevents, nx,ny,nz);
-     printf(" Offset=(%lf,%lf,%lf)\n Scale=%lf\n", xOff,yOff,zOff,scale);
+     printf("Model information:\n Events=%d\nGrid size = (%d,%d,%d)\n", nevents, nx,ny,nz);
+     printf("Offset=(%lf,%lf,%lf)\nScale=%lf\n", xOff,yOff,zOff,scale);
      fflush(stdout);
      
      //initialise voxel array
-     printf("Allocating voxel array. Requires %dMb RAM... ", (nx * ny * nz * sizeof(TOPO)) / 1000000);
+     printf("Allocating voxel array. Requires %dMb RAM... ", nx * ny * nz * sizeof(TOPO));
      topo = (TOPO ***) topotrimat(0,nx,0,ny,0,nz); //3d topology voxel model (matrix)
      printf("Done.\n");
      fflush(stdout);
      
      //initialise work arrays
-     printf("Allocating work arrays. Requires %dMb RAM... ", (ARRAYSIZE * sizeof(TOPO) + ARRAYSIZE*sizeof(POINT) + ARRAYSIZE * 2 * sizeof(TOPO) + ARRAYSIZE * sizeof(int)) / 1000000);
+     printf("Allocating work arrays. Requires %dMb RAM... ", (ARRAYSIZE * sizeof(TOPO) + ARRAYSIZE*sizeof(POINT) + ARRAYSIZE * 2 * sizeof(TOPO) + ARRAYSIZE * sizeof(int)));
      ucodes = (TOPO *) topomat(0,ARRAYSIZE); //list of unique topology codes
      centroids=(POINT *) dmat(0,ARRAYSIZE); //list of centroids
      pairs=(TOPO **) topobimat(0,ARRAYSIZE,0,2); //matrix containing topology (pairs (ie. topo unit A contacts of topo unit B)
@@ -166,10 +166,10 @@ char **argv;
      printf("Loading voxel array (lithologies & topology codes)... "); 
      read_litho(root, topo, nx,ny,nz); //load lithologies into topo voxel model
      read_codes(root, topo, nx,ny,nz); //load topology codes int topo voxel model
-     printf("Done.\n");
+     printf("Done.\n")
      fflush(stdout);
      
-     printf("Loading unique codes... \n\n");
+     printf("Loading unique codes... ");
      unique_codes(topo, &ncodes, ucodes, nx,ny,nz, xOff,yOff,zOff,scale, centroids,dvol); //condense 3D voxel model into list of unique topology codes
      printf("Done. %d codes found.\n",ncodes);
      fflush(stdout);
@@ -192,7 +192,7 @@ char **argv;
      free_bimat((char *) pairs, 0,ARRAYSIZE,0,2);
      free_mat((char *) pairsize, 0,ARRAYSIZE);
      
-     printf("Finished\n\n");
+     printf("Finished");
      exit(0); //return
 }
 
@@ -204,7 +204,7 @@ void read_header(char *rootname, int *nx, int *ny, int *nz, int *nevents, double
     char  dum1[250],dum2[250];
 
 	sprintf(fname, "%s.g20",rootname);
-	//printf("%s %s\n",fname, rootname);
+	printf("%s %s\n",fname, rootname);
 
 	in=fopen(fname, "r");
     if (in == NULL)
@@ -215,9 +215,9 @@ void read_header(char *rootname, int *nx, int *ny, int *nz, int *nevents, double
     
     //read file
 	fscanf(in,"%s %s %d", &dum1, &dum2, nevents);
-	//printf("#events %d\n", *nevents);
+	printf("#events %d\n", *nevents);
 	fscanf(in,"%s %d %d %d", &dum1, nx,ny,nz);
-	//printf("dim x=%d y=%d z=%d\n",*nx,*ny,*nz);
+	printf("dim x=%d y=%d z=%d\n",*nx,*ny,*nz);
 	fscanf(in,"%s %s %lf %lf %lf %lf", &dum1, &dum2, xOff,  yOff,  zOff,  scale);
 }
 
@@ -359,10 +359,8 @@ void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes,
                                 if (c == '[' | c == '\\' | c == ']' | c == '^' | c == '_' | c =='`') //skip annoying characters ( '\' especially)
                                     c = 'a'; //more than 26 codes already! move to lower case letters...
                                 if (c == '{')
-                                {
-                                    printf("Error: volume codes full - lithology is divided into more than 52 separate volumes. Try increasing the search distance.\n");
+                                    printf("Error: volume codes full - lithology is divided into more than 52 separate volumes. Try increasing the search distance.\n";
                                     exit(1); //getta outta here
-                                }
                                 
                                 fcodes[n].numVolumes++; //this is a new volume - keep track of how many have been observed
                                 break;
@@ -481,8 +479,8 @@ void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int 
     int samecode;
     int codeseq1,codeseq2;
     
-    int litho, n_litho; //lithology of each voxel being checked
-    char code[250], n_code[250]; //code of each voxel being checked
+    int litho //lithology of each voxel being checked
+    char code[250] //code of each voxel being checked
     
     //initialize default values
 	for(n=0;n<ARRAYSIZE;n++)
@@ -502,8 +500,7 @@ void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int 
 			for(z=0;z<nz-1;z++)
             {
                 //get the litho & code for this voxel
-                litho = topo[x][y][z].litho;
-                strcpy(code,(char *)topo[x][y][z].code);
+                
                 
                 //compare this voxel with its immediate neighbours (including diagonally)
                 int n_x, n_y, n_z;
@@ -517,17 +514,14 @@ void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int 
                                     //compare codes
                                     if(match(n_x,n_y,n_z,topo,litho,code) == FALSE) //codes are different
                                     {
-                                        //get neighbour lithology and code
-                                        n_litho = topo[n_x][n_y][n_z].litho;
-                                        strcpy(n_code,(char *)topo[n_x][n_y][n_z].code);
                                         
                                         //see if this pair has already been observed
                                         for (n=0,same=0;n<*npairs;n++)
                                         {
-                                            if((litho==pairs[n][0].litho && strcmp(code,pairs[n][0].code)==0 && //are they the same?
-                                                n_litho==pairs[n][1].litho && strcmp(n_code,pairs[n][1].code)==0) ||
-                                               (n_litho==pairs[n][0].litho && strcmp(n_code,pairs[n][0].code)==0 &&
-                                                litho==pairs[n][1].litho && strcmp(code,pairs[n][1].code)==0))
+                                            if((topo[x][y][z].litho==pairs[n][0].litho && strcmp(topo[x][y][z].code,pairs[n][0].code)==0 && //are they the same?
+                                                topo[x][y][z+1].litho==pairs[n][1].litho && strcmp(topo[x][y][z+1].code,pairs[n][1].code)==0) ||
+                                               (topo[x][y][z+1].litho==pairs[n][0].litho && strcmp(topo[x][y][z+1].code,pairs[n][0].code)==0 &&
+                                                topo[x][y][z].litho==pairs[n][1].litho && strcmp(topo[x][y][z].code,pairs[n][1].code)==0))
                                             {
                                                 same = 1;
                                                 pairsize[n]=pairsize[n]+1; //increment size of this pair (think 'surface area')
@@ -538,17 +532,17 @@ void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int 
                                         if (same == 0) //this is a new pair, so add it to the list
                                         {
                                             intcode1=atoi(code); //calculate integer topology codes (mainly for export to GoCad)
-                                            intcode2=atoi(n_code);
+                                            intcode2=atoi(topo[n_x][n_y][n_z].code);
                                             
                                             
                                             //note to self: do I care about the following?? It could be calculated later in python if necessary.
                                             for(n=nevents-1,samecode=0;n>-1;n--) //loop through all events
-                                                if(code[n]!=n_code[n]) //and find the (first) event where the topology codes are different
+                                                if(code!=topo[n_x][n_y][n_z].code[n]) //and find the (first) event where the topology codes are different
                                                 {
                                                     pairs[*npairs][0].diffage=n+1; //set the number of times (events) that this voxel is different to its neighbour
 
                                                     codeseq1=code[n]-'0'; //wtf does this do??
-                                                    codeseq2=n_code[n]-'0';
+                                                    codeseq2=topo[n_x][n_y][n_z].code[n]-'0';
                                                     
                                                     if(codeseq1 > codeseq2)
                                                         pairs[*npairs][0].difftype=codeseq1;
@@ -571,8 +565,8 @@ void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int 
                                             strcpy((char *) pairs[*npairs][0].code,code);
                                             
                                             //write vertex 2 (the neighbour)
-                                            pairs[*npairs][1].litho=n_litho;
-                                            strcpy((char *) pairs[*npairs][1].code,n_code);
+                                            pairs[*npairs][1].litho=topo[n_x][n_y][n_z].litho;
+                                            strcpy((char *) pairs[*npairs][1].code,topo[n_x][n_y][n_z].code);
                                             
                                             pairsize[*npairs]=1; //this pair has been observed once
                                             *npairs=*npairs+1; //increment length of pair array

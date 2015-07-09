@@ -80,7 +80,7 @@ class MonteCarlo(Experiment):
                         his_files.remove(p)
                         
                         #initialise thread
-                        t = Thread(target=MonteCarlo.generate_models_from_existing_histories,args=(p,),kwargs={'threads' : 0, 'sim_type' : stype, 'verbose' : vb})
+                        t = Thread(target=MonteCarlo.generate_models_from_existing_histories,args=(p,),kwargs={'threads' : 0, 'sim_type' : stype, 'verbose' : vb,'force_recalculate' : force})
                         thread_list.append(t)
                         
                         #start thread
@@ -92,6 +92,8 @@ class MonteCarlo(Experiment):
             
         else: #run given file
             output = path.split('.')[0]
+            
+            #call noddy
             if force or not os.path.exists(output+".g01"): #if noddy files don't exist, or force is true
                 if vb:
                     print("Running %s... " % output)
@@ -99,58 +101,21 @@ class MonteCarlo(Experiment):
                     print ("Complete.")
                 else:
                     pynoddy.compute_model(path,output, sim_type = stype) 
-            elif vb:
-                print "Model files alread exist for %s. Skipping." % path
-    
-    @staticmethod
-    def generate_topologies_from_exisiting_histories(path, basename, **kwds):
-        '''
-        Processes all existing his files in the given directory. Note that at this time this function is not multithreaded.
-        For optimum performance generate_models_from_existing_histories should be used to run Noddy models with
-        sim_type = 'TOPOLOGY' (allowing multithreaded Noddy), after this function can be used to call run topology code.
-        **Arguments**:
-         - *path* = The directory that will be searched for .his files
-         - *basename* = The basename that is expected
-         
-        **Optional Kewords**:
-            - *verbose* = True if this function sends output to the print buffer. Default is True.
-            - *force_recalculate* = Forces the recalculation of existing noddy & topology files. Default is False, hence this
-               function will not run history files that are already associated with Noddy/Topolgy data files.
-        '''
-        
-        #get keywords
-        vb = kwds.get("verbose",True)
-        force = kwds.get("force_recalculate",False)
-        
-        #gather list of his files
-        n = 0
-        for root, dirnames, filenames in os.walk(path): #walk the directory
-            for f in filenames:
-                if ('.his' in f and basename in f): #find all his files
-                    his_path = os.path.join(root,f)
-                    base_path = his_path.split('.')[0]
                     
-                    #run noddy if necessary
-                    if force or not os.path.exists(base_path+".g22"): #topology file
-                        if vb:
-                            print("Running %s... " % his_path)
-                            print(pynoddy.compute_model(his_path, base_path, sim_type = "TOPOLOGY"))
-                            print ("Complete.")
-                        else:
-                            pynoddy.compute_model(his_path, base_path, sim_type = "TOPOLOGY")
-                    elif vb:
-                        print "Noddy files already exist for %s. Skipping." % his_path
-                    n += 1
-                
-        
-        #run topology
-        if vb:
-            print('Computing model topologies (%s/%s)... ' % (path,basename))
-            print(pynoddy.compute_topology(os.path.join(path,basename),n))
-            print('Finito!.')  
-        else:
-            pynoddy.compute_topology(os.path.join(path,basename),n)
+            #call topology if in TOPOLOGY mode
+            if 'TOPOLOGY' in stype:
+                if force or not os.path.exists(output+".g23"): #if topology files don't exist, or force is true
+                    if vb:
+                        print("Running topology on %s... " % output)
+                        print(pynoddy.compute_topology(output))
+                        print ("Complete.")
+                    else:
+                        pynoddy.compute_topology(output)
+                elif vb:
+                    print "Topology files alread exist for %s. Skipping." % path
             
+            #flush print buffer
+            sys.stdout.flush()   
         
     def generate_model_instances(self, path, count, **kwds):
         '''
@@ -160,9 +125,8 @@ class MonteCarlo(Experiment):
          - *path* = The directory that Noddy models should be generated in
          - *count* = The number of random variations to generate
         **Optional Kewords**:
-         - *threads* = The number of seperate threads to run when generating noddy models. For optimum
-                       performance this should equal the number of logical cores - 1, unless RAM is a 
-                       limiting factor (at this point every thread requires at least 2Gb of ram).
+         - *threads* = The number of seperate threads to run when generating noddy models. Note that RAM is 
+                       often a limiting factor (at this point every thread requires at least ~1Gb of ram).
         - *sim_type* = The type of simulation to run. This can be any of: 'BLOCK', 'GEOPHYSICS', 'SURFACES', 
                        'BLOCK_GEOPHYS', 'TOPOLOGY', 'BLOCK_SURFACES', 'ALL'. Default is 'BLOCK'.
         - *verbose* = True if this function sends output to the print buffer. Default is True.
@@ -245,95 +209,19 @@ class MonteCarlo(Experiment):
                     print ("Complete.")
                 else:
                     pynoddy.compute_model(outputpath + ".his",outputpath, sim_type = stype)
-                 
-    def generate_topology_instances(self,path,count,**kwds):
-            '''
-            Generates the specified of randomly varied Noddy models.
-            
-            **Arguments**:
-             - *path* = The directory that Noddy models should be generated in
-             - *count* = The number of random variations to generate
-            **Optional Kewords**:
-             - *noddy_threads* = The number of seperate threads to run when generating noddy models. For optimum
-                           performance this should equal the number of logical cores - 1, unless RAM is a 
-                           limiting factor.
-            - *topology_threads* = The number of separate threads used to extract model topologies. For optimum
-                           performance this should equal the number of logical cores - 1, although it is worth
-                           noting that each topology thread requires at least 2Gb of RAM. Also note that topology_threads
-                           is capped at the number of threads used to run noddy.
-            - *verbose* = True if this function sends output to the print buffer. Default is True.
-            '''
-            
-            noddy_threads = kwds.get('noddy_threads',1)
-            topology_threads = kwds.get('topology_threads',1)
-            vb = kwds.get("verbose", True)
-            
-            if (topology_threads > noddy_threads): #topology threads examine  an entire directory, hence
-                                                   #it is impossible to have more topology threads than noddy threads   
-                topology_threads = noddy_threads
-            
-            #generate noddy model instances
-            if (noddy_threads > 0): #if noddy_threads is zero, then it is expected that noddy files already exist
-                self.generate_model_instances(path,count,sim_type='TOPOLOGY', threads=noddy_threads,verbose=vb)
-                           
-            #now generate topology threads
-            if topology_threads >= 1:
                 
-                #generate list of folders that need topology run on them
-                path_list = []
-                if (noddy_threads == 0): #only look in this directory
-                    path_list.append(path) 
-                else: #look in thread directories
-                    import os
-                    for t in range(0,noddy_threads):
-                        threadpath=os.path.join(path,"thread_%d" % t)
-                        path_list.append(threadpath)
-                
-                #print path_list
-                
-                #import thread
-                from threading import Thread
-                                
-                #spawn threads untill all directories have been run
-                while len(path_list) > 0:
-                    thread_list = []
-                    for t in range(0,topology_threads):
+                #run topology if necessary
+                if "TOPOLOGY" in stype:
+                    if vb:
+                        print("Complete. Calculating Topology... ")
+                        print(pynoddy.compute_topology(outputpath))
+                        print ("Complete.")
+                    else:
+                        pynoddy.compute_topology(outputpath)
                         
-                        if (len(path_list) > 0):
-                            #initialise thread
-                            t = Thread(target=self.generate_topology_instances,args=(path_list[0],count), kwargs = {"noddy_threads" : 0, "topology_threads" : 0, "verbose" : vb})
-                            thread_list.append(t)
-                            
-                            #start thread
-                            t.start()
-                        
-                            #remove directory
-                            path_list.remove(path_list[0])
-                        
-                    #wait for threads to come back
-                    for t in thread_list:
-                        t.join()
-                        
-                    #repeat until all directories have been checked...
-                
-                if vb:
-                    print "Finito!"
-                
-            else: #this is the bit that actually runs the topology code
-                #calculate number of noddy models in folder
-                n = 0
-                import os
-                for f in os.listdir(path):
-                    if f.endswith(".g20"): #each g20 file represents a noddy topology
-                        n += 1
-            
-                if vb:
-                    print('Computing model topologies (%s/%s)... ' % (path,self.basename))
-                    print(pynoddy.compute_topology(os.path.join(path,self.basename),n))
-                    print('Complete.')  
-                else:
-                    pynoddy.compute_topology(os.path.join(path,self.basename),n)
-    
+                #flush print buffer
+                sys.stdout.flush()
+                     
     @staticmethod
     def load_topology_realisations(path,**args):
         '''
@@ -388,7 +276,7 @@ class MonteCarlo(Experiment):
         vb = args.get('verbose',True)
         
         #TODO
-        
+        print "Error: load_noddy_realisations has not been implemented yet. Sorry."
         
 if __name__ == '__main__':
         
@@ -397,49 +285,53 @@ if __name__ == '__main__':
     import pynoddy
     
     #setup
-    pynoddy.ensure_discrete_volumes = False
+    pynoddy.ensure_discrete_volumes = True
     
-    #build resolution test
-    #res = ResolutionTest('folducdykefault_stretched.his',50,550)
-    #res = ResolutionTest('normal_fault.his',50,550)
-    #res = MonteCarlo('folducdykefault_stretched.his','params.csv')
-    #res = MonteCarlo('foldUC.his','foldUC_params.csv')
+    ###################################################
+    #MONTE CARLO PERTURBATION OF HIS FILE EXAMPLE
+    ###################################################
     
-    #run
-    #res.generate_model_instances("output",30,sim_type="TOPOLOGY",threads=4)
-    #res.generate_topology_instances("folducdykefault_output_dv0",1000,noddy_threads=6,topology_threads=3)   
+    #setup working directory
+    os.chdir(r'C:\Users\Sam\SkyDrive\Documents\Masters\Models\Primitive\monte carlo test')
+    his_file = "foldUC.his"
+    params_file = "foldUC_params.csv"
     
+    #create new MonteCarlo experiment
+    mc = MonteCarlo(his_file,params_file)
     
+    #generate 100 random perturbations using 4 separate threads (in TOPOLOGY mode)
+    output_name = "mc_out"
+    n = 1000
+    mc.generate_model_instances(output_name,n,sim_type="TOPOLOGY",threads=4)
     
-    #GENERATE TOPOLOGY FROM EXISTING HISTORIES EXAMPLE:
-    #setup path
-    #path = r'C:\Users\Sam\SkyDrive\Documents\Masters\Models\1ktest'
-    #path = r'1ktest'
+    #load output
+    topologies = MonteCarlo.load_topology_realisations(output_name, verbose=True)
     
-    os.chdir(r'E:\Masters\Models')
-    #os.chdir(r'C:\Users\Sam\SkyDrive\Documents\Masters\Models\Primitive\monte carlo test')
-    #path = 'multi_his_test'
-    path = '1ktest'
-    basename='GBasin123_random_draw'
-    
-    #run existing his files noddy files
-    MonteCarlo.generate_models_from_existing_histories(path,threads=6,sim_type="TOPOLOGY")    
-    
-    MonteCarlo.generate_topologies_from_exisiting_histories(path,basename,verbose=True)
-        
-        
-    #load topology output
-    topologies = MonteCarlo.load_topology_realisations(path, verbose=True)
-        
     #calculate unique topologies
-    uTopo = []
-    accum = []
-    for t in topologies:
-        if t.is_unique(uTopo):
-            #t.filter_node_volumes(50)
-            uTopo.append(t)
-        accum.append(len(uTopo))
+    from pynoddy.output import NoddyTopology
+    uTopo = NoddyTopology.calculate_unique_topologies(topologies,output="accumulate.csv")
+    print "%d unique topologies found in %d simulations" % (len(uTopo),n)
     
-    print "%d unique topologies generated" % len(uTopo)
-    print "Cumulative Sequence:"
-    print accum
+#    ###################################################
+#    #run existing .his files example (in TOPOLOGY mode)
+#    ###################################################
+#    
+#    #setup working environment
+#    os.chdir(r'C:\Users\Sam\SkyDrive\Documents\Masters\Models\Primitive\monte carlo test')
+#    path = 'multi_his_test'
+#    basename='GBasin123_random_draw'
+#    
+#    #run noddy in 'TOPOLOGY' mode (multithreaded)
+#    MonteCarlo.generate_models_from_existing_histories(path,threads=6,sim_type="TOPOLOGY",force_recalculate=True)    
+#    
+#    #calculate topologies (single thread)
+#    #MonteCarlo.generate_topologies_from_existing_histories(path,basename,verbose=True)
+#          
+#    #load topology output
+#    topologies = MonteCarlo.load_topology_realisations(path, verbose=True)
+#    
+#    #calculate unique topologies
+#    from pynoddy.output import NoddyOutput
+#    uTopo = NoddyOutput.calculate_unique_topologies(topologies,output="accumulate.csv")
+#    print "%d unique topologies found in %s" % (len(uTopo),path)
+#    

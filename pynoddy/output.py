@@ -586,6 +586,42 @@ class NoddyTopology(object):
                 return False #the models match
         return True
     
+    @staticmethod
+    def calculate_unique_topologies(topology_list, **kwds):
+        '''
+        Calculates the number of unique topologies in a list of NoddyTopologies
+        
+        **Arguments**:
+         - *topology_list* = The list of NoddyTopologies to search through.
+         
+        **Optional Keywords**:
+         - *output* = File to write cumulative observed topologies distribution. Default is None (nothing written).
+        
+        **Returns**:
+         - Returns a list of unique topologies.
+       '''
+        
+        output = kwds.get("output",None)
+        
+        if not output is None:
+            f = open(output,'w')
+        
+        uTopo = []
+        for t in topology_list:
+            if t.is_unique(uTopo):
+                #t.filter_node_volumes(50)
+                uTopo.append(t)
+            
+            #write cumulative output
+            if not output is None:
+                f.write("%d\n" % len(uTopo))
+                
+        #close output
+        if not output is None:
+            f.close()
+            
+        return uTopo
+        
     def calculate_overlap(self, G2):
         '''
         Calculates the overlap between this NoddyTopology and another NoddyTopology or networkX graph

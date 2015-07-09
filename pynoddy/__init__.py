@@ -51,15 +51,18 @@ def compute_model(history, output_name, **kwds):
         out +=  subprocess.Popen([noddyPath, history, output_name, sim_type], 
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
+                           
+    #Thought: Is there any reason compute_topology should not be called here if sim_type == "TOPOLOGY"???
+    #It could simplify things a lot....
+                           
     return out
             
-def compute_topology(rootname, files, **kwds):
-    import subprocess, os
+def compute_topology(rootname, **kwds):
+    import subprocess
     """Call topology to compute the voxel topologies
     
     **Arguments**:
-        - *rootname* = string : rootname of sequence of calculated models
-        - *files* = int : number of calculated models
+        - *rootname* = string : rootname model to calculate topology for
     **Optional Keywords**:
         - *ensure_discrete_volumes* = True if topological units are broken down into
                                       separate, spatially continuous volumes. Otherwise
@@ -69,7 +72,7 @@ def compute_topology(rootname, files, **kwds):
                                       a global variable (pynoddy.ensure_discrete_volumes)
                                       so it can be changed during runtime.
     **Returns**
-        -Returns any text outputted by the noddy executable
+        -Returns any text outputted by the topology executable, including errors.
     """
     
     dvol = kwds.get('ensure_discrete_volumes',ensure_discrete_volumes)
@@ -82,11 +85,11 @@ def compute_topology(rootname, files, **kwds):
         
     out = "Running topology exectuable at %s(.exe)\n" % topologyPath
     try: #try running .exe file (windows only)
-        out =  subprocess.Popen([topologyPath+".exe", rootname, str(files), dvol], 
+        out =  subprocess.Popen([topologyPath+".exe", rootname, dvol], 
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
     except OSError: #obviously not running windows - try just the binary
-        out =  subprocess.Popen([topologyPath, rootname, str(files), dvol], 
+        out =  subprocess.Popen([topologyPath, rootname, dvol], 
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
     return out
