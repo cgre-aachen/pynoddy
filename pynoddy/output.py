@@ -461,8 +461,8 @@ class NoddyTopology(object):
             #create nodes & associated properties
             self.graph.add_node(data[0], lithology=lithoCode1, name=self.lithology_properties[int(lithoCode1)]['name'])
             self.graph.node[data[0]]['colour']=self.lithology_properties[int(lithoCode1)]['colour']
-            self.graph.node[data[0]]['centroid']=self.node_properties[ "%d_%s" % (int(lithoCode1),topoCode1) ]['centroid']
-            self.graph.node[data[0]]['volume'] = self.node_properties[ "%d_%s" % (int(lithoCode1),topoCode1) ]['volume']
+            self.graph.node[data[0]]['centroid']=self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['centroid']
+            self.graph.node[data[0]]['volume'] = self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['volume']
             
             self.graph.add_node(data[1], lithology=lithoCode2, name=self.lithology_properties[int(lithoCode2)]['name'])
             self.graph.node[data[1]]['colour']=self.lithology_properties[int(lithoCode2)]['colour']
@@ -488,6 +488,7 @@ class NoddyTopology(object):
             #load lithology parameters
             params = {}
             params['code'] = int(l[0])
+            
             params['name'] = ' '.join(l[2:-3])
             #colours are the last 3 values
             params['colour'] = [ float(l[-3]) / 255.0, float(l[-2]) / 255.0, float(l[-1]) / 255.0 ]

@@ -69,3 +69,6 @@ docs/notebooks/SALib-sensitivity-analysis_files
 8-Experiments-checkpoint.ipynb
 *.o
 pynoddy/sampling-SamT15.py
+topology/old_version/compile.bat
+topology/old_version/topology.exe
+topology/old_version/topology.c
