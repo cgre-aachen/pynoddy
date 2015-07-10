@@ -5,7 +5,6 @@ Created on 24/03/2014
 '''
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 class NoddyOutput(object):
     """Class definition for Noddy output analysis"""
@@ -220,6 +219,12 @@ class NoddyOutput(object):
             - *layers_from* = noddy history file : get labels automatically from history file
             - *data* = np.array : data to plot, if different to block data itself
         """
+        #try importing matplotlib
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
+            print ("Could not draw image as matplotlib is not installed. Please install matplotlib")
+            
         cbar_orientation = kwds.get("colorbar_orientation", 'vertical')
         # determine if data are passed - if not, then recompute model
         if kwds.has_key("data"):
@@ -460,14 +465,14 @@ class NoddyTopology(object):
             
             #create nodes & associated properties
             self.graph.add_node(data[0], lithology=lithoCode1, name=self.lithology_properties[int(lithoCode1)]['name'])
-            self.graph.node[data[0]]['colour']=self.lithology_properties[int(lithoCode1)]['colour']
-            self.graph.node[data[0]]['centroid']=self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['centroid']
-            self.graph.node[data[0]]['volume'] = self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['volume']
+            #self.graph.node[data[0]]['colour']=self.lithology_properties[int(lithoCode1)]['colour']
+            #self.graph.node[data[0]]['centroid']=self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['centroid']
+            #self.graph.node[data[0]]['volume'] = self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['volume']
             
             self.graph.add_node(data[1], lithology=lithoCode2, name=self.lithology_properties[int(lithoCode2)]['name'])
-            self.graph.node[data[1]]['colour']=self.lithology_properties[int(lithoCode2)]['colour']
-            self.graph.node[data[1]]['centroid']=self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['centroid']
-            self.graph.node[data[1]]['volume'] = self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['volume']
+            #self.graph.node[data[1]]['colour']=self.lithology_properties[int(lithoCode2)]['colour']
+            #self.graph.node[data[1]]['centroid']=self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['centroid']
+            #self.graph.node[data[1]]['volume'] = self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['volume']
            
             #add edge
             self.graph.add_edge(data[0],data[1],edgeCode=eCode,edgeType=eType, colour=eColour, area=count, weight=1)
@@ -510,7 +515,7 @@ class NoddyTopology(object):
                 params['centroid']=[ float(data[2]), float(data[3]), float(data[4])]
                 params['litho'] = int(data[5])
                 params['topo'] = data[6]
-                params['volume'] = int(data[7]) #number of voxels of this type
+                params['volume'] = 100#int(data[7]) #number of voxels of this type
                 
                 #save (key = LITHO_TOPO (eg. 2_001a))
                 self.node_properties[ '%d_%s' % (params['litho'],params['topo']) ] = params
