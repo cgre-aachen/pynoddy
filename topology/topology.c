@@ -11,9 +11,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//import library to resize stack
+#ifdef __unix__
+ #include <sys/resource.h> //to set stack size
+#endif
+
+//define compiler flags
 #define ARRAYSIZE 10000
 #define SEARCHDISTANCE 2
-#define STACKSIZE = 1073741824 //1GB stack
+#define STACKSIZE 1000000000 //1GB stack
 
 //clumsy boolean type
 #define BOOL char
