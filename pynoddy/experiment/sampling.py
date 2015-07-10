@@ -10,11 +10,18 @@ probability distributions, given means and 95 percentile intervals (ci)
 import numpy as np
 import scipy as sc
 import scipy.stats
-import collections
 
 #build a lookup table for kappa values given a 95 percentile interval
 def VMLookupTable():
-    kappa_lookup = collections.OrderedDict()
+    try: #try loading ordered dict
+      from collections import OrderedDict
+    except ImportError: #not installed, try on pythonpath
+      try:
+        from OrderedDict import OrderedDict
+      except ImportError:
+        "PyNoddy requires OrderedDict to run. Please download it and make it available on the pythonpath."
+        
+    kappa_lookup = OrderedDict()
     
     #build lookup table
     for k in range(1000,100,-20):
