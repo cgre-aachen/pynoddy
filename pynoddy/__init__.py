@@ -16,7 +16,8 @@ noddyPath = os.path.join(package_directory,'../noddy/noddy')
 topologyPath = os.path.join(package_directory,'../topology/topology')
 
 #global variables
-ensure_discrete_volumes = True
+ensure_discrete_volumes = True #if True, spatially separated but otherwise identical volumes are given separate codes.
+null_volume_threshold = 20 #volumes smaller than this are ignored completely (as they represent pixelation artefacts).
 
 #ensure correct noddy & topology builds are present
 if not os.path.exists(noddyPath) and not os.path.exists(noddyPath + ".exe"):
@@ -71,11 +72,16 @@ def compute_topology(rootname, **kwds):
                                       by an unconformity). Default is True, though this is
                                       a global variable (pynoddy.ensure_discrete_volumes)
                                       so it can be changed during runtime.
+        - *null_volume_threshold* = The smallest non-null volume. volumes smaller than this are
+                                    ignored by the topology algorithm (as they represent pixelation artefacts).
+                                    The default is 20 voxels, though this is a global variable and can be changed
+                                    with pynoddy.null_volume_threshold.
     **Returns**
         -Returns any text outputted by the topology executable, including errors.
     """
     
     dvol = kwds.get('ensure_discrete_volumes',ensure_discrete_volumes)
+    nvt =  kwds.get('null_volume_threshold',null_volume_threshold)
     
     #convert to string
     if dvol:
@@ -85,11 +91,11 @@ def compute_topology(rootname, **kwds):
         
     out = "Running topology exectuable at %s(.exe)\n" % topologyPath
     try: #try running .exe file (windows only)
-        out =  subprocess.Popen([topologyPath+".exe", rootname, dvol], 
+        out =  subprocess.Popen([topologyPath+".exe", rootname, dvol, str(nvt)], 
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
     except OSError: #obviously not running windows - try just the binary
-        out =  subprocess.Popen([topologyPath, rootname, dvol], 
+        out =  subprocess.Popen([topologyPath, rootname, dvol, str(nvt)], 
                            shell=False, stderr=subprocess.PIPE, 
                            stdout=subprocess.PIPE).stdout.read()
     return out

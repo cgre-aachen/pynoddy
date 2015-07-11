@@ -435,7 +435,7 @@ class Experiment(NoddyHistory,NoddyOutput):
     def write_parameter_changes(self, filepath):
         if hasattr(self, 'random_parameter_changes'): #if parameter changes have been stored
             #ensure directory exists
-            if not os.path.exists(os.path.dirname(filepath)):
+            if (not os.path.exists(os.path.dirname(filepath))) and (not os.path.dirname(filepath) == ''):
                 os.makedirs(os.path.dirname(filepath))
                 
             #open

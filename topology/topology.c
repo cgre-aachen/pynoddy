@@ -57,7 +57,7 @@ int *imat();*/
 void read_header(char *rootname, int *nx, int *ny, int *nz, int *nevents, double *xOff, double *yOff, double *zOff, double *scale);
 void read_litho(char *rootname, struct topology ***topo, int nx, int ny, int nz);
 void read_codes(char *rootname, struct topology ***topo, int nx, int ny, int nz);
-void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes, int nx, int ny, int nz, double xOff, double yOff, double zOff, double scale, struct point *centroids, int dvol);
+void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes, int nx, int ny, int nz, double xOff, double yOff, double zOff, double scale, struct point *centroids, int dvol, int v_thresh);
 BOOL match(int x, int y, int z, struct topology ***topo, int lith, char* code);
 int grow(int sx, int sy, int sz, int nx, int ny, int nz, struct topology ***topo, char label, int lith, char *code);
 void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int nz, int nevents, struct topology **pairs, int *pairsize, int *npairs);
@@ -87,7 +87,7 @@ int argc;
 char **argv;
 {
      char root[250]; //root: the name of noddy project to look at (minus the file extension): ie. path/my_project
-     int litho, files, dvol;
+     int litho, files, dvol, v_thresh;
      struct topology ***topo;
      int nevents, nx,ny,nz;
      int ncodes;
@@ -136,13 +136,21 @@ char **argv;
      		return(0);
      	}
      
+     //get first argument [root file]
      sscanf(argv[1],"%s",&root); //root file
      
+     //get second argument [ensure discrete volumes]
      if (argc > 2)
         sscanf(argv[2],"%d",&dvol); //1 = ensure discrete volumes, 0 = don't ensure discrete volumes
 	 else
         dvol = 1; //default is 1
      
+     //get third argument [volume threshold]
+     if (argc > 3)
+        sscanf(argv[3],"%d",&v_thresh);
+     else
+        v_thresh=20;
+        
      printf("Calculating topology for %s...\n",root);
      fflush(stdout);
     
@@ -176,7 +184,7 @@ char **argv;
      fflush(stdout);
      
      printf("Loading unique codes... \n\n");
-     unique_codes(topo, &ncodes, ucodes, nx,ny,nz, xOff,yOff,zOff,scale, centroids,dvol); //condense 3D voxel model into list of unique topology codes
+     unique_codes(topo, &ncodes, ucodes, nx,ny,nz, xOff,yOff,zOff,scale, centroids,dvol,v_thresh); //condense 3D voxel model into list of unique topology codes
      printf("Done. %d codes found.\n",ncodes);
      fflush(stdout);
      
@@ -271,7 +279,7 @@ void read_codes(char *rootname, struct topology ***topo, int nx, int ny, int nz)
 }
 
 //find unique codes in topology matrix
-void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes, int nx, int ny, int nz, double xOff, double yOff, double zOff, double scale, struct point *centroids,int dvol)
+void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes, int nx, int ny, int nz, double xOff, double yOff, double zOff, double scale, struct point *centroids,int dvol, int v_thresh)
 {
 
 	int x,y,z,n;
@@ -358,15 +366,15 @@ void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes,
                         for(n=0,same=0;n<nfcodes;n++)
                             if(match(x,y,z,topo,fcodes[n].litho,fcodes[n].code) == TRUE)
                             {
-                                //yes it has
+                                //yes it has, but it must be a new volume
                                 same=1;
-                                c += fcodes[n].numVolumes; //increment c by number of volumes (used to separate different volumes)
+                                c += fcodes[n].numVolumes; //increment c by number of previously observed volumes (used to separate different volumes)
                                 
                                 if (c == '[' | c == '\\' | c == ']' | c == '^' | c == '_' | c =='`') //skip annoying characters ( '\' especially)
                                     c = 'a'; //more than 26 codes already! move to lower case letters...
-                                if (c == '{')
+                                if (c == '{') //to many separate volumes - throw an error.
                                 {
-                                    printf("Error: volume codes full - lithology is divided into more than 52 separate volumes. Try increasing the search distance.\n");
+                                    printf("Error: volume codes full - lithology is divided into more than 52 separate volumes. Try increasing the search distance or volume threshold.\n");
                                     exit(1); //getta outta here
                                 }
                                 
@@ -388,7 +396,20 @@ void unique_codes(struct topology ***topo, int *ncodes, struct topology *ucodes,
 
                         //Flood fill adjacent voxels with the same code 
                         numVoxels = grow(x, y, z, nx, ny, nz, topo, c, topo[x][y][z].litho,code);
-
+                        
+                        //if volume is under the threshold value, assign as null pixels
+                        if (numVoxels < v_thresh)
+                        {
+                            //update code to flood fill
+                            strcpy(code,(char *)topo[x][y][z].code); 
+                            
+                            //append a ^ character to indicate that these voxels should be ignored
+                            grow(x, y, z, nx, ny, nz, topo,'^', topo[x][y][z].litho, code);
+                            
+                            //this wasn't a real volume so reduce volume count
+                            fcodes[n].numVolumes--;
+                        } 
+                        
                         //add this code to ucode
                         ucodes[*ncodes].litho=topo[x][y][z].litho;
                         strcpy((char *)ucodes[*ncodes].code,(char *)topo[x][y][z].code);
@@ -527,21 +548,31 @@ void calc_topology(char *rootname, struct topology ***topo, int nx, int ny, int 
                                         n_litho = topo[n_x][n_y][n_z].litho;
                                         strcpy(n_code,(char *)topo[n_x][n_y][n_z].code);
                                         
-                                        //see if this pair has already been observed
-                                        for (n=0,same=0;n<*npairs;n++)
-                                        {
-                                            if((litho==pairs[n][0].litho && strcmp(code,pairs[n][0].code)==0 && //are they the same?
-                                                n_litho==pairs[n][1].litho && strcmp(n_code,pairs[n][1].code)==0) ||
-                                               (n_litho==pairs[n][0].litho && strcmp(n_code,pairs[n][0].code)==0 &&
-                                                litho==pairs[n][1].litho && strcmp(code,pairs[n][1].code)==0))
-                                            {
-                                                same = 1;
-                                                pairsize[n]=pairsize[n]+1; //increment size of this pair (think 'surface area')
-                                                break; //all done here
-                                            }
-                                        }
+                                        //assume this is a new code, and that we should add it
+                                        same = 0;
                                         
-                                        if (same == 0) //this is a new pair, so add it to the list
+                                        //check to see if either voxels has a null code
+                                        if (code[strlen(code)-1]=='^' || n_code[strlen(n_code)-1]=='^')
+                                            same = 1; //a valid pair cannot involve a null code
+                                       
+                                        
+                                        //see if this pair has already been observed
+                                        if (same==0)
+                                            for (n=0;n<*npairs;n++)
+                                            {
+                                                if((litho==pairs[n][0].litho && strcmp(code,pairs[n][0].code)==0 && //are they the same?
+                                                    n_litho==pairs[n][1].litho && strcmp(n_code,pairs[n][1].code)==0) ||
+                                                   (n_litho==pairs[n][0].litho && strcmp(n_code,pairs[n][0].code)==0 &&
+                                                    litho==pairs[n][1].litho && strcmp(code,pairs[n][1].code)==0))
+                                                {
+                                                    same = 1; //this isn't a new pair, don't add it.
+                                                    pairsize[n]=pairsize[n]+1; //increment size of this pair (think 'surface area')
+                                                    break; //all done here
+                                                }
+                                            }
+                                                                                
+                                        //this is a new pair, so add it to the list
+                                        if (same == 0)
                                         {
                                             intcode1=atoi(code); //calculate integer topology codes (mainly for export to GoCad)
                                             intcode2=atoi(n_code);
