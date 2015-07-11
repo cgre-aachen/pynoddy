@@ -141,25 +141,31 @@ class MonteCarlo(Experiment):
         threads = kwds.get("threads",1)
         changes = kwds.get("write_changes","parameters")
         
+        #store path for later
+        self.instance_path = path       
+        
         #get start time (for timing runs)
         if vb:
             import time
             start_time = time.time()
-        
-        
-        #calculate & create node directory (for multi-node instances)  
-        nodename = ""
-        if (platform.system() == 'Linux'): #running linux - might be a cluster, so get node name
-            nodename = os.uname()[1] #the name of the node it is running on (linux only)
-        
-        #move into node subdirectory
-        path = os.path.join(path,nodename)
         
         #ensure directory exists
         if not os.path.isdir(path):
             os.makedirs(path)
                 
         if threads > 1: #multithreaded - spawn required number of threads
+        
+            #calculate & create node directory (for multi-node instances)  
+            if (platform.system() == 'Linux'): #running linux - might be a cluster, so get node name
+                nodename = os.uname()[1] #the name of the node it is running on (linux only)
+                
+                #move into node subdirectory
+                path = os.path.join(path,nodename) 
+            
+                #append node name to output
+                if not changes is None:
+                    changes = "%s_%s" % (changes,nodename) #append node name to output
+                
             #import thread
             from threading import Thread
             
@@ -169,7 +175,7 @@ class MonteCarlo(Experiment):
                 #create subdirectory for this thread
                 threadpath=os.path.join(path,"thread_%d" % t)
                 if not os.path.isdir(threadpath):
-                    os.mkdir(threadpath)
+                    os.makedirs(threadpath)
                     
                 #make copy of this object 
                 import copy
@@ -246,7 +252,83 @@ class MonteCarlo(Experiment):
                 print "Writing parameter changes to %s..." % (changes + ".csv")
                 self.write_parameter_changes(changes+".csv")
                 print "Complete."
+           
+    def cleanup(self, **kwds ):
+        '''
+        Deletes files and folders created during Monte Carlo simulations
+        
+        **Optional Kewords**
+         - *delete_noddy_working_files* = If True, noddy working files are deleled. Default is True.
+         - *delete_noddy_history_files* = If True, noddy history files are deleted. Default is True.
+         - *delete_topology_files* = If True, topology files are deleted. Default is True.
+        '''
+        
+        del_noddy = kwds.get("delete_noddy_working_files",True)
+        del_his = kwds.get("delete_noddy_history_files",True)
+        del_topo = kwds.get("delete_topology_files",True)
+        
+        #check that this class has been used to generate data
+        if not hasattr(self,'instance_path'):
+            print "Warning: Nothing cleaned - this MonteCarlo instance has not generated any files."
+            return
             
+        #delete files
+        path = os.path.basename(self.basename)
+        MonteCarlo.clean(self.instance_path,path,delete_noddy_working_files=del_noddy,delete_noddy_history_files=del_his,delete_topology_files=del_topo)
+        
+                            
+    @staticmethod                      
+    def clean(path, basename=None, **kwds):
+       
+        '''
+        Deletes files and folders created during Monte Carlo simulations
+        
+       **Arguments**
+        - *path* = The directory to search. Subdirectories are included in the search.
+        - *basename* = The basename of files to delete. If left as None (default) all files are deleted.
+         
+       **Optional Kewords**
+        - *delete_noddy_working_files* = If True, noddy working files are deleled. Default is True.
+        - *delete_noddy_history_files* = If True, noddy history files are deleted. Default is True.
+        - *delete_topology_files* = If True, topology files are deleted. Default is True.
+       '''
+       
+        del_noddy = kwds.get("delete_noddy_working_files",True)
+        del_his = kwds.get("delete_noddy_history_files",True)
+        del_topo = kwds.get("delete_topology_files",True)
+        
+        #delete files
+        for root, dirnames, filenames in os.walk(path): #walk the directory
+            for f in filenames:
+                p = os.path.join(root,f)
+                if (basename in f) or (basename == None):
+                    #delete history files
+                    if '.his' in f and del_his:
+                        os.remove(p)
+                    
+                    #delete noddy files
+                    if del_noddy:
+                        for e in ['.g00', '.g01', '.g02', '.g12', '.g20', '.g21', '.g22']:
+                            if e in f:
+                                os.remove(p)
+                                
+                    #delete topology files
+                    if del_topo:
+                        for e in ['.g23', '.g24', '.g25', '_p.pl', '_v.vs']:
+                            if e in f:
+                                os.remove(p) 
+                    
+        #delete any empty folders
+        for root, dirnames, filenames in os.walk(path): #walk the directory again
+            for d in dirnames:
+                p = os.path.join(root,d)
+                if not os.listdir(p): #if directory is empty
+                    os.rmdir(p) #delete it
+            
+            #finally, delete root
+            if not os.listdir(root):
+                os.rmdir(root)
+
     @staticmethod
     def load_topology_realisations(path,**args):
         '''
@@ -326,7 +408,7 @@ if __name__ == '__main__':
     
     #generate 100 random perturbations using 4 separate threads (in TOPOLOGY mode)
     output_name = "mc_out"
-    n = 1000
+    n = 10
     mc.generate_model_instances(output_name,n,sim_type="TOPOLOGY",threads=4)
     
     #load output
@@ -335,7 +417,10 @@ if __name__ == '__main__':
     #calculate unique topologies
     from pynoddy.output import NoddyTopology
     uTopo = NoddyTopology.calculate_unique_topologies(topologies,output="accumulate.csv")
-    print "%d unique topologies found in %d simulations" % (len(uTopo),n)
+    print "%d unique topologies found in %d simulations" % (len(uTopo),len(topologies))
+    
+    #cleanup
+    mc.cleanup()
     
 #    ###################################################
 #    #run existing .his files example (in TOPOLOGY mode)
