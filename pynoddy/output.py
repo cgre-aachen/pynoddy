@@ -390,15 +390,20 @@ class NoddyGeophysics(object):
 
 class NoddyTopology(object):
     """Definition to read, analyse, and visualise calculated voxel topology"""        
-    def __init__(self, output_name):
+    def __init__(self, output_name, **kwds):
         """Methods to read, analyse, and visualise calculated voxel topology
         .. note:: The voxel topology have can be computed with a keyword in the
         function `compute_model`, e.g.: ``pynoddy.compute_model(history_name, output, type = 'TOPOLOGY')``
         
         **Arguments**
          - *output_name* = the name of the noddy output to run topology on.
+         
+         **Optional Keywords**
+          - *load_attributes* = True if nodes and edges in the topology network should be attributed with properties such as volume
+                               and surface area and lithology colour. Default is True.
         """
         self.basename = output_name
+        self.load_attributes = kwds.get("load_attributes",True)
         
         #load network
         self.loadNetwork()
@@ -465,14 +470,16 @@ class NoddyTopology(object):
             
             #create nodes & associated properties
             self.graph.add_node(data[0], lithology=lithoCode1, name=self.lithology_properties[int(lithoCode1)]['name'])
-            #self.graph.node[data[0]]['colour']=self.lithology_properties[int(lithoCode1)]['colour']
-            #self.graph.node[data[0]]['centroid']=self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['centroid']
-            #self.graph.node[data[0]]['volume'] = self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['volume']
-            
             self.graph.add_node(data[1], lithology=lithoCode2, name=self.lithology_properties[int(lithoCode2)]['name'])
-            #self.graph.node[data[1]]['colour']=self.lithology_properties[int(lithoCode2)]['colour']
-            #self.graph.node[data[1]]['centroid']=self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['centroid']
-            #self.graph.node[data[1]]['volume'] = self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['volume']
+            
+            if (self.load_attributes):
+                self.graph.node[data[0]]['colour']=self.lithology_properties[int(lithoCode1)]['colour']
+                self.graph.node[data[0]]['centroid']=self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['centroid']
+                self.graph.node[data[0]]['volume'] = self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['volume']
+                
+                self.graph.node[data[1]]['colour']=self.lithology_properties[int(lithoCode2)]['colour']
+                self.graph.node[data[1]]['centroid']=self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['centroid']
+                self.graph.node[data[1]]['volume'] = self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['volume']
            
             #add edge
             self.graph.add_edge(data[0],data[1],edgeCode=eCode,edgeType=eType, colour=eColour, area=count, weight=1)
@@ -505,21 +512,22 @@ class NoddyTopology(object):
         f.close
         
         #load node locations from .vs file
-        self.node_properties = {}
-        f = open(self.basename + "_v.vs", 'r')
-        lines =f.readlines()
-        for l in lines:
-            if "PVRTX" in l: #this is a vertex
-                data = l.split(' ')
-                params = {}
-                params['centroid']=[ float(data[2]), float(data[3]), float(data[4])]
-                params['litho'] = int(data[5])
-                params['topo'] = data[6]
-                params['volume'] = 100#int(data[7]) #number of voxels of this type
-                
-                #save (key = LITHO_TOPO (eg. 2_001a))
-                self.node_properties[ '%d_%s' % (params['litho'],params['topo']) ] = params
-        f.close()
+        if (self.load_attributes):
+            self.node_properties = {}
+            f = open(self.basename + "_v.vs", 'r')
+            lines =f.readlines()
+            for l in lines:
+                if "PVRTX" in l: #this is a vertex
+                    data = l.split(' ')
+                    params = {}
+                    params['centroid']=[ float(data[2]), float(data[3]), float(data[4])]
+                    params['litho'] = int(data[5])
+                    params['topo'] = data[6]
+                    params['volume'] = 100#int(data[7]) #number of voxels of this type
+                    
+                    #save (key = LITHO_TOPO (eg. 2_001a))
+                    self.node_properties[ '%d_%s' % (params['litho'],params['topo']) ] = params
+            f.close()
         
     def read_adjacency_matrix(self):
         """**DEPRECIATED**

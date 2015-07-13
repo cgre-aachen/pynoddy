@@ -338,6 +338,8 @@ class MonteCarlo(Experiment):
          - *path* = The root directory that models should be loaded from. All models with the same base_name
                     as this class will be loaded (including subdirectoriess)
         **Optional Arguments**:
+         - *load_attributes* = True if nodes and edges in the topology network should be attributed with properties such as volume
+                               and surface area and lithology colour. Default is True.
          - *verbose* = True if this function should write debug information to the print buffer. Default is True.
          
         **Returns**:
@@ -345,6 +347,7 @@ class MonteCarlo(Experiment):
         '''
         
         vb = args.get('verbose',True)
+        attr = args.get('load_attributes',True)
         
         if vb:
             print "Loading models in %s" % path
@@ -361,7 +364,7 @@ class MonteCarlo(Experiment):
                         print 'Loading %s' % base
                         
                     #load & store topology 
-                    topologies.append(NoddyTopology(base))
+                    topologies.append(NoddyTopology(base,load_attributes=attr))
           
         return topologies
          
