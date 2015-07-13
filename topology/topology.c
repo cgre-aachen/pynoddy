@@ -658,7 +658,8 @@ void gocad_network(char *rootname, struct topology ***topo, struct topology *uco
 
     for(n=0;n<ncodes;n++) // write out vertices
     {
-	   	 fprintf(out_vs,"PVRTX %d %lf %lf %lf %d %s %d\n",n+1,centroids[n].x,centroids[n].y,centroids[n].z,ucodes[n].litho, ucodes[n].code, centroids[n].npoints);
+        if (ucodes[n].code[strlen(ucodes[n].code)-1]!='^') //ignore null vertices
+            fprintf(out_vs,"PVRTX %d %lf %lf %lf %d %s %d\n",n+1,centroids[n].x,centroids[n].y,centroids[n].z,ucodes[n].litho, ucodes[n].code, centroids[n].npoints);
     }
 
     for(n=0;n<npairs;n++)
