@@ -404,7 +404,7 @@ class MonteCarlo(Experiment):
 if __name__ == '__main__':
         
     #load pynoddy
-    sys.path.append(r"C:\Users\Sam\SkyDrive\Documents\Masters\pynoddy")
+    sys.path.append(r"C:\Users\Sam\OneDrive\Documents\Masters\pynoddy")
     import pynoddy
     
     #setup
@@ -415,7 +415,7 @@ if __name__ == '__main__':
     ###################################################
     
     #setup working directory
-    os.chdir(r'C:\Users\Sam\SkyDrive\Documents\Masters\Models\Primitive\monte carlo test')
+    os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Primitive\monte carlo test')
     his_file = "foldUC.his"
     params_file = "foldUC_params.csv"
     
@@ -436,7 +436,7 @@ if __name__ == '__main__':
     print "%d unique topologies found in %d simulations" % (len(uTopo),len(topologies))
     
     #cleanup
-    mc.cleanup()
+    #mc.cleanup()
     
 #    ###################################################
 #    #run existing .his files example (in TOPOLOGY mode)

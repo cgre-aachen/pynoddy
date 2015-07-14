@@ -495,7 +495,7 @@ class NoddyTopology(object):
         lines = f.readlines()   
         nevents = int(lines[0].split(' ')[2]) #number of events
     
-        for i in range(nevents + 3,len(lines)): #loop through lithology definitions
+        for i in range(nevents + 3,len(lines)-1): #loop through lithology definitions
             l = (lines[i].strip()).split(' ')
         
             #load lithology parameters
@@ -509,6 +509,9 @@ class NoddyTopology(object):
             #store lithology parameters (using lithocode as key)
             self.lithology_properties[params['code']] = params
             
+        #load last line (list of names)
+        self.event_names = (lines[-1].strip()).split('\t')
+        
         #close properties file
         f.close
         
@@ -590,7 +593,66 @@ class NoddyTopology(object):
         
         return topo
        
-    
+    def collapse_topology(self, verbose=False):
+        '''
+        Collapses all topology codes down to the last (most recent) difference. Information regarding specific model topology is 
+        generalised, eg. lithology A has a fault and stratigrappic contact with B (regardless of how many different faults are involved).
+        
+        **Optional Arguments**:
+         - *verbose* = True if this function should write to the print buffer. Default is False.
+        **Returns**
+         - a new NoddyTopology object containing the collapsed graph. The original object is not modified.
+        '''
+        
+        import copy
+        topo = copy.deepcopy(self)
+        
+        #clear the graph in topo
+        topo.graph.clear()
+        
+        #loop through graph
+        for e in self.graph.edges(data=True):
+            #get lithology code
+            lith1 = e[0].split("_")[0] #lithology code of node1
+            lith2 = e[1].split("_")[0] #lithology code of node2
+            #get topology code
+            code1 = e[0].split("_")[1] #topology code of node 1
+            code2 = e[1].split("_")[1] #topology code of node 2
+            
+            #calculate new topology codes
+            newCode1 = '0' #if the topology codes are the same, the code is zero (signifying a stratigraphic contact)
+            newCode2 = '0'
+            name = self.event_names[0]
+            for i in range(len(code1)-1,-1,-1):
+                if code1[i] != code2[i]: #find the first difference
+                        newCode1 = code1[i]
+                        newCode2 = code2[i]
+                        name = self.event_names[i]
+            #calculate new node tags
+            u = "%s_%s" % (lith1,newCode1)
+            v = "%s_%s" % (lith2,newCode2)
+            
+            if topo.graph.has_edge(u,v): #edge already exists
+                #do our best to append/merge attributes
+                data = topo.graph.get_edge_data(u,v)
+                for key in e[2].keys():
+                    try:
+                        try:
+                            data[key] = str(int(data[key]) + int(e[2][key])) #increment numbers
+                        except ValueError:
+                            data[key] = e[2][key] #replace
+                    except KeyError: #key not found, add new key
+                        data[key] = e[2][key]
+                    
+            else:
+                #create new edge
+                topo.graph.add_edge(u,v,attr_dict=e[2])
+                #set edge name
+                topo.graph.get_edge_data(u,v)['name'] = name
+            if verbose:
+                print ("Collapsed (%s,%s) to (%s,%s)" % (e[0],e[1],u,v))
+        
+        return topo
     def jaccard_coefficient(self,G2):
         '''
         Calculates the Jaccard Coefficient (ratio between the intersection & union) of the graph representing this NOddyTopology and G2.
@@ -689,7 +751,7 @@ class NoddyTopology(object):
         
         if not output is None:
             #check directory exists
-            if not os.path.exists(os.path.dirname(output)):
+            if not os.path.exists(os.path.dirname(output)) and not os.path.dirname(output) == '':
                 os.makedirs(os.path.dirname(output))
             f = open(output,'w')
         
@@ -960,20 +1022,24 @@ if __name__ == '__main__':
     # some testing and debugging functions...
 #     os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
 #     NO = NoddyOutput("strike_slip_out")
-    os.chdir('C:/Users/Sam/SkyDrive/Documents/Masters/Models/Primitive/Fold+Unconformity+Intrusion+Fault/vary_fault_dip_only/12476/2')
-    NO = "out_0001"
+    os.chdir(r'C:\Users\Sam\Documents\Temporary Model Files\pynoddy\1ktest-1-100')
+    NO = "GBasin123_random_draw_0001"
     
     #create NoddyTopology
-    topo = NoddyTopology(NO)
+    topo = NoddyTopology(NO,load_attributes=False)
+    
+    topo_c = topo.collapse_topology()
+    print len( topo_c.graph.edges() )
+    print len( topo.graph.edges() )
     
     #draw network
-    topo.draw_network_image(dimension='3D',perspective=False,axis='x')
+    #topo.draw_network_image(dimension='3D',perspective=False,axis='x')
     
     #draw matrix
-    topo.draw_matrix_image()
+    #topo.draw_matrix_image()
     
     #draw 3D network
-    topo.draw_3d_network()
+    #topo.draw_3d_network()
     
     
     
