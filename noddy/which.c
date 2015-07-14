@@ -775,6 +775,17 @@ int write_rocks(int nx, int ny, int nz, double xoff, double yoff, double zoff, d
 
        }
 
+   for(events=0;events<numEvents;events++)
+   {
+   if (!(event = (OBJECT *) nthObject (NULL_WIN, events)))
+      if (!(event = (OBJECT *) nthObject (NULL_WIN, 0)))
+			return (NULL);
+
+        /* Just a Stratigraphy or a SEE THROUGH of an Import block */
+            fprintf(novella,"%s\t",event->text);
+   }
+   fprintf(novella,"\n");
+
 
    fclose (novella);
 
