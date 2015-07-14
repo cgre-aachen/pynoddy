@@ -3,7 +3,7 @@ Created on 24/03/2014
 
 @author: Florian Wellmann
 '''
-
+import os
 import numpy as np
 
 class NoddyOutput(object):
@@ -431,59 +431,60 @@ class NoddyTopology(object):
         lines = f.readlines() #read lines
         
         for l in lines: #load edges
-            l=l.rstrip()
-            data=l.split('\t')
-    
-            #calculate edge colors
-            topoCode1 = data[0].split('_')[1]
-            topoCode2 = data[1].split('_')[1]
-            lithoCode1 = data[0].split('_')[0]
-            lithoCode2 = data[1].split('_')[0]
-            count = int(data[-1]) #number of voxels with this neibour relationship (proxy of surface area)
-            
-            #calculate edge type (dyke, fault etc)
-            eCode=0
-            eType = 'stratigraphic' #default is stratigraphy
-            eColour='k' #black
-            for i in range(0,len(topoCode1) - 1): #-1 removes the trailing character
-                if (topoCode1[i] != topoCode2[i]): #find the difference
-                    if int(topoCode2[i]) > int(topoCode1[i]):
-                        eCode=topoCode2[i]
-                    else:
-                       eCode=topoCode1[i]
-                       
-                    if int(eCode) == 0: #stratigraphic contact
-                        eColour = 'k' #black
-                        eType = 'stratigraphic'
-                    elif int(eCode) == 2 or int(eCode) == 7 or int(eCode) == 8: #various types of faults
-                        eColour = 'r' #red
-                        eType = 'fault'
-                    elif int(eCode) == 3: #unconformity
-                        eColour = 'b' #blue
-                        eType = 'unconformity'
-                    elif int(eCode) == 5: #plug/dyke
-                        eColour = 'y' #yellow
-                        eType = 'intrusive'
-                    else:
-                        eColour = 'g' #green
-                        eType = 'unknown' 
-            
-            #create nodes & associated properties
-            self.graph.add_node(data[0], lithology=lithoCode1, name=self.lithology_properties[int(lithoCode1)]['name'])
-            self.graph.add_node(data[1], lithology=lithoCode2, name=self.lithology_properties[int(lithoCode2)]['name'])
-            
-            if (self.load_attributes):
-                self.graph.node[data[0]]['colour']=self.lithology_properties[int(lithoCode1)]['colour']
-                self.graph.node[data[0]]['centroid']=self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['centroid']
-                self.graph.node[data[0]]['volume'] = self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['volume']
+            if '_' in l: #this line contains topology stuff (aka ignore empty lines)
+                l=l.rstrip()
+                data=l.split('\t')
                 
-                self.graph.node[data[1]]['colour']=self.lithology_properties[int(lithoCode2)]['colour']
-                self.graph.node[data[1]]['centroid']=self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['centroid']
-                self.graph.node[data[1]]['volume'] = self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['volume']
-           
-            #add edge
-            self.graph.add_edge(data[0],data[1],edgeCode=eCode,edgeType=eType, colour=eColour, area=count, weight=1)
-    
+                #calculate edge colors
+                topoCode1 = data[0].split('_')[1]
+                topoCode2 = data[1].split('_')[1]
+                lithoCode1 = data[0].split('_')[0]
+                lithoCode2 = data[1].split('_')[0]
+                count = int(data[-1]) #number of voxels with this neibour relationship (proxy of surface area)
+                
+                #calculate edge type (dyke, fault etc)
+                eCode=0
+                eType = 'stratigraphic' #default is stratigraphy
+                eColour='k' #black
+                for i in range(0,len(topoCode1) - 1): #-1 removes the trailing character
+                    if (topoCode1[i] != topoCode2[i]): #find the difference
+                        if int(topoCode2[i]) > int(topoCode1[i]):
+                            eCode=topoCode2[i]
+                        else:
+                           eCode=topoCode1[i]
+                           
+                        if int(eCode) == 0: #stratigraphic contact
+                            eColour = 'k' #black
+                            eType = 'stratigraphic'
+                        elif int(eCode) == 2 or int(eCode) == 7 or int(eCode) == 8: #various types of faults
+                            eColour = 'r' #red
+                            eType = 'fault'
+                        elif int(eCode) == 3: #unconformity
+                            eColour = 'b' #blue
+                            eType = 'unconformity'
+                        elif int(eCode) == 5: #plug/dyke
+                            eColour = 'y' #yellow
+                            eType = 'intrusive'
+                        else:
+                            eColour = 'g' #green
+                            eType = 'unknown' 
+                
+                #create nodes & associated properties
+                self.graph.add_node(data[0], lithology=lithoCode1, name=self.lithology_properties[int(lithoCode1)]['name'])
+                self.graph.add_node(data[1], lithology=lithoCode2, name=self.lithology_properties[int(lithoCode2)]['name'])
+                
+                if (self.load_attributes):
+                    self.graph.node[data[0]]['colour']=self.lithology_properties[int(lithoCode1)]['colour']
+                    self.graph.node[data[0]]['centroid']=self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['centroid']
+                    self.graph.node[data[0]]['volume'] = self.node_properties["%d_%s" % (int(lithoCode1),topoCode1) ]['volume']
+                    
+                    self.graph.node[data[1]]['colour']=self.lithology_properties[int(lithoCode2)]['colour']
+                    self.graph.node[data[1]]['centroid']=self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['centroid']
+                    self.graph.node[data[1]]['volume'] = self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['volume']
+               
+                #add edge
+                self.graph.add_edge(data[0],data[1],edgeCode=eCode,edgeType=eType, colour=eColour, area=count, weight=1)
+                
     def read_properties( self ):
         
         #initialise properties dict
@@ -500,8 +501,8 @@ class NoddyTopology(object):
             #load lithology parameters
             params = {}
             params['code'] = int(l[0])
-            
             params['name'] = ' '.join(l[2:-3])
+            
             #colours are the last 3 values
             params['colour'] = [ float(l[-3]) / 255.0, float(l[-2]) / 255.0, float(l[-1]) / 255.0 ]
         
@@ -661,8 +662,11 @@ class NoddyTopology(object):
                  if (S.has_edge(e[0],e[1])): #edge already exists
                      S.edge[e[0]][e[1]]['weight'] = S.edge[e[0]][e[1]]['weight'] + 1 #increment weight
                  else: #otherwise add edge
-                     S.add_edge(e[0],e[1],edgeCode=e[2]['edgeCode'],edgeType=e[2]['edgeType'], colour=e[2]['colour'], weight=1)
-
+                     try:
+                         print(e[2])
+                         S.add_edge(e[0],e[1],edgeCode=e[2]['edgeCode'],edgeType=e[2]['edgeType'], colour=e[2]['colour'], weight=1)
+                     except KeyError:
+                         S.add_edge(e[0],e[1], weight=1)
         #return the graph
         return S
     
@@ -684,6 +688,9 @@ class NoddyTopology(object):
         output = kwds.get("output",None)
         
         if not output is None:
+            #check directory exists
+            if not os.path.exists(os.path.dirname(output)):
+                os.makedirs(os.path.dirname(output))
             f = open(output,'w')
         
         uTopo = []
@@ -951,7 +958,6 @@ class NoddyTopology(object):
         
 if __name__ == '__main__':
     # some testing and debugging functions...
-    import os
 #     os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
 #     NO = NoddyOutput("strike_slip_out")
     os.chdir('C:/Users/Sam/SkyDrive/Documents/Masters/Models/Primitive/Fold+Unconformity+Intrusion+Fault/vary_fault_dip_only/12476/2')

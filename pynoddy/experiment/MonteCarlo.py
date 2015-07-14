@@ -1,4 +1,4 @@
-import sys, os, platform
+import sys, os
 
 import pynoddy
 from pynoddy.experiment import Experiment
@@ -149,25 +149,35 @@ class MonteCarlo(Experiment):
             import time
             start_time = time.time()
         
+        #get variables for seed
+        seed_base = os.getpid() * int(time.time() / 1000000)
+        nodeID = 1 #this will be changed later if running on a linux box
+        
         #ensure directory exists
         if not os.path.isdir(path):
             os.makedirs(path)
                 
         if threads > 1: #multithreaded - spawn required number of threads
         
-            #calculate & create node directory (for multi-node instances)  
+            #calculate & create node directory (for multi-node instances)
+            import platform
             if (platform.system() == 'Linux'): #running linux - might be a cluster, so get node name
                 nodename = os.uname()[1] #the name of the node it is running on (linux only)
                 
                 #move into node subdirectory
-                path = os.path.join(path,nodename) 
+                path = path.join(path,nodename) 
             
                 #append node name to output
                 if not changes is None:
                     changes = "%s_%s" % (changes,nodename) #append node name to output
                 
-            #import thread
+                #change nodeID for seed
+                nodeID = hash(nodename)
+                
+                
+            #import thread stuff
             from threading import Thread
+            import time,platform
             
             thread_list = []
             for t in range(0,threads):
@@ -190,6 +200,9 @@ class MonteCarlo(Experiment):
                 change_path = None
                 if not changes is None:
                     change_path = "%s_thread%d" % (changes,t)
+                
+                #set random seed (nodeID * process ID * threadID * time in seconds)
+                t_his.set_random_seed(nodeID * seed_base * t)
                 
                 #initialise thread
                 t = Thread(target=t_his.generate_model_instances,args=(threadpath,n),kwargs={'sim_type' : stype, 'verbose' : vb, 'write_changes' : change_path})
