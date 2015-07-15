@@ -5,6 +5,9 @@ Created on Wed Jul 15 12:14:08 2015
 @author: Sam Thiele
 """
 import os
+import numpy as np
+import scipy as sp
+
 
 from pynoddy.experiment.MonteCarlo import MonteCarlo
 from pynoddy.output import NoddyTopology
@@ -225,6 +228,73 @@ class TopologyAnalysis:
         else:
             print "Error: Invalid topology_type. This should be 'litho' or 'struct'"
         
+    def get_difference_matrix(self,topology_type='litho'):
+        '''
+        Calculates a difference matrix in which each matrix element Exy contains 1 over the jaccard
+        coefficient of topologies x and y.
+        
+        **Arguments**
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
+                             or 'struct'
+        **Returns**
+         - A difference matrix
+        '''
+        
+        t_list= []
+        if 'litho' in topology_type:
+            if hasattr(self,'litho_difference_matrix'): #already been calculated
+                return self.litho_difference_matrix
+            t_list = self.unique_litho_topologies
+        elif 'struct' in topology_type:
+            if hasattr(self,'struct_difference_matrix'):
+                return self.struct_difference_matrix
+            t_list = self.unique_struct_topologies
+        else:
+            print "Error: Invalid topology_type. This should be 'litho' or 'struct'"
+
+        difference_matrix=np.zeros( (len(t_list),len(t_list)))
+        
+        for i in range (0,len(t_list)):
+            for j in range (0,len(t_list)):
+                if i==j: #minor speed optimisation
+                    difference_matrix[i][j] = 0.0
+                elif i < j:
+                    #nb: similarity = 1 if networks are identical and approaches zero as they become different
+                    difference_matrix[i][j] = -1 + 1.0 / t_list[i].jaccard_coefficient(t_list[j]) #calculate difference
+                    difference_matrix[j][i] = difference_matrix[i][j] #matrix is symmetric
+        
+        #store
+        if 'litho' in topology_type:
+            self.litho_difference_matrix = difference_matrix
+        else:
+            self.struct_difference_matrix = difference_matrix
+            
+        return difference_matrix #reutrn the difference matrix
+    
+    def plot_dendrogram(self,topology_type='litho',path=None):
+        '''
+        Calculates the average number of nodes in all of the model realisations that are part of this
+        experiment.
+        
+        **Arguments**
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
+                             or 'struct'
+         - *path* = A path to save the image to. If left as None the image is drawn to the screen.
+        '''
+        #get difference matrix (NB. squareform converts it to a condensed matrix for scipy)
+        import scipy.spatial.distance as dist
+        import scipy.cluster.hierarchy as clust
+        
+        m_dif = dist.squareform( self.get_difference_matrix(topology_type),force='tovector' )
+        
+        if len(m_dif) > 2:
+            #generate dendrogram using UPGMA
+            Z = clust.average(m_dif)
+            
+            #generate plot
+            clust.dendrogram(Z)
+        else: #we cant build a tree with only one topology...
+            print "Error: only a single unique topology of this type has been found"
         
     def is_strata_continuous(self,litho):
         '''
@@ -263,7 +333,7 @@ if __name__ == '__main__':     #some debug stuff
     sys.path.append(r"C:\Users\Sam\OneDrive\Documents\Masters\pynoddy")
     
     os.chdir(r"C:\Users\Sam\Documents\Temporary Model Files")
-    a = TopologyAnalysis("unconf.his",params='Unconf_de.csv',n=100)
+    a = TopologyAnalysis("unconf",params='Unconf_de.csv',n=5)
     
     #print results
     print "%d unique lithological topologies found" % len(a.unique_litho_topologies)
@@ -276,5 +346,3 @@ if __name__ == '__main__':     #some debug stuff
     print "Model realisations had structural topologies of (on average):"
     print "\t%d nodes" % a.get_average_node_count('struct')
     print "\t%d edges" % a.get_average_edge_count('struct')
-    
-    
