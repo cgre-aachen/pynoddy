@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tuesday Jul 7 10:51:37 2015
+
+@author: Sam Thiele
+"""
+
 from pynoddy.experiment import Experiment
 from pynoddy.output import NoddyTopology
 

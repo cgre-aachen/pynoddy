@@ -1,7 +1,7 @@
 '''Noddy output file analysis
 Created on 24/03/2014
 
-@author: Florian Wellmann
+@author: Florian Wellmann, Sam Thiele
 '''
 import os
 import numpy as np
@@ -598,6 +598,8 @@ class NoddyTopology(object):
         Collapses all topology codes down to the last (most recent) difference. Information regarding specific model topology is 
         generalised, eg. lithology A has a fault and stratigrappic contact with B (regardless of how many different faults are involved).
         
+        Note that this function has not been properly tested, and i'm not exactly sure what it does...
+        
         **Optional Arguments**:
          - *verbose* = True if this function should write to the print buffer. Default is False.
         **Returns**
@@ -725,7 +727,6 @@ class NoddyTopology(object):
                      S.edge[e[0]][e[1]]['weight'] = S.edge[e[0]][e[1]]['weight'] + 1 #increment weight
                  else: #otherwise add edge
                      try:
-                         print(e[2])
                          S.add_edge(e[0],e[1],edgeCode=e[2]['edgeCode'],edgeType=e[2]['edgeType'], colour=e[2]['colour'], weight=1)
                      except KeyError:
                          S.add_edge(e[0],e[1], weight=1)
@@ -741,7 +742,7 @@ class NoddyTopology(object):
          - *topology_list* = The list of NoddyTopologies to search through.
          
         **Optional Keywords**:
-         - *output* = File to write cumulative observed topologies distribution. Default is None (nothing written).
+         - *output* = A File or list to write cumulative observed topologies distribution. Default is None (nothing written).
         
         **Returns**:
          - Returns a list of unique topologies.
@@ -749,11 +750,7 @@ class NoddyTopology(object):
         
         output = kwds.get("output",None)
         
-        if not output is None:
-            #check directory exists
-            if not os.path.exists(os.path.dirname(output)) and not os.path.dirname(output) == '':
-                os.makedirs(os.path.dirname(output))
-            f = open(output,'w')
+        out_list = []
         
         uTopo = []
         for t in topology_list:
@@ -761,17 +758,28 @@ class NoddyTopology(object):
                 #t.filter_node_volumes(50)
                 uTopo.append(t)
             
-            #write cumulative output
-            if not output is None:
-                f.write("%d\n" % len(uTopo))
-                
-        #close output
+            #store cumulative output
+            out_list.append(len(uTopo))
+                            
+        #write output file if necessary
+        import types
         if not output is None:
-            f.close()
+            if type(output) == types.StringType: #path has been given so write file
+                
+                #check directory exists
+                if not os.path.exists(os.path.dirname(output)) and not os.path.dirname(output) == '':
+                    os.makedirs(os.path.dirname(output))
+                f = open(output,'w')
+                
+                for o in out_list:
+                    f.write("%d\n" % o)
+                f.close()  
+            elif type(output) == types.ListType:
+                for o in out_list:
+                    output.append(o)
             
         return uTopo
        
-      
     def calculate_overlap(self, G2):
         '''
         Calculates the overlap between this NoddyTopology and another NoddyTopology or networkX graph
@@ -810,7 +818,43 @@ class NoddyTopology(object):
             if self.jaccard_coefficient(g1) == 1.0:
                 return g1 #return the match
         return None #no match
-       
+        
+    def write_summary_file(self,path,append=True):
+        '''
+        Writes summary information about this network to a file
+        
+        **Optional Arguments**
+         - *append* = True if summary information should be appended to the file. If so the file is written as a csv spreadsheet. 
+                      Default is true. If False is passed, a single, detailed summary is written for this network.
+        '''
+        if append: #write summary information in spreadsheet formant
+            exists = os.path.exists(path)
+            f = open(path,"a")
+            
+            if not exists: #write header
+                f.write("name,#nodes,#edges\n") #todo add other stuff here
+                
+            #write data
+            f.write("%s,%s,%s\n" % (self.basename,self.graph.number_of_nodes(),self.graph.number_of_edges()))
+        
+            f.close()
+        else: #write detailed information
+            import networkx as nx
+            
+            f = open(path,"w")
+            f.write("Summary:")
+            f.write("Name: %s\n" % self.basename)
+            f.write("#nodes: %s\n" % self.graph.number_of_nodes())
+            f.write("#edges: %s\n" % self.graph.number_of_edges())
+            f.write("Detail")
+            f.write("Degree sequence: %s" % str(nx.degree(self.graph).values()))
+            f.write("Node list: %s" % str(self.graph.nodes(data=False)))
+            f.write("Edge list: %s" % str(self.graph.edges(data=False)))
+            f.write("Node attributes: %s" % str(self.graph.nodes(data=True)))
+            f.write("Edge attributes: %s" % str(self.graph.edges(data=True)))
+            
+            f.close()
+            
     def draw_matrix_image( self, outputname="" ):
         '''
         Draws an (adjacency) matrix representing this NoddyTopology object.
@@ -847,7 +891,6 @@ class NoddyTopology(object):
         plt.imshow(rows, interpolation="nearest", vmin=1, cmap=cmap)
         plt.savefig(outputname)
         plt.clf()
-    
     def draw_network_image(self, outputname="", **kwds ):
         '''
         Draws a network diagram of this NoddyTopology to the specified image

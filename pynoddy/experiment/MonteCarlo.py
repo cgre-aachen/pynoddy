@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Monday Jul 13 10:09:55 2015
+
+@author: Sam Thiele
+"""
+
 import sys, os
 
 import pynoddy

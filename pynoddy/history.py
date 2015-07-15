@@ -778,6 +778,36 @@ Version = 7.11
             for sub_key, val in sub_dict.items(): #loop through parameters being changed (sub_key)
                 self.events[key].properties[sub_key] += val
     
+    def get_event_params( self, event_number ):
+        '''
+        Returns the parameter dictionary for a given event.
+        
+        **Arguments**:
+         - *event_number* = the event to get a parameter for (integer)
+         
+         **Returns**
+          - Returns the parameter dictionary for the requested event
+        '''
+        return self.events[event_number].properties
+        
+    def get_event_param( self, event_number, name ):
+        '''
+        Returns the value of a given parameter for a given event.
+        
+        **Arguments**:
+         - *event_number* = the event to get a parameter for (integer)
+         - *name* = the name of the parameter to retreive (string)
+         
+         **Returns**
+          - Returns the value of the request parameter, or None if it does not 
+            exists.
+        '''
+        try:
+            ev = self.events[event_number].properties
+            return ev[name]
+        except KeyError:
+            return None #property does not exist
+             
     def write_history(self, filename):
         """Write history to new file
         
