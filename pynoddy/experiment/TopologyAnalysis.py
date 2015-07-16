@@ -43,6 +43,56 @@ class TopologyAnalysis:
             #load topology network
             self.topology = NoddyTopology(self.basename)
         
+        def define_parameter_space( self,parameters ):
+            '''
+            Sets the parameters used to locate this model in parameter space.
+            
+            **Arguments**:
+             - *parameters* = A list of tuples containing event number and variable names (strings).
+                             These need to match noddy parameters Eg [ (2,'dip'),(2,'slip'),(3,'x') ].
+            '''
+            self.headings = []
+            self.params = [] #array containing values
+            for v in parameters:
+                if len(v) != 2:
+                    print "Warning: %s does not match the tuple format (eventID,parameter name)." % v
+                self.headings.append("%d_%s" % (v[0],v[1])) #heading format is eventID_name: eg. 2_dip                
+                self.params.append( float(self.history.get_event_param(v[0],v[1])) )
+            
+        def get_parameters(self):
+            '''
+            Gets the location of this model in parameter space
+            
+            **Returns**:
+             - a tuple containing a list of parameter names and a list of parameter values
+            '''
+            return [self.headings,self.params]
+            
+        @staticmethod
+        def get_parameter_space(models,parameters):
+            '''
+            Produces a data matrix describing the location of the provided models in the specified
+            parameter space.
+            
+            **Arguments**:
+             - *models* = a list of models to include in the parameter space
+             - *parameters* = A list of tuples containig the parameters which make-up the desired
+                              parameter space. Each parameter is defined by a tuple containing an 
+                              event number and parameter name, eg. (2, dip) represents the dip of
+                              the second noddy event.
+            '''   
+            #retreive data
+            data = []
+            for m in models:
+                m.define_parameter_space(parameters)
+                data.append( (m.basename, m.get_parameters()[1] )) #tuple containing (name, [data,..])
+            
+            #define data panda
+            import pandas
+            data_matrix = pandas.DataFrame.from_items(data,orient='index',columns=models[0].headings)
+            
+            return data_matrix
+            
         @staticmethod
         def loadModels( path, **kwds ):
             '''
@@ -113,6 +163,7 @@ class TopologyAnalysis:
             self.base_history_path = path
             self.base_path=path.split('.')[0] #trim file extension
             self.num_trials = n
+            self.params_file = params
             
             #ensure path exists
             if not os.path.exists(self.base_path):
@@ -145,15 +196,91 @@ class TopologyAnalysis:
         ############################################
         self.accumulate_litho_topologies = []
         self.accumulate_struct_topologies = []
-        
-        self.unique_litho_topologies=NoddyTopology.calculate_unique_topologies(self.all_litho_topologies, output=self.accumulate_litho_topologies)
-        self.unique_struct_topologies=NoddyTopology.calculate_unique_topologies(self.all_struct_topologies, output=self.accumulate_struct_topologies)
+        self.unique_litho_ids = []
+        self.unique_struct_ids = []
+        self.unique_litho_topologies=NoddyTopology.calculate_unique_topologies(self.all_litho_topologies, output=self.accumulate_litho_topologies, ids = self.unique_litho_ids)
+        self.unique_struct_topologies=NoddyTopology.calculate_unique_topologies(self.all_struct_topologies, output=self.accumulate_struct_topologies, ids=self.unique_struct_ids)
         
         ############################################
         #GENERATE SUPER TOPOLOGY
         ############################################
         self.super_litho_topology = NoddyTopology.combine_topologies(self.all_litho_topologies)
         self.super_struct_topology = NoddyTopology.combine_topologies(self.all_struct_topologies)
+      
+    def get_parameter_space(self,params=None,recalculate=False):
+        '''
+        Returns a scipy.pandas dataframe containing the location of models in parameter space.
+        Two columns, t_litho and t_struct are appended to this dataframe, and contain the id's
+        of their equivalents in the unique_litho_topologies and unique_struct_topologies
+        respectively.
+        
+        **Optional Arguments**:
+         - *params* = Either a path to a .csv file containing information on the parameters that define
+                     this model space or a list containing tuples (eventID,parameter_name) defining the
+                     axes of the model space. If left as None the params file used to generate model
+                     variations is used (at self.params_file). If this does not exist/has not been defined
+                     an error is thrown.
+         - *recalculate* = If True, the function is forced to recalculate the model space. Default is False,
+                         hence this will return the last calculated model space.
+        **Returns**:
+         - a scipy.pandas data matrix containing model locations in parameter space, and their membership
+           of the various classes of topology that have been identified
+        '''
+        
+        #see if param space has already been calculated
+        if (not recalculate) and hasattr(self,"parameter_space"):
+            return self.parameter_space
+        
+        if params == None: #try and retrieve params
+            if hasattr(self,"params_file"):
+                params = self.params_file
+            else:
+                print "Error: parameter information is not available. Please provide a params argument"
+        
+        #if params is a csv file
+        if ".csv" in params:
+            f = open(params,'r')
+            
+            #read lines
+            lines = open(params).readlines()
+            
+            #get header
+            header = lines[0].rstrip().split(',')
+            
+            params = []
+            for line in lines[1:]:
+                #split into columns
+                l = line.rstrip().split(',')
+                
+                #load events & parameters
+                e=None
+                p=None
+                if l[0] == '': break # end of entries
+                for ele in header:
+                    if ele == 'event': #get event id
+                        e = int(l[header.index(ele)])
+                        continue
+                    if ele == 'parameter': #get parameter
+                        p = l[header.index(ele)]
+                        continue
+                    
+                    if not e is None and not p is None: #found both
+                        params.append((e,p)) #store
+                        break #done
+
+            f.close()
+        
+        #retrieve data from models
+        data_matrix =  TopologyAnalysis.ModelRealisation.get_parameter_space(self.models,params)
+        
+        #append topology id's collumn
+        data_matrix["t_litho"] = [ 't%d' % t for t in self.unique_litho_ids]
+        data_matrix["t_struct"] = [ 't%d' % t for t in self.unique_struct_ids]
+        
+        #store for future use
+        self.parameter_space = data_matrix
+        
+        return data_matrix
         
     def get_average_node_count(self,topology_type='litho'):
         '''
@@ -221,12 +348,15 @@ class TopologyAnalysis:
                              or 'struct'
         '''
         
-        if 'litho' in topology_type:
-            return -1 + self.super_litho_topology.number_of_edges() / self.get_average_edge_count('litho')
-        elif 'struct' in topology_type:
-            return -1 + self.super_struct_topology.number_of_edges() / self.get_average_edge_count('struct')
-        else:
-            print "Error: Invalid topology_type. This should be 'litho' or 'struct'"
+        try:
+            if 'litho' in topology_type:
+                return -1 + self.super_litho_topology.number_of_edges() / self.get_average_edge_count('litho')
+            elif 'struct' in topology_type:
+                return -1 + self.super_struct_topology.number_of_edges() / self.get_average_edge_count('struct')
+            else:
+                print "Error: Invalid topology_type. This should be 'litho' or 'struct'"
+        except ZeroDivisionError: #average edge count = 0
+            return 0
         
     def get_difference_matrix(self,topology_type='litho'):
         '''
@@ -271,7 +401,7 @@ class TopologyAnalysis:
             
         return difference_matrix #reutrn the difference matrix
     
-    def plot_dendrogram(self,topology_type='litho',path=None):
+    def plot_dendrogram(self,topology_type='litho',path="",dpi=300):
         '''
         Calculates the average number of nodes in all of the model realisations that are part of this
         experiment.
@@ -279,7 +409,8 @@ class TopologyAnalysis:
         **Arguments**
          - *topology_type* = The type of topology you are interested in. This should be either 'litho'
                              or 'struct'
-         - *path* = A path to save the image to. If left as None the image is drawn to the screen.
+         - *path* = A path to save the image to. If left as "" the image is drawn to the screen.
+         - *dpi* =  The resolution of the saved figure
         '''
         #get difference matrix (NB. squareform converts it to a condensed matrix for scipy)
         import scipy.spatial.distance as dist
@@ -292,10 +423,199 @@ class TopologyAnalysis:
             Z = clust.average(m_dif)
             
             #generate plot
-            clust.dendrogram(Z)
+            import matplotlib.pyplot as plt
+            f, ax = plt.subplots()
+            clust.dendrogram(Z,ax=ax,truncate_mode='level', p=7,show_contracted=True)
+            
+            #rotate labels
+            for l in ax.xaxis.get_ticklabels():
+                l.set_rotation(90)
+                
+            #size plot
+            f.set_figwidth(10)
+            f.set_figheight(8)
+        
+            if path == "":
+                f.show()
+            else:
+                f.savefig(path,dpi=dpi)
+            
+            
         else: #we cant build a tree with only one topology...
             print "Error: only a single unique topology of this type has been found"
+    def boxplot(self,topology_type='litho',params=None,path="",dpi=300,cols=1):
+        '''
+        Generates a series of boxplot tiles showing the range of variables that has produced
+        different topology types.
         
+        **Optional Arguments**:
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
+                     or 'struct'
+         - *params* = a list of parameters. A boxplot will be generated for each parameter
+                      in this list. The default is all the parameters in the params_file
+                      argument. If this is not defined (ie. this class has not purturbed
+                      the history files) then an error is thrown. 
+                      
+                      Params can be passed either as a path to a .csv file containing information on the parameters that define
+                      this model space or a list containing tuples (eventID,parameter_name) defining the
+                      axes of the model space. If left as None the params file used to generate model
+                      variations is used (at self.params_file). If this does not exist/has not been defined
+                      an error is thrown.
+         - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
+         - *dpi* =  The resolution of the saved figure
+         - *cols* = The number of columns to fit in a figure
+        '''
+        
+        if params==None:
+            if hasattr(self,"params_file"):
+                params=self.params_file
+            else:
+                print "Error - please specify a parameter list (or file) to plot."
+                
+        #get group factor
+        if "litho" in topology_type:
+            group = 't_litho'
+        elif "struct" in topology_type:
+            group = 't_struct'
+        else:
+            print "Error: Invalid topology_type. This should be 'litho' or 'struct'"
+            return
+        #get data
+        data = self.get_parameter_space(params)
+        
+        #create figure
+        import matplotlib.pyplot as plt
+        import math
+        plt.ioff()
+        
+        #calculate dims
+        n = len(self.models[0].headings) #number of graphs
+        rows = int(math.ceil( n / float(cols))) #calculate rows needed given the number of columns
+        
+        #generate axes
+        f,ax = plt.subplots(rows,cols, sharex='col')
+        ax = ax.ravel()[0:n] #convert to 1d array
+        
+        #draw boxplots
+        data.boxplot(ax = ax, column=self.models[0].headings,by=group)
+        
+        #set automatic limits
+        for a in ax:
+            a.set_ylim()
+            a.set_aspect('auto') #'equal'
+            a.set_xlabel("")
+            for l in a.xaxis.get_ticklabels():
+                l.set_rotation(90)
+            
+        #tweak spacing
+        f.subplots_adjust(hspace=0.6,wspace=0.5)
+        f.suptitle("")
+        f.set_figwidth(10)
+        f.set_figheight(3.3*rows)
+        
+        #return/save figure
+        if path=='':
+            f.show()
+        else:
+            f.savefig(path,dpi=dpi)
+        
+        #return f
+    def histogram(self,params=None,path="",dpi=300,cols=3):
+        '''
+        Plots a histogram matrix showing all the distribution of parameters in model space.
+         **Optional Arguments**:
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
+                     or 'struct'
+         - *params* = a list of parameters. A boxplot will be generated for each parameter
+                      in this list. The default is all the parameters in the params_file
+                      argument. If this is not defined (ie. this class has not purturbed
+                      the history files) then an error is thrown. 
+                      
+                      Params can be passed either as a path to a .csv file containing information on the parameters that define
+                      this model space or a list containing tuples (eventID,parameter_name) defining the
+                      axes of the model space. If left as None the params file used to generate model
+                      variations is used (at self.params_file). If this does not exist/has not been defined
+                      an error is thrown.
+         - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
+         - *dpi* =  The resolution of the saved figure
+         - *cols* = The number of columns to fit in a figure
+        '''
+        
+        if params==None:
+            if hasattr(self,"params_file"):
+                params=self.params_file
+            else:
+                print "Error - please specify a parameter list (or file) to plot."
+                
+        #get data
+        data = self.get_parameter_space(params)
+        m_space = data.drop(['t_litho','t_struct'],1)
+        
+        #make histogram
+        import matplotlib.pyplot as plt
+        import math
+        
+        #calculate dims
+        n = len(self.models[0].headings) #number of graphs
+        rows = int(math.ceil( n / float(cols))) #calculate rows needed given the number of columns
+        
+        #generate axes
+        f,ax = plt.subplots(rows,cols)
+        
+        #retrieve list of needed axes
+        ax = ax.ravel()[0:n]       
+        
+        #draw histogram
+        m_space.hist(ax=ax)
+        
+        for a in ax:
+            a.set_aspect('auto') #'equal'
+            for l in a.xaxis.get_ticklabels():
+                l.set_rotation(90)
+        
+        #tweak spacing
+        f.subplots_adjust(hspace=0.6,wspace=0.5)
+        f.suptitle("")
+        
+        if path=='':
+            f.show()
+        else:
+            f.savefig(path,dpi=dpi)
+            
+    def plot_cumulative_topologies(self,topology_type='litho', path="",dpi=300):
+        '''
+        Plots the specified cumulative topology count.
+        
+        **Optional Arguments**:
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
+                             or 'struct'
+         - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
+         - *dpi* =  The resolution of the saved figure
+        '''
+        
+        if 'litho' in topology_type:
+            c = self.accumulate_litho_topologies
+            title="Cumulative Observed Lithological Topologies"
+        elif 'struct' in topology_type:
+            c = self.accumulate_struct_topologies
+            title="Cumulative Observed Structural Topologies"
+        else:
+            print "Error: Invalid topology_type. This should be 'litho' or 'struct'"
+            return
+           
+        import matplotlib.pyplot as plt
+        f, ax = plt.subplots()
+         
+        #plot graph
+        ax.plot(c)
+        ax.set_title(title)
+        ax.set_xlabel('Trial Number')
+        ax.set_ylabel('Unique Topology Count')
+        if path == "":
+            f.show()
+        else:
+            f.savefig(path,dpi=dpi)
+             
     def is_strata_continuous(self,litho):
         '''
         Calculates the number of models in which all sections of a particular lithology are
@@ -333,7 +653,10 @@ if __name__ == '__main__':     #some debug stuff
     sys.path.append(r"C:\Users\Sam\OneDrive\Documents\Masters\pynoddy")
     
     os.chdir(r"C:\Users\Sam\Documents\Temporary Model Files")
-    a = TopologyAnalysis("unconf",params='Unconf_de.csv',n=5)
+    
+    his="foldUC.his" #.his
+    params="fold_unconf_dewa.csv"
+    a = TopologyAnalysis(his,params=params,n=500,verbose=False)
     
     #print results
     print "%d unique lithological topologies found" % len(a.unique_litho_topologies)
@@ -346,3 +669,14 @@ if __name__ == '__main__':     #some debug stuff
     print "Model realisations had structural topologies of (on average):"
     print "\t%d nodes" % a.get_average_node_count('struct')
     print "\t%d edges" % a.get_average_edge_count('struct')
+
+
+    #save plots
+    a.boxplot("litho",params=params,path="litho_topology_ranges.png")
+    a.boxplot("struct",params=params,path="struct_topology_ranges.png")
+    a.histogram(params=params,path="model_space_frequencies.png")
+    a.plot_cumulative_topologies("litho",path="litho_cumulative_observed.png")
+    a.plot_cumulative_topologies("struct",path="struct_cumulative_observed.png")
+    a.plot_dendrogram('litho',path="litho_topology_dend.png")
+    a.plot_dendrogram('struct',path="struct_topology_dend.png")
+    

@@ -152,8 +152,8 @@ class MonteCarlo(Experiment):
         self.instance_path = path       
         
         #get start time (for timing runs)
+        import time as time
         if vb:
-            import time
             start_time = time.time()
         
         #get variables for seed
@@ -184,7 +184,7 @@ class MonteCarlo(Experiment):
                 
             #import thread stuff
             from threading import Thread
-            import time,platform
+            import platform
             
             thread_list = []
             for t in range(0,threads):

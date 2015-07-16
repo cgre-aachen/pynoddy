@@ -698,6 +698,24 @@ class NoddyTopology(object):
                 return False #the models match
         return True
     
+    def find_first_match(self,known):
+        '''
+        Identical to is_unique, except that the index of the first match is returned if this matches, otherwise
+        -1 is returned.
+        **Arguments**:
+            -*known* = a list of valid NoddyTopology objects or NetworkX graphs to compare with.
+        
+        **Returns**:
+         - Returns the index of the first matching topology object, or -1
+        '''
+        index=0
+        for g2 in known:
+            if self.jaccard_coefficient(g2) == 1:
+                return index #the models match
+            index+=1
+        return -1
+    
+    
     @staticmethod
     def combine_topologies(topology_list):
         '''
@@ -743,27 +761,36 @@ class NoddyTopology(object):
          
         **Optional Keywords**:
          - *output* = A File or list to write cumulative observed topologies distribution. Default is None (nothing written).
-        
+         - *ids* = A list to write the unique topology id's for each topology in the provided topology_list (in that 
+                     order). Default is None.
         **Returns**:
          - Returns a list of unique topologies.
        '''
         
         output = kwds.get("output",None)
+        ids = kwds.get("ids",None)
         
         out_list = []
         
         uTopo = []
         for t in topology_list:
-            if t.is_unique(uTopo):
+            i=t.find_first_match(uTopo)
+            if i==-1: #this is a new topology
                 #t.filter_node_volumes(50)
                 uTopo.append(t)
+                
+                if not ids is None: #store new id
+                    ids.append(len(uTopo)-1)
+                    
+            elif not ids is None: #store retrieved id
+                ids.append(i)
             
             #store cumulative output
             out_list.append(len(uTopo))
                             
         #write output file if necessary
-        import types
         if not output is None:
+            import types
             if type(output) == types.StringType: #path has been given so write file
                 
                 #check directory exists
