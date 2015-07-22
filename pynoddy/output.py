@@ -6,6 +6,8 @@ Created on 24/03/2014
 import os
 import numpy as np
 
+import pynoddy
+
 class NoddyOutput(object):
     """Class definition for Noddy output analysis"""
     
@@ -195,6 +197,73 @@ class NoddyOutput(object):
             self.unit_volumes[i] = np.sum(self.block == unit_id) * self.block_volume
         
         
+    def get_section(self, direction='y',position='center', **kwds):
+        """Create and returns section block through the model
+        
+        **Arguments**:
+            - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
+            - *position* = int or 'center' : cell position of section as integer value
+                or identifier (default: 'center')
+              
+        **Optional Keywords**:
+            - *data* = np.array : data to plot, if different to block data itself
+            - *litho_filter* = a list of lithologies to draw. All others will be ignored.
+        """
+        
+        if kwds.has_key("data"):
+            data = kwds["data"]
+        else:
+            data = self.block
+            
+        if direction == 'x':
+            if position == 'center':
+                cell_pos = self.nx / 2
+            else:
+                cell_pos = position
+                
+            section_slice = data[cell_pos,:,:].transpose()
+            #xlabel = "y"
+            #ylabel = "z"
+        elif direction == 'y':
+            if position == 'center':
+                cell_pos = self.ny / 2
+            else:
+                cell_pos = position
+                
+            section_slice = data[:,cell_pos,:].transpose()
+            #xlabel = "x"
+            #ylabel = "z"
+        elif direction == 'z':
+            if position == 'center':
+                cell_pos = self.nz / 2
+            else:
+                cell_pos = position
+                
+            section_slice = self.block[:,:,cell_pos].transpose()
+        else:
+            print "Error: %s is not a valid direction. Please specify either ('x','y' or 'z')." % direction
+         #filter by lithology if a filter is set
+        if kwds.has_key('litho_filter'):
+            litho_filter = kwds['litho_filter']
+            if not litho_filter is None:
+                mask = []
+                for x in range(len(section_slice)):
+                    mask.append([])
+                    for y in range(len(section_slice[x])):
+                        if not int(section_slice[x][y]) in litho_filter:
+                            #section_slice[x][y] = -1 #null values
+                            mask[x].append(True)
+                        else:
+                            mask[x].append(False)
+                        
+                    
+                #apply mask
+                section_slice = np.ma.masked_array(section_slice, mask=mask)
+                #section_slice = np.ma.masked_where(mask, section_slice)
+
+        return section_slice, cell_pos
+        
+        
         
     def plot_section(self, direction='y', position='center', **kwds):
         """Create a section block through the model
@@ -218,6 +287,7 @@ class NoddyOutput(object):
             - *layer_labels* = list of strings: labels for each unit in plot
             - *layers_from* = noddy history file : get labels automatically from history file
             - *data* = np.array : data to plot, if different to block data itself
+            - *litho_filter* = a list of lithologies to draw. All others will be ignored.
         """
         #try importing matplotlib
         try:
@@ -226,6 +296,8 @@ class NoddyOutput(object):
             print ("Could not draw image as matplotlib is not installed. Please install matplotlib")
             
         cbar_orientation = kwds.get("colorbar_orientation", 'vertical')
+        litho_filter = kwds.get("litho_filter",None)
+        
         # determine if data are passed - if not, then recompute model
         if kwds.has_key("data"):
             data = kwds["data"]
@@ -244,43 +316,27 @@ class NoddyOutput(object):
         colorbar = kwds.get("colorbar", True)
             
         # extract slice
-        if direction == 'x':
-            if position == 'center':
-                cell_pos = self.nx / 2
-            else:
-                cell_pos = position
-            if kwds.has_key('data'):
-                section_slice = data[cell_pos,:,:].transpose()
-            else:
-                section_slice = self.block[cell_pos,:,:].transpose()
-            xlabel = "y"
-            ylabel = "z"
-        if direction == 'y':
-            if position == 'center':
-                cell_pos = self.ny / 2
-            else:
-                cell_pos = position
-            if kwds.has_key('data'):
-                section_slice = data[:,cell_pos,:].transpose()
-            else:
-                section_slice = self.block[:,cell_pos,:].transpose()
+        if kwds.has_key('data'):
+            section_slice, cell_pos = self.get_section(direction,position,data=kwds['data'],litho_filter=litho_filter)
+        else:
+            section_slice, cell_pos = self.get_section(direction,position,litho_filter=litho_filter)
+            
+        #calculate axis labels
+        if 'x' in direction:
+            xlabel="y"
+            ylabel="z"
+        elif 'y' in direction:
             xlabel = "x"
             ylabel = "z"
-        if direction == 'z':
-            if position == 'center':
-                cell_pos = self.nz / 2
-            else:
-                cell_pos = position
-            if kwds.has_key('data'):
-                section_slice = data[:,:,cell_pos].transpose()
-            else:
-                section_slice = self.block[:,:,cell_pos].transpose()
+        elif 'z' in direction:
             xlabel = "x"
             ylabel = "y"
-
+            
+        #plot section
         title = kwds.get("title", "Section in %s-direction, pos=%d" % (direction, cell_pos))
                 
         im = ax.imshow(section_slice, interpolation='nearest', aspect=ve, cmap=cmap_type, origin = 'lower left')
+       
         if colorbar:
 #            cbar = plt.colorbar(im)
 #            _ = cbar
@@ -293,14 +349,14 @@ class NoddyOutput(object):
             if cbar_orientation == 'horizontal':
                 ax2 = fig.add_axes([0.125, 0.18, 0.775, 0.04])
                 cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap_type, norm=norm, spacing='proportional', 
-                                           ticks=bounds-0.5, boundaries=bounds,
+                                           ticks=bounds, boundaries=bounds-0.5, label='Lithology',
                                            orientation = 'horizontal') # , format='%s')
                 
             else: # default is vertical 
                 # create a second axes for the colorbar
                 ax2 = fig.add_axes([0.95, 0.165, 0.03, 0.69])
                 cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap_type, norm=norm, spacing='proportional', 
-                                           ticks=bounds-0.5, boundaries=bounds,
+                                           ticks=bounds, boundaries=bounds-0.5, label = 'Lithology',
                                            orientation = 'vertical') # , format='%s')
             # define the bins and normalize
     
@@ -389,25 +445,35 @@ class NoddyGeophysics(object):
 
 
 class NoddyTopology(object):
+    
     """Definition to read, analyse, and visualise calculated voxel topology"""        
-    def __init__(self, output_name, **kwds):
+    def __init__(self, noddy_model, **kwds):
         """Methods to read, analyse, and visualise calculated voxel topology
         .. note:: The voxel topology have can be computed with a keyword in the
         function `compute_model`, e.g.: ``pynoddy.compute_model(history_name, output, type = 'TOPOLOGY')``
         
         **Arguments**
-         - *output_name* = the name of the noddy output to run topology on.
+         - *noddy_model* = the name of the .his file or noddy output to run topology on.
          
          **Optional Keywords**
           - *load_attributes* = True if nodes and edges in the topology network should be attributed with properties such as volume
                                and surface area and lithology colour. Default is True.
         """
+        
+        #if a .his file is passed strip extension
+        if "." in noddy_model:
+            output_name = noddy_model.split['.'][0] #remove file extension
+        else:
+            output_name = noddy_model
+            
+        #load model
         self.basename = output_name
         self.load_attributes = kwds.get("load_attributes",True)
         
         #load network
         self.loadNetwork()
         
+        self.type = "overall"
     def loadNetwork(self):
         '''
         Loads the topology network into a NetworkX datastructure
@@ -423,6 +489,12 @@ class NoddyTopology(object):
         self.graph = nx.Graph()
         self.graph.name = self.basename
 
+        #check files exist:
+        if not os.path.exists(self.basename+".g21"): #ensure noddy topology been run
+            pynoddy.compute_model(self.basename + ".his", self.basename, sim_type='TOPOLOGY')
+        if not os.path.exists(self.basename+".g23"): #ensure topology code has been run
+            pynoddy.compute_topology(self.basename)
+        
         #load lithology properties
         self.read_properties()
                
@@ -446,6 +518,9 @@ class NoddyTopology(object):
                 eCode=0
                 eType = 'stratigraphic' #default is stratigraphy
                 eColour='k' #black
+                #calculate new topology codes
+                name = self.event_names[0] #default name is first name in sequence
+                
                 for i in range(0,len(topoCode1) - 1): #-1 removes the trailing character
                     if (topoCode1[i] != topoCode2[i]): #find the difference
                         if int(topoCode2[i]) > int(topoCode1[i]):
@@ -453,6 +528,8 @@ class NoddyTopology(object):
                         else:
                            eCode=topoCode1[i]
                            
+                        name = self.event_names[i] #calculate event name
+                        
                         if int(eCode) == 0: #stratigraphic contact
                             eColour = 'k' #black
                             eType = 'stratigraphic'
@@ -483,7 +560,7 @@ class NoddyTopology(object):
                     self.graph.node[data[1]]['volume'] = self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['volume']
                
                 #add edge
-                self.graph.add_edge(data[0],data[1],edgeCode=eCode,edgeType=eType, colour=eColour, area=count, weight=1)
+                self.graph.add_edge(data[0],data[1],name=name,edgeCode=eCode,edgeType=eType, colour=eColour, area=count, weight=1)
                 
     def read_properties( self ):
         
@@ -573,18 +650,28 @@ class NoddyTopology(object):
          - a new NoddyTopology object containing the collapsed graph. The original object is not modified.
         '''  
         
+        #check we can
+        if not 'overall' in self.type:
+            print "Error: structural and lithological collapsed topologies can only be calculated from the overall topology"
+            return
+            
         #make copy of this object
         import copy
         topo = copy.deepcopy(self)
+        topo.type = "structural"
         
         #retrieve list of edges, ignoring lithology
         edges = []
         for e in topo.graph.edges_iter():
-            
             code1 = e[0].split("_")[1] #topology code of node 1
             code2 = e[1].split("_")[1] #topology code of node 2
             
-            edges.append( (code1,code2) ) #add edge tuple to edges array
+            #change code1 & code2 endings 2 a (discrete volumes don't mean anything anymore)
+            code1 = code1[:-1] + 'A' #retain last letter for compatability/concistency...
+            code2 = code2[:-1] + 'A'
+            
+            #add edge tuple to edges array
+            edges.append( (code1,code2) ) 
             
         #remake graph
         topo.graph.clear()
@@ -606,8 +693,14 @@ class NoddyTopology(object):
          - a new NoddyTopology object containing the collapsed graph. The original object is not modified.
         '''
         
+        #check we can
+        if not 'overall' in self.type:
+            print "Error: structural and lithological collapsed topologies can only be calculated from the overall topology"
+            return
+            
         import copy
         topo = copy.deepcopy(self)
+        topo.type = "stratigraphic"
         
         #clear the graph in topo
         topo.graph.clear()
@@ -617,22 +710,10 @@ class NoddyTopology(object):
             #get lithology code
             lith1 = e[0].split("_")[0] #lithology code of node1
             lith2 = e[1].split("_")[0] #lithology code of node2
-            #get topology code
-            code1 = e[0].split("_")[1] #topology code of node 1
-            code2 = e[1].split("_")[1] #topology code of node 2
             
-            #calculate new topology codes
-            newCode1 = '0' #if the topology codes are the same, the code is zero (signifying a stratigraphic contact)
-            newCode2 = '0'
-            name = self.event_names[0]
-            for i in range(len(code1)-1,-1,-1):
-                if code1[i] != code2[i]: #find the first difference
-                        newCode1 = code1[i]
-                        newCode2 = code2[i]
-                        name = self.event_names[i]
-            #calculate new node tags
-            u = "%s_%s" % (lith1,newCode1)
-            v = "%s_%s" % (lith2,newCode2)
+            #calculate new node tags (based entirely on lithology)
+            u = "%s" % (lith1)
+            v = "%s" % (lith2)
             
             if topo.graph.has_edge(u,v): #edge already exists
                 #do our best to append/merge attributes
@@ -642,15 +723,15 @@ class NoddyTopology(object):
                         try:
                             data[key] = str(int(data[key]) + int(e[2][key])) #increment numbers
                         except ValueError:
-                            data[key] = e[2][key] #replace
+                            try:
+                                data[key].append(e[2][key]) #try appending (for lists)
+                            except AttributeError:
+                                data[key] = e[2][key] #replace
                     except KeyError: #key not found, add new key
                         data[key] = e[2][key]
-                    
             else:
                 #create new edge
                 topo.graph.add_edge(u,v,attr_dict=e[2])
-                #set edge name
-                topo.graph.get_edge_data(u,v)['name'] = name
             if verbose:
                 print ("Collapsed (%s,%s) to (%s,%s)" % (e[0],e[1],u,v))
         
@@ -669,12 +750,12 @@ class NoddyTopology(object):
         #intersection is initially zero
         intersection=0
         
-        #add edges from this graph to union
-        union=self.graph.number_of_edges()
-        
         #ensure G2 is a graph object
         if isinstance(G2,NoddyTopology):
             G2 = G2.graph #we want the graph bit
+        
+        #add edges from this graph to union
+        union=G2.number_of_edges()
         
         for e in self.graph.edges_iter():
             if (G2.has_edge(e[0],e[1])): #edge present in both graphs
@@ -713,6 +794,7 @@ class NoddyTopology(object):
             if self.jaccard_coefficient(g2) == 1:
                 return index #the models match
             index+=1
+            
         return -1
     
     
@@ -763,15 +845,16 @@ class NoddyTopology(object):
          - *output* = A File or list to write cumulative observed topologies distribution. Default is None (nothing written).
          - *ids* = A list to write the unique topology id's for each topology in the provided topology_list (in that 
                      order). Default is None.
+         - *frequency* = A list to write frequency counts to. 
         **Returns**:
          - Returns a list of unique topologies.
        '''
         
         output = kwds.get("output",None)
         ids = kwds.get("ids",None)
+        frequency=kwds.get("frequency",None)
         
         out_list = []
-        
         uTopo = []
         for t in topology_list:
             i=t.find_first_match(uTopo)
@@ -779,11 +862,18 @@ class NoddyTopology(object):
                 #t.filter_node_volumes(50)
                 uTopo.append(t)
                 
+                if not frequency is None:
+                    frequency.append(1) #this topology has been observed once
+                
                 if not ids is None: #store new id
                     ids.append(len(uTopo)-1)
                     
-            elif not ids is None: #store retrieved id
-                ids.append(i)
+            else: #this topology has been seen before
+                if not frequency is None: #increase frequency
+                    frequency[i] += 1 
+                if not ids is None: #store retrieved id
+                    ids.append(i)
+            
             
             #store cumulative output
             out_list.append(len(uTopo))
@@ -816,7 +906,7 @@ class NoddyTopology(object):
          
         **Returns**
           - The number of overlapping edges 
-          
+          - A list of these edges
         '''
         
         #ensure G2 is a graph object
@@ -824,11 +914,45 @@ class NoddyTopology(object):
             G2 = G2.graph #we want the graph bit
         
         similarity=0
-        for e in self.graph.edges_iter():
+        edges=[]
+        for e in self.graph.edges_iter( data = True):
             if (G2.has_edge(e[0],e[1])):
                 similarity+=1
-        return similarity
+                edges.append(e)
+        return similarity, edges
         
+    def calculate_difference(self, G2, data=False):
+        '''
+        Calculates the difference between this NoddyTopology and another NoddyTopology or networkX graph
+        
+        **Arguments**
+         - *G2* = a valid NoddyTopology object or NetworkX graph that this topology is to be compared with
+         
+        **Returns**
+          A tuple containing:
+          - The number of different edges 
+          - a list of these edges
+        '''
+        #ensure G2 is a graph object
+        if (isinstance(G2,NoddyTopology)):
+            G2 = G2.graph #we want the graph bit
+            
+        difference=0
+        edges=[]
+        
+        #check for edges this object has but G2 does not
+        for e in self.graph.edges_iter(data=data):
+            if not G2.has_edge(e[0],e[1]) and not e in edges: #this is a difference
+                difference+=1
+                edges.append(e)
+        
+        #check for any edges that G2 has but this object does not
+        for e in G2.edges_iter(data=data):
+            if not self.graph.has_edge(e[0],e[1]) and not e in edges:
+                difference+=1
+                edges.append(e)
+                
+        return difference,edges
         
     def find_matching(self,known):
         '''

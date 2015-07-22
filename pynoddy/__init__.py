@@ -27,7 +27,7 @@ if not os.path.exists(topologyPath) and not os.path.exists(topologyPath + ".exe"
 
 # Some helper functions are defined directly here:
 def compute_model(history, output_name, **kwds):
-    import subprocess, os
+    import subprocess
     """Call Noddy and compute the history file
     
     **Arguments**:
