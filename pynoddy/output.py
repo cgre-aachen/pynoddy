@@ -129,7 +129,22 @@ class NoddyOutput(object):
         (self.delx, self.dely, self.delz) = (self.extent_x / float(self.nx), 
                                              self.extent_y / float(self.ny),
                                              self.extent_z / float(self.nz))
-    
+        #load lihtology colours
+        if os.path.exists(self.basename + ".g20"):
+            filelines = open(self.basename + ".g20").readlines()
+            self.n_events = int(filelines[0].split(' ')[2]) #number of events
+            lithos = filelines[ 3 + self.n_events : len(filelines) - 1] #litho definitions
+            
+            self.rock_names = []
+            self.rock_colors = []
+            self.rock_ages = []
+            
+            for l in lithos:
+                data = l.split(' ')
+                self.rock_ages.append(data[1])
+                self.rock_names.append(data[2])
+                self.rock_colors.append( (int(data[3])/255., int(data[4])/255., int(data[5])/255.) )
+            
     
     def load_geology(self):
         """Load block geology ids from .g12 output file"""
@@ -195,8 +210,218 @@ class NoddyOutput(object):
         self.unit_volumes = np.empty(np.shape(self.unit_ids))
         for i,unit_id in enumerate(self.unit_ids):
             self.unit_volumes[i] = np.sum(self.block == unit_id) * self.block_volume
+       
+    def get_surface_grid(self, lithoID, **kwds ):
+        '''
+        Returns a grid of lines that define a grid on the specified surface. Note that this cannot
+        handle layers that are repeated in the z direction...
+        
+        **Arguments**:
+         - *lithoID* - the top surface of this lithology will be calculated. If a list is passed,
+                       the top surface of each lithology in the list is calculated.
+         
+        **Keywords**:
+         - *res* - the resolution to sample at. Default is 2 (ie. every second voxel is sampled).
+         
+        **Returns**:
+         a tuple containing lists of tuples of x, y and z coordinate dictionaries and colour dictionaries, 
+         one containing the east-west lines and one the north-south lines: ((x,y,z,c),(x,y,z,c)). THe dictionary
+         keys are the lithoID's passed in the lithoID parameter.
+        '''
+        
+        import numpy.ma as ma
+        
+        cube_size = self.xmax / self.nx
+        res = kwds.get('res',2)
+        
+        if not type(lithoID) is list:
+            lithoID = [lithoID]
+            
+        sx = {}
+        sy = {}
+        sz = {}
+        sc = {}
+        
+        #get surface locations in x direction
+        for x in range(0,self.nx,res):
+            
+             #start new line
+            for i in lithoID:
+                if not sx.has_key(i): #create list
+                    sx[i] = []
+                    sy[i] = []
+                    sz[i] = []
+                    if (hasattr(self,'rock_colors')):
+                        sc[i] = self.rock_colors[i]
+                    else:
+                        sc[i] = i
+                        
+                sx[i].append([])
+                sy[i].append([])
+                sz[i].append([])
+                
+            #fill in line
+            for y in range(0,self.ny,res):
+                #drill down filling surface info
+                found = []
+                for z in range(0,self.nz-1):
+                    if (geo.block[x][y][z] != self.block[x][y][z+1])  and self.block[x][y][z] in lithoID:
+                        key = self.block[x][y][z]                          
+                        #add point
+                        sx[key][-1].append(x * cube_size)
+                        sy[key][-1].append(y * cube_size)
+                        sz[key][-1].append(z * cube_size)
+                        
+                        #remember that we've found this
+                        found.append(key)
+                #check to see if anything has been missed(and hence we should start a new line segment)
+                for i in lithoID:
+                    if not i in found:
+                        sx[i].append([]) #new list
+                        sy[i].append([])
+                        sz[i].append([])
+        #apply mask
+        #for d in [sx,sy,sz]:
+        #    for k in d.keys():
+        #        d[key] = ma.masked_where(np.array(d[key]) == -1,d[key])
+                
+        xlines = (sx,sy,sz,sc)
+        
+        sx = {}
+        sy = {}
+        sz = {}
+        sc = {}
+        
+        #get surface locations in y direction
+        for y in range(0,self.ny,res):
+            
+            #start new line
+            for i in lithoID: 
+                if not sx.has_key(i): #create list
+                    sx[i] = []
+                    sy[i] = []
+                    sz[i] = []
+                    if (hasattr(self,'rock_colors')):
+                        sc[i] = self.rock_colors[i]
+                    else:
+                        sc[i] = i
+                sx[i].append([])
+                sy[i].append([])
+                sz[i].append([])
+                
+            #fill in line
+            for x in range(0,self.nx,res):
+                #drill down filling surface info
+                found = []
+                for z in range(0,self.nz-1):
+                    if (geo.block[x][y][z] != self.block[x][y][z+1]) and self.block[x][y][z] in lithoID:
+                        key = self.block[x][y][z]                           
+                        #add point
+                        sx[key][-1].append(x * cube_size)
+                        sy[key][-1].append(y * cube_size)
+                        sz[key][-1].append(z * cube_size)
+                        found.append(key)
+                        
+                for i in lithoID:
+                    if not i in found: #line should end
+                        sx[i].append([]) #add line end
+                        sy[i].append([])
+                        sz[i].append([])
+        
+        ylines = (sx,sy,sz,sc)
+        
+        return (xlines,ylines)
+        
+    def get_section_lines(self, direction='y',position='center', **kwds):
+        """Create and returns a list of lines representing a section block through the model
+        
+        **Arguments**:
+            - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
+            - *position* = int or 'center' : cell position of section as integer value
+                or identifier (default: 'center')
+        **Returns**:
+        A tuple of lists of dictionaries.... ie:
+        ( [ dictionary of x coordinates, with lithology pairs as keys, separated by an underscore],
+          [ dictionary of y coordinates, with lithology pairs as keys, separated by an underscore],
+          [ dictionary of z coordinates, with lithology pairs as keys, separated by an underscore],
+          [ dictionary of colours, with lithologies as keys])
+          
+        For example: get_section_lines()[0]["1_2"] returns a list of all the x coordinates from the 
+        contact between lithology 1 and lithology 2. Note that the smaller lithology index always
+        comes first in the code.
+        """
+        
+        #calc cube size
+        cube_size = self.xmax / self.nx
         
         
+        x = {}
+        y = {}
+        z = {}
+        c = {}
+        
+        if 'z' in direction:
+            for i in range(0,self.nx):
+               for j in range(0,self.ny-1):
+                    
+                    if self.block[i][j][0] != self.block[i][j+1][0]: #this is a contact
+                        code = "%d_%d" % (min(self.block[i][j][0],self.block[i][j+1][0]),max(self.block[i][j][0],self.block[i][j+1][0]))
+                        if not x.has_key(code):
+                            x[code] = []
+                            y[code] = []
+                            z[code] = []
+                            
+                        x[code].append(i * cube_size)
+                        y[code].append(j * cube_size)
+                        z[code].append(-1000)
+                        
+                        if (hasattr(self,'rock_colors')):
+                            c[code] = self.rock_colors[ int(self.block[i][j][0]) ]
+                        else:
+                            c[code] = int(self.block[i][j][0])
+                    
+        ##xz
+        if 'y' in direction:
+            for i in range(0,self.nx):
+               for j in range(0,self.nz-1):
+                    
+                    if self.block[i][0][j] != self.block[i][0][j+1]: #this is a contact
+                        code = "%d_%d" % (min(self.block[i][0][j],self.block[i][0][j+1]),max(self.block[i][0][j],self.block[i][0][j+1]))
+                        if not x.has_key(code):
+                            x[code] = []
+                            y[code] = []
+                            z[code] = []
+                            
+                        x[code].append(i * cube_size)
+                        y[code].append(-1000)
+                        z[code].append(j * cube_size)
+                        if (hasattr(self,'rock_colors')):
+                            c[code] = self.rock_colors[ int(self.block[i][0][j]) ]
+                        else:
+                            c[code] = int(self.block[i][j][0])
+                    
+        #yz
+        if 'x' in direction:
+            for i in range(0,self.ny):
+               for j in range(0,self.nz-1):
+                    
+                    if self.block[0][i][j] != self.block[0][i][j+1]: #this is a contact
+                        code = "%d_%d" % (min(self.block[0][i][j],self.block[0][i][j+1]),max(self.block[0][i][j],self.block[0][i][j+1]))
+                        if not x.has_key(code):
+                            x[code] = []
+                            y[code] = []
+                            z[code] = []
+                            
+                        x[code].append(-1000)
+                        y[code].append(i * cube_size)
+                        z[code].append(j * cube_size)
+                        if (hasattr(self,'rock_colors')):
+                            c[code] = self.rock_colors[ int(self.block[0][i][j]) ]
+                        else:
+                            c[code] = int(self.block[i][j][0])
+                    
+        return (x,y,z,c)
+            
     def get_section(self, direction='y',position='center', **kwds):
         """Create and returns section block through the model
         
@@ -1145,82 +1370,113 @@ class NoddyTopology(object):
         
         plt.savefig(outputname)
         plt.clf()
+    
     def draw_3d_network( self, **kwds ):
         '''
-        Draws a 3D network using Mayavi.
+        Draws a 3D network using matplotlib.
         
         **Optional Keywords**:
          - *show* = If True, the 3D network is displayed immediatly on-screen in an
                     interactive mayavi viewer. Default is True.
          - *output* = If defined an image of the network is saved to this location.
-         - *vtk* = A path to save a .vtk model of the network (for later viewing). If
-                   undefined a vtk is not saved (default)
+         - *node_size* = The size of the nodes. Default is 40.
+         - *geology* = a NoddyOutput object to draw with the network
+         - *res* = resolution to draw geology at. Default is 4 (ie 1/4 of all voxels are drawn)
+         - *horizons* = a list of geology surfaces to draw. Default is nothing (none drawn). Slow!
+                        See NoddyOutput.get_surface_grid for details.
+         - *sections* = draw geology sections. Default is True.
         '''
         
-        #import mayavi & networkx
         import networkx as nx
+        from mpl_toolkits.mplot3d import Axes3D
+        import matplotlib.pyplot as plt
         
-        try:
-            from mayavi import mlab
-            import numpy as np
-        except:
-            print("Error drawing interactive network: Mayavi is not installed")
-            return
+        node_size = kwds.get('node_size',40)
         
-        show = kwds.get("show",True)
-        outputname = kwds.get("output",'')
-        vtk = kwds.get("vtk",'')
-        
-        #convert node labels to integers
         G2 = nx.convert_node_labels_to_integers(self.graph)
         
+        #make figure
+        fig = plt.figure()
+        ax = fig.gca(projection='3d')
+        
+        #load geology
+        if kwds.has_key('geology'):
+            base=kwds.get('geology')
+            res=kwds.get('res',1)
+            
+            
+            if kwds.get('sections',True): #plot sections
+                
+                #get sections
+                sections = [base.get_section_lines('x',0),base.get_section_lines('y',0)]                        
+                
+                #plot sections
+                for s in sections:
+                    for k in s[0].keys():
+                        ax.plot(s[0][k],s[1][k],s[2][k],c=s[3][k],zdir='z',alpha=0.5,linewidth=3)
+                        
+            if kwds.has_key('horizons'): #plot surfaces
+                h = kwds.get('horizons')
+                surfaces = base.get_surface_grid(h) #range(0,base.n_rocktypes) #[12,14]
+                
+                #draw surfaces
+                for s in surfaces:
+                    for k in s[0].keys():
+                        for i in range(len(s[0][k])): #draw line segments
+                        #ax.scatter(sx[k],sy[k],sz[k],s=2,linewidths=(0,),zdir='z',antialiased=False)
+                        #ax.plot_trisurf(sx[k],sy[k],sz[k],color='r',alpha=0.6,antialiased=False)
+                            ax.plot(s[0][k][i],s[1][k][i],s[2][k][i],c=s[3][k],zdir='z',alpha=0.6)
+                    
         #load positions
         x = []
         y = []
         z = []
         nCols = []
         for n in G2.nodes():
+            
+            if not G2.node[n].has_key('centroid'):
+                print "Error: node centroids are not defined. Please ensure this topology object has not been collapsed"
+                return
+            
             x.append(G2.node[n]['centroid'][0])
             y.append(G2.node[n]['centroid'][1])
             z.append(G2.node[n]['centroid'][2])
             nCols.append(int(G2.node[n]['lithology']))
         
-        #make figure
-        mlab.figure(1, bgcolor=(1,1,1))
-        mlab.clf()
+        #make nodes
+        ax.scatter(x,y,z,zdir='z',c=nCols, s = node_size )
         
-        pts = mlab.points3d(x,y,z,nCols, scale_factor=250, scale_mode='none',resolution=20)
-    
-        pts.mlab_source.dataset.lines = np.array(G2.edges())
-        tube = mlab.pipeline.tube(pts,tube_radius=10)
-        mlab.pipeline.surface(tube,color=(0.3,0.3,0.3))
-        
-        #show
-        if show:
-            mlab.show()
+        #make edges
+        for e in G2.edges(data=True):
+            start = G2.node[e[0]]['centroid']
+            end = G2.node[e[1]]['centroid']
             
-        #save
-        if outputname != '':
-            mlab.savefig(outputname)
-        
-        if vtk!='':
-            try:
-                from tvtk.api import write_data
-            except:
-                print("Warning: tvtk not installed - cannot write vtk file.")
-                return
-    
-            write_data(pts.mlab_source.dataset,outputname)
-        
+            #todo: get edge colour
+            c = e[2]['colour']
+            #build lists
+            x = [start[0],end[0]]
+            y = [start[1],end[1]]
+            z = [start[2],end[2]]
+                       
+            #draw line
+            ax.plot(x,y,z,zdir='z',c=c)
+           
+        if kwds.get('show',True):
+            fig.show()
+        if kwds.has_key('output'):
+            fig.savefig(kwds.get('output'))
+            
+ 
 if __name__ == '__main__':
     # some testing and debugging functions...
 #     os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
 #     NO = NoddyOutput("strike_slip_out")
-    os.chdir(r'C:\Users\Sam\Documents\Temporary Model Files\pynoddy\1ktest-1-100')
-    NO = "GBasin123_random_draw_0001"
+    os.chdir(r'C:\Users\Sam\Documents\Temporary Model Files')
+    NO = "GBasin123"
     
     #create NoddyTopology
-    topo = NoddyTopology(NO,load_attributes=False)
+    geo = NoddyOutput(NO)
+    topo = NoddyTopology(NO,load_attributes=True)
     
     topo_c = topo.collapse_topology()
     print len( topo_c.graph.edges() )
@@ -1228,6 +1484,8 @@ if __name__ == '__main__':
     
     #draw network
     #topo.draw_network_image(dimension='3D',perspective=False,axis='x')
+    
+    topo.draw_3d_network(geology=geo)
     
     #draw matrix
     #topo.draw_matrix_image()
