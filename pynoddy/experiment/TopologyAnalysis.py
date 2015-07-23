@@ -551,10 +551,7 @@ class TopologyAnalysis:
         for t in t_list:
             avg += t.graph.number_of_edges() / float(len(t_list))
         return avg
-    
-    def get_possibility(self,topology_type=''):
-        print"not implemented"
-        
+   
     def get_variability(self,topology_type=''):
         '''
         Returns the 'variability' of model topology. This is equal to the total number of observed
@@ -673,7 +670,7 @@ class TopologyAnalysis:
             if n < 1000:
                 clust.dendrogram(Z,ax=ax)
             else: #truncate dendrogram
-                clust.dendrogram(Z,ax=ax,p=15,Truncate_Mode='level',ShowLeafCounts=True)
+                clust.dendrogram(Z,ax=ax,p=15,truncate_mode='level',show_leaf_counts=True)
             #rotate labels
             for l in ax.xaxis.get_ticklabels():
                 l.set_rotation(90)
@@ -822,7 +819,7 @@ class TopologyAnalysis:
             f.savefig(path,dpi=dpi)
         
         #return f
-    def histogram(self,params=None,path="",dpi=300,cols=3):
+    def histogram(self,params=None,path="", **kwds):
         '''
         Plots a histogram matrix showing all the distribution of parameters in model space.
          **Optional Arguments**:
@@ -839,9 +836,18 @@ class TopologyAnalysis:
                       variations is used (at self.params_file). If this does not exist/has not been defined
                       an error is thrown.
          - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
-         - *dpi* =  The resolution of the saved figure
-         - *cols* = The number of columns to fit in a figure
+         
+         **Optional Keywords**:
+          - *width* = The width of each histogram in inches. Default is 3.
+          - *height* = The height of each histogram in inches. Default is 2.5.
+          - *dpi* =  The resolution of the saved figure. Default is 300
+          - *cols* = The number of columns to fit in a figure. Default is 3.
         '''
+        width = kwds.get('width',3.)
+        height = kwds.get('height',2.5)
+        
+        dpi = kwds.get('dpi',300)
+        cols = kwds.get('cols',3)
         
         if params==None:
             if hasattr(self,"params_file"):
@@ -879,6 +885,8 @@ class TopologyAnalysis:
         f.subplots_adjust(hspace=0.6,wspace=0.5)
         f.suptitle("")
         
+        #set size
+        f.set_size_inches( cols * width, rows * height )
         if path=='':
             f.show()
         else:
@@ -992,7 +1000,119 @@ class TopologyAnalysis:
             f.show()
         else:
             f.savefig(path,dpi=dpi)
-     
+    
+    def plot_frequency_distribution(self,topology_type='struct',**kwds):
+        '''
+        Plots a cumulative frequency distribution.
+        
+        **Arguments**
+         - *topology_type* = The type of topology you are interested in. This should be either '' (full topology),
+                             'litho' or 'struct'
+        **Optional Keywords**'
+         - *logx* - plot x axis on a log scale. Default is False.
+         - *logy* - plot y axis on a log scale. Default is False.
+         - *cumulative* - plots cumulative frequency distribution. Default is True.
+         - *path* - a path to save the image to
+         - *dpi* - the resolution of the resulting figure. Default is 300.
+         - *width* - the width of the resulting figure (inches). Default is 5.
+         - *height* - The height of the resulting figure (inches). Default is 5.
+        '''
+        
+        #get kwds
+        logx = kwds.get('logx',False)
+        logy = kwds.get('logy',False)
+        cumulative = kwds.get('cumulative',True)
+        dpi = kwds.get('dpi',300)
+        width = kwds.get('width',5)
+        height = kwds.get('height',5)
+        
+        #get data
+        if topology_type == '':
+            freq=self.unique_frequency 
+            title='Observed Topology Frequency Distribution' 
+        elif 'struct' in topology_type:
+            freq=self.unique_struct_frequency
+            title='Structural Topology Frequency Distribution'
+        elif 'litho' in topology_type:
+            freq=self.unique_litho_frequency
+            title='Lithological Topology Frequency Distribution'
+        else:
+            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            return
+        
+        #calculate number of models in bins of each frequency
+        if not cumulative:
+            obs = [0] * max(freq)
+            for i in range(max(freq)):
+                total=0
+                for f in freq:
+                    if f == i+1:
+                        total+=f
+                obs[i] = total #ie. the number of model topologies seen i times.
+
+        if cumulative:
+            obs = [0] * max(freq)
+            for i in range(max(freq)):
+                total = 0
+                for f in freq:
+                    if f <= i+1:
+                        total+=f
+                obs[i] = total #ie. the number of model topologies seen less than i times.
+            
+            title = 'Cumulative %s' % title
+            #expand last block (purely for aesthetic reasons)
+            for i in range(10):
+                obs.append(obs[-1])   
+                
+        #normalise
+        obs = [ x / float(len(self.models)) for x in obs ]
+            
+        #build plot
+        import matplotlib as matplotlib
+        import matplotlib.pyplot as plt
+        from matplotlib.ticker import FuncFormatter
+
+        #convert to percentages
+        def to_percent(y,position):
+            # Ignore the passed in position. This has the effect of scaling the default
+            # tick locations.
+            s = str(100 * y)
+        
+            # The percent symbol needs escaping in latex
+            if matplotlib.rcParams['text.usetex'] == True:
+                return s + r'$\%$'
+            else:
+                return s + '%'
+                
+        #plot cumulative distribution
+        f,ax = plt.subplots()
+        
+        l=np.arange(len(obs))
+        ax.bar(l,obs,1,linewidth=0)
+        
+        #set x range
+        ax.set_xlim(0,l[-1] + 1)
+        
+        #label y axis with %
+        formatter = FuncFormatter(to_percent)
+        ax.yaxis.set_major_formatter(formatter)
+        ax.set_xlabel('Model Frequency')
+        ax.set_ylabel('Percent of Observed Topologies')
+        
+        ax.set_title(title)
+        
+        f.set_figwidth(width)
+        f.set_figheight(height)
+        
+        if logx:
+            ax.set_xscale('log')
+        if logy:
+            ax.set_yscale('log')
+            
+        if kwds.has_key('path'):
+            f.savefig( kwds.get('path'), dpi=dpi)
+        else:
+            f.show()
     def plot_scatter_matrix(self,param_pairs=None,topology_type='struct',params=None, **kwds):
         '''
         Plots a matrix of scatter plots showing the distribution of the specified topologies in 
@@ -1062,7 +1182,7 @@ class TopologyAnalysis:
             param_space = param_space.drop(['u_topo','u_litho'],1) #drop unwanted columns
        
         else:
-            print "Error: Invalid topology_type. This should be 'litho' or 'struct'"
+            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
             return
             
         if param_pairs != None:
@@ -1084,7 +1204,6 @@ class TopologyAnalysis:
         headings.remove(col)
         
         n=math.factorial((len(headings)-1))
-        print n
         rows = int(math.ceil( n / float(cols) ))
         
         #get initial model params
@@ -1137,13 +1256,16 @@ class TopologyAnalysis:
         else:
             f.savefig(path,dpi=dpi)
     
-    def plot_unique_model_grid( self, topology_type, **kwds ):
+    def plot_unique_model_grid( self, topology_type, n, **kwds ):
         '''
         Produces a grid of renders of all the unique topologies observed in this experiment.
         
         **Arguments**:
-         - *topology_type* = the type of topology used to identify unique models
-         
+         - *topology_type* = the type of topology used to identify unique models ('','struct' or 'litho')
+         - *n* = the number of unique models to plot. These will be chosen such that they
+                 are maximally representative by building a dendrogram of model space,
+                 cutting it such that it contians n clusters and identifying models closest to
+                 the center of each cluster.
         **Optional Keywords**:
             - *path* = the path to the resulting image as. Default is '' (no image saved)
             - *dpi* = the resoltuion of the resulting image
@@ -1166,8 +1288,11 @@ class TopologyAnalysis:
             - *litho_filter* = a list of lithologies to draw. All others will be ignored.
         '''
         
+        #get kwds
         width = kwds.get("width",2)
         cols = kwds.get("cols",4)
+        
+        dist = self.get_difference_matrix(topology_type)
         
         #calculate number of unique topologies
         if topology_type == '':
@@ -1273,6 +1398,13 @@ class TopologyAnalysis:
         #do figures
         self.do_figures(output_directory)
         
+        #save parameter space
+        self.get_parameter_space().to_csv(os.path.join(output_directory,'parameter_space.csv'))
+        
+        #pickle this class for later
+        import cPickle as pickle
+        pickle.dump( self, open(os.path.join(output_directory,"analysis.pkl",), "wb" ))
+        
     def summary(self):
         out = "%d different topologies found (from %d trials)\n" % (len(self.unique_topologies),len(self.models))
         out += "%d unique lithological topologies found\n" % len(self.unique_litho_topologies)
@@ -1303,6 +1435,11 @@ class TopologyAnalysis:
         self.plot_cumulative_topologies("litho",path=os.path.join(directory,"litho_cumulative_observed.png"))
         self.plot_cumulative_topologies("struct",path=os.path.join(directory,"struct_cumulative_observed.png"))
         
+        #cumulative frequency distributions
+        self.plot_frequency_distribution('',path=os.path.join(directory,"cumulative_frequency.png"))
+        self.plot_frequency_distribution('struct',path=os.path.join(directory,"struct_cumulative_frequency.png"))
+        self.plot_frequency_distribution('litho',path=os.path.join(directory,"litho_cumulative_frequency.png"))
+        
         #boxplots
         if len(self.unique_topologies) < 1000:
             self.boxplot('',path=os.path.join(directory,"full_topology_ranges.png"),width=min(0.1*len(a.all_litho_topologies),100))
@@ -1329,10 +1466,17 @@ class TopologyAnalysis:
             self.base_model.get_geology().plot_section(direction='z',savefig=True,fig_filename=os.path.join(directory,'base_model_xy.png'))
 
         #save renders of (first 50) unique models
-        self.render_unique_models("unique/all",'', max_t=50)
-        self.render_unique_models("unique/struct",'struct', max_t=50)
-        self.render_unique_models("unique/litho",'litho', max_t=50)
+        self.render_unique_models(os.path.join(directory,"unique/all/x"),'', max_t=50, direction='x')
+        self.render_unique_models(os.path.join(directory,"unique/struct/x"),'struct', max_t=50, direction='x')
+        self.render_unique_models(os.path.join(directory,"unique/litho/x",'litho'), max_t=50, direction='x')
         
+        self.render_unique_models(os.path.join(directory,"unique/all/y"),'', max_t=50, direction='y')
+        self.render_unique_models(os.path.join(directory,"unique/struct/y"),'struct', max_t=50, direction='y')
+        self.render_unique_models(os.path.join(directory,"unique/litho/y"),'litho', max_t=50, direction='y')
+        
+        self.render_unique_models(os.path.join(directory,"unique/all/z"),'', max_t=50, direction='z')
+        self.render_unique_models(os.path.join(directory,"unique/struct/z"),'struct', max_t=50, direction='z')
+        self.render_unique_models(os.path.join(directory,"unique/litho/z"),'litho', max_t=50, direction='z')
     def is_strata_continuous(self,litho):
         '''
         Calculates the number of models in which all sections of a particular lithology are
@@ -1372,16 +1516,19 @@ if __name__ == '__main__':     #some debug stuff
     os.chdir(r"C:\Users\Sam\Documents\Temporary Model Files")
     
     #his="fold_fault.his"#"fold_fault.his"
-    his="GBasin123.his"
+    #his="GBasin123.his"
+    his = "fold_dyke.his"
     
     #params="fold_fault_dswa.csv" #"fold_fault_dswa.csv" #"fold_unconf_dewa.csv"
-    params="GBasin123.csv"
+    #params="GBasin123.csv"
+    params = "fold_dyke_dxwa.csv"
+    
     a = TopologyAnalysis(his,params=params,n=0,verbose=False,threads=8)
     
     #print results
     print a.summary()
     
-    a.analyse('output')
+    #a.analyse('output')
     
     #save plots
     #a.boxplot("litho",params=params,path="litho_topology_ranges.png",width=min(0.1*len(a.all_litho_topologies),100))
