@@ -143,7 +143,7 @@ class NoddyOutput(object):
                 data = l.split(' ')
                 self.rock_ages.append(data[1])
                 self.rock_names.append(data[2])
-                self.rock_colors.append( (int(data[3])/255., int(data[4])/255., int(data[5])/255.) )
+                self.rock_colors.append( (int(data[-3])/255., int(data[-2])/255., int(data[-1])/255.) )
             
     
     def load_geology(self):
@@ -562,7 +562,7 @@ class NoddyOutput(object):
                 
         im = ax.imshow(section_slice, interpolation='nearest', aspect=ve, cmap=cmap_type, origin = 'lower left')
        
-        if colorbar:
+        if colorbar and not kwds.has_key('ax') and False: #disable - color bar is broken
 #            cbar = plt.colorbar(im)
 #            _ = cbar
 #        
@@ -903,6 +903,8 @@ class NoddyTopology(object):
         
         topo.graph.add_edges_from(edges)
         
+        #remove self loops
+        topo.graph.remove_edges_from( topo.graph.selfloop_edges() )
         return topo
        
     def collapse_topology(self, verbose=False):
@@ -987,6 +989,7 @@ class NoddyTopology(object):
                 intersection+=1 #add this edge to intersection
             else:
                 union += 1 #edge is new, add to union
+        
         return intersection / float(union)
 
     def is_unique(self, known ):
