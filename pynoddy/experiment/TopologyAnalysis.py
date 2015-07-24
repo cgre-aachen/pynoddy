@@ -157,6 +157,7 @@ class TopologyAnalysis:
          - *n* = The number of model perturbations to generate (if a history file is provided)
         
         **Optional Keywords**:
+         - *output* = The path to populate with models. Default is the base path (+ history name).
          - *verbose* = True if this experiment should write to the print buffer. Default is True
          - *threads* = The number of threads this experiment should utilise. The default is 4.
          - *force* = True if all noddy models should be recalculated. Default is False.
@@ -180,9 +181,14 @@ class TopologyAnalysis:
                 print "Error: please provide valid arguments [params,n]"
             
             self.base_history_path = path
-            self.base_path=path.split('.')[0] #trim file extension
             self.num_trials = n
             
+            #calculate output path
+            if kwds.has_key('output'):
+                self.base_path = kwds['output']
+            else:
+                self.base_path=path.split('.')[0] #trim file extension
+           
             #ensure path exists
             if not os.path.exists(self.base_path):
                 os.makedirs(self.base_path)
@@ -222,10 +228,13 @@ class TopologyAnalysis:
         if hasattr(self,"base_model"):
             self.initial_topology = self.base_model.topology
             self.initial_topo_id = self.initial_topology.find_first_match( self.unique_topologies )
+            self.models.append( self.base_model )
+            
             if self.initial_topo_id == -1:
                 self.unique_topologies.append(self.initial_topology)
                 self.unique_frequency.append(1)
                 self.initial_topo_id = len(self.unique_topologies) - 1 
+                self.topo_type_ids.append(len(self.models) - 1) #append type
                 print "Warning: all topologies generated are different to the initial topology"
             
             self.initial_litho_topology = self.initial_topology.collapse_topology()
@@ -234,6 +243,7 @@ class TopologyAnalysis:
                 self.unique_litho_topologies.append(self.initial_litho_topology)
                 self.unique_litho_frequency.append(1)
                 self.initial_litho_id = len(self.unique_litho_topologies) - 1 
+                self.litho_type_ids.append(len(self.models) - 1)
                 print "Warning: all litho topologies generated are different to the initial topology!" #we probably want to know this
                 
             self.initial_struct_topology = self.initial_topology.collapse_stratigraphy()
@@ -242,8 +252,13 @@ class TopologyAnalysis:
                 self.unique_struct_topologies.append(self.initial_struct_topology)
                 self.unique_struct_frequency.append(1)
                 self.initial_struct_id = len(self.unique_struct_topologies) - 1 
+                self.struct_type_ids.append(len(self.models) - 1)
                 print "Warning: all struct topologies generated are different to the initial topology!!!" #we probably want to know this
       
+            self.unique_ids.append(self.initial_topo_id)
+            self.unique_struct_ids.append(self.initial_struct_id)
+            self.unique_litho_ids.append(self.initial_litho_id)
+            
     def _find_unique_topologies(self):
         self.accumulate_topologies = []
         self.accumulate_litho_topologies = []
@@ -608,6 +623,10 @@ class TopologyAnalysis:
         else:
             print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
 
+        if len(t_list) <= 1: #need more than one model to build a dm...
+            print "Error: cannot build a distance matrix containing only one model..."
+            return None
+            
         difference_matrix=np.zeros( (len(t_list),len(t_list)))
         
         for i in range (0,len(t_list)):
@@ -648,7 +667,13 @@ class TopologyAnalysis:
         import scipy.spatial.distance as dist
         import scipy.cluster.hierarchy as clust
         
-        m_dif = dist.squareform( self.get_difference_matrix(topology_type),force='tovector' )
+        dm = self.get_difference_matrix(topology_type)
+        
+        if dm is None:
+            print "Error: could not build dendrogram for %s topologies" % topology_type
+            return
+            
+        m_dif = dist.squareform( dm,force='tovector' )
         
         if topology_type == '':
             title = 'Hierarchical Classification of Overall Topology'
@@ -659,35 +684,33 @@ class TopologyAnalysis:
         elif 'struct' in topology_type:
             title = 'Hierarchical Classification of Structural Topology'
             n = len(self.unique_struct_topologies)
-        if len(m_dif) >= 2:
-            #generate dendrogram using UPGMA
-            Z = clust.average(m_dif)
+        
+        #generate dendrogram using UPGMA
+        Z = clust.average(m_dif)
+        
+        #generate plot
+        import matplotlib.pyplot as plt
+        f, ax = plt.subplots()
+        
+        if n < 1000:
+            clust.dendrogram(Z,ax=ax)
+        else: #truncate dendrogram
+            clust.dendrogram(Z,ax=ax,p=15,truncate_mode='level',show_leaf_counts=True)
+        #rotate labels
+        for l in ax.xaxis.get_ticklabels():
+            l.set_rotation(90)
             
-            #generate plot
-            import matplotlib.pyplot as plt
-            f, ax = plt.subplots()
-            
-            if n < 1000:
-                clust.dendrogram(Z,ax=ax)
-            else: #truncate dendrogram
-                clust.dendrogram(Z,ax=ax,p=15,truncate_mode='level',show_leaf_counts=True)
-            #rotate labels
-            for l in ax.xaxis.get_ticklabels():
-                l.set_rotation(90)
-                
-            #size plot
-            f.set_figwidth( min(0.2 * n,100)) #max size is 100 inches
-            f.set_figheight(8)
-            f.suptitle("")
-            ax.set_title(title)
-            
-            if path == "":
-                f.show()
-            else:
-                f.savefig(path,dpi=dpi)
+        #size plot
+        f.set_figwidth( min(0.2 * n,100)) #max size is 100 inches
+        f.set_figheight(8)
+        f.suptitle("")
+        ax.set_title(title)
+        
+        if path == "":
+            f.show()
+        else:
+            f.savefig(path,dpi=dpi)
 
-        else: #we cant build a tree with only one topology...
-            print "Error: not enough topologies of this type have been found to plot a dendrogram"
     def boxplot(self,topology_type='struct',params=None,path="",**kwds):
         '''
         Generates a series of boxplot tiles showing the range of variables that has produced
@@ -1256,9 +1279,55 @@ class TopologyAnalysis:
         else:
             f.savefig(path,dpi=dpi)
     
-    def plot_unique_model_grid( self, topology_type, n, **kwds ):
+    def get_n_most_frequent_models( self, n = 8, topology_type = ''):
         '''
-        Produces a grid of renders of all the unique topologies observed in this experiment.
+        Retrieves a list of the n most frequent (and hence most likely) models.
+        
+        **Arguments**:
+         - *n* = the number of models to get
+         - *topology_type* = the type of topology used to identify unique models ('','struct' or 'litho')
+         
+        **Returns**:
+         - a tuple containing: 1) a list of models
+                               2) a list of model ID's
+                               3) a list of topology UIDs
+        '''
+        #get data
+        if topology_type == '':
+            topo=self.unique_topologies 
+            t_id=self.topo_type_ids 
+        elif 'struct' in topology_type:
+            topo=self.unique_struct_topologies
+            t_id=self.struct_type_ids
+        elif 'litho' in topology_type:
+            topo=self.unique_litho_topologies
+            t_id=self.litho_type_ids
+        else:
+            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            return
+        
+        #make sure we're not asking for too many models
+        if n > len(topo):
+            n = len(topo)
+            
+        #unique topologies are already sorted, so we just want to get the first n models
+        uids = range(n)
+        
+        ids = [ t_id[i] for i in uids ]
+        models = [ self.models[i] for i in ids ]
+        
+        return (models,ids,uids)
+        
+    def get_n_from_clusters(self, n = 8, topology_type = '' ):
+        '''
+        Returns n ModelRealisation objects that are selected such that they
+        are at the centroid of n groups chosen from a UPGMA dendrogram of model space.
+        This means that this selection of models should express the variability within
+        model space as best as possible.
+        
+        Note that while these models express the variability, the models themselves are 
+        usually very improbable (ie. they were not observed many times). Hence they should
+        be viewed as 'end-member topologies', not as representative of the likely topologies.
         
         **Arguments**:
          - *topology_type* = the type of topology used to identify unique models ('','struct' or 'litho')
@@ -1266,11 +1335,88 @@ class TopologyAnalysis:
                  are maximally representative by building a dendrogram of model space,
                  cutting it such that it contians n clusters and identifying models closest to
                  the center of each cluster.
+                 
+        **Returns**:
+         - a tuple (models,uids,ids), ie: a tuple containing:
+           references to a list of ModelRealisation objects,
+           a list of the unique id's for each of the model realisation objects, and 
+           a list containing the (global) id's of these objects  (in the self.models list)
+        '''
+        
+        import scipy.cluster.hierarchy as clust
+        import scipy.spatial.distance as dist
+        
+        #get data
+        if topology_type == '':
+            topo=self.unique_topologies 
+            t_id=self.topo_type_ids 
+        elif 'struct' in topology_type:
+            topo=self.unique_struct_topologies
+            t_id=self.struct_type_ids
+        elif 'litho' in topology_type:
+            topo=self.unique_litho_topologies
+            t_id=self.litho_type_ids
+        else:
+            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            return
+            
+        #compute tree
+        dm = self.get_difference_matrix(topology_type)
+        
+        if dm is None: #empty distance matrix...
+            print "Warning: only one model of this type has been found."
+            return ([self.models[0]],[0],[0]) #models are all identical, return first one (it's as good as any)
+        
+        m_dif = dist.squareform( dm,force='tovector' )
+        
+        Z = clust.average(m_dif)
+        
+        #extract n groups from tree
+        cluster_ids = clust.fcluster(Z,n,criterion='maxclust') #extract n clusters
+        
+        #calculate most central model to each cluster
+        #centroids=[]
+        centroid_ids = []
+        for i in range(1,max(cluster_ids)+1): #max(cluster_ids) usually, but not necessarilly, returns n
+            #extract the i'th cluster
+            c = [topo[t] for t in range( len(topo) ) if cluster_ids[t] == i]  #topologies
+            m_ids = [t for t in range( len(topo) ) if cluster_ids[t] == i] #model id's (corresponding to topology)
+            
+            if len(c) > 0: #if this cluster exists
+                #do pairwise comparisons and compute average distances
+                dist=[0] * len(c)
+                for i in range(len(c)):
+                    for j in range(len(c)):
+                        if i > j: #we only need to compute a half distance matrix
+                            jc = c[i].jaccard_coefficient(c[j])
+                            dist[i] += jc
+                            dist[j] += jc
+                        else:
+                            break #go to next loop
+            
+                #centroids.append( clust[ dist.index(min(dist)) ] ) #get model most similar to all others in the cluster
+                centroid_ids.append( m_ids[ dist.index(min(dist)) ])
+                
+        #retrieve models
+        return ([self.models[ t_id[i] ] for i in centroid_ids],  centroid_ids, [t_id[i] for i in centroid_ids ])     
+        
+    def plot_n_models( self, n=8,topology_type = '', criterion='probability',  **kwds ):
+        '''
+        Produces a grid of renders n unique topologies observed in this experiment.
+        
+        **Arguments**:
+         - *topology_type* = the type of topology used to identify unique models ('','struct' or 'litho')
+         - *n* = the number of unique models to plot. 
+         - *criterion* = the criterion used to select the models. This should either be 'probability' or
+                 'clustering'. If 'probability' is selected, get_n_most_frequent_models() is used to retrieve
+                 models. If 'clustering' is selected, get_n_from_clusters() is used. Please see the definitions
+                 of these methods for specific details.
         **Optional Keywords**:
             - *path* = the path to the resulting image as. Default is '' (no image saved)
             - *dpi* = the resoltuion of the resulting image
             - *width* = the width of each tile in the grid. Default is 2 inches.
             - *cols* = the number of tiles to fit accross the image. Default is 4.
+            - *uid* = label the tiles with topology id rather than model id. Default is False.         
             - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
             - *position* = int or 'center' : cell position of section as integer value
                 or identifier (default: 'center')
@@ -1289,25 +1435,48 @@ class TopologyAnalysis:
         '''
         
         #get kwds
-        width = kwds.get("width",2)
+        width = kwds.get("width",3)
+        height = kwds.get("height",2)
+        
         cols = kwds.get("cols",4)
         
-        dist = self.get_difference_matrix(topology_type)
+        import matplotlib.pyplot as plt
         
-        #calculate number of unique topologies
-        if topology_type == '':
-            n = len(self.unique_topologies)
-        elif "litho" in topology_type:
-            n = len(self.unique_litho_topologies)
-        elif "struct" in topology_type:
-            n = len(self.unique_struct_topologies)
+        #get models
+        if 'prob' in criterion:
+            models, uids, ids = self.get_n_most_frequent_models(n,topology_type)
+            
+            if topology_type == '':
+                title='%d Most Probable Model Topologies'  % len(models)
+            elif 'struct' in topology_type:
+                title='%d Most Probable Structural Topologies'  % len(models)
+            elif 'litho' in topology_type:
+                title='%d Most Probable Lithological Topologies'  % len(models)
+            else:
+                return
+            
+        elif 'clust' in criterion:
+            
+            models, uids, ids = self.get_n_from_clusters(n,topology_type)
+            
+            if topology_type == '':
+                title='%d Most Representative Model Topologies'  % len(models)
+            elif 'struct' in topology_type:
+                title='%d Most Representative Structural Topologies'  % len(models)
+            elif 'litho' in topology_type:
+                title='%d Most Representative Lithological Topologies'  % len(models)
+            else:
+                return
         else:
-            print "Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'"
+            print "Error: Invalid criterion argument. Please pass either 'probability' (or 'prob') or 'clustering' (or 'clust')."
             return
             
-        #calculate dimensions
+        #plot grid
+        n = len(models) #number of models to plot
+    
+        #check for stupididty
         if n > 200:
-            print "Error: two many topologies of specified type '%s' to draw a grid. Please use render_unique_models instead." % topology_type
+            print "Error: too many topologies of specified type '%s' to draw a grid. Please use a smaller n." % topology_type
         
         rows = int(math.ceil(n / float(cols)))
         
@@ -1316,13 +1485,28 @@ class TopologyAnalysis:
         ax=ax.ravel() #convert to 1d array
         
         for i in range(n):
-            m = self.get_type_model(i,topology_type)
-            name='unique_%s_%d.png' % (topology_type,i)
-            path = os.path.join(directory,name)
+            models[i].get_geology().plot_section(ax=ax[i],**kwds)
+        
+            #set axis stuff
+            ax[i].get_xaxis().set_visible(False)
+            ax[i].get_yaxis().set_visible(False)
             
-            m.get_geology().plot_section(ax=ax[i],**kwds)
+            ax[i].set_title( 'Model %d' % ids[i])
+            if (kwds.has_key('uid')):
+                if kwds['uid']:
+                    ax[i].set_title( 'Topology %d' % uids[i] )
+        
+        for i in range(n,len(ax)): #hide all other axes
+            ax[i].set_visible(False)
             
-            #ax[i].
+        #set fig size
+        f.set_figwidth(width * cols)
+        f.set_figheight(height * cols)
+        
+        if (kwds.has_key('path')):
+            f.savefig( kwds['path'], dpi=kwds.get('dpi',300) )
+        else:
+            f.show()
         
     def render_unique_models( self, directory, topology_type='struct', **kwds ):
         '''
@@ -1373,7 +1557,8 @@ class TopologyAnalysis:
             name='unique_%s_%d.png' % (topology_type,i)
             path = os.path.join(directory,name)
             
-            m.get_geology().plot_section(savefig=True,fig_filename=path,**kwds)
+            if not m is None:
+                m.get_geology().plot_section(savefig=True,fig_filename=path,**kwds)
             
       
     def analyse(self, output_directory):
@@ -1409,6 +1594,7 @@ class TopologyAnalysis:
         out = "%d different topologies found (from %d trials)\n" % (len(self.unique_topologies),len(self.models))
         out += "%d unique lithological topologies found\n" % len(self.unique_litho_topologies)
         out += "%d unique structural topologies found\n" % len(self.unique_struct_topologies)
+        out += "model variability (overall) = %f\n" % self.get_variability('')
         out += "model variability (lithological) = %f\n" % self.get_variability('litho')
         out += "model variability (structural) = %f\n" % self.get_variability('struct')
         out += "Model realisations had topologies of (on average):\n"
@@ -1442,9 +1628,9 @@ class TopologyAnalysis:
         
         #boxplots
         if len(self.unique_topologies) < 1000:
-            self.boxplot('',path=os.path.join(directory,"full_topology_ranges.png"),width=min(0.1*len(a.all_litho_topologies),100))
+            self.boxplot('',path=os.path.join(directory,"full_topology_ranges.png"),width=min(0.1*len(self.all_litho_topologies),100))
         if len(self.unique_litho_topologies) < 1000:
-            self.boxplot("litho",path=os.path.join(directory,"litho_topology_ranges.png"),width=min(0.1*len(a.all_litho_topologies),100))
+            self.boxplot("litho",path=os.path.join(directory,"litho_topology_ranges.png"),width=min(0.1*len(self.all_litho_topologies),100))
         if len(self.unique_struct_topologies) < 1000:
             self.boxplot("struct",path=os.path.join(directory,"struct_topology_ranges.png"))
         
@@ -1464,7 +1650,18 @@ class TopologyAnalysis:
             self.base_model.get_geology().plot_section(direction='x',savefig=True,fig_filename=os.path.join(directory,'base_model_yz.png'))
             self.base_model.get_geology().plot_section(direction='y',savefig=True,fig_filename=os.path.join(directory,'base_model_xz.png'))
             self.base_model.get_geology().plot_section(direction='z',savefig=True,fig_filename=os.path.join(directory,'base_model_xy.png'))
-
+            
+        #save render of 8 most frequent topologies, ie. 'most probable models'
+        self.plot_n_models(8,'',criterion='prob',path=os.path.join(directory,'probable_topologies.png'))
+        self.plot_n_models(8,'struct',criterion='prob',path=os.path.join(directory,'probable_struct_topologies.png'))
+        self.plot_n_models(8,'litho',criterion='prob',path=os.path.join(directory,'probable_litho_topologies.png'))
+        
+        
+        #save render of 'representative' topologies. ie. represent 'spread of possibility'
+        self.plot_n_models(8,'',criterion='clust',path=os.path.join(directory,'model_cluster_centroids.png'))
+        self.plot_n_models(8,'struct',criterion='clust',path=os.path.join(directory,'struct_cluster_centroids.png'))
+        self.plot_n_models(8,'litho',criterion='clust',path=os.path.join(directory,'litho_cluster_centroids.png'))
+        
         #save renders of (first 50) unique models
         self.render_unique_models(os.path.join(directory,"unique/all/x"),'', max_t=50, direction='x')
         self.render_unique_models(os.path.join(directory,"unique/struct/x"),'struct', max_t=50, direction='x')
@@ -1523,7 +1720,7 @@ if __name__ == '__main__':     #some debug stuff
     #params="GBasin123.csv"
     params = "fold_dyke_dxwa.csv"
     
-    a = TopologyAnalysis(his,params=params,n=0,verbose=False,threads=8)
+    a = TopologyAnalysis(his,params=params,n=4,verbose=False,threads=8,output='test')
     
     #print results
     print a.summary()
