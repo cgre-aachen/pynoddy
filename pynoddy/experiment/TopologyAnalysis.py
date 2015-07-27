@@ -14,134 +14,134 @@ from pynoddy.output import NoddyTopology
 from pynoddy.output import NoddyOutput
 from pynoddy.history import NoddyHistory
 
-class TopologyAnalysis:
+
+'''
+Performs a topological uncertainty analysis on a noddy model.
+'''
+class ModelRealisation:
     '''
-    Performs a topological uncertainty analysis on a noddy model.
+    Class containing information regarding an individual model realisation.
+    This essentially just bundles a history class and NoddyTopology class together (plus a bit 
+    of extra information like basename etc)
     '''
     
+    def __init__(self, history_file, **kwds ):
+        #get keywords
+        vb = kwds.get("verbose",False)
+        
+        self.history_path=history_file
+        self.basename=history_file.split('.')[0] #remove file extension
+        
+        if not os.path.exists(self.history_path):
+            print "Error: please specify a valid noddy history file (*.his)"
+            return
+        
+        #load history file
+        self.history = NoddyHistory(history_file, verbose=vb)
+                    
+        #load topology network
+        self.topology = NoddyTopology(self.basename) #overall topology
+        
+        #add sub-topology networks
+        #self.litho_topology = self.topology.collapse_topology() #lithological topology
+        #self.struct_topology = self.topology.collapse_stratigraphy() #structural topology
+        
     
-    class ModelRealisation:
+    def define_parameter_space( self,parameters ):
         '''
-        Class containing information regarding an individual model realisation.
-        This essentially just bundles a history class and NoddyTopology class together (plus a bit 
-        of extra information like basename etc)
+        Sets the parameters used to locate this model in parameter space.
+        
+        **Arguments**:
+         - *parameters* = A list of tuples containing event number and variable names (strings).
+                         These need to match noddy parameters Eg [ (2,'dip'),(2,'slip'),(3,'x') ].
+        '''
+        self.headings = []
+        self.params = [] #array containing values
+        for v in parameters:
+            if len(v) != 2:
+                print "Warning: %s does not match the tuple format (eventID,parameter name)." % v
+            self.headings.append("%d_%s" % (v[0],v[1])) #heading format is eventID_name: eg. 2_dip                
+            self.params.append( float(self.history.get_event_param(v[0],v[1])) )
+        
+    def get_parameters(self):
+        '''
+        Gets the location of this model in parameter space
+        
+        **Returns**:
+         - a tuple containing a list of parameter names and a list of parameter values
+        '''
+        return [self.headings,self.params]
+    def get_geology(self):
+        '''
+        Returns a NoddyOut object containing the voxel volume representing the geology
+        of this model. Note that these can be large objects, so try not loading too
+        many at once...
+        **Returns**
+         - a NoddyOut object containing this geological model.
         '''
         
-        def __init__(self, history_file, **kwds ):
-            #get keywords
-            vb = kwds.get("verbose",False)
-            
-            self.history_path=history_file
-            self.basename=history_file.split('.')[0] #remove file extension
-            
-            if not os.path.exists(self.history_path):
-                print "Error: please specify a valid noddy history file (*.his)"
-                return
-            
-            #load history file
-            self.history = NoddyHistory(history_file, verbose=vb)
-                        
-            #load topology network
-            self.topology = NoddyTopology(self.basename) #overall topology
-            
-            #add sub-topology networks
-            #self.litho_topology = self.topology.collapse_topology() #lithological topology
-            #self.struct_topology = self.topology.collapse_stratigraphy() #structural topology
-            
+        return NoddyOutput(self.basename)
+     
+    @staticmethod
+    def get_parameter_space(models,parameters):
+        '''
+        Produces a data matrix describing the location of the provided models in the specified
+        parameter space.
         
-        def define_parameter_space( self,parameters ):
-            '''
-            Sets the parameters used to locate this model in parameter space.
-            
-            **Arguments**:
-             - *parameters* = A list of tuples containing event number and variable names (strings).
-                             These need to match noddy parameters Eg [ (2,'dip'),(2,'slip'),(3,'x') ].
-            '''
-            self.headings = []
-            self.params = [] #array containing values
-            for v in parameters:
-                if len(v) != 2:
-                    print "Warning: %s does not match the tuple format (eventID,parameter name)." % v
-                self.headings.append("%d_%s" % (v[0],v[1])) #heading format is eventID_name: eg. 2_dip                
-                self.params.append( float(self.history.get_event_param(v[0],v[1])) )
-            
-        def get_parameters(self):
-            '''
-            Gets the location of this model in parameter space
-            
-            **Returns**:
-             - a tuple containing a list of parameter names and a list of parameter values
-            '''
-            return [self.headings,self.params]
-        def get_geology(self):
-            '''
-            Returns a NoddyOut object containing the voxel volume representing the geology
-            of this model. Note that these can be large objects, so try not loading too
-            many at once...
-            **Returns**
-             - a NoddyOut object containing this geological model.
-            '''
-            
-            return NoddyOutput(self.basename)
+        **Arguments**:
+         - *models* = a list of models to include in the parameter space
+         - *parameters* = A list of tuples containig the parameters which make-up the desired
+                          parameter space. Each parameter is defined by a tuple containing an 
+                          event number and parameter name, eg. (2, dip) represents the dip of
+                          the second noddy event.
+        '''   
+        #retreive data
+        data = []
+        for m in models:
+            m.define_parameter_space(parameters)
+            data.append( (m.basename, m.get_parameters()[1] )) #tuple containing (name, [data,..])
+        
+        #define data panda
+        import pandas
+        data_matrix = pandas.DataFrame.from_items(data,orient='index',columns=models[0].headings)
+        
+        return data_matrix
+        
+    @staticmethod
+    def loadModels( path, **kwds ):
+        '''
+        Loads all noddy models realisations and returns them as an array of ModelRealisation objects
+        
+        **Arguments**:
+         - *path* = The root directory that models should be loaded from. All models with the same base_name
+                    as this class will be loaded (including subdirectoriess)
+        **Optional Keywords**:
+         - *verbose* = True if this function should write debug information to the print buffer. Default is True.
          
-        @staticmethod
-        def get_parameter_space(models,parameters):
-            '''
-            Produces a data matrix describing the location of the provided models in the specified
-            parameter space.
+        **Returns**:
+         - a list of ModelRealisation objects
+        '''
+        
+        vb = kwds.get('verbose',True)
+        
+        if vb:
+            print "Loading models in %s" % path
+        
+        #array of topology objects
+        realisations = []
+        for root, dirnames, filenames in os.walk(path): #walk the directory
+            for f in filenames:
+                if ('.his' in f): #find all topology files
+                    p = os.path.join(root,f)
+                    if vb:
+                        print 'Loading %s' % p
+                        
+                    #load model 
+                    realisations.append( ModelRealisation(p,verbose=vb) )
+          
+        return realisations
             
-            **Arguments**:
-             - *models* = a list of models to include in the parameter space
-             - *parameters* = A list of tuples containig the parameters which make-up the desired
-                              parameter space. Each parameter is defined by a tuple containing an 
-                              event number and parameter name, eg. (2, dip) represents the dip of
-                              the second noddy event.
-            '''   
-            #retreive data
-            data = []
-            for m in models:
-                m.define_parameter_space(parameters)
-                data.append( (m.basename, m.get_parameters()[1] )) #tuple containing (name, [data,..])
-            
-            #define data panda
-            import pandas
-            data_matrix = pandas.DataFrame.from_items(data,orient='index',columns=models[0].headings)
-            
-            return data_matrix
-            
-        @staticmethod
-        def loadModels( path, **kwds ):
-            '''
-            Loads all noddy models realisations and returns them as an array of ModelRealisation objects
-            
-            **Arguments**:
-             - *path* = The root directory that models should be loaded from. All models with the same base_name
-                        as this class will be loaded (including subdirectoriess)
-            **Optional Keywords**:
-             - *verbose* = True if this function should write debug information to the print buffer. Default is True.
-             
-            **Returns**:
-             - a list of ModelRealisation objects
-            '''
-            
-            vb = kwds.get('verbose',True)
-            
-            if vb:
-                print "Loading models in %s" % path
-            
-            #array of topology objects
-            realisations = []
-            for root, dirnames, filenames in os.walk(path): #walk the directory
-                for f in filenames:
-                    if ('.his' in f): #find all topology files
-                        p = os.path.join(root,f)
-                        if vb:
-                            print 'Loading %s' % p
-                            
-                        #load model 
-                        realisations.append( TopologyAnalysis.ModelRealisation(p,verbose=vb) )
-              
-            return realisations
+class TopologyAnalysis:
             
     def __init__(self,path, params=None,n=None, **kwds):
         '''
@@ -194,7 +194,7 @@ class TopologyAnalysis:
                 os.makedirs(self.base_path)
             
             #generate & store initial topology
-            self.base_model = TopologyAnalysis.ModelRealisation(path) #load provided his file
+            self.base_model = ModelRealisation(path) #load provided his file
             
             #do monte carlo simulations
             if (n > 0):
@@ -205,7 +205,7 @@ class TopologyAnalysis:
             MonteCarlo.generate_models_from_existing_histories(self.base_path,sim_type='TOPOLOGY',force_recalculate=force,verbose=vb,threads=n_threads)
             
         #load models from base directory
-        self.models = TopologyAnalysis.ModelRealisation.loadModels(self.base_path, verbose=vb)
+        self.models = ModelRealisation.loadModels(self.base_path, verbose=vb)
         
         ###########################################
         #GENERATE TOPOLOGY LISTS
@@ -503,7 +503,7 @@ class TopologyAnalysis:
             f.close()
         
         #retrieve data from models
-        data_matrix =  TopologyAnalysis.ModelRealisation.get_parameter_space(self.models,params)
+        data_matrix =  ModelRealisation.get_parameter_space(self.models,params)
         
         #append topology id's collumn
         data_matrix["u_topo"] = self.unique_ids
@@ -584,11 +584,11 @@ class TopologyAnalysis:
         
         try:
             if topology_type == '':
-                return -1 + self.super_topology.number_of_edges() / self.get_average_edge_count('')
+                return -1 + (self.super_topology.number_of_edges() / self.get_average_edge_count(''))
             elif 'litho' in topology_type:
-                return -1 + self.super_litho_topology.number_of_edges() / self.get_average_edge_count('litho')
+                return -1 + (self.super_litho_topology.number_of_edges() / self.get_average_edge_count('litho'))
             elif 'struct' in topology_type:
-                return -1 + self.super_struct_topology.number_of_edges() / self.get_average_edge_count('struct')
+                return -1 + (self.super_struct_topology.number_of_edges() / self.get_average_edge_count('struct'))
             else:
                 print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
         except ZeroDivisionError: #average edge count = 0
@@ -1561,14 +1561,25 @@ class TopologyAnalysis:
                 m.get_geology().plot_section(savefig=True,fig_filename=path,**kwds)
             
       
-    def analyse(self, output_directory):
+    def analyse(self, output_directory, **kwds):
         '''
         Performs a stock-standard analyses on the generated model suite. Essentially this puts
         the results from summary() in a text file and calls do_figures().
         
         **Arguments**:
          - *output_directory* = the directory to save results to.
+         
+        **Optional Keywords**:
+         - *figs* - True if figures should be created (slow). Default is True.
+         - *data* - True if data should be saved (as csv). Default is true
+         - *pickle* - True if the analysis results should be pickled for later use. Default is True.
         '''
+        
+        #get kwds
+        figs = kwds.get('figs',True)
+        data = kwds.get('data',True)
+        pickle= kwds.get('pickle',True)
+        
         #check dir exists
         if not os.path.exists(output_directory):
             os.makedirs(output_directory)
@@ -1581,31 +1592,37 @@ class TopologyAnalysis:
         f.close()
         
         #do figures
-        self.do_figures(output_directory)
+        if figs:
+            self.do_figures(output_directory)
         
         #save parameter space
-        self.get_parameter_space().to_csv(os.path.join(output_directory,'parameter_space.csv'))
+        if data:
+            self.get_parameter_space().to_csv(os.path.join(output_directory,'parameter_space.csv'))
         
         #pickle this class for later
-        import cPickle as pickle
-        pickle.dump( self, open(os.path.join(output_directory,"analysis.pkl",), "wb" ))
+        if pickle:
+            import cPickle as pickle
+            pickle.dump( self, open(os.path.join(output_directory,"analysis.pkl",), "wb" ))
         
     def summary(self):
         out = "%d different topologies found (from %d trials)\n" % (len(self.unique_topologies),len(self.models))
         out += "%d unique lithological topologies found\n" % len(self.unique_litho_topologies)
         out += "%d unique structural topologies found\n" % len(self.unique_struct_topologies)
-        out += "model variability (overall) = %f\n" % self.get_variability('')
-        out += "model variability (lithological) = %f\n" % self.get_variability('litho')
-        out += "model variability (structural) = %f\n" % self.get_variability('struct')
+        out += "model variability (overall) = %.3f\n" % self.get_variability('')
+        out += "model variability (lithological) = %.3f\n" % self.get_variability('litho')
+        out += "model variability (structural) = %.3f\n" % self.get_variability('struct')
         out += "Model realisations had topologies of (on average):\n"
-        out += "\t%d nodes\n" % self.get_average_node_count('')
-        out += "\t%d edges\n" % self.get_average_edge_count('')
+        out += "\t%.3f nodes\n" % self.get_average_node_count('')
+        out += "\t%.3f edges\n" % self.get_average_edge_count('')
         out += "Model realisations had lithological topologies of (on average):\n"
-        out += "\t%d nodes\n" % self.get_average_node_count('litho')
-        out += "\t%d edges\n" % self.get_average_edge_count('litho')
+        out += "\t%.3f nodes\n" % self.get_average_node_count('litho')
+        out += "\t%.3f edges\n" % self.get_average_edge_count('litho')
         out += "Model realisations had structural topologies of (on average):\n"
-        out += "\t%d nodes\n" % self.get_average_node_count('struct')
-        out += "\t%d edges\n" % self.get_average_edge_count('struct')
+        out += "\t%.3f nodes\n" % self.get_average_node_count('struct')
+        out += "\t%.3f edges\n" % self.get_average_edge_count('struct')
+        out += "Overall super network had %d edges\n" % self.super_topology.number_of_edges()
+        out += "Litho super network had %d edge\n" % self.super_litho_topology.number_of_edges()
+        out += "Struct super network had %d edges\n" % self.super_struct_topology.number_of_edges()
         
         return out
     
@@ -1615,6 +1632,12 @@ class TopologyAnalysis:
         '''
         #parameter histogram
         self.histogram(path=os.path.join(directory,"model_space_frequencies.png"))
+        
+        #plot super-network adjacency matrices
+        from pynoddy.output import NoddyTopology
+        NoddyTopology.draw_graph_matrix(self.super_topology,path=os.path.join(directory,"adjacency_full_super.png"))
+        NoddyTopology.draw_graph_matrix(self.super_struct_topology,path=os.path.join(directory,"adjacency_struct_super.png"))
+        NoddyTopology.draw_graph_matrix(self.super_litho_topology,path=os.path.join(directory,"adjacency_litho_super.png"))
         
         #cumulative topologies
         self.plot_cumulative_topologies('',path=os.path.join(directory,"cumulative_observed.png"))
@@ -1674,6 +1697,7 @@ class TopologyAnalysis:
         self.render_unique_models(os.path.join(directory,"unique/all/z"),'', max_t=50, direction='z')
         self.render_unique_models(os.path.join(directory,"unique/struct/z"),'struct', max_t=50, direction='z')
         self.render_unique_models(os.path.join(directory,"unique/litho/z"),'litho', max_t=50, direction='z')
+    
     def is_strata_continuous(self,litho):
         '''
         Calculates the number of models in which all sections of a particular lithology are
@@ -1706,6 +1730,23 @@ class TopologyAnalysis:
          
         print "Not implemented yet. Sorry"
          
+    @staticmethod
+    def load_saved_analysis( path  ):
+        '''
+        Loads a pickled (.pkl) analysis class
+        
+        **Arguments**:
+         *path* = the path of the saved analysis
+         
+        **Returns**:
+         - the loaded TopologyAnalysis class. Note that paths to noddy realisations will be broken
+         if this file has been moved/noddy models have been deleted. The general network analysis
+         functions should work however.
+        '''
+        import pickle
+        
+        return pickle.load( open(path,'r') )
+        
 if __name__ == '__main__':     #some debug stuff
     import sys
     sys.path.append(r"C:\Users\Sam\OneDrive\Documents\Masters\pynoddy")
@@ -1714,16 +1755,16 @@ if __name__ == '__main__':     #some debug stuff
     
     #his="fold_fault.his"#"fold_fault.his"
     #his="GBasin123.his"
-    his = "fold_dyke.his"
+    his = "fold/fold_dyke/fold_dyke.his"
     
     #params="fold_fault_dswa.csv" #"fold_fault_dswa.csv" #"fold_unconf_dewa.csv"
     #params="GBasin123.csv"
-    params = "fold_dyke_dxwa.csv"
+    params = "fold/fold_dyke/fold_dyke_dxwa.csv"
     
-    a = TopologyAnalysis(his,params=params,n=4,verbose=False,threads=8,output='test')
+    a = TopologyAnalysis(his,params=params,output='fold/fold_dyke/fold_dyke_dxwa',n=0,verbose=False,threads=8)
     
     #print results
-    print a.summary()
+    #print a.summary()
     
     #a.analyse('output')
     

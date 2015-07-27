@@ -887,7 +887,7 @@ class NoddyTopology(object):
         
         #retrieve list of edges, ignoring lithology
         edges = []
-        for e in topo.graph.edges_iter():
+        for e in topo.graph.edges(data=True):
             code1 = e[0].split("_")[1] #topology code of node 1
             code2 = e[1].split("_")[1] #topology code of node 2
             
@@ -896,7 +896,7 @@ class NoddyTopology(object):
             code2 = code2[:-1] + 'A'
             
             #add edge tuple to edges array
-            edges.append( (code1,code2) ) 
+            edges.append( (code1,code2,e[2]) ) 
             
         #remake graph
         topo.graph.clear()
@@ -949,11 +949,11 @@ class NoddyTopology(object):
                     try:
                         try:
                             data[key] = str(int(data[key]) + int(e[2][key])) #increment numbers
-                        except ValueError:
+                        except (ValueError,TypeError):
                             try:
                                 data[key].append(e[2][key]) #try appending (for lists)
                             except AttributeError:
-                                data[key] = e[2][key] #replace
+                                data[key] = [ e[2][key] ] #make list
                     except KeyError: #key not found, add new key
                         data[key] = e[2][key]
             else:
@@ -1172,12 +1172,25 @@ class NoddyTopology(object):
         for e in self.graph.edges_iter(data=data):
             if not G2.has_edge(e[0],e[1]) and not e in edges: #this is a difference
                 difference+=1
+                
+                #store comparator ids
+                if not data:
+                    e += ({'comp_id' : 0},) #this is from the initial topology
+                else:
+                    e[2]['comp_id'] = 0
+                    
                 edges.append(e)
         
         #check for any edges that G2 has but this object does not
         for e in G2.edges_iter(data=data):
             if not self.graph.has_edge(e[0],e[1]) and not e in edges:
                 difference+=1
+                
+                if not data:
+                    e += ({'comp_id' : 1},) #this is from the initial topology
+                else:
+                    e[2]['comp_id'] = 1
+                    
                 edges.append(e)
                 
         return difference,edges
@@ -1233,10 +1246,239 @@ class NoddyTopology(object):
             f.write("Edge attributes: %s" % str(self.graph.edges(data=True)))
             
             f.close()
-            
-    def draw_matrix_image( self, outputname="" ):
+       
+    @staticmethod
+    def draw_graph_matrix(G,**kwds):
         '''
-        Draws an (adjacency) matrix representing this NoddyTopology object.
+        Draws an adjacency matrix representing the specified graph object. Equivalent to
+        NoddyTopology.draw_matrix_image() but for a networkX graph object.
+        
+        **Keywords**:
+         - *path* = The path to save this image to. If not provided, the image is drawn to the screen
+         - *dpi* = The resolution to save this image. Default is 300
+         - *size* = The size of the image to save (in inches). This value will be used as the width and the height
+         
+         
+        '''
+        
+        try:
+            import matplotlib.pyplot as plt
+            import matplotlib.patches as patches
+        except ImportError:
+            print "Could not draw image as matplotlib is not installed. Please install matplotlib."
+            return
+        
+        n = G.number_of_nodes()
+        
+        #retrieve data from network
+        ids = {}
+        nodes=G.nodes()
+        
+        #build node id dictionary
+        for i in range(len(nodes)):
+            node = nodes[i]
+            ids[node] = i
+             
+        #build matrix
+        mat = [['' for i in range(n)] for j in range(n)]
+        labels = {}
+        dots=np.zeros( (n,n) )
+        
+        for e in G.edges(data=True):
+                #store colours 
+                mat[ids[e[0]]][ids[e[1]]] = e[2]['colour']
+                mat[ids[e[1]]][ids[e[0]]] = e[2]['colour']
+                
+                #label info
+                if type(e[2]['colour']) is list: #add from list
+                    for i in range( len(e[2]['colour']) ):
+                        labels[e[2]['colour'][i]] = e[2]['edgeType'][i]
+                else: #add directly
+                    labels[e[2]['colour']] = e[2]['edgeType']
+                
+                #save dots (for comparison matrices)
+                dots[ids[e[0]]][ids[e[1]]] = e[2].get('comp_id',0) == 1 #default is no dot
+                dots[ids[e[1]]][ids[e[0]]] = e[2].get('comp_id',0) == 1
+                
+        f, ax = plt.subplots()
+        for x in range(len(mat)):
+            for y in range(len(mat[0])):
+                c = mat[x][y]
+                
+                if type(c) is list: #multiple relationships...
+                    #find unique relationships, in case they are repeated (though they should not be)
+                    unique = []
+                    for i in c:
+                        if not i in unique:
+                            unique.append(i)
+                    
+                    #draw unique
+                    if len(unique) == 1:
+                        if c != '':
+                            #draw patch
+                            patch = ax.add_patch( patches.Rectangle( 
+                                            (x,y),
+                                            1,1,color=c[0],alpha=0.4))
+                            patch.set_label( labels[c[0]] )
+                            labels[c[0]] = '_nolegend_' #so we don't show labels multiple times
+                    elif len(unique) == 2: #draw two triangles
+                        #upper triangle
+                        upper = ax.add_patch( patches.Polygon(
+                                                xy=[[x,y],[x+1,y],[x,y+1]],
+                                                color=c[0],alpha=0.4))
+                        upper.set_label( labels[c[0]] )   
+                        labels[c[0]] = '_nolegend_' #so we don't show labels multiple times
+                        
+                        #lower triangle
+                        lower = ax.add_patch( patches.Polygon(
+                                                xy=[[x+1,y+1],[x+1,y],[x,y+1]],
+                                                color=c[1],alpha=0.4))
+                        upper.set_label( labels[c[1]] )   
+                        labels[c[1]] = '_nolegend_' #so we don't show labels multiple times
+                        
+                    elif len(unique) == 3: #draw two triangles with circle
+                        #upper triangle
+                        upper = ax.add_patch( patches.Polygon(
+                                                xy=[[x,y],[x+1,y],[x,y+1]],
+                                                color=c[0],alpha=0.4))
+                        upper.set_label( labels[c[0]] )   
+                        labels[c[0]] = '_nolegend_' #so we don't show labels multiple times
+                        
+                        #lower triangle
+                        lower = ax.add_patch( patches.Polygon(
+                                                xy=[[x+1,y+1],[x+1,y],[x,y+1]],
+                                                color=c[1],alpha=0.4))
+                        lower.set_label( labels[c[1]] )   
+                        labels[c[1]] = '_nolegend_' #so we don't show labels multiple times
+                        
+                        #circle
+                        circle = ax.add_patch( patches.Circle(
+                                                (x+0.5,y+0.5), 0.25,
+                                                color=c[2],alpha=1))
+                        circle.set_label( labels[c[2]] )  
+                        labels[c[2]] = '_nolegend_' #so we don't show labels multiple times
+                        
+                    elif len(unique) == 4: #draw 4 boxes
+                        #upper left
+                        patch = ax.add_patch( patches.Rectangle( 
+                                        (x,y),
+                                        .5,.5,color=c[0],alpha=0.4))
+                        patch.set_label( labels[c[0]] )
+                        labels[c[0]] = '_nolegend_' #so we don't show labels multiple times
+                        
+                        #upper right
+                        patch = ax.add_patch( patches.Rectangle( 
+                                        (x+.5,y),
+                                        .5,.5,color=c[1],alpha=0.4))
+                        patch.set_label( labels[c[1]] )
+                        labels[c[1]] = '_nolegend_' #so we don't show labels multiple times
+                        #lower left
+                        patch = ax.add_patch( patches.Rectangle( 
+                                        (x,y+.5),
+                                        .5,.5,color=c[2],alpha=0.4))
+                        patch.set_label( labels[c[2]] )
+                        labels[c[2]] = '_nolegend_' #so we don't show labels multiple times
+                        
+                        #lower right
+                        patch = ax.add_patch( patches.Rectangle( 
+                                        (x+.5,y+.5),
+                                        .5,.5,color=c[3],alpha=0.4))
+                        patch.set_label( labels[c[3]] )
+                        labels[c[3]] = '_nolegend_' #so we don't show labels multiple times
+                                        
+                        
+                    else: #uh oh - though tbh this *should* never happen.... (though Murphy would disagree)
+                        print "Error: more than 4 relationship types! This cannot be drawn on adjacency matrix"
+                        print c                        
+                        break
+                else: #only one relationship, rectangular patch
+                    if c != '':
+                        #draw patch
+                        patch = ax.add_patch( patches.Rectangle( 
+                                        (x,y),
+                                        1,1,color=c,alpha=0.4))
+                        patch.set_label( labels[c] )
+                        labels[c] = '_nolegend_' #so we don't show labels multiple times
+                        
+                #draw dots
+                if dots[x][y] == 1: #draw dot
+                    ax.scatter(x+0.5,y+0.5,c='k',alpha=0.6)
+                    print "dot %d, %d" % (x,y)
+                    
+        #plot grid
+        #ax.grid()
+            
+        #plot legend
+        ax.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+
+        #set limits & flip y
+        ax.set_ylim(0,n)
+        ax.set_xlim(0,n)
+        ax.invert_yaxis()
+        
+        #set ticks
+        ax.set_xticks([ x + .5 for x in range(n)])
+        ax.set_yticks([ y + .5 for y in range(n)])
+        
+        ax.xaxis.set_ticklabels(G.nodes(),rotation=90)
+        ax.yaxis.set_ticklabels(G.nodes())
+        
+        #set figure size
+        size = kwds.get('size',5.)
+        f.set_figwidth(size)
+        
+        #save/show
+        if kwds.has_key('path'):
+            f.savefig(kwds['path'],dpi=kwds.get('dpi',300))
+        else:
+            f.show()
+        
+    
+    def draw_adjacency_matrix(self, **kwds):
+        '''
+        Draws an adjacency matrix representing this topology object.
+        
+        **Keywords**:
+         - *path* = The path to save this image to. If not provided, the image is drawn to the screen
+         - *dpi* = The resolution to save this image. Default is 300
+         - *size* = The size of the image to save (in inches). This value will be used as the width and the height
+         
+        '''
+        
+        NoddyTopology.draw_graph_matrix(self.graph,kwds=kwds)
+        
+    def draw_difference_matrix(self, G2, **kwds):
+        '''
+        Draws an adjacency matrix containing the difference between this topology and the provided topology
+        
+        **Arguments**:
+         - *G2* = A different NoddyTopology or NetworkX Graph to compare to
+        
+        **Optional Keywords**:
+         - *path* = The path to save this image to. If not provided, the image is drawn to the screen
+         - *dpi* = The resolution to save this image. Default is 300
+         - *size* = The size of the image to save (in inches). This value will be used as the width and the height
+        '''
+        
+        #ensure G2 is a graph object
+        #if (isinstance(G2,NoddyTopology)):
+        #    G2 = G2.graph #we want the graph bit
+            
+        #get difference
+        n, edge_list = self.calculate_difference(G2,data=True)
+        
+        #make graph of difference
+        import networkx as nx
+        D = nx.Graph()
+        D.add_edges_from(edge_list)
+        
+        #plot
+        NoddyTopology.draw_graph_matrix(D,kwds=kwds)
+        
+    def _dep_draw_matrix_image( self, outputname="" ):
+        '''
+        Draws an (adjacency) matrix representing this NoddyTopology object. Depreciated version (just
+        loads the .g25 fil that topology opens).
         
         **Arguments**
          - *outputname* = the path of the image to be written. If left as '' the image is written to the same directory as the basename.
@@ -1270,6 +1512,8 @@ class NoddyTopology(object):
         plt.imshow(rows, interpolation="nearest", vmin=1, cmap=cmap)
         plt.savefig(outputname)
         plt.clf()
+        
+        
     def draw_network_image(self, outputname="", **kwds ):
         '''
         Draws a network diagram of this NoddyTopology to the specified image
@@ -1475,20 +1719,27 @@ if __name__ == '__main__':
 #     os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
 #     NO = NoddyOutput("strike_slip_out")
     os.chdir(r'C:\Users\Sam\Documents\Temporary Model Files')
-    NO = "GBasin123"
+    NO = "NFault/NFault"
     
     #create NoddyTopology
     geo = NoddyOutput(NO)
     topo = NoddyTopology(NO,load_attributes=True)
     
-    topo_c = topo.collapse_topology()
-    print len( topo_c.graph.edges() )
-    print len( topo.graph.edges() )
+    #topo_c = topo.collapse_topology()
+    #print len( topo_c.graph.edges() )
+    #print len( topo.graph.edges() )
     
     #draw network
     #topo.draw_network_image(dimension='3D',perspective=False,axis='x')
     
-    topo.draw_3d_network(geology=geo)
+   # topo.draw_3d_network(geology=geo)
+    topo.draw_adjacency_matrix()
+    
+    #struct = topo.collapse_stratigraphy()
+    #struct.draw_matrix_image()
+    
+    #litho = topo.collapse_topology()
+    #litho.draw_matrix_image()
     
     #draw matrix
     #topo.draw_matrix_image()
