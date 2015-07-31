@@ -14,7 +14,7 @@ import numpy as np
 from pynoddy.history import NoddyHistory
 from pynoddy.output import NoddyOutput
 
-import sampling as Sample
+import util.sampling as Sample
 
 class Experiment(NoddyHistory,NoddyOutput):
     '''Noddy experiment container, inheriting from both noddy history and output methods
