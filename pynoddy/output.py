@@ -376,7 +376,7 @@ class NoddyOutput(object):
                         z[code].append(-1000)
                         
                         if (hasattr(self,'rock_colors')):
-                            c[code] = self.rock_colors[ int(self.block[i][j][0]) ]
+                            c[code] = self.rock_colors[ int(self.block[i][j][0]) - 1]
                         else:
                             c[code] = int(self.block[i][j][0])
                     
@@ -396,7 +396,7 @@ class NoddyOutput(object):
                         y[code].append(-1000)
                         z[code].append(j * cube_size)
                         if (hasattr(self,'rock_colors')):
-                            c[code] = self.rock_colors[ int(self.block[i][0][j]) ]
+                            c[code] = self.rock_colors[ int(self.block[i][0][j]) - 1]
                         else:
                             c[code] = int(self.block[i][j][0])
                     
@@ -416,7 +416,7 @@ class NoddyOutput(object):
                         y[code].append(i * cube_size)
                         z[code].append(j * cube_size)
                         if (hasattr(self,'rock_colors')):
-                            c[code] = self.rock_colors[ int(self.block[0][i][j]) ]
+                            c[code] = self.rock_colors[ int(self.block[0][i][j]) - 1]
                         else:
                             c[code] = int(self.block[i][j][0])
                     
@@ -742,12 +742,17 @@ class NoddyTopology(object):
                 #calculate edge type (dyke, fault etc)
                 eCode=0
                 eType = 'stratigraphic' #default is stratigraphy
-                eColour='k' #black
+                eColour='grey' #black
                 #calculate new topology codes
                 name = self.event_names[0] #default name is first name in sequence
                 
                 for i in range(0,len(topoCode1) - 1): #-1 removes the trailing character
+                    eAge = 0 #for original stratigraphy
                     if (topoCode1[i] != topoCode2[i]): #find the difference
+                        #this is the 'age' of this edge
+                        eAge = i
+                        
+                        #calculate what the differenec means (ie. edge type)
                         if int(topoCode2[i]) > int(topoCode1[i]):
                             eCode=topoCode2[i]
                         else:
@@ -756,19 +761,19 @@ class NoddyTopology(object):
                         name = self.event_names[i] #calculate event name
                         
                         if int(eCode) == 0: #stratigraphic contact
-                            eColour = 'k' #black
+                            eColour = 'grey'
                             eType = 'stratigraphic'
                         elif int(eCode) == 2 or int(eCode) == 7 or int(eCode) == 8: #various types of faults
                             eColour = 'r' #red
                             eType = 'fault'
                         elif int(eCode) == 3: #unconformity
-                            eColour = 'b' #blue
+                            eColour = 'g' #green
                             eType = 'unconformity'
                         elif int(eCode) == 5: #plug/dyke
-                            eColour = 'y' #yellow
+                            eColour = 'orange' #orange
                             eType = 'intrusive'
                         else:
-                            eColour = 'g' #green
+                            eColour = 'y' #yellow
                             eType = 'unknown' 
                 
                 #create nodes & associated properties
@@ -785,7 +790,7 @@ class NoddyTopology(object):
                     self.graph.node[data[1]]['volume'] = self.node_properties[ "%d_%s" % (int(lithoCode2),topoCode2) ]['volume']
                
                 #add edge
-                self.graph.add_edge(data[0],data[1],name=name,edgeCode=eCode,edgeType=eType, colour=eColour, area=count, weight=1)
+                self.graph.add_edge(data[0],data[1],name=name,edgeCode=eCode,edgeType=eType, colour=eColour, area=count, weight=1, age=eAge)
                 
     def read_properties( self ):
         
@@ -1055,8 +1060,28 @@ class NoddyTopology(object):
                      S.edge[e[0]][e[1]]['weight'] = S.edge[e[0]][e[1]]['weight'] + 1 #increment weight
                  else: #otherwise add edge
                      try:
-                         S.add_edge(e[0],e[1],edgeCode=e[2]['edgeCode'],edgeType=e[2]['edgeType'], colour=e[2]['colour'], weight=1)
+                         if not S.has_node(e[0]):
+                             #add nodes & node attributes
+                             S.add_node(e[0],G.node[e[0]])
+                         else: #average numeric attributes
+                             c1 = G.node[e[0]]['centroid']
+                             c2 = S.node[e[0]]['centroid']
+                             S.node[e[0]]['centroid'] = (np.mean([c1[0],c2[0]]),np.mean([c1[1],c2[1]]),np.mean([c1[2],c2[2]]),)
+                             S.node[e[0]]['volume'] = np.mean( [G.node[e[0]]['volume'],S.node[e[0]]['volume']] )
+                             
+                         if not S.has_node(e[1]):
+                             S.add_node(e[1],G.node[e[1]])
+                         else: #average numeric attributes
+                             c1 = G.node[e[1]]['centroid']
+                             c2 = S.node[e[1]]['centroid']
+                             S.node[e[1]]['centroid'] = (np.mean([c1[0],c2[0]]),np.mean([c1[1],c2[1]]),np.mean([c1[2],c2[2]]),)
+                             S.node[e[1]]['volume'] = np.mean( [G.node[e[1]]['volume'],S.node[e[1]]['volume']] )
+                             
+                         #add edge
+                         e[2]['weight'] = 1
+                         S.add_edge(e[0],e[1],e[2])
                      except KeyError:
+                         print "Warning: attribute data could not be found for edge %s,%s." % (e[0],e[1])
                          S.add_edge(e[0],e[1], weight=1)
         #return the graph
         return S
@@ -1596,11 +1621,11 @@ class NoddyTopology(object):
             size = size_dict.values()
             
         else: #2D layout
-            if 'shell_layout' in layout: #layouts: spring_layout, shell_layout, circular_layout, spectral_layout
+            if 'shell' in layout: #layouts: spring_layout, shell_layout, circular_layout, spectral_layout
                 pos = nx.shell_layout(self.graph)
-            if 'circular_layout' in layout:
+            if 'circular' in layout:
                 pos = nx.circular_layout(self.graph)
-            if 'circular_layout' in layout:
+            if 'spectral' in layout:
                 pos = nx.spectral_layout(self.graph)
             else:
                 pos = nx.spring_layout(self.graph)
@@ -1618,6 +1643,78 @@ class NoddyTopology(object):
         plt.savefig(outputname)
         plt.clf()
     
+    def draw_network_hive( self, **kwds ):
+        '''
+        Draws a network hive plot (see https://github.com/ericmjl/hiveplot).
+        The axes of the hive are: node lithology, edge age & edge area.
+        
+        ie. the top axis lists the nodes in stratigraphic order. The second axis
+        lists edges in structural age & thrid axis lists edges by surface area.
+        
+        Nodes are joined to edge-nodes by lines on the graph if they are topologically linked
+        (ie. if an edge has that node as an end point).
+        
+         **Optional Keywords**
+         - *path* = the path to save this figure
+         - *dpi* = the resolution of the figure
+         - *bg* = the background color. Default is black.
+        '''
+        
+        #make axes
+        axes = [[],[],[]]
+        axes[0] = [(n,int(d['lithology'])) for n, d in self.graph.nodes(data=True)] #nodes
+        axes[1] = [(u,v,d['age']) for u,v,d in self.graph.edges(data=True)] #edges treated as nodes on these axes
+        axes[2] = [(u,v,d['area']) for u,v,d in self.graph.edges(data=True)]
+        
+        #calculate node positions
+        node_positions = [{},{},{}]
+        for ax in range(3): #axes
+            for n in axes[ax]: #nodes
+                node_id = n[:-1]
+                if len(node_id) == 1:
+                    node_id = n[0] #change form tuple to value
+                
+                node_positions[ax][node_id] = n[-1] #use node parameter
+          
+        #drop attributes from node ids
+        axes[0] = [ n for n, d in axes[0]]
+        axes[1] = [ (u,v) for u, v, d in axes[1]] #string contains edge type
+        axes[2] = [ (u,v) for u,v,d in axes[2]]
+          
+        #calculate edges
+        edges = {}
+        edge_vals = {}
+        for u,v,d in self.graph.edges(data=True):
+            if not edges.has_key(d['edgeType']):
+                edges[d['edgeType']] = [] #init list
+                edge_vals[d['edgeType']] = {}#'cm' : 'alpha', 'color' : d['colour']}
+                
+            e1 = (u,v) #inter group edge
+            e2 = (u,(u,v)) #between group edges
+            e3 = (v,(u,v))
+            e4 = ((u,v),(u,v))
+            
+            edges[d['edgeType']].append(e1)
+            edges[d['edgeType']].append(e2)
+            edges[d['edgeType']].append(e3)
+            edges[d['edgeType']].append(e4)
+            
+            edge_vals[d['edgeType']][e1] = d['colour'] #set edge color
+            edge_vals[d['edgeType']][e2] = d['colour'] #set edge color
+            edge_vals[d['edgeType']][e3] = d['colour'] #set edge color
+            edge_vals[d['edgeType']][e4] = d['colour'] #set edge color
+        
+        #make plot
+        from pynoddy.experiment.util.hive_plot import HivePlot
+        h = HivePlot(axes,edges,node_positions=node_positions, node_size=0.2,
+                     edge_colormap=edge_vals,lbl_axes=['Stratigraphic Age',
+                                                       'Structural Age',
+                                                       'Surface Area'],
+                                                axis_cols=['white','white','white'])
+
+        h.draw(**kwds)
+               
+        
     def draw_3d_network( self, **kwds ):
         '''
         Draws a 3D network using matplotlib.
@@ -1655,7 +1752,7 @@ class NoddyTopology(object):
             if kwds.get('sections',True): #plot sections
                 
                 #get sections
-                sections = [base.get_section_lines('x',0),base.get_section_lines('y',0)]                        
+                sections = [base.get_section_lines('x',1),base.get_section_lines('y',1)]                        
                 
                 #plot sections
                 for s in sections:
@@ -1708,10 +1805,11 @@ class NoddyTopology(object):
             #draw line
             ax.plot(x,y,z,zdir='z',c=c)
            
-        if kwds.get('show',True):
-            fig.show()
         if kwds.has_key('output'):
             fig.savefig(kwds.get('output'))
+        if kwds.get('show',True):
+            fig.show()
+        
             
  
 if __name__ == '__main__':
@@ -1732,8 +1830,9 @@ if __name__ == '__main__':
     #draw network
     #topo.draw_network_image(dimension='3D',perspective=False,axis='x')
     
-   # topo.draw_3d_network(geology=geo)
-    topo.draw_adjacency_matrix()
+   # topo.draw_3d_network(geology=geo,output='test.pdf',show=False)
+   # topo.draw_adjacency_matrix()
+    topo.draw_network_hive()
     
     #struct = topo.collapse_stratigraphy()
     #struct.draw_matrix_image()

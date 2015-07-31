@@ -189,7 +189,6 @@ class ResolutionTest(Experiment):
          
         '''
         import matplotlib.pyplot as plt
-        
         width = kwds.get('width',5.)
         height = kwds.get('height',4.)
          
@@ -219,7 +218,7 @@ if __name__ == '__main__':
     
     #build resolution test
     #res = ResolutionTest('folducdykefault_stretched.his',50,550)
-    res = ResolutionTest('foldUC.his',50,550)
+    res = ResolutionTest('folducdykefault_stretched.his',50,550)
     #res = ResolutionTest('foldUC.his',200,250)
     #run
     res.test_resolution(100,cleanup=True)

@@ -678,13 +678,16 @@ class TopologyAnalysis:
         if topology_type == '':
             title = 'Hierarchical Classification of Overall Topology'
             n = len(self.unique_topologies)
+            freq = self.unique_frequency
         elif 'litho' in topology_type:
             title = 'Hierarchical Classification of Lithological Topology'
             n = len(self.unique_litho_topologies)
+            freq = self.unique_litho_frequency
         elif 'struct' in topology_type:
             title = 'Hierarchical Classification of Structural Topology'
             n = len(self.unique_struct_topologies)
-        
+            freq = self.unique_struct_frequency
+            
         #generate dendrogram using UPGMA
         Z = clust.average(m_dif)
         
@@ -692,8 +695,17 @@ class TopologyAnalysis:
         import matplotlib.pyplot as plt
         f, ax = plt.subplots()
         
+        #calculate leaf colours (using frequency)
+        import matplotlib.cm as cm
+                
         if n < 1000:
             clust.dendrogram(Z,ax=ax)
+            
+            #set colours
+            #max_f = max(freq) #for normalization
+            for lbl in ax.get_xmajorticklabels():
+                c = cm.gray( int(lbl.get_text()) / (1.25*float(n ))) #node label = unique topology id
+                lbl.set_color(c)
         else: #truncate dendrogram
             clust.dendrogram(Z,ax=ax,p=15,truncate_mode='level',show_leaf_counts=True)
         #rotate labels
@@ -1136,6 +1148,18 @@ class TopologyAnalysis:
             f.savefig( kwds.get('path'), dpi=dpi)
         else:
             f.show()
+   
+    def maximum_separation_plot(self,topology_type='strut',params=None,**kwds):
+        '''
+        Plots the topologies such that there is maximum separation between clusters of the 
+        same type of topology. This method attempts to best represent n-dimensional clustering
+        in 2D, and is usefull for models were there are too many parameters to build a scatter
+        matrix.
+        
+        
+        '''
+        print "Not implemented yet. Sorry"
+        
     def plot_scatter_matrix(self,param_pairs=None,topology_type='struct',params=None, **kwds):
         '''
         Plots a matrix of scatter plots showing the distribution of the specified topologies in 
@@ -1560,7 +1584,71 @@ class TopologyAnalysis:
             if not m is None:
                 m.get_geology().plot_section(savefig=True,fig_filename=path,**kwds)
             
-      
+    def plot_super_network(self,**kwds):
+        '''
+        Makes a hive-plot of the topology supernetwork.
+        
+        **Optional Keywords**
+         - *path* = the path to save this figure
+         - *dpi* = the resolution of the figure
+         - *bg* = the background color. Default is black.
+        '''
+
+        #make axes
+        axes = [[],[],[]]
+        axes[0] = [(n,int(d['lithology'])) for n, d in self.super_topology.nodes(data=True)] #nodes
+        axes[1] = [(u,v,d['age']) for u,v,d in self.super_topology.edges(data=True)] #edges treated as nodes on these axes
+        axes[2] = [(u,v,d['area']) for u,v,d in self.super_topology.edges(data=True)]
+        
+        #calculate node positions
+        node_positions = [{},{},{}]
+        for ax in range(3): #axes
+            for n in axes[ax]: #nodes
+                node_id = n[:-1]
+                if len(node_id) == 1:
+                    node_id = n[0] #change from tuple to value
+                
+                node_positions[ax][node_id] = n[-1] #use node parameter
+          
+        #drop attributes from node ids
+        axes[0] = [ n for n, d in axes[0]]
+        axes[1] = [ (u,v) for u, v, d in axes[1]] #string contains edge type
+        axes[2] = [ (u,v) for u,v,d in axes[2]]
+          
+        #calculate edges
+        edges = {}
+        edge_vals = {}
+       
+        for u,v,d in self.super_topology.edges(data=True):
+            if not edges.has_key(d['edgeType']):
+                edges[d['edgeType']] = [] #init list
+                edge_vals[d['edgeType']] = {'cm' : 'alpha', 'color' : d['colour']}
+                
+            e1 = (u,v) #inter group edge
+            e2 = (u,(u,v)) #between group edges
+            e3 = (v,(u,v))
+            e4 = ((u,v),(u,v))
+            
+            edges[d['edgeType']].append(e1)
+            edges[d['edgeType']].append(e2)
+            edges[d['edgeType']].append(e3)
+            edges[d['edgeType']].append(e4)
+            
+            #set edge weight
+            edge_vals[d['edgeType']][e1] = d['weight'] 
+            edge_vals[d['edgeType']][e2] = d['weight'] 
+            edge_vals[d['edgeType']][e3] = d['weight'] 
+            edge_vals[d['edgeType']][e4] = d['weight'] 
+        
+        #make plot
+        from pynoddy.experiment.util.hive_plot import HivePlot
+        h = HivePlot(axes,edges,node_positions=node_positions, node_size=0.1,
+                     edge_colormap=edge_vals,lbl_axes=['Stratigraphic Age',
+                                                       'Structural Age',
+                                                       'Surface Area'],
+                                                       axis_cols=['white','white','white'])
+        h.draw(**kwds)
+        
     def analyse(self, output_directory, **kwds):
         '''
         Performs a stock-standard analyses on the generated model suite. Essentially this puts
@@ -1755,14 +1843,16 @@ if __name__ == '__main__':     #some debug stuff
     
     #his="fold_fault.his"#"fold_fault.his"
     #his="GBasin123.his"
-    his = "fold/fold_dyke/fold_dyke.his"
+    his = "fold/fold_fault/fold_fault.his"
     
     #params="fold_fault_dswa.csv" #"fold_fault_dswa.csv" #"fold_unconf_dewa.csv"
     #params="GBasin123.csv"
-    params = "fold/fold_dyke/fold_dyke_dxwa.csv"
+    params = "fold/fold_fault/fold_fault_dswa.csv"
     
-    a = TopologyAnalysis(his,params=params,output='fold/fold_dyke/fold_dyke_dxwa',n=0,verbose=False,threads=8)
+    a = TopologyAnalysis(his,params=params,output='fold/fold_fault/fold_fault_dswa',n=0,verbose=False,threads=8)
     
+    a.plot_super_network()
+
     #print results
     #print a.summary()
     
