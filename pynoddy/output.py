@@ -741,18 +741,19 @@ class NoddyTopology(object):
                 
                 #calculate edge type (dyke, fault etc)
                 eCode=0
+                eAge = 0 #for original stratigraphy
                 eType = 'stratigraphic' #default is stratigraphy
                 eColour='grey' #black
                 #calculate new topology codes
                 name = self.event_names[0] #default name is first name in sequence
                 
+                
                 for i in range(0,len(topoCode1) - 1): #-1 removes the trailing character
-                    eAge = 0 #for original stratigraphy
                     if (topoCode1[i] != topoCode2[i]): #find the difference
                         #this is the 'age' of this edge
                         eAge = i
                         
-                        #calculate what the differenec means (ie. edge type)
+                        #calculate what the difference means (ie. edge type)
                         if int(topoCode2[i]) > int(topoCode1[i]):
                             eCode=topoCode2[i]
                         else:
@@ -899,6 +900,9 @@ class NoddyTopology(object):
             #change code1 & code2 endings 2 a (discrete volumes don't mean anything anymore)
             code1 = code1[:-1] + 'A' #retain last letter for compatability/concistency...
             code2 = code2[:-1] + 'A'
+            
+            #todo: merge edge attributes
+            
             
             #add edge tuple to edges array
             edges.append( (code1,code2,e[2]) ) 
@@ -1057,32 +1061,42 @@ class NoddyTopology(object):
             #loop through edges
             for e in G.edges(data=True):
                  if (S.has_edge(e[0],e[1])): #edge already exists
-                     S.edge[e[0]][e[1]]['weight'] = S.edge[e[0]][e[1]]['weight'] + 1 #increment weight
+                     
+                     #average edge attributes
+                     s_e = S.edge[e[0]][e[1]]
+                     s_e['weight'] = s_e['weight'] + 1 #increment weight
+                     s_e['area'] = np.mean( [float(e[2]['area']), float(s_e['area'])] ) #average area
+                     
+                     #thought: we could also append area's instead, recording the range
+                     #of area variability on this edge!
+                     
                  else: #otherwise add edge
                      try:
-                         if not S.has_node(e[0]):
-                             #add nodes & node attributes
+                         if not S.has_node(e[0]): #add node
                              S.add_node(e[0],G.node[e[0]])
-                         else: #average numeric attributes
+                         else: #average attributes
                              c1 = G.node[e[0]]['centroid']
                              c2 = S.node[e[0]]['centroid']
                              S.node[e[0]]['centroid'] = (np.mean([c1[0],c2[0]]),np.mean([c1[1],c2[1]]),np.mean([c1[2],c2[2]]),)
-                             S.node[e[0]]['volume'] = np.mean( [G.node[e[0]]['volume'],S.node[e[0]]['volume']] )
+                         
+                             S.node[e[0]]['volume'] = np.mean( [float(G.node[e[0]]['volume']),float(S.node[e[0]]['volume'])] )
                              
-                         if not S.has_node(e[1]):
+                         
+                         if not S.has_node(e[1]): #add node
                              S.add_node(e[1],G.node[e[1]])
-                         else: #average numeric attributes
+                         else: #average attributes
                              c1 = G.node[e[1]]['centroid']
                              c2 = S.node[e[1]]['centroid']
                              S.node[e[1]]['centroid'] = (np.mean([c1[0],c2[0]]),np.mean([c1[1],c2[1]]),np.mean([c1[2],c2[2]]),)
-                             S.node[e[1]]['volume'] = np.mean( [G.node[e[1]]['volume'],S.node[e[1]]['volume']] )
-                             
-                         #add edge
-                         e[2]['weight'] = 1
-                         S.add_edge(e[0],e[1],e[2])
-                     except KeyError:
-                         print "Warning: attribute data could not be found for edge %s,%s." % (e[0],e[1])
-                         S.add_edge(e[0],e[1], weight=1)
+                             S.node[e[1]]['volume'] = np.mean( [float(G.node[e[1]]['volume']),float(S.node[e[1]]['volume'])] )
+                         
+                     except KeyError: #some nodes don't have a centroid (litho topology)
+                         print "Warning: some attribute data could not be found for nodes %s or %s." % (e[0],e[1])
+                       
+                     #add edge
+                     e[2]['weight'] = 1
+                     S.add_edge(e[0],e[1],e[2])
+                     
         #return the graph
         return S
     
@@ -1817,7 +1831,8 @@ if __name__ == '__main__':
 #     os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
 #     NO = NoddyOutput("strike_slip_out")
     os.chdir(r'C:\Users\Sam\Documents\Temporary Model Files')
-    NO = "NFault/NFault"
+    #NO = "NFault/NFault"
+    NO = 'Fold/Fold_Fault/fold_fault'
     
     #create NoddyTopology
     geo = NoddyOutput(NO)
@@ -1830,9 +1845,9 @@ if __name__ == '__main__':
     #draw network
     #topo.draw_network_image(dimension='3D',perspective=False,axis='x')
     
-   # topo.draw_3d_network(geology=geo,output='test.pdf',show=False)
+    topo.draw_3d_network(geology=geo,show=True,horizons=[4])
    # topo.draw_adjacency_matrix()
-    topo.draw_network_hive()
+   # topo.draw_network_hive()
     
     #struct = topo.collapse_stratigraphy()
     #struct.draw_matrix_image()

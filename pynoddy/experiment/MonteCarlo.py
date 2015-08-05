@@ -430,28 +430,29 @@ if __name__ == '__main__':
     ###################################################
     
     #setup working directory
-    # os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Primitive\monte carlo test')
-    os.chdir("/Users/flow/git/pynoddy/sandbox")
-#     his_file = "foldUC.his"
-    his_file = "simple_two_faults_no_gps.his"
-#     params_file = "foldUC_params.csv"
-    params_file = "params.csv"
+    os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Primitive\monte carlo test')
+    #os.chdir("/Users/flow/git/pynoddy/sandbox")
+    his_file = "foldUC.his"
+#   his_file = "simple_two_faults_no_gps.his"
+    params_file = "foldUC_params.csv"
+#   params_file = "params.csv"
     
     #create new MonteCarlo experiment
     mc = MonteCarlo(his_file,params_file)
+    mc.freeze()
     
     #generate 100 random perturbations using 4 separate threads (in TOPOLOGY mode)
     output_name = "mc_out"
     n = 10
-    mc.generate_model_instances(output_name,n,sim_type="TOPOLOGY",threads=4)
+    print(mc.generate_model_instances(output_name,n,threads=4))
     
     #load output
-    topologies = MonteCarlo.load_topology_realisations(output_name, verbose=True)
+    #topologies = MonteCarlo.load_topology_realisations(output_name, verbose=True)
     
     #calculate unique topologies
-    from pynoddy.output import NoddyTopology
-    uTopo = NoddyTopology.calculate_unique_topologies(topologies,output="accumulate.csv")
-    print "%d unique topologies found in %d simulations" % (len(uTopo),len(topologies))
+    #from pynoddy.output import NoddyTopology
+    #uTopo = NoddyTopology.calculate_unique_topologies(topologies,output="accumulate.csv")
+    #print "%d unique topologies found in %d simulations" % (len(uTopo),len(topologies))
     
     #cleanup
     #mc.cleanup()
