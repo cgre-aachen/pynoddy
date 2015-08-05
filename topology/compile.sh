@@ -1,1 +1,1 @@
-cc -O3 -o topology topology.c
+gcc -O3 -o topology topology.c

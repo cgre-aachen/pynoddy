@@ -10,11 +10,10 @@ Thought: perhaps drawing functions etc. should be moved into NoddyOutput class?
 import os
 import numpy as np
 
-
 from pynoddy.history import NoddyHistory
 from pynoddy.output import NoddyOutput
 
-import util.sampling as Sample
+# import util.sampling as Sample
 
 class Experiment(NoddyHistory,NoddyOutput):
     '''Noddy experiment container, inheriting from both noddy history and output methods
@@ -150,6 +149,9 @@ class Experiment(NoddyHistory,NoddyOutput):
         
         This method is based on the model "base-state", and not the current state (as opposed to
         the self.random_perturbation() method).
+        
+        **Optional Keywords**:
+            - *verbose* = bool: print out parameter changes as they happen (default: False)        
         """
         self.reset_base()
         self.random_perturbation()
@@ -160,10 +162,12 @@ class Experiment(NoddyHistory,NoddyOutput):
         
         **Optional arguments**:
             - *store_params* = bool : store random parameter set (default: True)
-            - *verbose* = bool: print out parameter changes as they happen (default: True)
+            - *verbose* = bool: print out parameter changes as they happen (default: False)
+            - *model_type* = 'base', 'current' : perturb on basis of current model, 
+                            or use base model (default: 'base' model)
         """
         store_params = kwds.get("store_params", True)
-        verbose = kwds.get("verbose",True)
+        verbose = kwds.get("verbose", False)
         
         # create a dictionary for event parameter changes:
         param_changes = {} #relative parameter changes
@@ -177,7 +181,12 @@ class Experiment(NoddyHistory,NoddyOutput):
                 absolute_changes[param['event']] = {}
 
             # get original value: NB - this is the current model state, not the initial model state - beware of random walk!
-            ori_val = self.events[param['event']].properties[param['parameter']]
+            # reset to base model?
+            model_type = kwds.get('model_type', 'base')
+            if model_type == 'base':
+                ori_val = self.base_events[param['event']].properties[param['parameter']]
+            else:
+                ori_val = self.events[param['event']].properties[param['parameter']]
             
             #sample value from appropriate distribution
             random_val = 0
@@ -447,16 +456,16 @@ class Experiment(NoddyHistory,NoddyOutput):
             f.write("ChangeNumber")
             change_list = []
             for e, c in self.random_parameter_changes[0].iteritems(): #NB: This only works if the same parameters have been changed at each step!
-                     for p, v in c.iteritems():
-                         f.write(",Event_%s_%s" % (e,p)) #write parameter: eg. Event_1_Amplitude
+                for p, v in c.iteritems():
+                    f.write(",Event_%s_%s" % (e,p)) #write parameter: eg. Event_1_Amplitude
             
             #retrieve values
             i = 0
             for change in self.random_parameter_changes:
                 change_list.append([]) #list of changes
                 for e, c in change.iteritems():
-                     for p, v in c.iteritems():
-                         change_list[i].append(v) #store value
+                    for p, v in c.iteritems():
+                        change_list[i].append(v) #store value
                 i = i + 1
                 
             #write values

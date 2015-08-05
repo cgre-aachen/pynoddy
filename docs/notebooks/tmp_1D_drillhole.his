@@ -1,5 +1,5 @@
 #Filename = tmp_1D_drillhole.his 
-#Date Saved = 10/4/2015 11:9:16
+#Date Saved = 4/8/2015 15:17:18
 FileType = 111
 Version = 7.11
 
@@ -168,9 +168,9 @@ Event #2	= FAULT
 	Y = 3500.000000
 	Z = 5000.000000
 	Dip Direction = 90.000000
-	Dip = 44.326842
+	Dip = 60.000000
 	Pitch = 90.000000
-	Slip = 993.771716
+	Slip = 1000.000000
 	Rotation = 30.000000
 	Amplitude = 2000.000000
 	Radius = 1000.000000
@@ -468,9 +468,9 @@ Event #3	= FAULT
 	Y = 3500.000000
 	Z = 5000.000000
 	Dip Direction = 270.000000
-	Dip = 54.534336
+	Dip = 60.000000
 	Pitch = 90.000000
-	Slip = 1184.862853
+	Slip = 1000.000000
 	Rotation = 30.000000
 	Amplitude = 2000.000000
 	Radius = 1000.000000
@@ -766,13 +766,13 @@ Event #3	= FAULT
 	Number of Views	= 1
 	Current View	= 0
 	NAME	= Default
-    Origin X    =   5000.00
+    Origin X    =   2500.00
     Origin Y    =   3500.00
     Origin Z    =   5000.00
     Length X    =   1.00
     Length Y    =   1.00
     Length Z    =   5000.00
-	Geology Cube Size	=  50.00
+	Geology Cube Size	=   1.00
 	Geophysics Cube Size	=   1.00
 
 #GeologyOptions

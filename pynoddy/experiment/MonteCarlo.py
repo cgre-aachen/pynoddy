@@ -8,7 +8,14 @@ Created on Monday Jul 13 10:09:55 2015
 import sys, os
 
 import pynoddy
-from pynoddy.experiment import Experiment
+import pynoddy.history
+# from pynoddy.experiment import Experiment
+
+# import pynoddy.experiment
+try:
+    from experiment import Experiment
+except ImportError:
+    from pynoddy.experiment import Experiment
 
 class MonteCarlo(Experiment):
     '''
@@ -34,6 +41,7 @@ class MonteCarlo(Experiment):
         '''
         
         super(Experiment, self).__init__(history) #initialise
+#         super().__init__(history) #initialise
         
         
         if isinstance(parameters,str): #if parameters is a file path
@@ -422,9 +430,12 @@ if __name__ == '__main__':
     ###################################################
     
     #setup working directory
-    os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Primitive\monte carlo test')
-    his_file = "foldUC.his"
-    params_file = "foldUC_params.csv"
+    # os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Primitive\monte carlo test')
+    os.chdir("/Users/flow/git/pynoddy/sandbox")
+#     his_file = "foldUC.his"
+    his_file = "simple_two_faults_no_gps.his"
+#     params_file = "foldUC_params.csv"
+    params_file = "params.csv"
     
     #create new MonteCarlo experiment
     mc = MonteCarlo(his_file,params_file)

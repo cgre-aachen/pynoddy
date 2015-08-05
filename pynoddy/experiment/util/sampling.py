@@ -8,30 +8,30 @@ probability distributions, given means and 95 percentile intervals (ci)
 """
 
 import numpy as np
-import scipy as sc
-import scipy.stats
+import scipy
+# import scipy.stats
 
 #build a lookup table for kappa values given a 95 percentile interval
 def VMLookupTable():
     try: #try loading ordered dict
-      from collections import OrderedDict
+        from collections import OrderedDict
     except ImportError: #not installed, try on pythonpath
-      try:
-        from OrderedDict import OrderedDict
-      except ImportError:
-        "PyNoddy requires OrderedDict to run. Please download it and make it available on the pythonpath."
+        try:
+            from OrderedDict import OrderedDict
+        except ImportError:
+            "PyNoddy requires OrderedDict to run. Please download it and make it available on the pythonpath."
         
     kappa_lookup = OrderedDict()
     
     #build lookup table
     for k in range(1000,100,-20):
-        ci = sc.stats.vonmises.interval(0.95,k)
+        ci = scipy.stats.vonmises.interval(0.95,k)
         kappa_lookup[ci[1]] = k
     for k in range(100,10,-1):
-        ci = sc.stats.vonmises.interval(0.95,k)
+        ci = scipy.stats.vonmises.interval(0.95,k)
         kappa_lookup[ci[1]] = k
     for k in np.arange(10,0,-0.1):
-        ci = sc.stats.vonmises.interval(0.95,k)
+        ci = scipy.stats.vonmises.interval(0.95,k)
         kappa_lookup[ci[1]] = k
     
     #return lookup table
