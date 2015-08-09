@@ -616,8 +616,10 @@ class NoddyOutput(object):
             - *data* = np.array : data array to export to VKT (default: entire block model)
         """
         vtk_filename = kwds.get("vtk_filename", self.basename)
-        
-        from evtk.hl import gridToVTK
+        try:
+            from evtk.hl import gridToVTK
+        except:
+            from pyevtk.hl import gridToVTK
         # Coordinates
         x = np.arange(0, self.extent_x + 0.1*self.delx, self.delx, dtype='float64')
         y = np.arange(0, self.extent_y + 0.1*self.dely, self.dely, dtype='float64')
