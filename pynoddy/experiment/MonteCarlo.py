@@ -147,15 +147,16 @@ class MonteCarlo(Experiment):
         - *sim_type* = The type of simulation to run. This can be any of: 'BLOCK', 'GEOPHYSICS', 'SURFACES', 
                        'BLOCK_GEOPHYS', 'TOPOLOGY', 'BLOCK_SURFACES', 'ALL'. Default is 'BLOCK'.
         - *write_changes* = A file (path) to write the parameters used in each model realisation to (minus the extension). 
-                       The default is a file called 'parameters.csv'. Set as None to disable writing.
+                       The default is None (no file written).
         - *verbose* = True if this function sends output to the print buffer. Default is True.
-        '''
+        - *seed* = The random seed to use in this experiment. If not specified, threads are seeded with PID * TID * time (*nodeID).
+       '''
         
         #get args
         vb = kwds.get("verbose",True)
         stype = kwds.get("sim_type","BLOCK")
         threads = kwds.get("threads",1)
-        changes = kwds.get("write_changes","parameters")
+        changes = kwds.get("write_changes",None)
         
         #store path for later
         self.instance_path = path       
@@ -219,6 +220,9 @@ class MonteCarlo(Experiment):
                 #set random seed (nodeID * process ID * threadID * time in seconds)
                 t_his.set_random_seed(nodeID * seed_base * t)
                 
+                if kwds.has_key('seed'): #override default seed, for reproducable results
+                    t_his.set_random_seed(kwds['seed']+t) #specifed seed + threadID
+                    
                 #initialise thread
                 t = Thread(target=t_his.generate_model_instances,args=(threadpath,n),kwargs={'sim_type' : stype, 'verbose' : vb, 'write_changes' : change_path})
                 
@@ -415,8 +419,28 @@ class MonteCarlo(Experiment):
         
         vb = args.get('verbose',True)
         
-        #TODO
-        print "Error: load_noddy_realisations has not been implemented yet. Sorry."
+        if vb:
+            print "Loading models in %s" % path
+        
+        #array of topology objects
+        from pynoddy.output import NoddyOutput
+        models = []        
+        
+        for root, dirnames, filenames in os.walk(path): #walk the directory
+            for f in filenames:
+                if ('.g12' in f): #find all topology files
+                    base = os.path.join(root,f.split('.')[0])
+                    
+                    if vb:
+                        print 'Loading %s' % base
+                        
+                    #load & store model
+                    models.append(NoddyOutput(base))   
+        
+        if vb:
+            print "Complete."
+            
+        return models
         
 if __name__ == '__main__':
         

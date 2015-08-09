@@ -1,0 +1,6 @@
+event,parameter,type,mean,+-,name
+5,Dip,vonmises,45,5,fault
+5,Dip Direction,vonmises,90,5,fault
+5,Slip,normal,2000,100,fault
+4,Dip,vonmises,90,5,dyke
+4,Dip Direction,vonmises,140,5,dyke

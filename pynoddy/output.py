@@ -422,7 +422,7 @@ class NoddyOutput(object):
                     
         return (x,y,z,c)
             
-    def get_section(self, direction='y',position='center', **kwds):
+    def get_section_voxels(self, direction='y',position='center', **kwds):
         """Create and returns section block through the model
         
         **Arguments**:
@@ -435,10 +435,7 @@ class NoddyOutput(object):
             - *litho_filter* = a list of lithologies to draw. All others will be ignored.
         """
         
-        if kwds.has_key("data"):
-            data = kwds["data"]
-        else:
-            data = self.block
+        data = kwds.get('data',self.block)
             
         if direction == 'x':
             if position == 'center':
@@ -467,7 +464,8 @@ class NoddyOutput(object):
             section_slice = self.block[:,:,cell_pos].transpose()
         else:
             print "Error: %s is not a valid direction. Please specify either ('x','y' or 'z')." % direction
-         #filter by lithology if a filter is set
+        
+        #filter by lithology if a filter is set
         if kwds.has_key('litho_filter'):
             litho_filter = kwds['litho_filter']
             if not litho_filter is None:
@@ -524,10 +522,10 @@ class NoddyOutput(object):
         litho_filter = kwds.get("litho_filter",None)
         
         # determine if data are passed - if not, then recompute model
-        if kwds.has_key("data"):
-            data = kwds["data"]
+        #data = kwds.get('data',self.block)
         ve = kwds.get("ve", 1.)
         cmap_type = kwds.get('cmap', 'YlOrRd')
+        
         if kwds.has_key('ax'):
             # append plot to existing axis
             ax = kwds['ax']
@@ -541,10 +539,10 @@ class NoddyOutput(object):
         colorbar = kwds.get("colorbar", True)
             
         # extract slice
-        if kwds.has_key('data'):
-            section_slice, cell_pos = self.get_section(direction,position,data=kwds['data'],litho_filter=litho_filter)
-        else:
-            section_slice, cell_pos = self.get_section(direction,position,litho_filter=litho_filter)
+        #if kwds.has_key('data'):     
+        section_slice, cell_pos = self.get_section_voxels(direction,position,**kwds)
+        #else:
+        #    section_slice, cell_pos = self.get_section_voxels(direction,position,litho_filter=litho_filter)
             
         #calculate axis labels
         if 'x' in direction:
