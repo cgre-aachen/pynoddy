@@ -211,7 +211,7 @@ try:
     #format: params[2]["Dip"]["min"] = 200.
     params = [{"event" : (2,3), "parameter" : "Dip", "type" : "vonmises", "mean" : 60, "+-" : 5 }, #randomly sample dip for fault 1 & 2 (should be equal)
               {"event" : (2,), "parameter" : "Slip", "type" : "normal", "mean" : 100, "+-" : 50 }, #randomly sample slip for fault 1
-              {"event" : (3,), "parameter" : "Slip", "type" : "normal", "mean" : 100, "+-" : 50 }] #randomly sample slip for fault 2
+              {"event" : 3, "parameter" : "Slip", "type" : "normal", "mean" : 100, "+-" : 50 }] #randomly sample slip for fault 2
     ex1.set_parameter_statistics(params)
     
     #generate random purturbation
@@ -231,8 +231,8 @@ if not err:
 #cleanup
 os.remove(history_path)
 import glob
-for filename in glob.glob("%s.*" % output_name):
+for filename in glob.glob("%s*" % output_name):
     os.remove(filename) 
-for filename in glob.glob("tmp_section_out.*"):
+for filename in glob.glob("tmp_section_out*"):
     os.remove(filename) 
 os.remove(out_vtk + ".vtr")

@@ -1,0 +1,4 @@
+event,parameter,type,mean,+-
+2|3,Dip,vonmises,60,5
+2,Slip,normal,100,50
+3,Slip,normal,100,50
