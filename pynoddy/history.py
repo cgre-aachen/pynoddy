@@ -850,9 +850,12 @@ Version = 7.11
         f = open(filename, 'w')
         for i,line in enumerate(history_lines):
             # add empty line before "BlockOptions", if not there:
-            if ('BlockOptions' in line) and (self.history_lines[i-1] != "\n"):
+            if ('BlockOptions' in line) and (history_lines[i-1] != "\n"):
                 f.write("\n")
+            
+            #write line
             f.write(line)
+            
         f.close()
  
  
