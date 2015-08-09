@@ -288,12 +288,15 @@ class Unconformity(Event):
         self.event_lines = lines
         self.properties = {}
         self.property_lines = {} # required to reassign properties later!
+        self.layer_names = []
         for i,line in enumerate(lines):
             l = line.split("=")
             if "Event #" in line: continue
             if "Alteration Type" in line:
                 # finished with parsing events 
                 geometry_info_finished = True
+            if "Unit Name" in l[0]: 
+                self.layer_names.append(l[1].rstrip())
             if not geometry_info_finished:
                 # parse events
                 # convert value to float if it is not a string
