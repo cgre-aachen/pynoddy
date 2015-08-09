@@ -12,8 +12,10 @@ import os.path
 package_directory = os.path.dirname(os.path.abspath(__file__))
 
 #paths to noddy & topology executables
-noddyPath = os.path.join(package_directory,'../noddy/noddy')
-topologyPath = os.path.join(package_directory,'../topology/topology')
+#noddyPath = os.path.join(package_directory,'../noddy/noddy')
+#topologyPath = os.path.join(package_directory,'../topology/topology')
+noddyPath = os.path.join(package_directory,'noddy/noddy')
+topologyPath = os.path.join(package_directory,'topology/topology')
 
 #global variables
 ensure_discrete_volumes = True #if True, spatially separated but otherwise identical volumes are given separate codes.
