@@ -47,7 +47,8 @@ class MonteCarlo(Experiment):
         if isinstance(parameters,str): #if parameters is a file path
             self.load_parameter_file(parameters)
         else:
-            print "Error: parameter dictionares are not yet implemented"
+            assert(type(parameters) is list)
+            self.set_parameter_statistics(parameters)
         
         self.basename = base_name
         
@@ -192,7 +193,6 @@ class MonteCarlo(Experiment):
                 
             #import thread stuff
             from threading import Thread
-            import platform
             
             thread_list = []
             for t in range(0,threads):
@@ -277,9 +277,11 @@ class MonteCarlo(Experiment):
                    
             #write changes
             if not (changes is None):
-                print "Writing parameter changes to %s..." % (changes + ".csv")
+                if vb:
+                    print "Writing parameter changes to %s..." % (changes + ".csv")
                 self.write_parameter_changes(changes+".csv")
-                print "Complete."
+                if vb:
+                    print "Complete."
            
     def cleanup(self, **kwds ):
         '''
@@ -302,7 +304,7 @@ class MonteCarlo(Experiment):
             
         #delete files
         path = os.path.basename(self.basename)
-        MonteCarlo.clean(self.instance_path,path,delete_noddy_working_files=del_noddy,delete_noddy_history_files=del_his,delete_topology_files=del_topo)
+        MonteCarlo.clean(self.instance_path,path,**kwds)
         
                             
     @staticmethod                      

@@ -227,12 +227,26 @@ if not err:
 ###########################
 #Test MonteCarlo class
 ###########################
-   
+try:
+    mc = MonteCarlo(history_path,params)
+    mc.generate_model_instances("out",4,threads=4,verbose=False,write_changes=None)
+    mc.cleanup() #delete files
+except Exception as e:
+    sys.stderr.write("Error - MonteCarlo class is not functioning... %s\n" % e)
+    err = True
+
+if not err:
+    print "Succesfully used MonteCarlo class"
+    
 #cleanup
 os.remove(history_path)
 import glob
 for filename in glob.glob("%s*" % output_name):
     os.remove(filename) 
-for filename in glob.glob("tmp_section_out*"):
+os.remove('noddyBatchProgress.txt')
+for filename in glob.glob("tmp_section*"):
     os.remove(filename) 
 os.remove(out_vtk + ".vtr")
+
+if not err:
+    print "Test functions all passed succesfully"
