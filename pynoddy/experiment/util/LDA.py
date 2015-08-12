@@ -73,9 +73,6 @@ class LDA(object):
         for cl in range(self.n_groups):
             mean_vectors.append(np.mean(self.data_matrix[self.groups==cl],axis=0))
         
-        print "means:"
-        print mean_vectors
-        
         #calculate within class scatter matrix
         self.S_W = np.zeros((self.n_cols,self.n_cols,)) #self.n_groups+1,self.n_groups+1,
         for cl, mv in zip(range(self.n_groups), mean_vectors): #fore each class id, mean vector
@@ -258,7 +255,7 @@ class LDA(object):
                 
                 data[col] = data[col] / S
                     
-                print "mean: %.3f, std %.3f" % (np.mean(data[col]),np.std(data[col]))
+                #print "mean: %.3f, std %.3f" % (np.mean(data[col]),np.std(data[col]))
                 
             else:  #this is not an angle
                 #normalize

@@ -639,7 +639,11 @@ class TopologyAnalysis:
                         print "Warning: difference matrix contains identical models."
                         
                     #nb: similarity = 1 if networks are identical and approaches zero as they become different
-                    difference_matrix[i][j] = -1 + 1.0 / jq #calculate difference
+                    if jq == 0: #unlikely, but possible
+                        difference_matrix[i][j] = 1.7976931348623157e+300 #really big number
+                    else:
+                        difference_matrix[i][j] = -1 + 1.0 / jq #calculate difference
+                        
                     difference_matrix[j][i] = difference_matrix[i][j] #matrix is symmetric
         
         #store
@@ -852,7 +856,7 @@ class TopologyAnalysis:
             f.show()
         else:
             f.savefig(path,dpi=dpi)
-        
+            
         #return f
     def histogram(self,params=None,path="", **kwds):
         '''
@@ -1158,7 +1162,57 @@ class TopologyAnalysis:
         
         
         '''
-        print "Not implemented yet. Sorry"
+        
+        #get data
+        param_space = self.get_parameter_space(params)
+        
+        #get other type secific stuff
+        #get relevent topology column
+        initial_id = -1
+        if topology_type == '':
+            title = "Overall Topology Separation Plot"
+            col='u_topo'
+            if hasattr(self,"initial_topo_id"):
+                initial_id = self.initial_topo_id
+            
+            param_space = param_space.drop(['u_litho','u_struct'],1) #drop unwanted columns
+       
+        elif "litho" in topology_type:
+            title = "Lithological Topology Separation Plot"
+            col='u_litho' #we're interested in litho
+            if hasattr(self,"initial_litho_id"):
+                initial_id = self.initial_litho_id
+            
+            param_space = param_space.drop(['u_topo','u_struct'],1) #drop unwanted columns
+       
+        elif "struct" in topology_type:
+            title = "Structural Topology Separation Plot"
+            col='u_struct' #we're interested in struct
+            if hasattr(self,"initial_struct_id"):
+                initial_id = self.initial_struct_id
+                
+            param_space = param_space.drop(['u_topo','u_litho'],1) #drop unwanted columns
+       
+        else:
+            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            return
+            
+        #find circular variables (currently on works for 'Dip' and 'Dip Direction')
+        #ideally, this should check the distribution used to sample values from or
+        #the variable range to identify circular variables (von-mises distributions)
+        circular = []
+        for i,col in enumerate(param_space.columns):
+            if 'dip' in col.lower(): #captures Dip and Dip Direction
+                circular.append(i)
+        
+        #perform LDA
+        from pynoddy.experiment.util.LDA import LDA
+        ld = LDA(param_space,col,circular)
+        
+        #draw plot
+        print ld.summary()
+        ld.scatter_plot()
+        
         
     def plot_scatter_matrix(self,param_pairs=None,topology_type='struct',params=None, **kwds):
         '''
@@ -1718,6 +1772,8 @@ class TopologyAnalysis:
         '''
         Writes a summary figures of this experiment to the specified directory
         '''
+        import matplotlib.pyplot as plt
+        
         #parameter histogram
         self.histogram(path=os.path.join(directory,"model_space_frequencies.png"))
         
@@ -1726,16 +1782,19 @@ class TopologyAnalysis:
         NoddyTopology.draw_graph_matrix(self.super_topology,path=os.path.join(directory,"adjacency_full_super.png"))
         NoddyTopology.draw_graph_matrix(self.super_struct_topology,path=os.path.join(directory,"adjacency_struct_super.png"))
         NoddyTopology.draw_graph_matrix(self.super_litho_topology,path=os.path.join(directory,"adjacency_litho_super.png"))
+        plt.close()
         
         #cumulative topologies
         self.plot_cumulative_topologies('',path=os.path.join(directory,"cumulative_observed.png"))
         self.plot_cumulative_topologies("litho",path=os.path.join(directory,"litho_cumulative_observed.png"))
         self.plot_cumulative_topologies("struct",path=os.path.join(directory,"struct_cumulative_observed.png"))
+        plt.close()
         
         #cumulative frequency distributions
         self.plot_frequency_distribution('',path=os.path.join(directory,"cumulative_frequency.png"))
         self.plot_frequency_distribution('struct',path=os.path.join(directory,"struct_cumulative_frequency.png"))
         self.plot_frequency_distribution('litho',path=os.path.join(directory,"litho_cumulative_frequency.png"))
+        plt.close()
         
         #boxplots
         if len(self.unique_topologies) < 1000:
@@ -1744,28 +1803,34 @@ class TopologyAnalysis:
             self.boxplot("litho",path=os.path.join(directory,"litho_topology_ranges.png"),width=min(0.1*len(self.all_litho_topologies),100))
         if len(self.unique_struct_topologies) < 1000:
             self.boxplot("struct",path=os.path.join(directory,"struct_topology_ranges.png"))
+        plt.close()
         
         #dendrogram
         self.plot_dendrogram('',path=os.path.join(directory,"topology_dend.png"))
         self.plot_dendrogram('litho',path=os.path.join(directory,"litho_topology_dend.png"))
         self.plot_dendrogram('struct',path=os.path.join(directory,"struct_topology_dend.png"))
+        plt.close("all")
         
         #try scatter plots. These will fail for models with large numbers of variables
         if len(self.models[0].headings) < 5:
             self.plot_scatter_matrix(topology_type='',path=os.path.join(directory,'topo_matrix.png'))
             self.plot_scatter_matrix(topology_type='litho',path=os.path.join(directory,'litho_matrix.png'))
             self.plot_scatter_matrix(topology_type='struct',path=os.path.join(directory,'struct_matrix.png'))
-    
+        plt.close("all")
+        
         #save render of base model
         if hasattr(self,'base_model'):
             self.base_model.get_geology().plot_section(direction='x',savefig=True,fig_filename=os.path.join(directory,'base_model_yz.png'))
             self.base_model.get_geology().plot_section(direction='y',savefig=True,fig_filename=os.path.join(directory,'base_model_xz.png'))
             self.base_model.get_geology().plot_section(direction='z',savefig=True,fig_filename=os.path.join(directory,'base_model_xy.png'))
-            
+         
+        plt.close("all")
+        
         #save render of 8 most frequent topologies, ie. 'most probable models'
         self.plot_n_models(8,'',criterion='prob',path=os.path.join(directory,'probable_topologies.png'))
         self.plot_n_models(8,'struct',criterion='prob',path=os.path.join(directory,'probable_struct_topologies.png'))
         self.plot_n_models(8,'litho',criterion='prob',path=os.path.join(directory,'probable_litho_topologies.png'))
+        plt.close("all")
         
         
         #save render of 'representative' topologies. ie. represent 'spread of possibility'
@@ -1773,19 +1838,27 @@ class TopologyAnalysis:
         self.plot_n_models(8,'struct',criterion='clust',path=os.path.join(directory,'struct_cluster_centroids.png'))
         self.plot_n_models(8,'litho',criterion='clust',path=os.path.join(directory,'litho_cluster_centroids.png'))
         
+        
+        #save super network
+        self.plot_super_network(path = os.path.join(directory,'super_network.png'))
+        plt.close("all")
+        
         #save renders of (first 50) unique models
         self.render_unique_models(os.path.join(directory,"unique/all/x"),'', max_t=50, direction='x')
         self.render_unique_models(os.path.join(directory,"unique/struct/x"),'struct', max_t=50, direction='x')
         self.render_unique_models(os.path.join(directory,"unique/litho/x",'litho'), max_t=50, direction='x')
+        plt.close("all")
         
         self.render_unique_models(os.path.join(directory,"unique/all/y"),'', max_t=50, direction='y')
         self.render_unique_models(os.path.join(directory,"unique/struct/y"),'struct', max_t=50, direction='y')
         self.render_unique_models(os.path.join(directory,"unique/litho/y"),'litho', max_t=50, direction='y')
+        plt.close("all")
         
         self.render_unique_models(os.path.join(directory,"unique/all/z"),'', max_t=50, direction='z')
         self.render_unique_models(os.path.join(directory,"unique/struct/z"),'struct', max_t=50, direction='z')
         self.render_unique_models(os.path.join(directory,"unique/litho/z"),'litho', max_t=50, direction='z')
-    
+        plt.close("all")
+        
     def is_strata_continuous(self,litho):
         '''
         Calculates the number of models in which all sections of a particular lithology are
@@ -1851,8 +1924,9 @@ if __name__ == '__main__':     #some debug stuff
     
     a = TopologyAnalysis(his,params=params,output='fold/fold_fault/fold_fault_dswa',n=0,verbose=False,threads=8)
     
-    a.plot_super_network()
-
+    #a.plot_super_network()
+    a.maximum_separation_plot('')
+    
     #print results
     #print a.summary()
     
