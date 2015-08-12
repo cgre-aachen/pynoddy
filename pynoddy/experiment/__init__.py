@@ -260,7 +260,7 @@ class Experiment(NoddyHistory,NoddyOutput):
                 
                 #store relative changes
                 for e in param['event']:
-                    param_changes[e][param['parameter']] = random_val - ori_val
+                    param_changes[e][param['parameter']] = random_val - self.events[ param['event'][0]].properties[param['parameter']]
     
                     #store absolute changes
                     absolute_changes[e][param['parameter']] = random_val
