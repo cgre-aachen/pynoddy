@@ -52,6 +52,8 @@ class MonteCarlo(Experiment):
         
         self.basename = base_name
         
+        self.freeze()
+        
     @staticmethod
     def generate_models_from_existing_histories(path,**kwds):
         '''
@@ -182,7 +184,7 @@ class MonteCarlo(Experiment):
                 nodename = os.uname()[1] #the name of the node it is running on (linux only)
                 
                 #move into node subdirectory
-                path = path.join(path,nodename) 
+                path = os.path.join(path,nodename) 
             
                 #append node name to output
                 if not changes is None:
@@ -218,7 +220,7 @@ class MonteCarlo(Experiment):
                     change_path = "%s_thread%d" % (changes,t)
                 
                 #set random seed (nodeID * process ID * threadID * time in seconds)
-                t_his.set_random_seed(nodeID * seed_base * t)
+                t_his.set_random_seed(nodeID + seed_base + t)
                 
                 if kwds.has_key('seed'): #override default seed, for reproducable results
                     t_his.set_random_seed(kwds['seed']+t) #specifed seed + threadID
