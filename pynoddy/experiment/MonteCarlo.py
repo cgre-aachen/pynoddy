@@ -113,7 +113,7 @@ class MonteCarlo(Experiment):
             output = path.split('.')[0]
             
             #call noddy
-            if force or not os.path.exists(output+".g01"): #if noddy files don't exist, or force is true
+            if force or not os.path.exists(output+".g12"): #if noddy files don't exist, or force is true
                 if vb:
                     print("Running %s... " % output)
                     print(pynoddy.compute_model(path, output, sim_type = stype))
@@ -346,7 +346,10 @@ class MonteCarlo(Experiment):
                     if del_noddy:
                         for e in ['.g00', '.g01', '.g02', '.g12', '.g20', '.g21', '.g22']:
                             if e in f:
-                                os.remove(p)
+                                try:
+                                    os.remove(p)
+                                except Exception as e: #for file not found
+                                    continue  #donothing
                                 
                     #delete topology files
                     if del_topo:

@@ -715,8 +715,6 @@ class NoddyTopology(object):
         self.graph.name = self.basename
 
         #check files exist:
-        if not os.path.exists(self.basename+".g21"): #ensure noddy topology been run
-            pynoddy.compute_model(self.basename + ".his", self.basename, sim_type='TOPOLOGY')
         if not os.path.exists(self.basename+".g23"): #ensure topology code has been run
             pynoddy.compute_topology(self.basename)
         
