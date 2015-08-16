@@ -12,9 +12,14 @@
 \usepackage{sphinx}
 \usepackage{multirow}
 
+\addto\captionsenglish{\renewcommand{\figurename}{Fig. }}
+\addto\captionsenglish{\renewcommand{\tablename}{Table }}
+\floatname{literal-block}{Listing }
+
+
 
 \title{pynoddy Documentation}
-\date{March 29, 2014}
+\date{August 16, 2015}
 \release{}
 \author{Florian Wellmann}
 \newcommand{\sphinxlogo}{}
@@ -75,10 +80,11 @@
 \expandafter\def\csname PYG@tok@c\endcsname{\let\PYG@it=\textit\def\PYG@tc##1{\textcolor[rgb]{0.25,0.50,0.56}{##1}}}
 \expandafter\def\csname PYG@tok@mf\endcsname{\def\PYG@tc##1{\textcolor[rgb]{0.13,0.50,0.31}{##1}}}
 \expandafter\def\csname PYG@tok@err\endcsname{\def\PYG@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
-\expandafter\def\csname PYG@tok@kd\endcsname{\let\PYG@bf=\textbf\def\PYG@tc##1{\textcolor[rgb]{0.00,0.44,0.13}{##1}}}
+\expandafter\def\csname PYG@tok@mb\endcsname{\def\PYG@tc##1{\textcolor[rgb]{0.13,0.50,0.31}{##1}}}
 \expandafter\def\csname PYG@tok@ss\endcsname{\def\PYG@tc##1{\textcolor[rgb]{0.32,0.47,0.09}{##1}}}
 \expandafter\def\csname PYG@tok@sr\endcsname{\def\PYG@tc##1{\textcolor[rgb]{0.14,0.33,0.53}{##1}}}
 \expandafter\def\csname PYG@tok@mo\endcsname{\def\PYG@tc##1{\textcolor[rgb]{0.13,0.50,0.31}{##1}}}
+\expandafter\def\csname PYG@tok@kd\endcsname{\let\PYG@bf=\textbf\def\PYG@tc##1{\textcolor[rgb]{0.00,0.44,0.13}{##1}}}
 \expandafter\def\csname PYG@tok@mi\endcsname{\def\PYG@tc##1{\textcolor[rgb]{0.13,0.50,0.31}{##1}}}
 \expandafter\def\csname PYG@tok@kn\endcsname{\let\PYG@bf=\textbf\def\PYG@tc##1{\textcolor[rgb]{0.00,0.44,0.13}{##1}}}
 \expandafter\def\csname PYG@tok@o\endcsname{\def\PYG@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
@@ -114,6 +120,8 @@
 \def\PYGZrb{]}
 \makeatother
 
+\renewcommand\PYGZsq{\textquotesingle}
+
 \begin{document}
 
 \maketitle
@@ -148,13 +156,16 @@ python setup.py install
 Note:
 \begin{itemize}
 \item {} 
-sufficient priviledges are required (i.e. run in sudo with MacOSX/
+sufficient privileges are required (i.e. run in sudo with MacOSX/
 Linux and set permissions on Windows)
 
 \end{itemize}
 
 Important: the Noddy executable has to be in a directory defined in the
 PATH variable!!
+
+Important: the topology executable has to be in a directory defined in
+the PATH variable!!
 
 
 \section{Documentation}
@@ -167,26 +178,14 @@ history and visualisation of output, as well as the implementation of
 stochastic simulations and uncertainty visualisation are available as
 interactive ipython notebooks.
 
-These notebooks are also included in this documentation as
-non-interactive versions.
-
 
 \section{Dependencies}
 \label{readme:dependencies}
 pynoddy depends on several standard Python packages that should be
 shipped with any standard distribution (and are easy to install,
 otherwise):
-\begin{itemize}
-\item {} 
-numpy
 
-\item {} 
-matplotlib
-
-\item {} 
-pickle
-
-\end{itemize}
+. numpy . matplotlib . pickle
 
 The uncertainty anaysis, quantification, and visualisation methods based
 on information theory are implemented in the python package pygeoinfo.
@@ -201,6 +200,9 @@ VTK, the pyevtk package is used, available on bitbucket:
 
 \href{https://bitbucket.org/pauloh/pyevtk/src/9c19e3a54d1e?at=v0.1.0}{https://bitbucket.org/pauloh/pyevtk/src/9c19e3a54d1e?at=v0.1.0}
 
+The package is automatically downloaded and installed when running
+python setup.py install.
+
 
 \section{License}
 \label{readme:license}
@@ -212,7 +214,7 @@ it, feel free to change and adapt it otherwise!
 \section{What is Noddy?}
 \label{readme:what-is-noddy}
 Noddy itself is a kinematic modelling program written by Mark Jessell
-{[}1{]} to simulate the effect of subsequent geological events (folding,
+{[}1{]}{[}2{]} to simulate the effect of subsequent geological events (folding,
 unconformities, faulting, etc.) on a primary sedimentary pile. A typical
 example would be:
 \begin{enumerate}
@@ -225,7 +227,7 @@ Add a folding event (for example simple sinoidal folding, but complex
 methods are possible!)
 
 \item {} 
-Add an unconformity and, above it, a new sedimentary pile
+Add an unconformity and, above it, a new stratigraphy
 
 \item {} 
 Finally, add a sequence of late faults affecting the entire system.
@@ -233,27 +235,24 @@ Finally, add a sequence of late faults affecting the entire system.
 \end{enumerate}
 
 The result could look something like this:
-\begin{figure}[htbp]
-\centering
-
-\includegraphics{noddy_block_example.png}
-\end{figure}
 
 The software runs on Windows only, but the source files (written in C)
 are available for download to generate a command line version of the
 modelling step alone:
 
-\href{https://github.com/markjessell/functionNoddy}{https://github.com/markjessell/functionNoddy}
+\href{https://github.com/flohorovicic/pynoddy}{https://github.com/flohorovicic/pynoddy}
 
 It has been tested and compiled on MacOSX, Windows and Linux.
 
 
 \section{References}
 \label{readme:references}
-{[}1{]} Mark W. Jessell, Rick K. Valenta, Structural geophysics: Integrated
-structural and geophysical modelling, In: Declan G. De Paor, Editor(s),
-Computer Methods in the Geosciences, Pergamon, 1996, Volume 15, Pages
-303-324, ISSN 1874-561X, ISBN 9780080424309,
+{[}1{]} Mark W. Jessell. Noddy, an interactive map creation package.
+Unpublished MSc Thesis, University of London. 1981. {[}2{]} Mark W. Jessell,
+Rick K. Valenta, Structural geophysics: Integrated structural and
+geophysical modelling, In: Declan G. De Paor, Editor(s), Computer
+Methods in the Geosciences, Pergamon, 1996, Volume 15, Pages 303-324,
+ISSN 1874-561X, ISBN 9780080424309,
 \href{http://dx.doi.org/10.1016/S1874-561X(96)80027-7}{http://dx.doi.org/10.1016/S1874-561X(96)80027-7}.
 
 
@@ -1112,40 +1111,35 @@ reader as simple excercise :-) Future versions of pynoddy might provide
 an automatic implementation for this step...)
 
 
-\chapter{Stochastic events}
-\label{notebooks/4-Stochastic-Events::doc}\label{notebooks/4-Stochastic-Events:stochastic-events}
-The parameters defining the geological events are, by their very nature,
-highly uncertain. In addition to these uncertainties, the kinematic
-approach by itself is only a limiting approximation. The picture that we
-obtain from the kinematic forword model is therefore a very
-overconfident repsresentation of reality - an aspect that (hopefully)
-everyone using Noddy is aware of...
+\chapter{Pynoddy modules, classes and functions}
+\label{pynoddy::doc}\label{pynoddy:pynoddy-modules-classes-and-functions}
 
-In order to respect the vast nature of these uncertainties, we introduce
-here an adapted version of the standard geological events defined in
-Noddy: the definition of a stochastic event:
-
-A stochastic event is geological event in the Noddy history that has an
-uncertainty associated to it in such a way that, recomputing the
-geolgoical history will result in a different result each time (note:
-the definition is borrowed from the notion of stochastic events in
-probabilistic programming, see for example pymc).
+\section{Basic modules (low-level access)}
+\label{pynoddy:basic-modules-low-level-access}
+The modules in this section provide low-level access to the functionality
+in Noddy. Basically, these modules provide parsers for Noddy input and
+output files and class definitions for suitable Noddy elements.
 
 
-\section{Definition of stochastic events}
-\label{notebooks/4-Stochastic-Events:definition-of-stochastic-events}
-We start, as before, with a pre-defined geological noddy history for
-simplicity:
+\subsection{Main module}
+\label{pynoddy:main-module}\label{pynoddy:module-pynoddy}\index{pynoddy (module)}
+Package initialization file for pynoddy
+\index{compute\_model() (in module pynoddy)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.compute_model}\pysiglinewithargsret{\code{pynoddy.}\bfcode{compute\_model}}{\emph{history}, \emph{output\_name}, \emph{**kwds}}{}
+\end{fulllineitems}
+
+\index{compute\_topology() (in module pynoddy)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.compute_topology}\pysiglinewithargsret{\code{pynoddy.}\bfcode{compute\_topology}}{\emph{rootname}, \emph{**kwds}}{}
+\end{fulllineitems}
 
 
-\chapter{pynoddy package}
-\label{pynoddy:pynoddy-package}\label{pynoddy::doc}
 
-\section{Submodules}
-\label{pynoddy:submodules}
-
-\section{pynoddy.history module}
-\label{pynoddy:pynoddy-history-module}\label{pynoddy:module-pynoddy.history}\index{pynoddy.history (module)}
+\subsection{History file parser: pynoddy.history}
+\label{pynoddy:module-pynoddy.history}\label{pynoddy:history-file-parser-pynoddy-history}\index{pynoddy.history (module)}
 Noddy history file wrapper
 Created on 24/03/2014
 
@@ -1153,12 +1147,39 @@ Created on 24/03/2014
 \index{NoddyHistory (class in pynoddy.history)}
 
 \begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory}\pysiglinewithargsret{\strong{class }\code{pynoddy.history.}\bfcode{NoddyHistory}}{\emph{history}}{}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory}\pysiglinewithargsret{\strong{class }\code{pynoddy.history.}\bfcode{NoddyHistory}}{\emph{history=None}, \emph{**kwds}}{}
+Bases: \code{object}
+
 Class container for Noddy history files
+\index{add\_event() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.add_event}\pysiglinewithargsret{\bfcode{add\_event}}{\emph{event\_type}, \emph{event\_options}, \emph{**kwds}}{}
+Add an event type to history
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{event\_type} = string : type of event, legal options to date are:
+
+\end{itemize}
+
+`stratigraphy', `fault', `fold', `unconformity'
+- \emph{event\_options} = list : required options to create event (event dependent)
+
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{event\_num} = int : event number (default: implicitly defined with increasing counter)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
 \index{change\_cube\_size() (pynoddy.history.NoddyHistory method)}
 
 \begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.change_cube_size}\pysiglinewithargsret{\bfcode{change\_cube\_size}}{\emph{cube\_size}}{}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.change_cube_size}\pysiglinewithargsret{\bfcode{change\_cube\_size}}{\emph{cube\_size}, \emph{**kwds}}{}
 Change the model cube size (isotropic)
 \begin{description}
 \item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
@@ -1171,17 +1192,268 @@ Change the model cube size (isotropic)
 
 \end{fulllineitems}
 
+\index{change\_event\_params() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.change_event_params}\pysiglinewithargsret{\bfcode{change\_event\_params}}{\emph{changes\_dict}}{}
+Change multiple event parameters according to settings in changes\_dict
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{changes\_dict} = dictionary : entries define relative changes for (multiple) parameters
+
+\end{itemize}
+
+\end{description}
+
+Per default, the values in the dictionary are added to the event parameters.
+
+\end{fulllineitems}
+
+\index{copy\_events() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.copy_events}\pysiglinewithargsret{\bfcode{copy\_events}}{}{}
+Create a copy of the current event state
+
+\end{fulllineitems}
+
+\index{create\_footer\_from\_template() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.create_footer_from_template}\pysiglinewithargsret{\bfcode{create\_footer\_from\_template}}{}{}
+Create model footer (with all settings) from template
+
+\end{fulllineitems}
+
+\index{create\_new\_history() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.create_new_history}\pysiglinewithargsret{\bfcode{create\_new\_history}}{}{}
+Methods to create a Noddy model
+
+\end{fulllineitems}
+
 \index{determine\_events() (pynoddy.history.NoddyHistory method)}
 
 \begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.determine_events}\pysiglinewithargsret{\bfcode{determine\_events}}{}{}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.determine_events}\pysiglinewithargsret{\bfcode{determine\_events}}{\emph{**kwds}}{}
 Determine events and save line numbers
 
-\begin{notice}{note}{Note:}
-Parsing of the history file is based on a fixed Noddy output order. 
+\begin{notice}{note}{Note:}\begin{description}
+\item[{Parsing of the history file is based on a fixed Noddy output order. }] \leavevmode
 If this is, for some reason (e.g. in a changed version of Noddy) not the case, then
 this parsing might fail!
+
+\item[{\textbf{Optional Keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+verbose = True if this function is should write to the print bufffer, otherwise False. Default is true.
+
+\end{itemize}
+
+\end{description}
 \end{notice}
+
+\end{fulllineitems}
+
+\index{determine\_model\_stratigraphy() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.determine_model_stratigraphy}\pysiglinewithargsret{\bfcode{determine\_model\_stratigraphy}}{}{}
+Determine stratigraphy of entire model from all events
+
+\end{fulllineitems}
+
+\index{get\_cube\_size() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.get_cube_size}\pysiglinewithargsret{\bfcode{get\_cube\_size}}{\emph{**kwds}}{}
+Determine cube size for model export
+\textbf{Optional Args}
+\begin{quote}
+
+-type: choose geology or geophysics cube size to return. Should be either `Geology' (default) or `Geophysics'
+\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_date\_saved() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.get_date_saved}\pysiglinewithargsret{\bfcode{get\_date\_saved}}{}{}
+Determine the last savepoint of the file
+
+\end{fulllineitems}
+
+\index{get\_drillhole\_data() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.get_drillhole_data}\pysiglinewithargsret{\bfcode{get\_drillhole\_data}}{\emph{x}, \emph{y}, \emph{**kwds}}{}
+Get geology values along 1-D profile at position x,y with a 1 m resolution
+
+The following steps are performed:
+1. creates a copy of the entire object,
+2. sets values of origin, extent and geology cube size, 
+3. saves model to a temporary file, 
+4. runs Noddy on that file
+5. opens and analyses output
+6. deletes temporary files
+
+Note: this method only works if write access to current directory
+is enabled and noddy can be executed!
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{x} = float: x-position of drillhole
+
+\item {} 
+\emph{y} = float: y-position of drillhole
+
+\end{itemize}
+
+\item[{\textbf{Optional Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{z\_min} = float : minimum depth of drillhole (default: model range)
+
+\item {} 
+\emph{z\_max} = float : maximum depth of drillhole (default: model range)
+
+\item {} 
+\emph{resolution} = float : resolution along profile (default: 1 m)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{get\_ev\_counter() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.get_ev_counter}\pysiglinewithargsret{\bfcode{get\_ev\_counter}}{}{}
+Event counter for implicit and continuous definition of events
+
+\end{fulllineitems}
+
+\index{get\_event\_param() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.get_event_param}\pysiglinewithargsret{\bfcode{get\_event\_param}}{\emph{event\_number}, \emph{name}}{}
+Returns the value of a given parameter for a given event.
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{event\_number} = the event to get a parameter for (integer)
+
+\item {} 
+\emph{name} = the name of the parameter to retreive (string)
+
+\end{itemize}
+\begin{description}
+\item[{\textbf{Returns}}] \leavevmode\begin{itemize}
+\item {} 
+Returns the value of the request parameter, or None if it does not 
+exists.
+
+\end{itemize}
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{get\_event\_params() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.get_event_params}\pysiglinewithargsret{\bfcode{get\_event\_params}}{\emph{event\_number}}{}
+Returns the parameter dictionary for a given event.
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{event\_number} = the event to get a parameter for (integer)
+
+\end{itemize}
+\begin{description}
+\item[{\textbf{Returns}}] \leavevmode\begin{itemize}
+\item {} 
+Returns the parameter dictionary for the requested event
+
+\end{itemize}
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{get\_extent() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.get_extent}\pysiglinewithargsret{\bfcode{get\_extent}}{}{}
+Get model extent and return and store in local variables
+
+\textbf{Returns}: (extent\_x, extent\_y, extent\_z)
+
+\end{fulllineitems}
+
+\index{get\_filename() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.get_filename}\pysiglinewithargsret{\bfcode{get\_filename}}{}{}
+Determine model filename from history file/ header
+
+\end{fulllineitems}
+
+\index{get\_footer\_lines() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.get_footer_lines}\pysiglinewithargsret{\bfcode{get\_footer\_lines}}{}{}
+Get the footer lines from self.history\_lines
+
+The footer contains everything below events (all settings, etc.)
+
+\end{fulllineitems}
+
+\index{get\_info\_string() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.get_info_string}\pysiglinewithargsret{\bfcode{get\_info\_string}}{\emph{**kwds}}{}
+Get model information as string
+\begin{description}
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{events\_only} = bool : only information on events
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{get\_origin() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.get_origin}\pysiglinewithargsret{\bfcode{get\_origin}}{}{}
+Get coordinates of model origin and return and store in local variables
+
+\textbf{Returns}: (origin\_x, origin\_y, origin\_z)
+
+\end{fulllineitems}
+
+\index{info() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.info}\pysiglinewithargsret{\bfcode{info}}{\emph{**kwds}}{}
+Print out model information
+\begin{description}
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{events\_only} = bool : only information on events
+
+\end{itemize}
+
+\end{description}
 
 \end{fulllineitems}
 
@@ -1194,6 +1466,102 @@ Load Noddy history
 \item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
 \item {} 
 \emph{history} = string : Name of Noddy history file
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{load\_history\_from\_url() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.load_history_from_url}\pysiglinewithargsret{\bfcode{load\_history\_from\_url}}{\emph{url}}{}
+Directly load a Noddy history from a URL
+
+This method is useful to load a model from the Structural Geophysics
+Atlas on the pages of the Virtual Explorer.
+See: \href{http://virtualexplorer.com.au/special/noddyatlas/index.html}{http://virtualexplorer.com.au/special/noddyatlas/index.html}
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{url} : url of history file
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{reorder\_events() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.reorder_events}\pysiglinewithargsret{\bfcode{reorder\_events}}{\emph{reorder\_dict}}{}
+Reorder events accoring to assignment in reorder\_dict
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{reorder\_dict} = dict : for example \{1 : 2, 2 : 3, 3 : 1\}
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{set\_event\_params() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.set_event_params}\pysiglinewithargsret{\bfcode{set\_event\_params}}{\emph{params\_dict}}{}
+set multiple event parameters according to settings in params\_dict
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{params\_dict} = dictionary : entries to set (multiple) parameters
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{set\_extent() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.set_extent}\pysiglinewithargsret{\bfcode{set\_extent}}{\emph{extent\_x}, \emph{extent\_y}, \emph{extent\_z}}{}
+Set model extent and update local variables
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{extent\_x} = float : extent in x-direction
+
+\item {} 
+\emph{extent\_y} = float : extent in y-direction
+
+\item {} 
+\emph{extent\_z} = float : extent in z-direction
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{set\_origin() (pynoddy.history.NoddyHistory method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.history.NoddyHistory.set_origin}\pysiglinewithargsret{\bfcode{set\_origin}}{\emph{origin\_x}, \emph{origin\_y}, \emph{origin\_z}}{}
+Set coordinates of model origin and update local variables
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{origin\_x} = float : x-location of model origin
+
+\item {} 
+\emph{origin\_y} = float : y-location of model origin
+
+\item {} 
+\emph{origin\_z} = float : z-location of model origin
 
 \end{itemize}
 
@@ -1258,17 +1626,53 @@ Just love it how easy it is to `write history' with Noddy ;-)
 
 
 
-\section{pynoddy.output module}
-\label{pynoddy:module-pynoddy.output}\label{pynoddy:pynoddy-output-module}\index{pynoddy.output (module)}
+\subsection{Output file parser: pynoddy.output}
+\label{pynoddy:module-pynoddy.output}\label{pynoddy:output-file-parser-pynoddy-output}\index{pynoddy.output (module)}
 Noddy output file analysis
 Created on 24/03/2014
 
-@author: Florian Wellmann
+@author: Florian Wellmann, Sam Thiele
+\index{NoddyGeophysics (class in pynoddy.output)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyGeophysics}\pysiglinewithargsret{\strong{class }\code{pynoddy.output.}\bfcode{NoddyGeophysics}}{\emph{output\_name}}{}
+Bases: \code{object}
+
+Definition to read, analyse, and visualise calculated geophysical responses
+\index{read\_gravity() (pynoddy.output.NoddyGeophysics method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyGeophysics.read_gravity}\pysiglinewithargsret{\bfcode{read\_gravity}}{}{}
+Read calculated gravity response
+
+\end{fulllineitems}
+
+\index{read\_magnetics() (pynoddy.output.NoddyGeophysics method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyGeophysics.read_magnetics}\pysiglinewithargsret{\bfcode{read\_magnetics}}{}{}
+Read caluclated magnetic field response
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
 \index{NoddyOutput (class in pynoddy.output)}
 
 \begin{fulllineitems}
 \phantomsection\label{pynoddy:pynoddy.output.NoddyOutput}\pysiglinewithargsret{\strong{class }\code{pynoddy.output.}\bfcode{NoddyOutput}}{\emph{output\_name}}{}
+Bases: \code{object}
+
 Class definition for Noddy output analysis
+\index{compare\_dimensions\_to() (pynoddy.output.NoddyOutput method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyOutput.compare_dimensions_to}\pysiglinewithargsret{\bfcode{compare\_dimensions\_to}}{\emph{other}}{}
+Compare model dimensions to another model
+
+\end{fulllineitems}
+
 \index{determine\_unit\_volumes() (pynoddy.output.NoddyOutput method)}
 
 \begin{fulllineitems}
@@ -1292,7 +1696,108 @@ external VTK viewer, e.g. Paraview.
 \item {} 
 \emph{vtk\_filename} = string : filename of VTK file (default: output\_name)
 
+\item {} 
+\emph{data} = np.array : data array to export to VKT (default: entire block model)
+
 \end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{get\_section\_lines() (pynoddy.output.NoddyOutput method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyOutput.get_section_lines}\pysiglinewithargsret{\bfcode{get\_section\_lines}}{\emph{direction='y'}, \emph{position='center'}, \emph{**kwds}}{}
+Create and returns a list of lines representing a section block through the model
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{direction} = `x', `y', `z' : coordinate direction of section plot (default: `y')
+
+\item {} \begin{description}
+\item[{\emph{position} = int or `center'}] \leavevmode{[}cell position of section as integer value{]}
+or identifier (default: `center')
+
+\end{description}
+
+\end{itemize}
+
+\end{description}
+
+\textbf{Returns}:
+A tuple of lists of dictionaries.... ie:
+( {[} dictionary of x coordinates, with lithology pairs as keys, separated by an underscore{]},
+\begin{quote}
+
+{[} dictionary of y coordinates, with lithology pairs as keys, separated by an underscore{]},
+{[} dictionary of z coordinates, with lithology pairs as keys, separated by an underscore{]},
+{[} dictionary of colours, with lithologies as keys{]})
+\end{quote}
+
+For example: get\_section\_lines(){[}0{]}{[}''1\_2''{]} returns a list of all the x coordinates from the 
+contact between lithology 1 and lithology 2. Note that the smaller lithology index always
+comes first in the code.
+
+\end{fulllineitems}
+
+\index{get\_section\_voxels() (pynoddy.output.NoddyOutput method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyOutput.get_section_voxels}\pysiglinewithargsret{\bfcode{get\_section\_voxels}}{\emph{direction='y'}, \emph{position='center'}, \emph{**kwds}}{}
+Create and returns section block through the model
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{direction} = `x', `y', `z' : coordinate direction of section plot (default: `y')
+
+\item {} \begin{description}
+\item[{\emph{position} = int or `center'}] \leavevmode{[}cell position of section as integer value{]}
+or identifier (default: `center')
+
+\end{description}
+
+\end{itemize}
+
+\item[{\textbf{Optional Keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{data} = np.array : data to plot, if different to block data itself
+
+\item {} 
+\emph{litho\_filter} = a list of lithologies to draw. All others will be ignored.
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{get\_surface\_grid() (pynoddy.output.NoddyOutput method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyOutput.get_surface_grid}\pysiglinewithargsret{\bfcode{get\_surface\_grid}}{\emph{lithoID}, \emph{**kwds}}{}
+Returns a grid of lines that define a grid on the specified surface. Note that this cannot
+handle layers that are repeated in the z direction...
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{lithoID} - the top surface of this lithology will be calculated. If a list is passed,}] \leavevmode
+the top surface of each lithology in the list is calculated.
+
+\end{description}
+
+\end{itemize}
+
+\item[{\textbf{Keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{res} - the resolution to sample at. Default is 2 (ie. every second voxel is sampled).
+
+\end{itemize}
+
+\item[{\textbf{Returns}:}] \leavevmode
+a tuple containing lists of tuples of x, y and z coordinate dictionaries and colour dictionaries, 
+one containing the east-west lines and one the north-south lines: ((x,y,z,c),(x,y,z,c)). THe dictionary
+keys are the lithoID's passed in the lithoID parameter.
 
 \end{description}
 
@@ -1342,6 +1847,12 @@ or identifier (default: `center')
 \item {} 
 \emph{colorbar} = bool : plot colorbar (default: True)
 
+\item {} \begin{description}
+\item[{\emph{colorbar\_orientation} = `horizontal' or `vertical'}] \leavevmode{[}orientation of colorbar{]}
+(default: `vertical')
+
+\end{description}
+
 \item {} 
 \emph{title} = string : plot title
 
@@ -1349,10 +1860,515 @@ or identifier (default: `center')
 \emph{savefig} = bool : save figure to file (default: show directly on screen)
 
 \item {} 
-\emph{cmap} = matplotlib.cmap : colormap
+\emph{cmap} = matplotlib.cmap : colormap (default: YlOrRd)
 
 \item {} 
 \emph{fig\_filename} = string : figure filename
+
+\item {} 
+\emph{ve} = float : vertical exaggeration
+
+\item {} 
+\emph{layer\_labels} = list of strings: labels for each unit in plot
+
+\item {} 
+\emph{layers\_from} = noddy history file : get labels automatically from history file
+
+\item {} 
+\emph{data} = np.array : data to plot, if different to block data itself
+
+\item {} 
+\emph{litho\_filter} = a list of lithologies to draw. All others will be ignored.
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{set\_basename() (pynoddy.output.NoddyOutput method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyOutput.set_basename}\pysiglinewithargsret{\bfcode{set\_basename}}{\emph{name}}{}
+Set model basename
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{NoddyTopology (class in pynoddy.output)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology}\pysiglinewithargsret{\strong{class }\code{pynoddy.output.}\bfcode{NoddyTopology}}{\emph{noddy\_model}, \emph{**kwds}}{}
+Bases: \code{object}
+
+Definition to read, analyse, and visualise calculated voxel topology
+\index{calculate\_difference() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.calculate_difference}\pysiglinewithargsret{\bfcode{calculate\_difference}}{\emph{G2}, \emph{data=False}}{}
+Calculates the difference between this NoddyTopology and another NoddyTopology or networkX graph
+\begin{description}
+\item[{\textbf{Arguments}}] \leavevmode\begin{itemize}
+\item {} 
+\emph{G2} = a valid NoddyTopology object or NetworkX graph that this topology is to be compared with
+
+\end{itemize}
+
+\item[{\textbf{Returns}}] \leavevmode
+A tuple containing:
+- The number of different edges 
+- a list of these edges
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{calculate\_overlap() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.calculate_overlap}\pysiglinewithargsret{\bfcode{calculate\_overlap}}{\emph{G2}}{}
+Calculates the overlap between this NoddyTopology and another NoddyTopology or networkX graph
+\begin{description}
+\item[{\textbf{Arguments}}] \leavevmode\begin{itemize}
+\item {} 
+\emph{G2} = a valid NoddyTopology object or NetworkX graph that this topology is to be compared with
+
+\end{itemize}
+
+\item[{\textbf{Returns}}] \leavevmode\begin{itemize}
+\item {} 
+The number of overlapping edges
+
+\item {} 
+A list of these edges
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{calculate\_unique\_topologies() (pynoddy.output.NoddyTopology static method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.calculate_unique_topologies}\pysiglinewithargsret{\strong{static }\bfcode{calculate\_unique\_topologies}}{\emph{topology\_list}, \emph{**kwds}}{}
+Calculates the number of unique topologies in a list of NoddyTopologies
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{topology\_list} = The list of NoddyTopologies to search through.
+
+\end{itemize}
+
+\item[{\textbf{Optional Keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{output} = A File or list to write cumulative observed topologies distribution. Default is None (nothing written).
+
+\item {} \begin{description}
+\item[{\emph{ids} = A list to write the unique topology id's for each topology in the provided topology\_list (in that }] \leavevmode
+order). Default is None.
+
+\end{description}
+
+\item {} 
+\emph{frequency} = A list to write frequency counts to.
+
+\end{itemize}
+
+\item[{\textbf{Returns}:}] \leavevmode\begin{itemize}
+\item {} 
+Returns a list of unique topologies.
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{collapse\_stratigraphy() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.collapse_stratigraphy}\pysiglinewithargsret{\bfcode{collapse\_stratigraphy}}{}{}
+Collapses all stratigraphic edges in this network to produce a network that only contains
+structurally bound rock volumes. Essentially this is a network built only with Topology codes
+and ignoring lithology
+\begin{description}
+\item[{\textbf{Returns}}] \leavevmode\begin{itemize}
+\item {} 
+a new NoddyTopology object containing the collapsed graph. The original object is not modified.
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{collapse\_topology() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.collapse_topology}\pysiglinewithargsret{\bfcode{collapse\_topology}}{\emph{verbose=False}}{}
+Collapses all topology codes down to the last (most recent) difference. Information regarding specific model topology is 
+generalised, eg. lithology A has a fault and stratigrappic contact with B (regardless of how many different faults are involved).
+
+Note that this function has not been properly tested, and i'm not exactly sure what it does...
+\begin{description}
+\item[{\textbf{Optional Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{verbose} = True if this function should write to the print buffer. Default is False.
+
+\end{itemize}
+
+\item[{\textbf{Returns}}] \leavevmode\begin{itemize}
+\item {} 
+a new NoddyTopology object containing the collapsed graph. The original object is not modified.
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{combine\_topologies() (pynoddy.output.NoddyTopology static method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.combine_topologies}\pysiglinewithargsret{\strong{static }\bfcode{combine\_topologies}}{\emph{topology\_list}}{}
+Combines a list of topology networks into a weighted `super-network'. This is designed for
+estimating the likelyhood of a given edge occuring using a series of networks generated in
+a Monte-Carlo type analysis.
+\begin{description}
+\item[{\textbf{Arguments}}] \leavevmode\begin{itemize}
+\item {} 
+\emph{topology\_list} = A list of networkX graphs or NoddyTopology objects to build supernetwork from.
+
+\end{itemize}
+
+\item[{\textbf{Returns}}] \leavevmode\begin{itemize}
+\item {} 
+A NetworkX graph object containing all edges from the input graphs and weighted (`weight' parameter)
+according to their observed frequency.
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{draw\_3d\_network() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.draw_3d_network}\pysiglinewithargsret{\bfcode{draw\_3d\_network}}{\emph{**kwds}}{}
+Draws a 3D network using matplotlib.
+\begin{description}
+\item[{\textbf{Optional Keywords}:}] \leavevmode\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{show} = If True, the 3D network is displayed immediatly on-screen in an}] \leavevmode
+interactive mayavi viewer. Default is True.
+
+\end{description}
+
+\item {} 
+\emph{output} = If defined an image of the network is saved to this location.
+
+\item {} 
+\emph{node\_size} = The size of the nodes. Default is 40.
+
+\item {} 
+\emph{geology} = a NoddyOutput object to draw with the network
+
+\item {} 
+\emph{res} = resolution to draw geology at. Default is 4 (ie 1/4 of all voxels are drawn)
+
+\item {} \begin{description}
+\item[{\emph{horizons} = a list of geology surfaces to draw. Default is nothing (none drawn). Slow!}] \leavevmode
+See NoddyOutput.get\_surface\_grid for details.
+
+\end{description}
+
+\item {} 
+\emph{sections} = draw geology sections. Default is True.
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{draw\_adjacency\_matrix() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.draw_adjacency_matrix}\pysiglinewithargsret{\bfcode{draw\_adjacency\_matrix}}{\emph{**kwds}}{}
+Draws an adjacency matrix representing this topology object.
+\begin{description}
+\item[{\textbf{Keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{path} = The path to save this image to. If not provided, the image is drawn to the screen
+
+\item {} 
+\emph{dpi} = The resolution to save this image. Default is 300
+
+\item {} 
+\emph{size} = The size of the image to save (in inches). This value will be used as the width and the height
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{draw\_difference\_matrix() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.draw_difference_matrix}\pysiglinewithargsret{\bfcode{draw\_difference\_matrix}}{\emph{G2}, \emph{**kwds}}{}
+Draws an adjacency matrix containing the difference between this topology and the provided topology
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{G2} = A different NoddyTopology or NetworkX Graph to compare to
+
+\end{itemize}
+
+\item[{\textbf{Optional Keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{path} = The path to save this image to. If not provided, the image is drawn to the screen
+
+\item {} 
+\emph{dpi} = The resolution to save this image. Default is 300
+
+\item {} 
+\emph{size} = The size of the image to save (in inches). This value will be used as the width and the height
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{draw\_graph\_matrix() (pynoddy.output.NoddyTopology static method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.draw_graph_matrix}\pysiglinewithargsret{\strong{static }\bfcode{draw\_graph\_matrix}}{\emph{G}, \emph{**kwds}}{}
+Draws an adjacency matrix representing the specified graph object. Equivalent to
+NoddyTopology.draw\_matrix\_image() but for a networkX graph object.
+\begin{description}
+\item[{\textbf{Keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{path} = The path to save this image to. If not provided, the image is drawn to the screen
+
+\item {} 
+\emph{dpi} = The resolution to save this image. Default is 300
+
+\item {} 
+\emph{size} = The size of the image to save (in inches). This value will be used as the width and the height
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{draw\_network\_hive() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.draw_network_hive}\pysiglinewithargsret{\bfcode{draw\_network\_hive}}{\emph{**kwds}}{}
+Draws a network hive plot (see \href{https://github.com/ericmjl/hiveplot}{https://github.com/ericmjl/hiveplot}).
+The axes of the hive are: node lithology, edge age \& edge area.
+
+ie. the top axis lists the nodes in stratigraphic order. The second axis
+lists edges in structural age \& thrid axis lists edges by surface area.
+
+Nodes are joined to edge-nodes by lines on the graph if they are topologically linked
+(ie. if an edge has that node as an end point).
+\begin{quote}
+
+\textbf{Optional Keywords}
+- \emph{path} = the path to save this figure
+- \emph{dpi} = the resolution of the figure
+- \emph{bg} = the background color. Default is black.
+\end{quote}
+
+\end{fulllineitems}
+
+\index{draw\_network\_image() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.draw_network_image}\pysiglinewithargsret{\bfcode{draw\_network\_image}}{\emph{outputname='`}, \emph{**kwds}}{}
+Draws a network diagram of this NoddyTopology to the specified image
+\begin{description}
+\item[{\textbf{Arguments}}] \leavevmode\begin{itemize}
+\item {} 
+\emph{outputname} = the path of the image being written. If left as `' the image is written to the same directory as the basename.
+
+\end{itemize}
+
+\item[{\textbf{Optional Keywords}}] \leavevmode\begin{itemize}
+\item {} 
+\emph{dimension} = `2D' for a 2D network diagram or `3D' for a 3D network diagram. Default is `2D'.
+
+\item {} 
+\emph{axis} = the axis to view on for 3D network diagrams
+
+\item {} 
+\emph{perspective} = True to use perspective projection, or False for orthographic projection. Default is False.
+
+\item {} 
+\emph{node\_size} = The size that nodes are drawn. Default is 1500.
+
+\item {} \begin{description}
+\item[{\emph{layout} = The layout algorithm used in 2D. Options are `spring\_layout' (default), `shell\_layout', `circular\_layout' }] \leavevmode
+and `spectral\_layout'.
+
+\end{description}
+
+\item {} 
+\emph{verbose} = True if this function is allowed to write to the print buffer, otherwise false. Default is true
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{filter\_node\_volumes() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.filter_node_volumes}\pysiglinewithargsret{\bfcode{filter\_node\_volumes}}{\emph{min\_volume=50}}{}
+Removes all nodes with volumes less than the specified size
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{min\_volume} = the threshold volume. Nodes with smaller volumes are deleted.
+
+\end{itemize}
+
+\item[{\textbf{Returns}}] \leavevmode\begin{itemize}
+\item {} 
+returns the number of deleted nodes
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{find\_first\_match() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.find_first_match}\pysiglinewithargsret{\bfcode{find\_first\_match}}{\emph{known}}{}
+Identical to is\_unique, except that the index of the first match is returned if this matches, otherwise
+-1 is returned.
+\textbf{Arguments}:
+\begin{quote}
+
+-\emph{known} = a list of valid NoddyTopology objects or NetworkX graphs to compare with.
+\end{quote}
+\begin{description}
+\item[{\textbf{Returns}:}] \leavevmode\begin{itemize}
+\item {} 
+Returns the index of the first matching topology object, or -1
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{find\_matching() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.find_matching}\pysiglinewithargsret{\bfcode{find\_matching}}{\emph{known}}{}
+Finds the first matching NoddyTopology (or NetworkX graph) in the specified list
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode
+-\emph{known} = a list of valid NoddyTopology objects or NetworkX graphs to compare with.
+
+\item[{\textbf{Returns}:}] \leavevmode\begin{itemize}
+\item {} 
+Returns the first matching object (jaccard coefficient = 1), or otherwise None
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{is\_unique() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.is_unique}\pysiglinewithargsret{\bfcode{is\_unique}}{\emph{known}}{}
+Returns True if the topology of this model is different (ie. forms a different network) to a list of models.
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode
+-\emph{known} = a list of valid NoddyTopology objects or NetworkX graphs to compare with.
+
+\item[{\textbf{Returns}:}] \leavevmode\begin{itemize}
+\item {} 
+Returns true if this topology is unique, otherwise false
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{jaccard\_coefficient() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.jaccard_coefficient}\pysiglinewithargsret{\bfcode{jaccard\_coefficient}}{\emph{G2}}{}
+Calculates the Jaccard Coefficient (ratio between the intersection \& union) of the graph representing this NOddyTopology and G2.
+\begin{description}
+\item[{\textbf{Arguments}}] \leavevmode\begin{itemize}
+\item {} 
+\emph{G2} = a valid NoddyTopology object or NetworkX graph that this topology is to be compared with
+
+\end{itemize}
+
+\item[{\textbf{Returns}}] \leavevmode\begin{itemize}
+\item {} 
+The jaccard\_coefficient
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{loadNetwork() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.loadNetwork}\pysiglinewithargsret{\bfcode{loadNetwork}}{}{}
+Loads the topology network into a NetworkX datastructure
+
+\end{fulllineitems}
+
+\index{read\_adjacency\_matrix() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.read_adjacency_matrix}\pysiglinewithargsret{\bfcode{read\_adjacency\_matrix}}{}{}
+\textbf{DEPRECIATED}
+Read max number of lithologies aross all models
+
+\end{fulllineitems}
+
+\index{read\_properties() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.read_properties}\pysiglinewithargsret{\bfcode{read\_properties}}{}{}
+\end{fulllineitems}
+
+\index{write\_summary\_file() (pynoddy.output.NoddyTopology method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.output.NoddyTopology.write_summary_file}\pysiglinewithargsret{\bfcode{write\_summary\_file}}{\emph{path}, \emph{append=True}}{}
+Writes summary information about this network to a file
+\begin{description}
+\item[{\textbf{Optional Arguments}}] \leavevmode\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{append} = True if summary information should be appended to the file. If so the file is written as a csv spreadsheet. }] \leavevmode
+Default is true. If False is passed, a single, detailed summary is written for this network.
+
+\end{description}
 
 \end{itemize}
 
@@ -1365,29 +2381,1110 @@ or identifier (default: `center')
 
 
 
-\section{Module contents}
-\label{pynoddy:module-contents}\label{pynoddy:module-pynoddy}\index{pynoddy (module)}
-Package initialization file for pynoddy
-\index{compute\_model() (in module pynoddy)}
+\subsection{Additional useful classes}
+\label{pynoddy:additional-useful-classes}
+
+\subsubsection{pynoddy.events}
+\label{pynoddy:pynoddy-events}\label{pynoddy:module-pynoddy.events}\index{pynoddy.events (module)}
+Module for reading and manipulating geological events
+Created on Mar 26, 2014
+
+@author: Florian Wellmann
+\index{Dyke (class in pynoddy.events)}
 
 \begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.compute_model}\pysiglinewithargsret{\code{pynoddy.}\bfcode{compute\_model}}{\emph{history}, \emph{output\_name}}{}
+\phantomsection\label{pynoddy:pynoddy.events.Dyke}\pysiglinewithargsret{\strong{class }\code{pynoddy.events.}\bfcode{Dyke}}{\emph{**kwds}}{}
+Bases: {\hyperref[pynoddy:pynoddy.events.Event]{\emph{\code{pynoddy.events.Event}}}}
+
+Dyke event
+\index{parse\_event\_lines() (pynoddy.events.Dyke method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Dyke.parse_event_lines}\pysiglinewithargsret{\bfcode{parse\_event\_lines}}{\emph{lines}}{}
+Read specific event lines from history file
+\textbf{Arguments}:
+\begin{itemize}
+\item {} 
+\emph{lines} = list of lines : lines with event information (as stored in .his file)
+
+\end{itemize}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{Event (class in pynoddy.events)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Event}\pysiglinewithargsret{\strong{class }\code{pynoddy.events.}\bfcode{Event}}{\emph{**kwds}}{}
+Bases: \code{object}
+
+Main class container for geological events
+
+Include here all elements that events have in common (position, etc. - 
+possibly even things like color and other aspects that are defined in the history...
+Parse for equal settings and include here!)
+\index{set\_event\_lines() (pynoddy.events.Event method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Event.set_event_lines}\pysiglinewithargsret{\bfcode{set\_event\_lines}}{\emph{lines}}{}
+Explicitly define event lines
+
+\end{fulllineitems}
+
+\index{set\_event\_number() (pynoddy.events.Event method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Event.set_event_number}\pysiglinewithargsret{\bfcode{set\_event\_number}}{\emph{num}}{}
+Set number in `Event \#' line to num
+
+\end{fulllineitems}
+
+\index{update\_properties() (pynoddy.events.Event method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Event.update_properties}\pysiglinewithargsret{\bfcode{update\_properties}}{\emph{**kwds}}{}
+Update properties (required if self.properties assignment changed!)
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{Fault (class in pynoddy.events)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Fault}\pysiglinewithargsret{\strong{class }\code{pynoddy.events.}\bfcode{Fault}}{\emph{**kwds}}{}
+Bases: {\hyperref[pynoddy:pynoddy.events.Event]{\emph{\code{pynoddy.events.Event}}}}
+
+Fault event
+\index{parse\_event\_lines() (pynoddy.events.Fault method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Fault.parse_event_lines}\pysiglinewithargsret{\bfcode{parse\_event\_lines}}{\emph{lines}}{}
+Read specific event lines from history file
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{lines} = list of lines : lines with event information (as stored in .his file)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{Fold (class in pynoddy.events)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Fold}\pysiglinewithargsret{\strong{class }\code{pynoddy.events.}\bfcode{Fold}}{\emph{**kwds}}{}
+Bases: {\hyperref[pynoddy:pynoddy.events.Event]{\emph{\code{pynoddy.events.Event}}}}
+
+Folding event
+\index{parse\_event\_lines() (pynoddy.events.Fold method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Fold.parse_event_lines}\pysiglinewithargsret{\bfcode{parse\_event\_lines}}{\emph{lines}}{}
+Read specific event lines from history file
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{lines} = list of lines : lines with event information (as stored in .his file)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{Plug (class in pynoddy.events)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Plug}\pysiglinewithargsret{\strong{class }\code{pynoddy.events.}\bfcode{Plug}}{\emph{**kwds}}{}
+Bases: {\hyperref[pynoddy:pynoddy.events.Event]{\emph{\code{pynoddy.events.Event}}}}
+
+\end{fulllineitems}
+
+\index{Strain (class in pynoddy.events)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Strain}\pysiglinewithargsret{\strong{class }\code{pynoddy.events.}\bfcode{Strain}}{\emph{**kwds}}{}
+Bases: {\hyperref[pynoddy:pynoddy.events.Event]{\emph{\code{pynoddy.events.Event}}}}
+
+Strain event
+\index{parse\_event\_lines() (pynoddy.events.Strain method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Strain.parse_event_lines}\pysiglinewithargsret{\bfcode{parse\_event\_lines}}{\emph{lines}}{}
+Read specific event lines from history file
+\textbf{Arguments}:
+\begin{itemize}
+\item {} 
+\emph{lines} = list of lines : lines with event information (as stored in .his file)
+
+\end{itemize}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{Stratigraphy (class in pynoddy.events)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Stratigraphy}\pysiglinewithargsret{\strong{class }\code{pynoddy.events.}\bfcode{Stratigraphy}}{\emph{**kwds}}{}
+Bases: {\hyperref[pynoddy:pynoddy.events.Event]{\emph{\code{pynoddy.events.Event}}}}
+
+Sedimentary pile with defined stratigraphy
+\index{parse\_event\_lines() (pynoddy.events.Stratigraphy method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Stratigraphy.parse_event_lines}\pysiglinewithargsret{\bfcode{parse\_event\_lines}}{\emph{lines}}{}
+Read specific event lines from history file
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{lines} = list of lines : lines with event information (as stored in .his file)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{Tilt (class in pynoddy.events)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Tilt}\pysiglinewithargsret{\strong{class }\code{pynoddy.events.}\bfcode{Tilt}}{\emph{**kwds}}{}
+Bases: {\hyperref[pynoddy:pynoddy.events.Event]{\emph{\code{pynoddy.events.Event}}}}
+
+Tilt event
+\index{parse\_event\_lines() (pynoddy.events.Tilt method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Tilt.parse_event_lines}\pysiglinewithargsret{\bfcode{parse\_event\_lines}}{\emph{lines}}{}
+Read specific event lines from history file
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{lines} = list of lines : lines with event information (as stored in .his file)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{Unconformity (class in pynoddy.events)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Unconformity}\pysiglinewithargsret{\strong{class }\code{pynoddy.events.}\bfcode{Unconformity}}{\emph{**kwds}}{}
+Bases: {\hyperref[pynoddy:pynoddy.events.Event]{\emph{\code{pynoddy.events.Event}}}}
+
+Unconformity event
+\index{change\_height() (pynoddy.events.Unconformity method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Unconformity.change_height}\pysiglinewithargsret{\bfcode{change\_height}}{\emph{val}}{}
+Change the vertical position (i.e. height) of the entire stratigraphic pile
+above the unconformity
+
+\begin{notice}{note}{Note:}
+This is not identical to changing only the `Z' property as
+the height of all layers has to be adjusted for (geological)
+consistency
+\end{notice}
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{val} = float : value added to current z-values
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{parse\_event\_lines() (pynoddy.events.Unconformity method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.events.Unconformity.parse_event_lines}\pysiglinewithargsret{\bfcode{parse\_event\_lines}}{\emph{lines}}{}
+Read specific event lines from history file
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{lines} = list of lines : lines with event information (as stored in .his file)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+
 \end{fulllineitems}
 
 
 
-\chapter{Indices and tables}
-\label{index:indices-and-tables}\begin{itemize}
+\section{Modules for Kinematic experiments}
+\label{pynoddy:modules-for-kinematic-experiments}
+The modules described in this section are designed to provide a high-level
+access to the kinematic modelling functionality in Noddy. The modules encapsulate
+the required aspects of complete experiments, including input file generation,
+adaptation of parameters, random number generation, model computation, and
+postprocessing.
+
+
+\subsection{Base classes for pynoddy experiments}
+\label{pynoddy:base-classes-for-pynoddy-experiments}
+The base class for any type of experiments is defined in the pynoddy.experiment module.
+\phantomsection\label{pynoddy:module-pynoddy.experiment}\index{pynoddy.experiment (module)}
+Base class from which PyNoddy experiments should inherit.
+
+Much basic functionality (random perturbation, plotting etc. is defined here).
+
+Thought: perhaps drawing functions etc. should be moved into NoddyOutput class?
+
+@author: flohorovicic, samthiele
+\index{Experiment (class in pynoddy.experiment)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment}\pysiglinewithargsret{\strong{class }\code{pynoddy.experiment.}\bfcode{Experiment}}{\emph{history=None}, \emph{**kwds}}{}
+Bases: {\hyperref[pynoddy:pynoddy.history.NoddyHistory]{\emph{\code{pynoddy.history.NoddyHistory}}}}, {\hyperref[pynoddy:pynoddy.output.NoddyOutput]{\emph{\code{pynoddy.output.NoddyOutput}}}}
+
+Noddy experiment container, inheriting from both noddy history and output methods
+\index{export\_to\_vtk() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.export_to_vtk}\pysiglinewithargsret{\bfcode{export\_to\_vtk}}{\emph{**kwds}}{}
+Export model to VTK
+
+Export the geology blocks to VTK for visualisation of the entire 3-D model in an
+external VTK viewer, e.g. Paraview.
+
+..Note:: Requires pyevtk, available for free on: \href{https://github.com/firedrakeproject/firedrake/tree/master/python/evtk}{https://github.com/firedrakeproject/firedrake/tree/master/python/evtk}
+\begin{description}
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
 \item {} 
-\emph{genindex}
+\emph{vtk\_filename} = string : filename of VTK file (default: output\_name)
 
 \item {} 
-\emph{modindex}
+\emph{data} = np.array : data array to export to VKT (default: entire block model)
 
 \item {} 
-\emph{search}
+\emph{recompute} = bool : recompute the block model (default: True)
+
+\item {} 
+\emph{model\_type} = `current', `base' : model type (base ``freezed'' model can be plotted for comparison)
 
 \end{itemize}
+
+\end{description}
+
+..Note:: If data is defined, the model is not recomputed and the data from this array is plotted
+
+\end{fulllineitems}
+
+\index{freeze() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.freeze}\pysiglinewithargsret{\bfcode{freeze}}{\emph{**kwds}}{}
+Freeze the current model state: store the event settings for later comparison
+
+\end{fulllineitems}
+
+\index{get\_sampling\_line\_data() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.get_sampling_line_data}\pysiglinewithargsret{\bfcode{get\_sampling\_line\_data}}{\emph{xyz\_from}, \emph{xyz\_to}}{}
+Get computed model along a line, for example as a drillhole position
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{xyz\_from} = {[}x, y, z{]} : list of float values for starting position
+
+\item {} 
+\emph{xyz\_to} = {[}x, y, z{]} : list of float values for starting position
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{get\_section() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.get_section}\pysiglinewithargsret{\bfcode{get\_section}}{\emph{direction='y'}, \emph{position='center'}, \emph{**kwds}}{}
+Get geological section of the model (re-computed at required resolution) as noddy object
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{direction} = `x', `y', `z' : coordinate direction of section plot (default: `y')
+
+\item {} \begin{description}
+\item[{\emph{position} = int or `center'}] \leavevmode{[}cell position of section as integer value{]}
+or identifier (default: `center')
+
+\end{description}
+
+\end{itemize}
+
+\item[{\textbf{Optional arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{resolution} = float : set resolution for section (default: self.cube\_size)
+
+\item {} 
+\emph{model\_type} = `current', `base' : model type (base ``freezed'' model can be plotted for comparison)
+
+\item {} 
+\emph{compute\_output} = bool : provide output from command line call (default: True)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{get\_up\_to\_date() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.get_up_to_date}\pysiglinewithargsret{\bfcode{get\_up\_to\_date}}{}{}
+Get model state
+
+\end{fulllineitems}
+
+\index{is\_up\_to\_date (pynoddy.experiment.Experiment attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.is_up_to_date}\pysigline{\bfcode{is\_up\_to\_date}}
+Model state
+
+\end{fulllineitems}
+
+\index{load\_parameter\_file() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.load_parameter_file}\pysiglinewithargsret{\bfcode{load\_parameter\_file}}{\emph{filename}, \emph{**kwds}}{}
+Load parameter statistics from external csv file
+
+The csv file should contain a header row with the relevant keywords identifying columns. 
+In order to be read in correctly, the header should contain the labels:
+\begin{itemize}
+\item {} 
+`event' : event id
+
+\item {} 
+`parameter' : Noddy parameter (`Dip', `Dip Direction', etc.)
+
+\item {} 
+`mean' : mean parameter value
+
+\item {} 
+`type' = `normal', `vonmises' or `uniform'.
+
+\end{itemize}
+
+In addition, it is necessary to define PDF type and parameters. For now, the following settings are supported:
+- `+-` = Defines the 2.5th and 97.5th percentiles of the distribution,
+\begin{quote}
+
+similar to a 95\% confidence interval.
+\end{quote}
+\begin{itemize}
+\item {} 
+`stdev' = standard deviation. Only works if type='normal'.
+
+\item {} 
+`min' = The minimum value of a uniform distribution (if type='uniform')
+
+\item {} 
+`max' = The maximum value of a uniform distribution (if type='uniform')
+
+\end{itemize}
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{filename} = string : filename
+
+\end{itemize}
+
+\item[{\textbf{Optional arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{delim} = string : delimiter (default: `,' or `;', both checked)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{plot\_section() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.plot_section}\pysiglinewithargsret{\bfcode{plot\_section}}{\emph{direction='y'}, \emph{position='center'}, \emph{**kwds}}{}
+Extended version of plot\_section method from pynoddy.output class
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{direction} = `x', `y', `z' : coordinate direction of section plot (default: `y')
+
+\item {} \begin{description}
+\item[{\emph{position} = int or `center'}] \leavevmode{[}cell position of section as integer value{]}
+or identifier (default: `center')
+
+\end{description}
+
+\end{itemize}
+
+\item[{\textbf{Optional Keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{ax} = matplotlib.axis : append plot to axis (default: create new plot)
+
+\item {} 
+\emph{figsize} = (x,y) : matplotlib figsize
+
+\item {} 
+\emph{colorbar} = bool : plot colorbar (default: True)
+
+\item {} \begin{description}
+\item[{\emph{colorbar\_orientation} = `horizontal' or `vertical'}] \leavevmode{[}orientation of colorbar{]}
+(default: `vertical')
+
+\end{description}
+
+\item {} 
+\emph{title} = string : plot title
+
+\item {} 
+\emph{savefig} = bool : save figure to file (default: show directly on screen)
+
+\item {} 
+\emph{cmap} = matplotlib.cmap : colormap (default: YlOrRd)
+
+\item {} 
+\emph{fig\_filename} = string : figure filename
+
+\item {} 
+\emph{ve} = float : vertical exaggeration
+
+\item {} 
+\emph{layer\_labels} = list of strings: labels for each unit in plot
+
+\item {} 
+\emph{layers\_from} = noddy history file : get labels automatically from history file
+
+\item {} 
+\emph{resolution} = float : set resolution for section (default: self.cube\_size)
+
+\item {} 
+\emph{model\_type} = `current', `base' : model type (base ``freezed'' model can be plotted for comparison)
+
+\item {} 
+\emph{data} = np.array : data to plot, if different to block data itself
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{random\_draw() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.random_draw}\pysiglinewithargsret{\bfcode{random\_draw}}{\emph{**kwds}}{}
+Perform a random draw for parameter distributions as defined, and calculate model
+
+This method is based on the model ``base-state'', and not the current state (as opposed to
+the self.random\_perturbation() method).
+\begin{description}
+\item[{\textbf{Optional Keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{verbose} = bool: print out parameter changes as they happen (default: False)
+
+\item {} 
+\emph{store\_params} = bool : store random parameter set (default: True)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{random\_perturbation() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.random_perturbation}\pysiglinewithargsret{\bfcode{random\_perturbation}}{\emph{**kwds}}{}
+Perform a random perturbation of the model according to parameter statistics
+defined in self.param\_stats.
+
+Note that by default, this function is identical to random\_draw. If model\_type is 
+set to `current', then parameters are varied according using the \emph{current values} 
+as distribution means - this allows `random walk' away from the initial model state, 
+which is usually not desired.
+\begin{description}
+\item[{\textbf{Optional arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{store\_params} = bool : store random parameter set (default: True)
+
+\item {} 
+\emph{verbose} = bool: print out parameter changes as they happen (default: False)
+
+\item {} \begin{description}
+\item[{\emph{model\_type} = `base', `current'}] \leavevmode{[}perturb on basis of current model, {]}
+or use base model (default: `base' model)
+
+\end{description}
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{reset\_base() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.reset_base}\pysiglinewithargsret{\bfcode{reset\_base}}{}{}
+Set events back to base model (stored in self.base\_events)
+
+\end{fulllineitems}
+
+\index{reset\_random\_seed() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.reset_random_seed}\pysiglinewithargsret{\bfcode{reset\_random\_seed}}{}{}
+Reset random seed to defined value (stored in self.seed, set with self.set\_random\_seed)
+
+\end{fulllineitems}
+
+\index{set\_parameter\_statistics() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.set_parameter_statistics}\pysiglinewithargsret{\bfcode{set\_parameter\_statistics}}{\emph{param\_stats}}{}
+Define parameter statistics for uncertainty simulation and sensitivity analysis
+
+param\_stats = list : list with relevant statistics defined for event parameters
+list is organised as:
+param\_stats{[}event\_id{]}{[}parameter\_name{]}{[}stats\_type{]} = value
+
+Example:
+param\_stats{[}2{]}{[}''Dip''{]}{[}''min''{]} = 200.
+\begin{description}
+\item[{Possible statistics are:}] \leavevmode\begin{itemize}
+\item {} 
+min = float : minimum bound
+
+\item {} 
+max = float : maximum bound
+
+\item {} 
+type = `normal', `uniform' : distribution type
+
+\item {} 
+stdev = float : standard deviation (if normal distribution)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{set\_random\_seed() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.set_random_seed}\pysiglinewithargsret{\bfcode{set\_random\_seed}}{\emph{random\_seed}}{}
+Set random seed for reproducible experiments
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{random\_seed} = int (or array-like) : define seed
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{set\_up\_to\_date() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.set_up_to_date}\pysiglinewithargsret{\bfcode{set\_up\_to\_date}}{}{}
+Set boolean variable for valid object
+
+\end{fulllineitems}
+
+\index{shuffle\_event\_order() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.shuffle_event_order}\pysiglinewithargsret{\bfcode{shuffle\_event\_order}}{\emph{event\_ids}}{}
+Randomly shuffle order of events
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{event\_ids} = {[}list of event ids{]} : event ids to be randomly shuffeled
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{update() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.update}\pysiglinewithargsret{\bfcode{update}}{}{}
+Update model computation
+
+\end{fulllineitems}
+
+\index{write\_parameter\_changes() (pynoddy.experiment.Experiment method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.Experiment.write_parameter_changes}\pysiglinewithargsret{\bfcode{write\_parameter\_changes}}{\emph{filepath}}{}
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+
+
+\subsection{MonteCarlo class}
+\label{pynoddy:montecarlo-class}
+This class provides the basic functionality to perform MonteCarlo error propagation
+experiments with Noddy.
+\phantomsection\label{pynoddy:module-pynoddy.experiment.MonteCarlo}\index{pynoddy.experiment.MonteCarlo (module)}
+Created on Monday Jul 13 10:09:55 2015
+
+@author: Sam Thiele
+\index{MonteCarlo (class in pynoddy.experiment.MonteCarlo)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo}\pysiglinewithargsret{\strong{class }\code{pynoddy.experiment.MonteCarlo.}\bfcode{MonteCarlo}}{\emph{history}, \emph{parameters}, \emph{base\_name='out'}}{}
+Bases: {\hyperref[pynoddy:pynoddy.experiment.Experiment]{\emph{\code{pynoddy.experiment.Experiment}}}}
+
+Perform Monte Carlo simulations on a model using defined input statistics
+\index{clean() (pynoddy.experiment.MonteCarlo.MonteCarlo static method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.clean}\pysiglinewithargsret{\strong{static }\bfcode{clean}}{\emph{path}, \emph{basename=None}, \emph{**kwds}}{}~\begin{quote}
+
+Deletes files and folders created during Monte Carlo simulations
+\end{quote}
+\begin{description}
+\item[{\textbf{Arguments}}] \leavevmode\begin{itemize}
+\item {} 
+\emph{path} = The directory to search. Subdirectories are included in the search.
+
+\item {} 
+\emph{basename} = The basename of files to delete. If left as None (default) all files are deleted.
+
+\end{itemize}
+
+\item[{\textbf{Optional Kewords}}] \leavevmode\begin{itemize}
+\item {} 
+\emph{delete\_noddy\_working\_files} = If True, noddy working files are deleled. Default is True.
+
+\item {} 
+\emph{delete\_noddy\_history\_files} = If True, noddy history files are deleted. Default is True.
+
+\item {} 
+\emph{delete\_topology\_files} = If True, topology files are deleted. Default is True.
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{cleanup() (pynoddy.experiment.MonteCarlo.MonteCarlo method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.cleanup}\pysiglinewithargsret{\bfcode{cleanup}}{\emph{**kwds}}{}
+Deletes files and folders created during Monte Carlo simulations
+\begin{description}
+\item[{\textbf{Optional Kewords}}] \leavevmode\begin{itemize}
+\item {} 
+\emph{delete\_noddy\_working\_files} = If True, noddy working files are deleled. Default is True.
+
+\item {} 
+\emph{delete\_noddy\_history\_files} = If True, noddy history files are deleted. Default is True.
+
+\item {} 
+\emph{delete\_topology\_files} = If True, topology files are deleted. Default is True.
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{generate\_model\_instances() (pynoddy.experiment.MonteCarlo.MonteCarlo method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.generate_model_instances}\pysiglinewithargsret{\bfcode{generate\_model\_instances}}{\emph{path}, \emph{count}, \emph{**kwds}}{}
+Generates the specified of randomly varied Noddy models.
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{path} = The directory that Noddy models should be generated in
+
+\item {} 
+\emph{count} = The number of random variations to generate
+
+\end{itemize}
+
+\item[{\textbf{Optional Kewords}:}] \leavevmode\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{threads} = The number of seperate threads to run when generating noddy models. Note that RAM is }] \leavevmode
+often a limiting factor (at this point every thread requires at least \textasciitilde{}1Gb of ram).
+
+\end{description}
+
+\end{itemize}
+
+\end{description}
+\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{sim\_type} = The type of simulation to run. This can be any of: `BLOCK', `GEOPHYSICS', `SURFACES', }] \leavevmode
+`BLOCK\_GEOPHYS', `TOPOLOGY', `BLOCK\_SURFACES', `ALL'. Default is `BLOCK'.
+
+\end{description}
+
+\item {} \begin{description}
+\item[{\emph{write\_changes} = A file (path) to write the parameters used in each model realisation to (minus the extension). }] \leavevmode
+The default is None (no file written).
+
+\end{description}
+
+\item {} 
+\emph{verbose} = True if this function sends output to the print buffer. Default is True.
+
+\item {} 
+\emph{seed} = The random seed to use in this experiment. If not specified, threads are seeded with PID * TID * time ({\color{red}\bfseries{}*}nodeID).
+
+\end{itemize}
+
+\end{fulllineitems}
+
+\index{generate\_models\_from\_existing\_histories() (pynoddy.experiment.MonteCarlo.MonteCarlo static method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.generate_models_from_existing_histories}\pysiglinewithargsret{\strong{static }\bfcode{generate\_models\_from\_existing\_histories}}{\emph{path}, \emph{**kwds}}{}
+Processes all existing his files in the given directory
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{path} = The directory that will be searched for .his files
+
+\end{itemize}
+
+\item[{\textbf{Optional Kewords}:}] \leavevmode\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{threads} = The number of seperate threads to run when generating noddy models. For optimum}] \leavevmode
+performance this should equal the number of logical cores - 1, unless RAM is a 
+limiting factor (at this point every thread requires at least 2Gb of ram).
+
+\end{description}
+
+\end{itemize}
+
+\end{description}
+\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{sim\_type} = The type of simulation to run. This can be any of: `BLOCK', `GEOPHYSICS', `SURFACES', }] \leavevmode
+`BLOCK\_GEOPHYS', `TOPOLOGY', `BLOCK\_SURFACES', `ALL'. Default is `BLOCK'.
+
+\end{description}
+
+\item {} \begin{description}
+\item[{\emph{force\_recalculate} = Forces the recalculation of existing noddy files. Default is False, hence this}] \leavevmode
+function will not run history files that are already associated with Noddy data files.
+
+\end{description}
+
+\item {} 
+\emph{verbose} = True if this function sends output to the print buffer. Default is True.
+
+\end{itemize}
+
+\end{fulllineitems}
+
+\index{load\_noddy\_realisations() (pynoddy.experiment.MonteCarlo.MonteCarlo static method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.load_noddy_realisations}\pysiglinewithargsret{\strong{static }\bfcode{load\_noddy\_realisations}}{\emph{path}, \emph{**args}}{}
+Loads all model realisations and returns them as an array of NoddyOutput objects
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{path} = The root directory that models should be loaded from. All models with the same base\_name}] \leavevmode
+as this class will be loaded (including subdirectoriess)
+
+\end{description}
+
+\end{itemize}
+
+\item[{\textbf{Optional Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{verbose} = True if this function should write debug information to the print buffer. Default is True.
+
+\end{itemize}
+
+\item[{\textbf{Returns}:}] \leavevmode\begin{itemize}
+\item {} 
+a list of NoddyOutput objects
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{load\_topology\_realisations() (pynoddy.experiment.MonteCarlo.MonteCarlo static method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.load_topology_realisations}\pysiglinewithargsret{\strong{static }\bfcode{load\_topology\_realisations}}{\emph{path}, \emph{**args}}{}
+Loads all model topology realisations and returns them as an array of NoddyTopology objects
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{path} = The root directory that models should be loaded from. All models with the same base\_name}] \leavevmode
+as this class will be loaded (including subdirectoriess)
+
+\end{description}
+
+\end{itemize}
+
+\item[{\textbf{Optional Arguments}:}] \leavevmode\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{load\_attributes} = True if nodes and edges in the topology network should be attributed with properties such as volume}] \leavevmode
+and surface area and lithology colour. Default is True.
+
+\end{description}
+
+\item {} 
+\emph{verbose} = True if this function should write debug information to the print buffer. Default is True.
+
+\end{itemize}
+
+\item[{\textbf{Returns}:}] \leavevmode\begin{itemize}
+\item {} 
+a list of NoddyTopology objects
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+
+
+\subsection{SensitivityAnalysis class}
+\label{pynoddy:sensitivityanalysis-class}\label{pynoddy:module-pynoddy.experiment.SensitivityAnalysis}\index{pynoddy.experiment.SensitivityAnalysis (module)}\index{SensitivityAnalysis (class in pynoddy.experiment.SensitivityAnalysis)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis}\pysiglinewithargsret{\strong{class }\code{pynoddy.experiment.SensitivityAnalysis.}\bfcode{SensitivityAnalysis}}{\emph{history=None}, \emph{**kwds}}{}
+Bases: {\hyperref[pynoddy:pynoddy.experiment.Experiment]{\emph{\code{pynoddy.experiment.Experiment}}}}
+
+Sensitivity analysis experiments for kinematic models
+
+Sensitivity analysis with methods from the SALib package:
+\href{https://github.com/jdherman/SALib}{https://github.com/jdherman/SALib}
+\index{add\_sampling\_line() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.add_sampling_line}\pysiglinewithargsret{\bfcode{add\_sampling\_line}}{\emph{x}, \emph{y}, \emph{**kwds}}{}
+Define a vertical sampling line, for example as a drillhole at position (x,y)
+
+As default, the entire length for the model extent is exported. Ohter depth ranges
+can be defined with optional keywords.
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{x} = float: x-position of drillhole
+
+\end{itemize}
+\begin{itemize}
+\item {} 
+\emph{y} = float: y-position of drillhole
+
+\end{itemize}
+
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{z\_min} = float : minimum z-value (default: model origin)
+
+\item {} 
+\emph{z\_max} = float : maximum z-value (default: surface)
+
+\item {} 
+\emph{label} = string : add a label to line (e.g. drillhole name, location, etc.)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{create\_params\_file() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.create_params_file}\pysiglinewithargsret{\bfcode{create\_params\_file}}{\emph{**kwds}}{}
+Create params file from defined parameter statistics for SALib analysis
+
+Note: parameter statistics have to be defined in self.param\_stats dictionary
+(use self.set\_parameter\_statistics)
+\begin{description}
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{filename} = string : name of parameter file (default: params\_file\_tmp.txt)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{determine\_distances() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.determine_distances}\pysiglinewithargsret{\bfcode{determine\_distances}}{\emph{**kwds}}{}
+Determine distances for a given parameter sets, based on defined sampling lines
+\begin{description}
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{param\_values} = list of parameter values (as, for example, created by SALib methods)
+
+\item {} 
+\emph{resolution} = float : model resolution to calculate distance at sampling lines
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{distance() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.distance}\pysiglinewithargsret{\bfcode{distance}}{\emph{**kwds}}{}
+Calculate distance between current state and base model
+
+The standard distance is calculated as L1 norm of relative stratigraphic difference
+along sampling lines.
+\begin{description}
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{norm} = `L1', `L2' : norm to calculate distance
+
+\item {} 
+\emph{resolution} = float : model resolution to calculate distance at sampling lines
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{get\_model\_lines() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.get_model_lines}\pysiglinewithargsret{\bfcode{get\_model\_lines}}{\emph{**kwds}}{}
+Get base model along the defined sampling lines
+\begin{description}
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{model\_type} = `base', `current' : model type (select base to get freezed model)
+
+\item {} 
+\emph{resolution} = float : model resolution to calculate distance at sampling lines
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{perform\_analsis() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.perform_analsis}\pysiglinewithargsret{\bfcode{perform\_analsis}}{\emph{n=10}, \emph{**kwds}}{}
+Perform Sobol sensitivity analysis with SALib methods
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{n} = int : number of sobol iterations (default: 10)
+
+\end{itemize}
+
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{calc\_second\_order} = bool : second order stats (default: True)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{plot\_distances() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.plot_distances}\pysiglinewithargsret{\bfcode{plot\_distances}}{\emph{**kwds}}{}
+Create diagnostic plot of calculated distances
+\begin{description}
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{savefig} = bool : save figure to file (default: show)
+
+\item {} 
+\emph{fig\_filename} = string : figure filename (default: distances.png)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{plot\_sensitivity\_matrix() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
+
+\begin{fulllineitems}
+\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.plot_sensitivity_matrix}\pysiglinewithargsret{\bfcode{plot\_sensitivity\_matrix}}{\emph{**kwds}}{}
+Create a plot of the sensitivity matrix
+\begin{description}
+\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{savefig} = bool : save figure to file (default: show)
+
+\item {} 
+\emph{fig\_filename} = string : figure filename (default: distances.png)
+
+\end{itemize}
+
+\end{description}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
 
 
 \renewcommand{\indexname}{Python Module Index}
@@ -1395,6 +3492,10 @@ Package initialization file for pynoddy
 \def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
 \bigletter{p}
 \item {\texttt{pynoddy}}, \pageref{pynoddy:module-pynoddy}
+\item {\texttt{pynoddy.events}}, \pageref{pynoddy:module-pynoddy.events}
+\item {\texttt{pynoddy.experiment}}, \pageref{pynoddy:module-pynoddy.experiment}
+\item {\texttt{pynoddy.experiment.MonteCarlo}}, \pageref{pynoddy:module-pynoddy.experiment.MonteCarlo}
+\item {\texttt{pynoddy.experiment.SensitivityAnalysis}}, \pageref{pynoddy:module-pynoddy.experiment.SensitivityAnalysis}
 \item {\texttt{pynoddy.history}}, \pageref{pynoddy:module-pynoddy.history}
 \item {\texttt{pynoddy.output}}, \pageref{pynoddy:module-pynoddy.output}
 \end{theindex}

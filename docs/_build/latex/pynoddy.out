@@ -22,13 +22,8 @@
 \BOOKMARK [1][-]{section.4.2}{Changing aspects of geological events}{chapter.4}% 22
 \BOOKMARK [1][-]{section.4.3}{Changing the order of geological events}{chapter.4}% 23
 \BOOKMARK [1][-]{section.4.4}{Determining the stratigraphic difference between two models}{chapter.4}% 24
-\BOOKMARK [0][-]{chapter.5}{Stochastic events}{}% 25
-\BOOKMARK [1][-]{section.5.1}{Definition of stochastic events}{chapter.5}% 26
-\BOOKMARK [0][-]{chapter.6}{pynoddy package}{}% 27
-\BOOKMARK [1][-]{section.6.1}{Submodules}{chapter.6}% 28
-\BOOKMARK [1][-]{section.6.2}{pynoddy.history module}{chapter.6}% 29
-\BOOKMARK [1][-]{section.6.3}{pynoddy.output module}{chapter.6}% 30
-\BOOKMARK [1][-]{section.6.4}{Module contents}{chapter.6}% 31
-\BOOKMARK [0][-]{chapter.7}{Indices and tables}{}% 32
-\BOOKMARK [0][-]{section*.18}{Python Module Index}{}% 33
-\BOOKMARK [0][-]{section*.19}{Index}{}% 34
+\BOOKMARK [0][-]{chapter.5}{Pynoddy modules, classes and functions}{}% 25
+\BOOKMARK [1][-]{section.5.1}{Basic modules \(low-level access\)}{chapter.5}% 26
+\BOOKMARK [1][-]{section.5.2}{Modules for Kinematic experiments}{chapter.5}% 27
+\BOOKMARK [0][-]{section*.130}{Python Module Index}{}% 28
+\BOOKMARK [0][-]{section*.131}{Index}{}% 29

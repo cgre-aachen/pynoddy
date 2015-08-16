@@ -8,7 +8,7 @@
     
     <title>Change Noddy input file and recompute model &mdash; pynoddy  documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -27,8 +27,8 @@
     <link rel="next" title="Geological events in pynoddy: organisation and adpatiation" href="3-Events.html" />
     <link rel="prev" title="Simulation of a Noddy history and visualisation of output" href="1-Simulation.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -43,14 +43,14 @@
         <li class="right" >
           <a href="1-Simulation.html" title="Simulation of a Noddy history and visualisation of output"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="change-noddy-input-file-and-recompute-model">
 <h1>Change Noddy input file and recompute model<a class="headerlink" href="#change-noddy-input-file-and-recompute-model" title="Permalink to this headline">¶</a></h1>
@@ -85,12 +85,12 @@ events themselves, please be patient until we get to the next section.</p>
 <span class="n">H1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Technical note</strong>: the <tt class="docutils literal"><span class="pre">NoddyHistory</span></tt> class can be accessed on the
-level of pynoddy (as it is imported in the <tt class="docutils literal"><span class="pre">__init__.py</span></tt> module) with
+<p><strong>Technical note</strong>: the <code class="docutils literal"><span class="pre">NoddyHistory</span></code> class can be accessed on the
+level of pynoddy (as it is imported in the <code class="docutils literal"><span class="pre">__init__.py</span></code> module) with
 the shortcut:</p>
-<p><tt class="docutils literal"><span class="pre">H1</span> <span class="pre">=</span> <span class="pre">pynoddy.NoddyHistory(history)</span></tt></p>
-<p>I am using the long version <tt class="docutils literal"><span class="pre">pynoddy.history.NoddyHistory</span></tt> here to
-ensure that the correct package is loaded with the <tt class="docutils literal"><span class="pre">reload()</span></tt>
+<p><code class="docutils literal"><span class="pre">H1</span> <span class="pre">=</span> <span class="pre">pynoddy.NoddyHistory(history)</span></code></p>
+<p>I am using the long version <code class="docutils literal"><span class="pre">pynoddy.history.NoddyHistory</span></code> here to
+ensure that the correct package is loaded with the <code class="docutils literal"><span class="pre">reload()</span></code>
 function. If you don&#8217;t make changes to any of the pynoddy files, this is
 not required. So for any practical cases, the shortcuts are absolutely
 fine!</p>
@@ -106,7 +106,7 @@ more will be added soon!), for example the total number of events:</p>
 </pre></div>
 </div>
 <p>Events are implemented as objects, the classes are defined in
-<tt class="docutils literal"><span class="pre">H1.events</span></tt>. All events are accessible in a list on the level of the
+<code class="docutils literal"><span class="pre">H1.events</span></code>. All events are accessible in a list on the level of the
 history object:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">H1</span><span class="o">.</span><span class="n">events</span>
 </pre></div>
@@ -451,7 +451,7 @@ complex, favourite pet model :-)</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -470,12 +470,14 @@ complex, favourite pet model :-)</p>
   <h4>Next topic</h4>
   <p class="topless"><a href="3-Events.html"
                         title="next chapter">Geological events in pynoddy: organisation and adpatiation</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/notebooks/2-Adjust-input.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/2-Adjust-input.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -492,7 +494,7 @@ complex, favourite pet model :-)</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -507,12 +509,12 @@ complex, favourite pet model :-)</p>
         <li class="right" >
           <a href="1-Simulation.html" title="Simulation of a Noddy history and visualisation of output"
              >previous</a> |</li>
-        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Florian Wellmann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

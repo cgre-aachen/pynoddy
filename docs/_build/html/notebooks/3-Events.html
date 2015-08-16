@@ -8,7 +8,7 @@
     
     <title>Geological events in pynoddy: organisation and adpatiation &mdash; pynoddy  documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -24,11 +24,11 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="pynoddy  documentation" href="../index.html" />
-    <link rel="next" title="Stochastic events" href="4-Stochastic-Events.html" />
+    <link rel="next" title="Pynoddy modules, classes and functions" href="../pynoddy.html" />
     <link rel="prev" title="Change Noddy input file and recompute model" href="2-Adjust-input.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -38,19 +38,19 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="4-Stochastic-Events.html" title="Stochastic events"
+          <a href="../pynoddy.html" title="Pynoddy modules, classes and functions"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="2-Adjust-input.html" title="Change Noddy input file and recompute model"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="geological-events-in-pynoddy-organisation-and-adpatiation">
 <h1>Geological events in pynoddy: organisation and adpatiation<a class="headerlink" href="#geological-events-in-pynoddy-organisation-and-adpatiation" title="Permalink to this headline">¶</a></h1>
@@ -268,8 +268,8 @@ evaluate aspects that are not simply possible with, for example, the GUI
 version of Noddy itself. In the last example with the changed order of
 the faults, we might be interested to determine where in space this
 change had an effect. We can test this quite simply using the
-<tt class="docutils literal"><span class="pre">NoddyOutput</span></tt> objects.</p>
-<p>The geology data is stored in the <tt class="docutils literal"><span class="pre">NoddyOutput.block</span></tt> attribute. To
+<code class="docutils literal"><span class="pre">NoddyOutput</span></code> objects.</p>
+<p>The geology data is stored in the <code class="docutils literal"><span class="pre">NoddyOutput.block</span></code> attribute. To
 evaluate the difference between two models, we can therefore simply
 compute:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">NO2</span><span class="o">.</span><span class="n">block</span> <span class="o">-</span> <span class="n">NO1</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
@@ -296,7 +296,7 @@ an automatic implementation for this step...)</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -313,14 +313,16 @@ an automatic implementation for this step...)</p>
   <p class="topless"><a href="2-Adjust-input.html"
                         title="previous chapter">Change Noddy input file and recompute model</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="4-Stochastic-Events.html"
-                        title="next chapter">Stochastic events</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/notebooks/3-Events.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <p class="topless"><a href="../pynoddy.html"
+                        title="next chapter">Pynoddy modules, classes and functions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/3-Events.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -337,7 +339,7 @@ an automatic implementation for this step...)</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -347,17 +349,17 @@ an automatic implementation for this step...)</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="4-Stochastic-Events.html" title="Stochastic events"
+          <a href="../pynoddy.html" title="Pynoddy modules, classes and functions"
              >next</a> |</li>
         <li class="right" >
           <a href="2-Adjust-input.html" title="Change Noddy input file and recompute model"
              >previous</a> |</li>
-        <li><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Florian Wellmann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
