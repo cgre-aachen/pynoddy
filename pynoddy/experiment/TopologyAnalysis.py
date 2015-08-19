@@ -982,6 +982,49 @@ class TopologyAnalysis:
             f.show()
         else:
             f.savefig(path,dpi=dpi)
+    
+    def plot_cumulative_relationships(self,topology_type='', path="",dpi=300):
+        '''
+        Plots the cumulative observed relationships of the specfied topology type.
+        
+        **Optional Arguments**:
+         - *topology_type* = The type of topology you are interested in. This should be either '' (all topologies),
+                             'litho' or 'struct'.
+         - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
+         - *dpi* =  The resolution of the saved figure
+        '''
+        
+        if topology_type == '':
+            topols = self.all_topologies
+            title="Cumulative Observed Topological Relationships (Edges)"
+        elif 'litho' in topology_type:
+            topols = self.all_litho_topologies
+            title="Cumulative Observed Lithological Relationships (Edges)"
+        elif 'struct' in topology_type:
+            topols = self.all_struct_topologies
+            title="Cumulative Observed Structural Relationships (Edges)"
+        else:
+            print "Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'"
+            return
+           
+        import matplotlib.pyplot as plt
+        f, ax = plt.subplots()
+        
+        #calculate
+        cumulative_count = []
+        obs = {}
+        for t in topols:
+            for e in t.graph.edges():
+                e2 = (e[1],e[0]) #flip
+                if not (edges.has_key(e) or edges.has_key(e2)):
+                    edges[e] = True #append key
+            cumulative_count.append(len(edges.keys()))
+        
+        #plot
+        ax.plot(cumulative_count)
+        
+        
+        
     def plot_parallel_coordinates( self,topology_id ,topology_type='struct',params=None, **kwds):
         '''
         Plots the specified topology/topologies on a parallell coordinates
@@ -1652,7 +1695,7 @@ class TopologyAnalysis:
             
             if not m is None:
                 m.get_geology().plot_section(savefig=True,fig_filename=path,**kwds)
-            
+           
     def plot_super_network(self,**kwds):
         '''
         Makes a hive-plot of the topology supernetwork.
@@ -1918,7 +1961,56 @@ class TopologyAnalysis:
          #any nodes of litho1 are touching nodes of litho2
          
         print "Not implemented yet. Sorry"
-         
+        
+    def write_noddy_output( self, directory ):
+        '''
+        Pickles all the model realisations in this class as NoddyOutput models. Note that this
+        can be slow... and pickled model_realisations can be enourmous (several Gb)
+        
+        **Arguments**:
+         - *directory* = the directory to save the networks to. If it does not exist, it will be created.
+        '''
+        #store current wd
+        wd = os.curdir()
+        os.chdir(directory)
+        
+        #dump files
+        for i, m in enumerate(self.models):
+            pk.dump(m.get_geology(),open('model%d.pkl' % i, 'wb'))
+        
+        #change back to original wd
+        os.chdir(wd)
+        
+    def write_topology_networks( self, directory ):
+        '''
+        Pickles the various topological networks contained in this analysis.
+        
+        **Arguments**:
+         - *directory* = the directory to save the networks to. If it does not exist, it will be created.
+        '''
+        
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            
+        import cPickle as pk
+        
+        #store current wd
+        wd = os.curdir()
+        os.chdir(directory)
+        
+        #dump files
+        pk.dump(self.super_topology,open('super_topology.pkl','wb'))
+        pk.dump(self.super_litho_topology,open('super_litho_topology.pkl','wb'))
+        pk.dump(self.super_struct_topology,open('super_struct_topology.pkl','wb'))
+        
+        pk.dump(self.unique_topologies,open('unique_topology.pkl','wb'))
+        pk.dump(self.unique_litho_topologies,open('unique_litho_topology.pkl','wb'))
+        pk.dump(self.unique_struct_topologies,open('unique_struct_topology.pkl','wb'))
+        
+        #change back to original wd
+        os.chdir(wd)
+        
+        
     @staticmethod
     def load_saved_analysis( path  ):
         '''

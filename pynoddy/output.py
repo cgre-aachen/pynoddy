@@ -1727,7 +1727,7 @@ class NoddyTopology(object):
          - *path* = the path to save this figure
          - *dpi* = the resolution of the figure
          - *bg* = the background color. Default is black.
-         - *axis* = The color of the axes and labels.
+         - *axes* = The color of the axes and labels.
         '''
         
         #make axes
