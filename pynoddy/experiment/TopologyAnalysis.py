@@ -490,15 +490,21 @@ class TopologyAnalysis:
                 if l[0] == '': break # end of entries
                 for ele in header:
                     if ele == 'event': #get event id
-                        e = int(l[header.index(ele)])
+                        ev = l[header.index(ele)]
+                        if '|' in ev: #multi-event
+                            e = [int(s) for s in ev.split('|')]
+                        else:
+                            e = [int(ev)]
+                            
                         continue
                     if ele == 'parameter': #get parameter
                         p = l[header.index(ele)]
                         continue
                     
                     if not e is None and not p is None: #found both
-                        params.append((e,p)) #store
-                        break #done
+                        for ev in e:
+                            params.append((ev,p)) #store
+                            break #done
 
             f.close()
         
@@ -793,7 +799,7 @@ class TopologyAnalysis:
             return
         
         #get data
-        data = self.get_parameter_space(params)
+        data = self.get_parameter_space(params).copy(deep=True)
         
         #create figure
         import matplotlib.pyplot as plt
@@ -810,7 +816,8 @@ class TopologyAnalysis:
         #ax = ax.ravel()[0:n] #convert to 1d array
         
         #draw boxplots
-        data.boxplot(ax = ax[0:n], column=self.models[0].headings,by=group)
+        col_list = list(self.models[0].headings)
+        data.boxplot(ax = ax[0:n], column=col_list,by=group)
         
         #draw bar graph
         l=np.arange(len(freq))[:] + 0.5
@@ -884,7 +891,7 @@ class TopologyAnalysis:
         '''
         width = kwds.get('width',3.)
         height = kwds.get('height',2.5)
-        
+            
         dpi = kwds.get('dpi',300)
         cols = kwds.get('cols',3)
         
@@ -924,8 +931,16 @@ class TopologyAnalysis:
         f.subplots_adjust(hspace=0.6,wspace=0.5)
         f.suptitle("")
         
+        width = width * cols
+        height = rows * height
+        
+        if width > 100: #matplotlib figures must be smaller than 100x100 inches
+            width = 100
+        if height > 100:
+            height = 100
+            
         #set size
-        f.set_size_inches( cols * width, rows * height )
+        f.set_size_inches( width, height )
         if path=='':
             f.show()
         else:
@@ -1646,6 +1661,7 @@ class TopologyAnalysis:
          - *path* = the path to save this figure
          - *dpi* = the resolution of the figure
          - *bg* = the background color. Default is black.
+         - *axes* = the axes colours. Default is white.
         '''
 
         #make axes
@@ -1694,13 +1710,18 @@ class TopologyAnalysis:
             edge_vals[d['edgeType']][e3] = d['weight'] 
             edge_vals[d['edgeType']][e4] = d['weight'] 
         
+        #get axis cols
+        ax_c = kwds.get('axes',['white','white','white'])
+        if not type(ax_c) is list:
+            ax_c = [ax_c] * 3 #duplicate for each axis
+            
         #make plot
         from pynoddy.experiment.util.hive_plot import HivePlot
         h = HivePlot(axes,edges,node_positions=node_positions, node_size=0.1,
                      edge_colormap=edge_vals,lbl_axes=['Stratigraphic Age',
                                                        'Structural Age',
                                                        'Surface Area'],
-                                                       axis_cols=['white','white','white'])
+                                                       axis_cols=ax_c)
         h.draw(**kwds)
         
     def analyse(self, output_directory, **kwds):
@@ -1733,18 +1754,24 @@ class TopologyAnalysis:
         f.write( self.summary() )
         f.close()
         
-        #do figures
-        if figs:
-            self.do_figures(output_directory)
+        #pickle this class for later
+        #pickle this class for later
+        if pickle:
+            import cPickle as pickle
+            p = pickle.Pickler(open(os.path.join(output_directory,"analysis.pkl",), "wb" ),protocol=pickle.HIGHEST_PROTOCOL)
+            p.fast = True
+            p.dump(self)
+            
+            #pickle.dump( self, open(os.path.join(output_directory,"analysis.pkl",), "wb" ))
+        
         
         #save parameter space
         if data:
             self.get_parameter_space().to_csv(os.path.join(output_directory,'parameter_space.csv'))
         
-        #pickle this class for later
-        if pickle:
-            import cPickle as pickle
-            pickle.dump( self, open(os.path.join(output_directory,"analysis.pkl",), "wb" ))
+        #do figures
+        if figs:
+            self.do_figures(output_directory)
         
     def summary(self):
         out = "%d different topologies found (from %d trials)\n" % (len(self.unique_topologies),len(self.models))
@@ -1797,13 +1824,13 @@ class TopologyAnalysis:
         plt.close()
         
         #boxplots
-        if len(self.unique_topologies) < 1000:
-            self.boxplot('',path=os.path.join(directory,"full_topology_ranges.png"),width=min(0.1*len(self.all_litho_topologies),100))
-        if len(self.unique_litho_topologies) < 1000:
-            self.boxplot("litho",path=os.path.join(directory,"litho_topology_ranges.png"),width=min(0.1*len(self.all_litho_topologies),100))
-        if len(self.unique_struct_topologies) < 1000:
-            self.boxplot("struct",path=os.path.join(directory,"struct_topology_ranges.png"))
-        plt.close()
+        #if len(self.unique_topologies) < 1000:
+        #    self.boxplot('',path=os.path.join(directory,"full_topology_ranges.png"),width=min(0.1*len(self.all_litho_topologies),100))
+        #if len(self.unique_litho_topologies) < 1000:
+        #    self.boxplot("litho",path=os.path.join(directory,"litho_topology_ranges.png"),width=min(0.1*len(self.all_litho_topologies),100))
+        #if len(self.unique_struct_topologies) < 1000:
+        #    self.boxplot("struct",path=os.path.join(directory,"struct_topology_ranges.png"))
+        #plt.close()
         
         #dendrogram
         self.plot_dendrogram('',path=os.path.join(directory,"topology_dend.png"))
@@ -1843,20 +1870,20 @@ class TopologyAnalysis:
         self.plot_super_network(path = os.path.join(directory,'super_network.png'))
         plt.close("all")
         
-        #save renders of (first 50) unique models
-        self.render_unique_models(os.path.join(directory,"unique/all/x"),'', max_t=50, direction='x')
-        self.render_unique_models(os.path.join(directory,"unique/struct/x"),'struct', max_t=50, direction='x')
-        self.render_unique_models(os.path.join(directory,"unique/litho/x",'litho'), max_t=50, direction='x')
+        #save renders of (first 10) unique models
+        self.render_unique_models(os.path.join(directory,"unique/all/x"),'', max_t=10, direction='x')
+        self.render_unique_models(os.path.join(directory,"unique/struct/x"),'struct', max_t=10, direction='x')
+        self.render_unique_models(os.path.join(directory,"unique/litho/x",'litho'), max_t=10, direction='x')
         plt.close("all")
         
-        self.render_unique_models(os.path.join(directory,"unique/all/y"),'', max_t=50, direction='y')
-        self.render_unique_models(os.path.join(directory,"unique/struct/y"),'struct', max_t=50, direction='y')
-        self.render_unique_models(os.path.join(directory,"unique/litho/y"),'litho', max_t=50, direction='y')
+        self.render_unique_models(os.path.join(directory,"unique/all/y"),'', max_t=10, direction='y')
+        self.render_unique_models(os.path.join(directory,"unique/struct/y"),'struct', max_t=10, direction='y')
+        self.render_unique_models(os.path.join(directory,"unique/litho/y"),'litho', max_t=10, direction='y')
         plt.close("all")
         
-        self.render_unique_models(os.path.join(directory,"unique/all/z"),'', max_t=50, direction='z')
-        self.render_unique_models(os.path.join(directory,"unique/struct/z"),'struct', max_t=50, direction='z')
-        self.render_unique_models(os.path.join(directory,"unique/litho/z"),'litho', max_t=50, direction='z')
+        self.render_unique_models(os.path.join(directory,"unique/all/z"),'', max_t=10, direction='z')
+        self.render_unique_models(os.path.join(directory,"unique/struct/z"),'struct', max_t=10, direction='z')
+        self.render_unique_models(os.path.join(directory,"unique/litho/z"),'litho', max_t=10, direction='z')
         plt.close("all")
         
     def is_strata_continuous(self,litho):
@@ -1906,7 +1933,7 @@ class TopologyAnalysis:
         '''
         import pickle
         
-        return pickle.load( open(path,'r') )
+        return pickle.load( open(path,'rb') )
         
 if __name__ == '__main__':     #some debug stuff
     import sys
@@ -1925,7 +1952,7 @@ if __name__ == '__main__':     #some debug stuff
     a = TopologyAnalysis(his,params=params,output='fold/fold_fault/fold_fault_dswa',n=0,verbose=False,threads=8)
     
     #a.plot_super_network()
-    a.maximum_separation_plot('')
+    #a.maximum_separation_plot('')
     
     #print results
     #print a.summary()
