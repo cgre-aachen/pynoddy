@@ -129,23 +129,41 @@ class NoddyOutput(object):
         (self.delx, self.dely, self.delz) = (self.extent_x / float(self.nx), 
                                              self.extent_y / float(self.ny),
                                              self.extent_z / float(self.nz))
-        #load lihtology colours
+        #load lithology colours & relative ages
         if os.path.exists(self.basename + ".g20"):
             filelines = open(self.basename + ".g20").readlines()
             self.n_events = int(filelines[0].split(' ')[2]) #number of events
             lithos = filelines[ 3 + self.n_events : len(filelines) - 1] #litho definitions
             
-            self.rock_names = []
-            self.rock_colors = []
-            self.rock_ages = []
+            self.rock_ids = [] #list of litho ids. Will be a list from 1 to n
+            self.rock_names = [] #the (string) names of each rock type. Note that names including spaces will not be read properly.
+            self.rock_colors = [] #the colours of each rock type (in Noddy).
+            self.rock_events = [] #list of the events that created different lithologies
             
             for l in lithos:
                 data = l.split(' ')
-                self.rock_ages.append(data[1])
+                self.rock_ids.append(int(data[0]))
+                self.rock_events.append(int(data[1]))
                 self.rock_names.append(data[2])
                 self.rock_colors.append( (int(data[-3])/255., int(data[-2])/255., int(data[-1])/255.) )
             
-    
+            #calculate stratigraphy
+            self.stratigraphy = [] #litho id's ordered by the age they were created in
+            for i in range(max(self.rock_events)+1): #loop through events
+                #create list of lithos created in this event
+                lithos = []
+                for n, e in enumerate(self.rock_events):
+                    if e == i: #current event
+                        lithos.append(self.rock_ids[n])
+                
+                #reverse order... Noddy litho id's are ordered by event, but reverse ordered within depositional events (ie.
+                #lithologies created in younger events have larger ids, however the youngest unit created in a given event
+                #will have the smallest id...
+                
+                for l in reversed(lithos):
+                    self.stratigraphy.append(l)
+                
+            
     def load_geology(self):
         """Load block geology ids from .g12 output file"""
         f = open(self.basename + ".g12")
@@ -739,7 +757,7 @@ class NoddyTopology(object):
                 
                 #calculate edge type (dyke, fault etc)
                 eCode=0
-                eAge = 0 #for original stratigraphy
+                eAge = self.lithology_properties[int(lithoCode1)]['age'] #for original stratigraphy. Default is the age of the first node
                 eType = 'stratigraphic' #default is stratigraphy
                 eColour='grey' #black
                 #calculate new topology codes
@@ -748,7 +766,8 @@ class NoddyTopology(object):
                 
                 for i in range(0,len(topoCode1) - 1): #-1 removes the trailing character
                     if (topoCode1[i] != topoCode2[i]): #find the difference
-                        #this is the 'age' of this edge
+                        #this is the 'age' of this edge, as the lithologies formed during
+                        #different events
                         eAge = i
                         
                         #calculate what the difference means (ie. edge type)
@@ -776,8 +795,8 @@ class NoddyTopology(object):
                             eType = 'unknown' 
                 
                 #create nodes & associated properties
-                self.graph.add_node(data[0], lithology=lithoCode1, name=self.lithology_properties[int(lithoCode1)]['name'])
-                self.graph.add_node(data[1], lithology=lithoCode2, name=self.lithology_properties[int(lithoCode2)]['name'])
+                self.graph.add_node(data[0], lithology=lithoCode1, name=self.lithology_properties[int(lithoCode1)]['name'], age = self.lithology_properties[int(lithoCode1)]['age'])
+                self.graph.add_node(data[1], lithology=lithoCode2, name=self.lithology_properties[int(lithoCode2)]['name'], age = self.lithology_properties[int(lithoCode2)]['age'])
                 
                 if (self.load_attributes):
                     self.graph.node[data[0]]['colour']=self.lithology_properties[int(lithoCode1)]['colour']
@@ -792,35 +811,73 @@ class NoddyTopology(object):
                 self.graph.add_edge(data[0],data[1],name=name,edgeCode=eCode,edgeType=eType, colour=eColour, area=count, weight=1, age=eAge)
                 
     def read_properties( self ):
-        
-        #initialise properties dict
-        self.lithology_properties = {}
-        
-        #open & parse properties file
-        f = open(self.basename + ".g20", 'r')
-        lines = f.readlines()   
-        nevents = int(lines[0].split(' ')[2]) #number of events
-    
-        for i in range(nevents + 3,len(lines)-1): #loop through lithology definitions
-            l = (lines[i].strip()).split(' ')
-        
-            #load lithology parameters
-            params = {}
-            params['code'] = int(l[0])
-            params['name'] = ' '.join(l[2:-3])
+                    
+        #load lithology colours & relative ages. There is some duplication here
+        #of the NoddyOutput (sloppy, I know...) - ideally I should implement a base class 
+        #that does this stuff and NoddyOutput and NoddyTopology both inherit from....
+        if os.path.exists(self.basename + ".g20"):
+            filelines = open(self.basename + ".g20").readlines()
+            self.n_events = int(filelines[0].split(' ')[2]) #number of events
+            lithos = filelines[ 3 + self.n_events : len(filelines) - 1] #litho definitions
             
-            #colours are the last 3 values
-            params['colour'] = [ float(l[-3]) / 255.0, float(l[-2]) / 255.0, float(l[-1]) / 255.0 ]
+            self.rock_ids = [] #list of litho ids. Will be a list from 1 to n
+            self.rock_names = [] #the (string) names of each rock type. Note that names including spaces will not be read properly.
+            self.rock_colors = [] #the colours of each rock type (in Noddy).
+            self.rock_events = [] #list of the events that created different lithologies
+            
+            for l in lithos:
+                data = l.split(' ')
+                self.rock_ids.append(int(data[0]))
+                self.rock_events.append(int(data[1]))
+                self.rock_names.append(data[2])
+                self.rock_colors.append( (int(data[-3])/255., int(data[-2])/255., int(data[-1])/255.) )
+            
+            #load last line (list of names)
+            self.event_names = (filelines[-1].strip()).split('\t')
         
-            #store lithology parameters (using lithocode as key)
+            #calculate stratigraphy
+            self.stratigraphy = [] #litho id's ordered by the age they were created in
+            for i in range(max(self.rock_events)+1): #loop through events
+                #create list of lithos created in this event
+                lithos = []
+                for n, e in enumerate(self.rock_events):
+                    if e == i: #current event
+                        lithos.append(self.rock_ids[n])
+                
+                #reverse order... Noddy litho id's are ordered by event, but reverse ordered within depositional events (ie.
+                #lithologies created in younger events have larger ids, however the youngest unit created in a given event
+                #will have the smallest id...
+                
+                for l in reversed(lithos):
+                    self.stratigraphy.append(l)
+            
+        #create property dict for easier access to attributes from node codes
+        self.lithology_properties = {}
+        for l in self.rock_ids: #litho codes
+            params = {}
+            params['code'] = l
+            params['name'] = self.rock_names[l - 1]
+            params['colour'] = self.rock_colors[ l - 1 ]
+            params['age'] = self.stratigraphy.index(l)
+            
             self.lithology_properties[params['code']] = params
             
-        #load last line (list of names)
-        self.event_names = (lines[-1].strip()).split('\t')
+        #f = open(self.basename + ".g20", 'r')
+        #lines = f.readlines()   
+        #for i in range(self.n_events + 3,len(lines)-1): #loop through lithology definitions
+        #    l = (lines[i].strip()).split(' ')
         
-        #close properties file
-        f.close
+        #    #load lithology parameters
+        #    params = {}
+        #    params['code'] = int(l[0])
+        #    params['name'] = ' '.join(l[2:-3])
+            
+        #    #colours are the last 3 values
+        #    params['colour'] = [ float(l[-3]) / 255.0, float(l[-2]) / 255.0, float(l[-1]) / 255.0 ]
         
+        #    #store lithology parameters (using lithocode as key)
+        #    self.lithology_properties[params['code']] = params          
+                
         #load node locations from .vs file
         if (self.load_attributes):
             self.node_properties = {}
@@ -1670,11 +1727,13 @@ class NoddyTopology(object):
          - *path* = the path to save this figure
          - *dpi* = the resolution of the figure
          - *bg* = the background color. Default is black.
+         - *axis* = The color of the axes and labels.
         '''
         
         #make axes
         axes = [[],[],[]]
-        axes[0] = [(n,int(d['lithology'])) for n, d in self.graph.nodes(data=True)] #nodes
+        #nb. was lithology
+        axes[0] = [(n,int(d['age'])) for n, d in self.graph.nodes(data=True)] #nodes
         axes[1] = [(u,v,d['age']) for u,v,d in self.graph.edges(data=True)] #edges treated as nodes on these axes
         axes[2] = [(u,v,d['area']) for u,v,d in self.graph.edges(data=True)]
         
@@ -1717,12 +1776,17 @@ class NoddyTopology(object):
             edge_vals[d['edgeType']][e4] = d['colour'] #set edge color
         
         #make plot
+        
+        axis_cols = kwds.get('axes',['white','white','white'])
+        if not type(axis_cols) is list:
+            axis_cols = [axis_cols] * 3
+            
         from pynoddy.experiment.util.hive_plot import HivePlot
         h = HivePlot(axes,edges,node_positions=node_positions, node_size=0.2,
                      edge_colormap=edge_vals,lbl_axes=['Stratigraphic Age',
                                                        'Structural Age',
                                                        'Surface Area'],
-                                                axis_cols=['white','white','white'])
+                                                axis_cols=axis_cols)
 
         h.draw(**kwds)
                
@@ -1828,9 +1892,12 @@ if __name__ == '__main__':
     # some testing and debugging functions...
 #     os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
 #     NO = NoddyOutput("strike_slip_out")
-    os.chdir(r'C:\Users\Sam\Documents\Temporary Model Files')
+    #os.chdir(r'C:\Users\Sam\Documents\Temporary Model Files')
+    os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Gippsland Basin')
+    
     #NO = "NFault/NFault"
-    NO = 'Fold/Fold_Fault/fold_fault'
+    #NO = 'Fold/Fold_Fault/fold_fault'
+    NO = 'GBasin'
     
     #create NoddyTopology
     geo = NoddyOutput(NO)
@@ -1843,7 +1910,7 @@ if __name__ == '__main__':
     #draw network
     #topo.draw_network_image(dimension='3D',perspective=False,axis='x')
     
-    topo.draw_3d_network(geology=geo,show=True,horizons=[4])
+    #topo.draw_3d_network(geology=geo,show=True,horizons=[4])
    # topo.draw_adjacency_matrix()
    # topo.draw_network_hive()
     

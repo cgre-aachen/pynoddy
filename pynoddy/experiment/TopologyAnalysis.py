@@ -1666,7 +1666,8 @@ class TopologyAnalysis:
 
         #make axes
         axes = [[],[],[]]
-        axes[0] = [(n,int(d['lithology'])) for n, d in self.super_topology.nodes(data=True)] #nodes
+        #n.b was 'lithology'
+        axes[0] = [(n,int(d['age'])) for n, d in self.super_topology.nodes(data=True)] #nodes
         axes[1] = [(u,v,d['age']) for u,v,d in self.super_topology.edges(data=True)] #edges treated as nodes on these axes
         axes[2] = [(u,v,d['area']) for u,v,d in self.super_topology.edges(data=True)]
         
