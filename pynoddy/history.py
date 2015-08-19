@@ -346,7 +346,8 @@ class NoddyHistory(object):
             
             if 'FAULT' in e['type']:
                 ev = events.Fault(lines = event_lines)
-                # set specific aspects first
+            elif 'SHEAR_ZONE' in e['type']:
+                ev = events.Shear(lines = event_lines)
             elif 'FOLD' in e['type']:
                 ev = events.Fold(lines = event_lines)
             elif 'UNCONFORMITY' in e['type']:
@@ -357,6 +358,8 @@ class NoddyHistory(object):
                 ev = events.Tilt(lines = event_lines)
             elif 'DYKE' in e['type']:
                 ev = events.Dyke(lines = event_lines)
+            elif 'PLUG' in e['type']:
+                ev = events.Plug(lines = event_lines)
             elif 'STRAIN' in e['type']:
                 ev = events.Strain(lines = event_lines)
             else:
@@ -1496,12 +1499,12 @@ End of Status Report"""
 if __name__ == '__main__':
     # some testing and debugging:
     import os
-    os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
-    H1 = NoddyHistory("../examples/simple_two_faults.his")
+    os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Mt Painter')
+    H1 = NoddyHistory("mt_pa_simplified.his")
     H1.swap_events(2, 3)
     H1.write_history("test")
     H2 = NoddyHistory("test")
-    H2.events[2].properties['Dip'] = 12
+    H2.events[10].properties['Radius'] = 2000
     H2.write_history("test2")
         
         

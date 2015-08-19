@@ -461,11 +461,11 @@ if __name__ == '__main__':
     ###################################################
     
     #setup working directory
-    os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Primitive\monte carlo test')
+    os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Mt Painter')
     #os.chdir("/Users/flow/git/pynoddy/sandbox")
-    his_file = "foldUC.his"
+    his_file = "mt_pa_simplified.his"
 #   his_file = "simple_two_faults_no_gps.his"
-    params_file = "foldUC_params.csv"
+    params_file = "params.csv"
 #   params_file = "params.csv"
     
     #create new MonteCarlo experiment
@@ -474,7 +474,7 @@ if __name__ == '__main__':
     
     #generate 100 random perturbations using 4 separate threads (in TOPOLOGY mode)
     output_name = "mc_out"
-    n = 10
+    n = 4
     print(mc.generate_model_instances(output_name,n,threads=4))
     
     #load output
