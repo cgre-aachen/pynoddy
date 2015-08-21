@@ -1790,6 +1790,123 @@ class NoddyTopology(object):
 
         h.draw(**kwds)
                
+    def draw_mayavi( self, **kwds ):
+        '''
+        Draws this network with mayavi. This requires the Mayavi python library
+        (mayavi.mlab)
+        
+        **Optional Keywords**:
+         - *node_size* = The size of the nodes. Default is 40.
+         - *edge_thickness* = The thickness of the edges. Default is 4
+         - *show* = If true, the model is displayed in the mayavi viewer after exporting. Default is True
+         - *path* = A path to save the mayavi vtk file to after generating it.
+        '''
+        
+        import networkx as nx
+        import numpy as np
+        try:
+            from mayavi import mlab
+        except ImportError:
+            print("Error loading mayavi package: mayavi is not installed or is not on the python path. To install with pip, use 'pip install mayavi' (or 'conda install mayavi'")
+            return
+            
+        node_size = kwds.get('node_size',250)
+        edge_thickness = kwds.get('edge_thickness',10)
+        
+        #convert node labels to integers
+        G2 = nx.convert_node_labels_to_integers(self.graph)
+        
+        #load positions
+        x = []
+        y = []
+        z = []
+        nCols = [] #node colours
+        for n in G2.nodes():
+            assert G2.node[n].has_key('centroid'), "Error: node centroids are not defined."
+            
+            centroid = G2.node[n]['centroid']
+            x.append(centroid[0])
+            y.append(centroid[1])
+            z.append(centroid[2])
+            nCols.append(int(G2.node[n]['lithology']))
+        
+        #get edges of different types
+        edge_groups = {} #keys: 'type' : (edge,edge_colour,weight_list)
+        
+        from matplotlib.colors import ColorConverter
+        cc = ColorConverter()
+        
+        for e in G2.edges(data=True):
+            e_type = e[2]['edgeType']
+            if not edge_groups.has_key(e_type):
+                col = e[2].get('colour',(0.3,0.3,0.3))
+                #convert matplotlib colours to rgb                
+                if not type( col ) is tuple:
+                    col= cc.to_rgb( col )
+                    
+                #edges are stored as follows: ((x_coords,y_coords,zcoords),edge_pairs,colour,values)
+                edge_groups[e_type] = (([],[],[]),[],col,[]) #Initialise edge type
+                
+                
+            #append start coordinates
+            id_start = len(edge_groups[e_type][0][0])
+            edge_groups[e_type][0][0].append(x[e[0]])
+            edge_groups[e_type][0][1].append(y[e[0]])
+            edge_groups[e_type][0][2].append(z[e[0]])
+            edge_groups[e_type][3].append(e[2].get('weight',1))
+            
+            #append end coordinates
+            id_end = len(edge_groups[e_type][0][0])
+            edge_groups[e_type][0][0].append(x[e[1]])
+            edge_groups[e_type][0][1].append(y[e[1]])
+            edge_groups[e_type][0][2].append(z[e[1]])
+            edge_groups[e_type][3].append(e[2].get('weight',1))
+            
+            #append edge pair
+            edge_groups[e_type][1].append( (id_start,id_end) )
+                
+                       
+        #make figure
+        mlab.figure(1,bgcolor=(1,1,1))
+        mlab.clf()
+        
+        #make nodes
+        pts = mlab.points3d(x,y,z,nCols,scale_factor=node_size,scale_mode='none',resolution=20)
+        
+        #make edges
+        for k in edge_groups.keys():
+            e = edge_groups[k]
+            #make start & end points
+            pts2 = mlab.points3d(e[0][0],e[0][1],e[0][2],e[3],scale_factor=edge_thickness,scale_mode='none',resolution=5)
+        
+            #bind lines
+            pts2.mlab_source.dataset.lines = np.array(e[1])
+            
+            #build geometry
+            tube = mlab.pipeline.tube(pts2,tube_radius=edge_thickness) 
+            mlab.pipeline.surface(tube,color=e[2])#color=(0.3,0.3,0.3))
+            
+        #ends = mlab.points3d(e_x,e_y,e_z,np_c,scale_factor=edge_thickness,scale_mode='none',resolution=10)
+        #ends.mlab_source.dataset.lines = np.array(lines)
+        #tube = mlab.pipeline.tube(ends,tube_radius=edge_thickness)
+        #mlab.pipeline.surface(tube)
+        
+        #pts.mlab_source.dataset.lines = np.array(G2.edges())
+        #tube = mlab.pipeline.tube(pts,tube_radius=edge_thickness)
+        #mlab.pipeline.surface(tube,color=np.array(eCols))#color=(0.3,0.3,0.3))
+        
+        #write
+        if kwds.has_key('path'):
+            try:
+                from tvtk.api import write_data
+            except:
+                print("Warning: tvtk not installed - cannot write vtk file.")
+            write_data(pts.mlab_source.dataset,kwds['path'])
+            
+        #show, if asked
+        if kwds.get('show',True):
+            mlab.show()
+            
         
     def draw_3d_network( self, **kwds ):
         '''
@@ -1797,7 +1914,7 @@ class NoddyTopology(object):
         
         **Optional Keywords**:
          - *show* = If True, the 3D network is displayed immediatly on-screen in an
-                    interactive mayavi viewer. Default is True.
+                    interactive matplotlib viewer. Default is True.
          - *output* = If defined an image of the network is saved to this location.
          - *node_size* = The size of the nodes. Default is 40.
          - *geology* = a NoddyOutput object to draw with the network
@@ -1823,7 +1940,6 @@ class NoddyTopology(object):
         if kwds.has_key('geology'):
             base=kwds.get('geology')
             res=kwds.get('res',1)
-            
             
             if kwds.get('sections',True): #plot sections
                 
@@ -1903,6 +2019,8 @@ if __name__ == '__main__':
     geo = NoddyOutput(NO)
     topo = NoddyTopology(NO,load_attributes=True)
     
+    #topo.export_vtk(show=True)
+    topo.draw_mayavi()
     #topo_c = topo.collapse_topology()
     #print len( topo_c.graph.edges() )
     #print len( topo.graph.edges() )
