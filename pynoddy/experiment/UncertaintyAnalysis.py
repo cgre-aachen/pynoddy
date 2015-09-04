@@ -1,9 +1,14 @@
+import sys, os
+
+import pynoddy
 from pynoddy.experiment import Experiment
 from pynoddy.experiment.MonteCarlo import MonteCarlo
+from pynoddy.output import NoddyOutput
+
 import numpy as np
 import math
 
-class UncertaintyAnalysis(Experiment):
+class UncertaintyAnalysis(MonteCarlo):
     '''Perform uncertainty analysis experiments for kinematic models'''
     
     def __init__(self, history, parameters, basename='out', **kwds):
@@ -22,19 +27,8 @@ class UncertaintyAnalysis(Experiment):
                                  (titled '+-') OR one defining the standard deviation (titled 'stdev')
         """
         
-        #load history file
-        super(Experiment, self).__init__(history, **kwds)
-        self.basename = basename
-        
-        #load params file
-        if isinstance(parameters,str): #if parameters is a file path
-            self.load_parameter_file(parameters)
-        else:
-            assert(type(parameters) is list)
-            self.set_parameter_statistics(parameters)
-        
-        #create monte carlo class
-        self._mc = MonteCarlo(history,parameters,basename)
+        #init monte carlo class
+        MonteCarlo.__init__(self,history,parameters,basename)
         
     def estimate_uncertainty( self, n_trials, **kwds ):
         '''
@@ -53,10 +47,20 @@ class UncertaintyAnalysis(Experiment):
         model_path= kwds.get('model_path','tmp')
         cleanup = kwds.get('cleanup',True)
         
+        #generate & load initial model
+        self.write_history('tmp.his')
+        pynoddy.compute_model('tmp.his', self.basename)
+        self.load_model_info()
+        self.load_geology()
+        os.remove('tmp.his')
+        
         #perform monte carlo sampling
         if vb:
             print "Producing model realisations..."
-        self._mc.generate_model_instances(model_path,n_trials,verbose=vb,write_changes=None)
+        self.generate_model_instances(model_path,n_trials,verbose=vb,write_changes=None)
+        
+        #thought: it would be more efficient (memory wise) to load models 1 at a time rather than
+        #dumping them all in memory....
         
         #load results
         if vb:
@@ -66,12 +70,12 @@ class UncertaintyAnalysis(Experiment):
         self.models = models
         
         #compute strat column
-        self.determine_model_stratigraphy()   
-        self.n_rocktypes = len(self.model_stratigraphy)
+        #self.determine_model_stratigraphy()   
+        #self.n_rocktypes = len(self.model_stratigraphy)
         
-        self.nx = models[0].nx
-        self.ny = models[0].ny
-        self.nz = models[0].nz
+        #self.nx = models[0].nx
+        #self.ny = models[0].ny
+        #self.nz = models[0].nz
         
         #calculate probabilities for each lithology. p_block[lithology][x][y][z] = p(lithology | x, y ,z)        
         self.p_block = [[[[ 0. for z in range(self.nz)] for y in range(self.ny)] for x in range(self.nx)] for l in range(self.n_rocktypes)]
@@ -88,7 +92,7 @@ class UncertaintyAnalysis(Experiment):
                         self.p_block[litho][x][y][z] += p1
                         
         #calculate entropy & store in self.block
-        self.block = np.ndarray((self.nx,self.ny,self.nz))
+        self.e_block = np.ndarray((self.nx,self.ny,self.nz))
         for x in range(self.nx):
             for y in range(self.ny):
                 for z in range(self.nz):
@@ -106,16 +110,87 @@ class UncertaintyAnalysis(Experiment):
                         entropy += p * math.log(p,2) + (1 - p) * (math.log( 1 - p,2))
                             
                     entropy = entropy * -1 / float(self.n_rocktypes) #divide by n
-                    self.block[x][y][z] = entropy
+                    self.e_block[x][y][z] = entropy
                     
         #cleanup
         if vb:
             print "Cleaning up..."
         if cleanup:
-            self._mc.cleanup()
+            self.cleanup()
         if vb:
             print "Finished."
-      
+            
+            
+    def estimate_uncertainty_from_existing(self, path, **kwds):
+        '''
+        In progress....
+        '''
+        
+        vb = kwds.get('verbose',False)
+        
+        #compute strat column
+        self.determine_model_stratigraphy()   
+        self.n_rocktypes = len(self.model_stratigraphy)
+        
+        self.nx = models[0].nx
+        self.ny = models[0].ny
+        self.nz = models[0].nz
+        
+        
+        #initialise blocks containing probability fields
+        self.p_block = [[[[ 0. for z in range(self.nz)] for y in range(self.ny)] for x in range(self.nx)] for l in range(self.n_rocktypes)]
+            
+        #loop through directory loading models & building probability fields based on this
+        
+        n_models = 0 #number of models loaded
+        for root, dirnames, filenames in os.walk(path): #walk the directory
+            for f in filenames:
+                if ('.g12' in f): #find all lithology voxets
+                    base = os.path.join(root,f.split('.')[0])
+                    
+                    if vb:
+                        print 'Loading %s' % base
+                        
+                    #load model
+                    m = NoddyOutput(base)
+                    
+                    #loop through voxels and tally frequencies
+                    for x in range(self.nx):
+                        for y in range(self.ny):
+                            for z in range(self.nz):
+                                #get litho
+                                litho = int(m.block[x][y][z]) - 1
+        
+                                #update litho frequency
+                                self.p_block[litho][x][y][z] += 1
+                                
+                    #keep track of the number of models we've loaded
+                    n_models += 1
+                    
+        #convert frequency fields to probabilities & calculate information entropy
+                    
+        self.e_block = np.ndarray((self.nx,self.ny,self.nz))
+        for x in range(self.nx):
+            for y in range(self.ny):
+                for z in range(self.nz):
+                    entropy = 0
+                    for litho in range(self.n_rocktypes):
+                        
+                        #convert frequency to probability
+                        self.p_block[litho][x][y][z] = self.p_block[litho][x][y][z] / float(n_models)
+         
+                        #fix domain to 0 < p < 1
+                        if p == 0:
+                            p = 0.0000000000000001
+                        if p >= 0.9999999999999999:
+                            p = 0.9999999999999999
+                            
+                        #calculate
+                        entropy += p * math.log(p,2) + (1 - p) * (math.log( 1 - p,2))
+                        
+                    entropy = entropy * -1 / float(self.n_rocktypes) #divide by n
+                    self.e_block[x][y][z] = entropy
+                        
     def plot_entropy( self, direction='y', position='center', **kwds):
         '''
         Plots the information entropy of each cell in the model. This can be used
@@ -142,7 +217,7 @@ class UncertaintyAnalysis(Experiment):
         '''
         if not kwds.has_key('cmap'):
             kwds['cmap'] = 'RdBu_r'
-        kwds['data'] = np.array(self.block) #specify the data we want to plot
+        kwds['data'] = np.array(self.e_block) #specify the data we want to plot
         self.plot_section(direction,position,**kwds)
         
         
@@ -198,7 +273,7 @@ if __name__ == '__main__':
     ua.change_cube_size(80)
     
     #generate 100 random perturbations using 4 separate threads (in TOPOLOGY mode)
-    n = 50
+    n = 20
     ua.estimate_uncertainty(n)
     #ua.plot_probability(2)
     ua.plot_entropy()

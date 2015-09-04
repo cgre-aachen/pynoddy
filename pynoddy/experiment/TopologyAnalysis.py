@@ -9,6 +9,7 @@ import numpy as np
 import scipy as sp
 import math
 
+import pynoddy
 from pynoddy.experiment.MonteCarlo import MonteCarlo
 from pynoddy.output import NoddyTopology
 from pynoddy.output import NoddyOutput
@@ -39,6 +40,11 @@ class ModelRealisation:
         #load history file
         self.history = NoddyHistory(history_file, verbose=vb)
                     
+        #check that model has been run
+        if not os.path.exists(self.basename + '.g23'):
+                pynoddy.compute_model(self.history_path,self.basename,sim_type='TOPOLOGY')
+                pynoddy.compute_topology(self.basename)
+                
         #load topology network
         self.topology = NoddyTopology(self.basename) #overall topology
         
