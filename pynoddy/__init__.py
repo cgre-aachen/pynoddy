@@ -17,7 +17,7 @@ package_directory = os.path.dirname(os.path.abspath(__file__))
 noddyPath = os.path.join(package_directory,'noddy/noddy')
 topologyPath = os.path.join(package_directory,'topology/topology')
 
-#global variables
+# global variables
 ensure_discrete_volumes = True #if True, spatially separated but otherwise identical volumes are given separate codes.
 null_volume_threshold = 20 #volumes smaller than this are ignored completely (as they represent pixelation artefacts).
 

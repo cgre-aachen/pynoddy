@@ -1,0 +1,1221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3249f13d-72d6-4cff-9715-4e7703db7620" name="Default" comment="" />
+    <ignored path="pynoddy.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path=".idea/dataSources.local.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="pynoddy" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="Python/#/Users/flow/git/pynoddy/pynoddy/history.py" pinned="false" current-in-tab="false">
+        <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/history.py">
+          <provider selected="true" editor-type-id="UmlEditorProvider">
+            <state>
+              <ID>Python</ID>
+              <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/history.py</OriginalElement>
+              <nodes>
+                <node x="0.0" y="153.0">history._Templates</node>
+                <node x="0.0" y="79.0">history.NoddyHistory</node>
+                <node x="48.0" y="0.0">object</node>
+              </nodes>
+              <notes />
+              <edges>
+                <edge source="history.NoddyHistory" target="object">
+                  <point x="0.0" y="-14.5" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+              </edges>
+              <settings layout="Hierarchic Group" zoom="1.210457193030187" x="-86.6980897053034" y="3.860838207893323" />
+              <SelectedNodes>
+                <node>history._Templates</node>
+              </SelectedNodes>
+              <Categories />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TopologyAnalysis.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/experiment/TopologyAnalysis.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UncertaintyAnalysis.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/experiment/UncertaintyAnalysis.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/experiment/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+              <folding>
+                <element signature="e#261#270#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Python/#/Users/flow/git/pynoddy/pynoddy/experiment/__init__.py" pinned="false" current-in-tab="false">
+        <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/experiment/__init__.py">
+          <provider selected="true" editor-type-id="UmlEditorProvider">
+            <state>
+              <ID>Python</ID>
+              <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/experiment/__init__.py</OriginalElement>
+              <nodes>
+                <node x="187.0" y="158.0">output.NoddyOutput</node>
+                <node x="87.0" y="237.0">experiment.Experiment</node>
+                <node x="94.5" y="0.0">_abcoll.Hashable</node>
+                <node x="0.0" y="158.0">history.NoddyHistory</node>
+                <node x="140.5" y="79.0">object</node>
+              </nodes>
+              <notes />
+              <edges>
+                <edge source="experiment.Experiment" target="output.NoddyOutput">
+                  <point x="44.5" y="-14.5" />
+                  <point x="220.5" y="212.0" />
+                  <point x="268.5" y="212.0" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+                <edge source="object" target="_abcoll.Hashable">
+                  <point x="0.0" y="-14.5" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+                <edge source="output.NoddyOutput" target="object">
+                  <point x="0.0" y="-14.5" />
+                  <point x="268.5" y="133.0" />
+                  <point x="193.75" y="133.0" />
+                  <point x="17.75" y="14.5" />
+                </edge>
+                <edge source="experiment.Experiment" target="history.NoddyHistory">
+                  <point x="-44.5" y="-14.5" />
+                  <point x="131.5" y="212.0" />
+                  <point x="83.5" y="212.0" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+                <edge source="history.NoddyHistory" target="object">
+                  <point x="0.0" y="-14.5" />
+                  <point x="83.5" y="133.0" />
+                  <point x="158.25" y="133.0" />
+                  <point x="-17.75" y="14.5" />
+                </edge>
+              </edges>
+              <settings layout="Hierarchic Group" zoom="1.0" x="-110.0" y="53.0" />
+              <SelectedNodes />
+              <Categories />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Python/#/Users/flow/git/pynoddy/pynoddy" pinned="false" current-in-tab="true">
+        <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy">
+          <provider selected="true" editor-type-id="UmlEditorProvider">
+            <state>
+              <ID>Python</ID>
+              <OriginalElement>#/Users/flow/git/pynoddy/pynoddy</OriginalElement>
+              <nodes>
+                <node x="766.7357142857147" y="149.2066666666666">output.NoddyOutput</node>
+                <node x="1130.6723809523812" y="-119.26952380952389">output.NoddyGeophysics</node>
+                <node x="303.37809523809517" y="411.2066666666667">experiment.UncertaintyAnalysis.UncertaintyAnalysis</node>
+                <node x="949.7357142857147" y="149.2066666666666">history.NoddyHistory</node>
+                <node x="954.0" y="356.0">experiment.ResolutionTest.ResolutionTest</node>
+                <node x="849.0509523809527" y="258.2066666666667">experiment.Experiment</node>
+                <node x="932.6723809523812" y="-119.26952380952389">output.NoddyTopology</node>
+                <node x="1341.6723809523812" y="-119.26952380952389">experiment.util.hive_plot.HivePlot</node>
+                <node x="678.3780952380952" y="485.2066666666667">history._Templates</node>
+                <node x="1171.6723809523812" y="-10.26952380952389">events.Dyke</node>
+                <node x="691.6723809523812" y="-10.26952380952389">events.Stratigraphy</node>
+                <node x="578.3780952380952" y="337.2066666666667">experiment.SensitivityAnalysis.SensitivityAnalysis</node>
+                <node x="62.17238095238122" y="68.73047619047611">stochastic_events.StochasticFault</node>
+                <node x="775.6723809523812" y="-287.2695238095239">_abcoll.Hashable</node>
+                <node x="945.3780952380952" y="337.2066666666667">experiment.MonteCarlo_copy.MonteCarlo</node>
+                <node x="864.6723809523812" y="-10.26952380952389">events.Unconformity</node>
+                <node x="303.37809523809517" y="485.2066666666667">experiment.TopologyAnalysis.ModelRealisation</node>
+                <node x="1424.6723809523812" y="-10.26952380952389">events.Tilt</node>
+                <node x="159.67238095238122" y="-10.26952380952389">stochastic_events.StochasticEvent</node>
+                <node x="303.37809523809517" y="337.2066666666667">experiment.MonteCarlo.MonteCarlo</node>
+                <node x="1047.6723809523812" y="-10.26952380952389">events.Plug</node>
+                <node x="31.672380952381218" y="-10.26952380952389">events.Fault</node>
+                <node x="558.7357142857147" y="149.2066666666666">experiment.util.LDA.LDA</node>
+                <node x="709.3780952380952" y="411.2066666666667">experiment.TopologyAnalysis.TopologyAnalysis</node>
+                <node x="427.6723809523812" y="-10.26952380952389">events.Strain</node>
+                <node x="560.6723809523812" y="-10.26952380952389">events.Shear</node>
+                <node x="801.6723809523812" y="-119.26952380952389">events.Event</node>
+                <node x="821.6723809523812" y="-208.2695238095239">object</node>
+                <node x="1300.6723809523812" y="-10.26952380952389">events.Fold</node>
+              </nodes>
+              <notes />
+              <edges>
+                <edge source="experiment.Experiment" target="output.NoddyOutput">
+                  <point x="-44.5" y="-14.5" />
+                  <point x="893.5509523809527" y="238.2066666666667" />
+                  <point x="845.5509523809527" y="238.2066666666667" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+                <edge source="experiment.SensitivityAnalysis.SensitivityAnalysis" target="experiment.Experiment">
+                  <point x="0.0" y="-14.5" />
+                  <point x="751.8780952380952" y="317.2066666666667" />
+                  <point x="915.8009523809527" y="317.2066666666667" />
+                  <point x="-22.25" y="14.5" />
+                </edge>
+                <edge source="stochastic_events.StochasticFault" target="events.Fault">
+                  <point x="-61.25" y="-14.5" />
+                  <point x="123.42238095238122" y="48.73047619047611" />
+                  <point x="85.67238095238122" y="48.73047619047611" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+                <edge source="output.NoddyOutput" target="object">
+                  <point x="0.0" y="-14.5" />
+                  <point x="846.2781461336249" y="117.72631406728215" />
+                  <point x="836.886666666667" y="-149.2695238095239" />
+                  <point x="-20.28571428571422" y="14.5" />
+                </edge>
+                <edge source="events.Fault" target="events.Event">
+                  <point x="0.0" y="-14.5" />
+                  <point x="85.67238095238122" y="-70.26952380952389" />
+                  <point x="807.2223809523812" y="-70.26952380952389" />
+                  <point x="-49.950000000000045" y="14.5" />
+                </edge>
+                <edge source="experiment.ResolutionTest.ResolutionTest" target="experiment.Experiment">
+                  <point x="0.0" y="-14.5" />
+                  <point x="1103.5" y="326.0" />
+                  <point x="1004.8009523809527" y="307.2066666666667" />
+                  <point x="66.75" y="14.5" />
+                </edge>
+                <edge source="stochastic_events.StochasticEvent" target="events.Event">
+                  <point x="0.0" y="-14.5" />
+                  <point x="283.6723809523812" y="-60.26952380952389" />
+                  <point x="818.3223809523813" y="-60.26952380952389" />
+                  <point x="-38.84999999999991" y="14.5" />
+                </edge>
+                <edge source="events.Dyke" target="events.Event">
+                  <point x="0.0" y="-14.5" />
+                  <point x="1226.1723809523812" y="-50.26952380952389" />
+                  <point x="884.9223809523812" y="-50.26952380952389" />
+                  <point x="27.75" y="14.5" />
+                </edge>
+                <edge source="events.Event" target="object">
+                  <point x="0.0" y="-14.5" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+                <edge source="experiment.MonteCarlo.MonteCarlo" target="experiment.Experiment">
+                  <point x="0.0" y="-14.5" />
+                  <point x="430.87809523809517" y="307.2066666666667" />
+                  <point x="871.3009523809527" y="307.2066666666667" />
+                  <point x="-66.75" y="14.5" />
+                </edge>
+                <edge source="experiment.util.hive_plot.HivePlot" target="object">
+                  <point x="0.0" y="-14.5" />
+                  <point x="1464.6723809523812" y="-159.2695238095239" />
+                  <point x="887.6009523809528" y="-159.2695238095239" />
+                  <point x="30.42857142857156" y="14.5" />
+                </edge>
+                <edge source="events.Shear" target="events.Event">
+                  <point x="0.0" y="-14.5" />
+                  <point x="616.1723809523812" y="-40.26952380952389" />
+                  <point x="840.5223809523811" y="-40.26952380952389" />
+                  <point x="-16.65000000000009" y="14.5" />
+                </edge>
+                <edge source="events.Stratigraphy" target="events.Event">
+                  <point x="0.0" y="-14.5" />
+                  <point x="768.1723809523812" y="-30.26952380952389" />
+                  <point x="851.622380952381" y="-30.26952380952389" />
+                  <point x="-5.550000000000182" y="14.5" />
+                </edge>
+                <edge source="events.Strain" target="events.Event">
+                  <point x="0.0" y="-14.5" />
+                  <point x="484.1723809523812" y="-50.26952380952389" />
+                  <point x="829.4223809523812" y="-50.26952380952389" />
+                  <point x="-27.75" y="14.5" />
+                </edge>
+                <edge source="events.Plug" target="events.Event">
+                  <point x="0.0" y="-14.5" />
+                  <point x="1099.6723809523812" y="-40.26952380952389" />
+                  <point x="873.8223809523813" y="-40.26952380952389" />
+                  <point x="16.65000000000009" y="14.5" />
+                </edge>
+                <edge source="output.NoddyGeophysics" target="object">
+                  <point x="0.0" y="-14.5" />
+                  <point x="1226.1723809523812" y="-149.2695238095239" />
+                  <point x="877.4580952380954" y="-149.2695238095239" />
+                  <point x="20.28571428571422" y="14.5" />
+                </edge>
+                <edge source="experiment.Experiment" target="history.NoddyHistory">
+                  <point x="44.5" y="-14.5" />
+                  <point x="982.5509523809527" y="238.2066666666667" />
+                  <point x="1030.5509523809528" y="238.2066666666667" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+                <edge source="history.NoddyHistory" target="object">
+                  <point x="0.0" y="-14.5" />
+                  <point x="999.5454203258927" y="96.87505286532024" />
+                  <point x="847.0295238095239" y="-139.2695238095239" />
+                  <point x="-10.142857142857338" y="14.5" />
+                </edge>
+                <edge source="events.Fold" target="events.Event">
+                  <point x="0.0" y="-14.5" />
+                  <point x="1352.6723809523812" y="-60.26952380952389" />
+                  <point x="896.0223809523811" y="-60.26952380952389" />
+                  <point x="38.84999999999991" y="14.5" />
+                </edge>
+                <edge source="experiment.util.LDA.LDA" target="object">
+                  <point x="0.0" y="-14.5" />
+                  <point x="690.3223809523813" y="82.3590476190476" />
+                  <point x="826.7438095238099" y="-159.2695238095239" />
+                  <point x="-30.42857142857133" y="14.5" />
+                </edge>
+                <edge source="output.NoddyTopology" target="object">
+                  <point x="0.0" y="-14.5" />
+                  <point x="1021.6723809523812" y="-139.2695238095239" />
+                  <point x="867.3152380952386" y="-139.2695238095239" />
+                  <point x="10.142857142857338" y="14.5" />
+                </edge>
+                <edge source="events.Unconformity" target="events.Event">
+                  <point x="0.0" y="-14.5" />
+                  <point x="946.1723809523812" y="-30.26952380952389" />
+                  <point x="862.7223809523814" y="-30.26952380952389" />
+                  <point x="5.550000000000182" y="14.5" />
+                </edge>
+                <edge source="object" target="_abcoll.Hashable">
+                  <point x="0.0" y="-14.5" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+                <edge source="stochastic_events.StochasticFault" target="stochastic_events.StochasticEvent">
+                  <point x="61.25" y="-14.5" />
+                  <point x="245.92238095238122" y="48.73047619047611" />
+                  <point x="283.6723809523812" y="48.73047619047611" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+                <edge source="experiment.MonteCarlo_copy.MonteCarlo" target="experiment.Experiment">
+                  <point x="0.0" y="-14.5" />
+                  <point x="1091.3780952380953" y="317.2066666666667" />
+                  <point x="960.3009523809527" y="317.2066666666667" />
+                  <point x="22.25" y="14.5" />
+                </edge>
+                <edge source="events.Tilt" target="events.Event">
+                  <point x="0.0" y="-14.5" />
+                  <point x="1473.6723809523812" y="-70.26952380952389" />
+                  <point x="907.122380952381" y="-70.26952380952389" />
+                  <point x="49.94999999999982" y="14.5" />
+                </edge>
+              </edges>
+              <settings layout="Hierarchic Group" zoom="0.4746782511076754" x="763.0123331433394" y="108.14085067784492" />
+              <SelectedNodes />
+              <Categories />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="output.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/output.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LDA.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/experiment/util/LDA.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/history.py" />
+        <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$PROJECT_DIR$/experiment/UncertaintyAnalysis.py" />
+        <option value="$PROJECT_DIR$/experiment/MonteCarlo.py" />
+        <option value="$PROJECT_DIR$/experiment/__init__.py" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+  </component>
+  <component name="NamedScopeManager">
+    <order />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="20" />
+    <option name="y" value="41" />
+    <option name="width" value="1400" />
+    <option name="height" value="790" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pynoddy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pynoddy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pynoddy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pynoddy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pynoddy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="experiment" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../docs/pics" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pynoddy" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pynoddy" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pynoddy" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pynoddy" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Attests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pynoddy" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pynoddy" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Nosetests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pynoddy" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pynoddy" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="py.test">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pynoddy" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="testToRun" value="" />
+      <option name="keywords" value="" />
+      <option name="params" value="" />
+      <option name="USE_PARAM" value="false" />
+      <option name="USE_KEYWORD" value="false" />
+      <method />
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3249f13d-72d6-4cff-9715-4e7703db7620" name="Default" comment="" />
+      <created>1441472267459</created>
+      <option name="number" value="Default" />
+      <updated>1441472267459</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="20" y="41" width="1400" height="790" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32871014" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3994452" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$USER_HOME$/Library/Caches/PyCharm40/python_stubs/348993582/__builtin__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="696" column="6" selection-start-line="696" selection-start-column="6" selection-end-line="696" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/history.NoddyHistory">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>history.NoddyHistory</OriginalElement>
+          <nodes>
+            <node x="" y="">_abcoll.Hashable</node>
+            <node x="" y="">history.NoddyHistory</node>
+            <node x="" y="">object</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="83.5" y="93.5" />
+          <SelectedNodes />
+          <Categories />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/events.py">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/events.py</OriginalElement>
+          <nodes>
+            <node x="" y="">events.Dyke</node>
+            <node x="" y="">events.Stratigraphy</node>
+            <node x="" y="">events.Fold</node>
+            <node x="" y="">events.Plug</node>
+            <node x="" y="">events.Event</node>
+            <node x="" y="">events.Unconformity</node>
+            <node x="" y="">events.Strain</node>
+            <node x="" y="">events.Fault</node>
+            <node x="" y="">events.Tilt</node>
+            <node x="" y="">events.Shear</node>
+            <node x="" y="">object</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="0.3872944850542069" x="1095.9345868736336" y="315.7998091563773" />
+          <SelectedNodes />
+          <Categories>
+            <Category>Methods</Category>
+            <Category>Inner Classes</Category>
+            <Category>Fields</Category>
+          </Categories>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/history.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.777778">
+          <caret line="102" column="31" selection-start-line="102" selection-start-column="31" selection-end-line="102" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/__init__.py">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/__init__.py</OriginalElement>
+          <nodes />
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="525.0" y="320.0" />
+          <SelectedNodes />
+          <Categories>
+            <Category>Inner Classes</Category>
+            <Category>Fields</Category>
+          </Categories>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="32.407406">
+          <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/test_pynoddy.py">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/test_pynoddy.py</OriginalElement>
+          <nodes />
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="525.0" y="320.0" />
+          <SelectedNodes />
+          <Categories />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/history.py">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/history.py</OriginalElement>
+          <nodes>
+            <node x="0.0" y="153.0">history._Templates</node>
+            <node x="0.0" y="79.0">history.NoddyHistory</node>
+            <node x="48.0" y="0.0">object</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="history.NoddyHistory" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="1.210457193030187" x="-86.6980897053034" y="3.860838207893323" />
+          <SelectedNodes>
+            <node>history._Templates</node>
+          </SelectedNodes>
+          <Categories />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/util/sampling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/util/hive_plot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/experiment/TopologyAnalysis.py">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/experiment/TopologyAnalysis.py</OriginalElement>
+          <nodes>
+            <node x="" y="">experiment.TopologyAnalysis.TopologyAnalysis</node>
+            <node x="" y="">experiment.TopologyAnalysis.ModelRealisation</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="168.0" y="52.0" />
+          <SelectedNodes />
+          <Categories />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/TopologyAnalysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/experiment.UncertaintyAnalysis.UncertaintyAnalysis">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>experiment.UncertaintyAnalysis.UncertaintyAnalysis</OriginalElement>
+          <nodes>
+            <node x="" y="">experiment.UncertaintyAnalysis.UncertaintyAnalysis</node>
+            <node x="" y="">MonteCarlo</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="180.5" y="54.0" />
+          <SelectedNodes />
+          <Categories />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/MonteCarlo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/experiment/MonteCarlo.py">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/experiment/MonteCarlo.py</OriginalElement>
+          <nodes>
+            <node x="" y="">experiment.Experiment</node>
+            <node x="" y="">experiment.MonteCarlo.MonteCarlo</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="127.5" y="54.0" />
+          <SelectedNodes />
+          <Categories />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/experiment/UncertaintyAnalysis.py">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/experiment/UncertaintyAnalysis.py</OriginalElement>
+          <nodes>
+            <node x="" y="">experiment.UncertaintyAnalysis.UncertaintyAnalysis</node>
+            <node x="" y="">MonteCarlo</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="180.5" y="54.0" />
+          <SelectedNodes />
+          <Categories />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/experiment">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/experiment</OriginalElement>
+          <nodes>
+            <node x="" y="">experiment.TopologyAnalysis.ModelRealisation</node>
+            <node x="" y="">experiment.UncertaintyAnalysis.UncertaintyAnalysis</node>
+            <node x="" y="">object</node>
+            <node x="" y="">experiment.MonteCarlo.MonteCarlo</node>
+            <node x="" y="">experiment.TopologyAnalysis.TopologyAnalysis</node>
+            <node x="" y="">experiment.SensitivityAnalysis.SensitivityAnalysis</node>
+            <node x="" y="">NoddyHistory</node>
+            <node x="" y="">experiment.ResolutionTest.ResolutionTest</node>
+            <node x="" y="">experiment.MonteCarlo_copy.MonteCarlo</node>
+            <node x="" y="">experiment.util.LDA.LDA</node>
+            <node x="" y="">NoddyOutput</node>
+            <node x="" y="">experiment.util.hive_plot.HivePlot</node>
+            <node x="" y="">experiment.Experiment</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="0.8827586206896552" x="318.7265625" y="452.5" />
+          <SelectedNodes />
+          <Categories />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/UncertaintyAnalysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="e#261#270#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/experiment/__init__.py">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/experiment/__init__.py</OriginalElement>
+          <nodes>
+            <node x="187.0" y="158.0">output.NoddyOutput</node>
+            <node x="87.0" y="237.0">experiment.Experiment</node>
+            <node x="94.5" y="0.0">_abcoll.Hashable</node>
+            <node x="0.0" y="158.0">history.NoddyHistory</node>
+            <node x="140.5" y="79.0">object</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="experiment.Experiment" target="output.NoddyOutput">
+              <point x="44.5" y="-14.5" />
+              <point x="220.5" y="212.0" />
+              <point x="268.5" y="212.0" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="object" target="_abcoll.Hashable">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="output.NoddyOutput" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="268.5" y="133.0" />
+              <point x="193.75" y="133.0" />
+              <point x="17.75" y="14.5" />
+            </edge>
+            <edge source="experiment.Experiment" target="history.NoddyHistory">
+              <point x="-44.5" y="-14.5" />
+              <point x="131.5" y="212.0" />
+              <point x="83.5" y="212.0" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="history.NoddyHistory" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="83.5" y="133.0" />
+              <point x="158.25" y="133.0" />
+              <point x="-17.75" y="14.5" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="1.0" x="-110.0" y="53.0" />
+          <SelectedNodes />
+          <Categories />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/util/LDA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/output.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/flow/git/pynoddy/pynoddy</OriginalElement>
+          <nodes>
+            <node x="766.7357142857147" y="149.2066666666666">output.NoddyOutput</node>
+            <node x="1130.6723809523812" y="-119.26952380952389">output.NoddyGeophysics</node>
+            <node x="303.37809523809517" y="411.2066666666667">experiment.UncertaintyAnalysis.UncertaintyAnalysis</node>
+            <node x="949.7357142857147" y="149.2066666666666">history.NoddyHistory</node>
+            <node x="954.0" y="356.0">experiment.ResolutionTest.ResolutionTest</node>
+            <node x="849.0509523809527" y="258.2066666666667">experiment.Experiment</node>
+            <node x="932.6723809523812" y="-119.26952380952389">output.NoddyTopology</node>
+            <node x="1341.6723809523812" y="-119.26952380952389">experiment.util.hive_plot.HivePlot</node>
+            <node x="678.3780952380952" y="485.2066666666667">history._Templates</node>
+            <node x="1171.6723809523812" y="-10.26952380952389">events.Dyke</node>
+            <node x="691.6723809523812" y="-10.26952380952389">events.Stratigraphy</node>
+            <node x="578.3780952380952" y="337.2066666666667">experiment.SensitivityAnalysis.SensitivityAnalysis</node>
+            <node x="62.17238095238122" y="68.73047619047611">stochastic_events.StochasticFault</node>
+            <node x="775.6723809523812" y="-287.2695238095239">_abcoll.Hashable</node>
+            <node x="945.3780952380952" y="337.2066666666667">experiment.MonteCarlo_copy.MonteCarlo</node>
+            <node x="864.6723809523812" y="-10.26952380952389">events.Unconformity</node>
+            <node x="303.37809523809517" y="485.2066666666667">experiment.TopologyAnalysis.ModelRealisation</node>
+            <node x="1424.6723809523812" y="-10.26952380952389">events.Tilt</node>
+            <node x="159.67238095238122" y="-10.26952380952389">stochastic_events.StochasticEvent</node>
+            <node x="303.37809523809517" y="337.2066666666667">experiment.MonteCarlo.MonteCarlo</node>
+            <node x="1047.6723809523812" y="-10.26952380952389">events.Plug</node>
+            <node x="31.672380952381218" y="-10.26952380952389">events.Fault</node>
+            <node x="558.7357142857147" y="149.2066666666666">experiment.util.LDA.LDA</node>
+            <node x="709.3780952380952" y="411.2066666666667">experiment.TopologyAnalysis.TopologyAnalysis</node>
+            <node x="427.6723809523812" y="-10.26952380952389">events.Strain</node>
+            <node x="560.6723809523812" y="-10.26952380952389">events.Shear</node>
+            <node x="801.6723809523812" y="-119.26952380952389">events.Event</node>
+            <node x="821.6723809523812" y="-208.2695238095239">object</node>
+            <node x="1300.6723809523812" y="-10.26952380952389">events.Fold</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="experiment.Experiment" target="output.NoddyOutput">
+              <point x="-44.5" y="-14.5" />
+              <point x="893.5509523809527" y="238.2066666666667" />
+              <point x="845.5509523809527" y="238.2066666666667" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="experiment.SensitivityAnalysis.SensitivityAnalysis" target="experiment.Experiment">
+              <point x="0.0" y="-14.5" />
+              <point x="751.8780952380952" y="317.2066666666667" />
+              <point x="915.8009523809527" y="317.2066666666667" />
+              <point x="-22.25" y="14.5" />
+            </edge>
+            <edge source="stochastic_events.StochasticFault" target="events.Fault">
+              <point x="-61.25" y="-14.5" />
+              <point x="123.42238095238122" y="48.73047619047611" />
+              <point x="85.67238095238122" y="48.73047619047611" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="output.NoddyOutput" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="846.2781461336249" y="117.72631406728215" />
+              <point x="836.886666666667" y="-149.2695238095239" />
+              <point x="-20.28571428571422" y="14.5" />
+            </edge>
+            <edge source="events.Fault" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="85.67238095238122" y="-70.26952380952389" />
+              <point x="807.2223809523812" y="-70.26952380952389" />
+              <point x="-49.950000000000045" y="14.5" />
+            </edge>
+            <edge source="experiment.ResolutionTest.ResolutionTest" target="experiment.Experiment">
+              <point x="0.0" y="-14.5" />
+              <point x="1103.5" y="326.0" />
+              <point x="1004.8009523809527" y="307.2066666666667" />
+              <point x="66.75" y="14.5" />
+            </edge>
+            <edge source="stochastic_events.StochasticEvent" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="283.6723809523812" y="-60.26952380952389" />
+              <point x="818.3223809523813" y="-60.26952380952389" />
+              <point x="-38.84999999999991" y="14.5" />
+            </edge>
+            <edge source="events.Dyke" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1226.1723809523812" y="-50.26952380952389" />
+              <point x="884.9223809523812" y="-50.26952380952389" />
+              <point x="27.75" y="14.5" />
+            </edge>
+            <edge source="events.Event" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="experiment.MonteCarlo.MonteCarlo" target="experiment.Experiment">
+              <point x="0.0" y="-14.5" />
+              <point x="430.87809523809517" y="307.2066666666667" />
+              <point x="871.3009523809527" y="307.2066666666667" />
+              <point x="-66.75" y="14.5" />
+            </edge>
+            <edge source="experiment.util.hive_plot.HivePlot" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="1464.6723809523812" y="-159.2695238095239" />
+              <point x="887.6009523809528" y="-159.2695238095239" />
+              <point x="30.42857142857156" y="14.5" />
+            </edge>
+            <edge source="events.Shear" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="616.1723809523812" y="-40.26952380952389" />
+              <point x="840.5223809523811" y="-40.26952380952389" />
+              <point x="-16.65000000000009" y="14.5" />
+            </edge>
+            <edge source="events.Stratigraphy" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="768.1723809523812" y="-30.26952380952389" />
+              <point x="851.622380952381" y="-30.26952380952389" />
+              <point x="-5.550000000000182" y="14.5" />
+            </edge>
+            <edge source="events.Strain" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="484.1723809523812" y="-50.26952380952389" />
+              <point x="829.4223809523812" y="-50.26952380952389" />
+              <point x="-27.75" y="14.5" />
+            </edge>
+            <edge source="events.Plug" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1099.6723809523812" y="-40.26952380952389" />
+              <point x="873.8223809523813" y="-40.26952380952389" />
+              <point x="16.65000000000009" y="14.5" />
+            </edge>
+            <edge source="output.NoddyGeophysics" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="1226.1723809523812" y="-149.2695238095239" />
+              <point x="877.4580952380954" y="-149.2695238095239" />
+              <point x="20.28571428571422" y="14.5" />
+            </edge>
+            <edge source="experiment.Experiment" target="history.NoddyHistory">
+              <point x="44.5" y="-14.5" />
+              <point x="982.5509523809527" y="238.2066666666667" />
+              <point x="1030.5509523809528" y="238.2066666666667" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="history.NoddyHistory" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="999.5454203258927" y="96.87505286532024" />
+              <point x="847.0295238095239" y="-139.2695238095239" />
+              <point x="-10.142857142857338" y="14.5" />
+            </edge>
+            <edge source="events.Fold" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1352.6723809523812" y="-60.26952380952389" />
+              <point x="896.0223809523811" y="-60.26952380952389" />
+              <point x="38.84999999999991" y="14.5" />
+            </edge>
+            <edge source="experiment.util.LDA.LDA" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="690.3223809523813" y="82.3590476190476" />
+              <point x="826.7438095238099" y="-159.2695238095239" />
+              <point x="-30.42857142857133" y="14.5" />
+            </edge>
+            <edge source="output.NoddyTopology" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="1021.6723809523812" y="-139.2695238095239" />
+              <point x="867.3152380952386" y="-139.2695238095239" />
+              <point x="10.142857142857338" y="14.5" />
+            </edge>
+            <edge source="events.Unconformity" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="946.1723809523812" y="-30.26952380952389" />
+              <point x="862.7223809523814" y="-30.26952380952389" />
+              <point x="5.550000000000182" y="14.5" />
+            </edge>
+            <edge source="object" target="_abcoll.Hashable">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="stochastic_events.StochasticFault" target="stochastic_events.StochasticEvent">
+              <point x="61.25" y="-14.5" />
+              <point x="245.92238095238122" y="48.73047619047611" />
+              <point x="283.6723809523812" y="48.73047619047611" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="experiment.MonteCarlo_copy.MonteCarlo" target="experiment.Experiment">
+              <point x="0.0" y="-14.5" />
+              <point x="1091.3780952380953" y="317.2066666666667" />
+              <point x="960.3009523809527" y="317.2066666666667" />
+              <point x="22.25" y="14.5" />
+            </edge>
+            <edge source="events.Tilt" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1473.6723809523812" y="-70.26952380952389" />
+              <point x="907.122380952381" y="-70.26952380952389" />
+              <point x="49.94999999999982" y="14.5" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="0.4746782511076754" x="763.0123331433394" y="108.14085067784492" />
+          <SelectedNodes />
+          <Categories />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

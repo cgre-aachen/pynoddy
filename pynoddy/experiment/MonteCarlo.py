@@ -11,16 +11,18 @@ import pynoddy
 import pynoddy.history
 # from pynoddy.experiment import Experiment
 
-# import pynoddy.experiment
-try:
-    from experiment import Experiment
-except ImportError:
-    from pynoddy.experiment import Experiment
+import pynoddy
+import pynoddy.experiment
+# try:
+#     from experiment import Experiment
+# except ImportError:
+#     from pynoddy.experiment import Experiment
 
-class MonteCarlo(Experiment):
-    '''
-    Perform Monte Carlo simulations on a model using defined input statistics
-    '''
+
+class MonteCarlo(pynoddy.experiment.Experiment):
+    """Perform Monte Carlo simulations on a model using defined input statistics
+
+    """
         
     def __init__(self, history, parameters, base_name="out"):
         '''

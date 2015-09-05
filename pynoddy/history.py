@@ -66,7 +66,7 @@ class NoddyHistory(object):
         """
         events_only = kwds.get("events_only", False)
         
-        os = ""
+        local_os = ""
         
         if not events_only:
             # First: check if all information available
@@ -75,38 +75,38 @@ class NoddyHistory(object):
             if not hasattr(self, 'cube_size'): self.get_cube_size()
             if not hasattr(self, 'filename'): self.get_filename()
             if not hasattr(self, 'date_saved'): self.get_date_saved()
-            os +=(60 * "*" + "\n\t\t\tModel Information\n" + 60 * "*")
-            os +=("\n\n")
+            local_os +=(60 * "*" + "\n\t\t\tModel Information\n" + 60 * "*")
+            local_os +=("\n\n")
         if self.n_events == 0:
-            os +=("The model does not yet contain any events\n")
+            local_os +=("The model does not yet contain any events\n")
         else:
-            os +=("This model consists of %d events:\n" % self.n_events)
+            local_os +=("This model consists of %d events:\n" % self.n_events)
             for k,ev in self.events.items():
-                os +=("\t(%d) - %s\n" % (k,ev.event_type))
+                local_os +=("\t(%d) - %s\n" % (k,ev.event_type))
         if not events_only:        
-            os +=("The model extent is:\n")
-            os +=("\tx - %.1f m\n" % self.extent_x)
-            os +=("\ty - %.1f m\n" % self.extent_y)
-            os +=("\tz - %.1f m\n" % self.extent_z)
+            local_os +=("The model extent is:\n")
+            local_os +=("\tx - %.1f m\n" % self.extent_x)
+            local_os +=("\ty - %.1f m\n" % self.extent_y)
+            local_os +=("\tz - %.1f m\n" % self.extent_z)
             
-            os +=("Number of cells in each direction:\n")
-            os +=("\tnx = %d\n" % (self.extent_x / self.cube_size))
-            os +=("\tny = %d\n" % (self.extent_y / self.cube_size))
-            os +=("\tnz = %d\n" % (self.extent_z / self.cube_size))
+            local_os +=("Number of cells in each direction:\n")
+            local_os +=("\tnx = %d\n" % (self.extent_x / self.cube_size))
+            local_os +=("\tny = %d\n" % (self.extent_y / self.cube_size))
+            local_os +=("\tnz = %d\n" % (self.extent_z / self.cube_size))
             
-            os +=("The model origin is located at: \n\t(%.1f, %.1f, %.1f)\n" % (self.origin_x,
+            local_os +=("The model origin is located at: \n\t(%.1f, %.1f, %.1f)\n" % (self.origin_x,
                                                                           self.origin_y,
                                                                           self.origin_z))
             
-            os +=("The cubesize for model export is: \n\t%d m\n" % self.cube_size)
+            local_os +=("The cubesize for model export is: \n\t%d m\n" % self.cube_size)
             # and now some metadata
-            os +=("\n\n")
-            os +=(60 * "*" + "\n\t\t\tMeta Data\n" + 60 * "*")
-            os +=("\n\n")
-            os +=("The filename of the model is:\n\t%s\n" % self.filename)
-            os +=("It was last saved (if origin was a history file!) at:\n\t%s\n" % self.date_saved)
+            local_os +=("\n\n")
+            local_os +=(60 * "*" + "\n\t\t\tMeta Data\n" + 60 * "*")
+            local_os +=("\n\n")
+            local_os +=("The filename of the model is:\n\t%s\n" % self.filename)
+            local_os +=("It was last saved (if origin was a history file!) at:\n\t%s\n" % self.date_saved)
 
-        return os
+        return local_os
         
     def get_origin(self):
         """Get coordinates of model origin and return and store in local variables
@@ -317,11 +317,8 @@ class NoddyHistory(object):
             if "No of Events" in line:
                 self.n_events = int(line.split("=")[1])
             elif "Event #" in line:
-                event = {}
-                event['type'] = line.split('=')[1].rstrip()
-                event['num'] = int(line[7:9])
-                event['line_start'] = i
-                self._raw_events.append(event)       
+                event = {'type': line.split('=')[1].rstrip(), 'num': int(line[7:9]), 'line_start': i}
+                self._raw_events.append(event)
             # finally: if the definition for BlockOptions starts, the event definition is over
             elif "BlockOptions" in line:
                 last_event_stop = i-2
@@ -572,7 +569,8 @@ Version = 7.11
 
 """
     
-    def _create_stratigraphy(self, event_options):
+    @staticmethod
+    def _create_stratigraphy(event_options):
         """Create a stratigraphy event
         
         **Arguments**:

@@ -1,15 +1,20 @@
 import sys, os
 
 import pynoddy
-from pynoddy.experiment import Experiment
-from pynoddy.experiment.MonteCarlo import MonteCarlo
-from pynoddy.output import NoddyOutput
+import pynoddy.experiment
+
+# from pynoddy.experiment import Experiment
+# from pynoddy.experiment.MonteCarlo import MonteCarlo
+# from pynoddy.output import NoddyOutput
 
 import numpy as np
 import math
 
-class UncertaintyAnalysis(MonteCarlo):
-    '''Perform uncertainty analysis experiments for kinematic models'''
+
+class UncertaintyAnalysis(pynoddy.experiment.MonteCarlo):
+    """Perform uncertainty analysis experiments for kinematic models
+
+    """
     
     def __init__(self, history, parameters, basename='out', **kwds):
         """Creates an experiment class for uncertainty analysis methods for kinematic models
