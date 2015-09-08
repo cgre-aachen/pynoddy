@@ -18,30 +18,29 @@ import pynoddy.experiment
 # except ImportError:
 #     from pynoddy.experiment import Experiment
 
-
 class MonteCarlo(pynoddy.experiment.Experiment):
     """Perform Monte Carlo simulations on a model using defined input statistics
 
     """
         
     def __init__(self, history, parameters, base_name="out"):
-        '''
+        """
         Initialises a Monte Carlo experiment.
-        
+
         **Arguments**:
          - *history* = The .his file this experiment is based on
          - *parameters* = A string pointing to a csv file defining the statistical
-                          properties of the model properties being varied, or alternatively an array 
+                          properties of the model properties being varied, or alternatively an array
                           of python dictionaries with the same function. This file/dictionary array
                           should have collumns/keys defining:
                               1) the event and parameter being varied (titled 'event' and 'parameter')
-                              2) the statistical distribution to sample from (titled 'type' and containing either 'normal',
-                                 'vonmises' or 'uniform')
+                              2) the statistical distribution to sample from (titled 'type' and containing either
+                                 'normal', 'vonmises' or 'uniform')
                               3) the distribution mean (titled 'mean') and,
-                              4) a collumn defining the distance between the 2.5th and 97.5th percentiles 
+                              4) a collumn defining the distance between the 2.5th and 97.5th percentiles
                                  (titled '+-') OR one defining the standard deviation (titled 'stdev')
-        '''
-        
+        """
+        from pynoddy.experiment import Experiment
         super(Experiment, self).__init__(history) #initialise
 #         super().__init__(history) #initialise
         

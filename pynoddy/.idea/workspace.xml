@@ -55,9 +55,12 @@
       <file leaf-file-name="TopologyAnalysis.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/experiment/TopologyAnalysis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="2047" column="0" selection-start-line="2047" selection-start-column="0" selection-end-line="2047" selection-end-column="0" />
+              <folding>
+                <element signature="e#448#5399#0" expanded="false" />
+                <element signature="e#5438#88146#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -66,10 +69,20 @@
         <entry file="file://$PROJECT_DIR$/experiment/UncertaintyAnalysis.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MonteCarlo.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/experiment/MonteCarlo.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="42" column="49" selection-start-line="42" selection-start-column="49" selection-end-line="42" selection-end-column="49" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -78,9 +91,21 @@
         <entry file="file://$PROJECT_DIR$/experiment/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+              <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
               <folding>
                 <element signature="e#261#270#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sampling.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/experiment/util/sampling.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.4047976">
+              <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
+              <folding>
+                <element signature="e#274#292#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -131,43 +156,45 @@
                 </edge>
               </edges>
               <settings layout="Hierarchic Group" zoom="1.0" x="-110.0" y="53.0" />
-              <SelectedNodes />
+              <SelectedNodes>
+                <node>object</node>
+              </SelectedNodes>
               <Categories />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Python/#/Users/flow/git/pynoddy/pynoddy" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Python/#/Users/flow/git/pynoddy/pynoddy" pinned="false" current-in-tab="false">
         <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy">
           <provider selected="true" editor-type-id="UmlEditorProvider">
             <state>
               <ID>Python</ID>
               <OriginalElement>#/Users/flow/git/pynoddy/pynoddy</OriginalElement>
               <nodes>
-                <node x="766.7357142857147" y="149.2066666666666">output.NoddyOutput</node>
+                <node x="909.9906450547567" y="176.59363872545396">output.NoddyOutput</node>
                 <node x="1130.6723809523812" y="-119.26952380952389">output.NoddyGeophysics</node>
-                <node x="303.37809523809517" y="411.2066666666667">experiment.UncertaintyAnalysis.UncertaintyAnalysis</node>
-                <node x="949.7357142857147" y="149.2066666666666">history.NoddyHistory</node>
-                <node x="954.0" y="356.0">experiment.ResolutionTest.ResolutionTest</node>
-                <node x="849.0509523809527" y="258.2066666666667">experiment.Experiment</node>
+                <node x="1047.0397211420927" y="-317.7081281287532">experiment.UncertaintyAnalysis.UncertaintyAnalysis</node>
+                <node x="1092.9906450547567" y="176.59363872545396">history.NoddyHistory</node>
+                <node x="1097.254930769042" y="383.38697205878736">experiment.ResolutionTest.ResolutionTest</node>
+                <node x="992.3058831499945" y="285.59363872545407">experiment.Experiment</node>
                 <node x="932.6723809523812" y="-119.26952380952389">output.NoddyTopology</node>
                 <node x="1341.6723809523812" y="-119.26952380952389">experiment.util.hive_plot.HivePlot</node>
-                <node x="678.3780952380952" y="485.2066666666667">history._Templates</node>
+                <node x="1422.0397211420927" y="-243.70812812875317">history._Templates</node>
                 <node x="1171.6723809523812" y="-10.26952380952389">events.Dyke</node>
                 <node x="691.6723809523812" y="-10.26952380952389">events.Stratigraphy</node>
-                <node x="578.3780952380952" y="337.2066666666667">experiment.SensitivityAnalysis.SensitivityAnalysis</node>
+                <node x="721.633026007137" y="364.59363872545407">experiment.SensitivityAnalysis.SensitivityAnalysis</node>
                 <node x="62.17238095238122" y="68.73047619047611">stochastic_events.StochasticFault</node>
                 <node x="775.6723809523812" y="-287.2695238095239">_abcoll.Hashable</node>
-                <node x="945.3780952380952" y="337.2066666666667">experiment.MonteCarlo_copy.MonteCarlo</node>
+                <node x="1088.633026007137" y="364.59363872545407">experiment.MonteCarlo_copy.MonteCarlo</node>
                 <node x="864.6723809523812" y="-10.26952380952389">events.Unconformity</node>
-                <node x="303.37809523809517" y="485.2066666666667">experiment.TopologyAnalysis.ModelRealisation</node>
+                <node x="-44.22578089266858" y="-172.0806627442321">experiment.TopologyAnalysis.ModelRealisation</node>
                 <node x="1424.6723809523812" y="-10.26952380952389">events.Tilt</node>
                 <node x="159.67238095238122" y="-10.26952380952389">stochastic_events.StochasticEvent</node>
-                <node x="303.37809523809517" y="337.2066666666667">experiment.MonteCarlo.MonteCarlo</node>
+                <node x="912.211551006524" y="-482.2958049385885">experiment.MonteCarlo.MonteCarlo</node>
                 <node x="1047.6723809523812" y="-10.26952380952389">events.Plug</node>
                 <node x="31.672380952381218" y="-10.26952380952389">events.Fault</node>
-                <node x="558.7357142857147" y="149.2066666666666">experiment.util.LDA.LDA</node>
-                <node x="709.3780952380952" y="411.2066666666667">experiment.TopologyAnalysis.TopologyAnalysis</node>
+                <node x="701.9906450547567" y="176.59363872545396">experiment.util.LDA.LDA</node>
+                <node x="-53.24374209121686" y="-237.6539021107592">experiment.TopologyAnalysis.TopologyAnalysis</node>
                 <node x="427.6723809523812" y="-10.26952380952389">events.Strain</node>
                 <node x="560.6723809523812" y="-10.26952380952389">events.Shear</node>
                 <node x="801.6723809523812" y="-119.26952380952389">events.Event</node>
@@ -178,15 +205,19 @@
               <edges>
                 <edge source="experiment.Experiment" target="output.NoddyOutput">
                   <point x="-44.5" y="-14.5" />
-                  <point x="893.5509523809527" y="238.2066666666667" />
-                  <point x="845.5509523809527" y="238.2066666666667" />
+                  <point x="1036.8058831499945" y="265.59363872545407" />
+                  <point x="988.8058831499945" y="265.59363872545407" />
                   <point x="0.0" y="14.5" />
                 </edge>
                 <edge source="experiment.SensitivityAnalysis.SensitivityAnalysis" target="experiment.Experiment">
                   <point x="0.0" y="-14.5" />
-                  <point x="751.8780952380952" y="317.2066666666667" />
-                  <point x="915.8009523809527" y="317.2066666666667" />
+                  <point x="895.133026007137" y="344.59363872545407" />
+                  <point x="1059.0558831499945" y="344.59363872545407" />
                   <point x="-22.25" y="14.5" />
+                </edge>
+                <edge source="experiment.UncertaintyAnalysis.UncertaintyAnalysis" target="experiment.MonteCarlo.MonteCarlo">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
                 </edge>
                 <edge source="stochastic_events.StochasticFault" target="events.Fault">
                   <point x="-61.25" y="-14.5" />
@@ -194,9 +225,13 @@
                   <point x="85.67238095238122" y="48.73047619047611" />
                   <point x="0.0" y="14.5" />
                 </edge>
+                <edge source="experiment.TopologyAnalysis.ModelRealisation" target="object">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
                 <edge source="output.NoddyOutput" target="object">
                   <point x="0.0" y="-14.5" />
-                  <point x="846.2781461336249" y="117.72631406728215" />
+                  <point x="989.5330769026668" y="145.1132861260695" />
                   <point x="836.886666666667" y="-149.2695238095239" />
                   <point x="-20.28571428571422" y="14.5" />
                 </edge>
@@ -208,8 +243,8 @@
                 </edge>
                 <edge source="experiment.ResolutionTest.ResolutionTest" target="experiment.Experiment">
                   <point x="0.0" y="-14.5" />
-                  <point x="1103.5" y="326.0" />
-                  <point x="1004.8009523809527" y="307.2066666666667" />
+                  <point x="1246.754930769042" y="353.38697205878736" />
+                  <point x="1148.0558831499945" y="334.59363872545407" />
                   <point x="66.75" y="14.5" />
                 </edge>
                 <edge source="stochastic_events.StochasticEvent" target="events.Event">
@@ -231,7 +266,7 @@
                 <edge source="experiment.MonteCarlo.MonteCarlo" target="experiment.Experiment">
                   <point x="0.0" y="-14.5" />
                   <point x="430.87809523809517" y="307.2066666666667" />
-                  <point x="871.3009523809527" y="307.2066666666667" />
+                  <point x="1014.5558831499945" y="334.59363872545407" />
                   <point x="-66.75" y="14.5" />
                 </edge>
                 <edge source="experiment.util.hive_plot.HivePlot" target="object">
@@ -272,15 +307,19 @@
                 </edge>
                 <edge source="experiment.Experiment" target="history.NoddyHistory">
                   <point x="44.5" y="-14.5" />
-                  <point x="982.5509523809527" y="238.2066666666667" />
-                  <point x="1030.5509523809528" y="238.2066666666667" />
+                  <point x="1125.8058831499945" y="265.59363872545407" />
+                  <point x="1173.8058831499948" y="265.59363872545407" />
                   <point x="0.0" y="14.5" />
                 </edge>
                 <edge source="history.NoddyHistory" target="object">
                   <point x="0.0" y="-14.5" />
-                  <point x="999.5454203258927" y="96.87505286532024" />
+                  <point x="1142.8003510949345" y="124.26202492410766" />
                   <point x="847.0295238095239" y="-139.2695238095239" />
                   <point x="-10.142857142857338" y="14.5" />
+                </edge>
+                <edge source="experiment.TopologyAnalysis.TopologyAnalysis" target="object">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
                 </edge>
                 <edge source="events.Fold" target="events.Event">
                   <point x="0.0" y="-14.5" />
@@ -318,8 +357,8 @@
                 </edge>
                 <edge source="experiment.MonteCarlo_copy.MonteCarlo" target="experiment.Experiment">
                   <point x="0.0" y="-14.5" />
-                  <point x="1091.3780952380953" y="317.2066666666667" />
-                  <point x="960.3009523809527" y="317.2066666666667" />
+                  <point x="1234.6330260071372" y="344.59363872545407" />
+                  <point x="1103.5558831499945" y="344.59363872545407" />
                   <point x="22.25" y="14.5" />
                 </edge>
                 <edge source="events.Tilt" target="events.Event">
@@ -329,7 +368,7 @@
                   <point x="49.94999999999982" y="14.5" />
                 </edge>
               </edges>
-              <settings layout="Hierarchic Group" zoom="0.4746782511076754" x="763.0123331433394" y="108.14085067784492" />
+              <settings layout="Hierarchic Group" zoom="0.4746782511076754" x="355.6056380083837" y="-280.3943619916163" />
               <SelectedNodes />
               <Categories />
             </state>
@@ -341,7 +380,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-              <folding />
+              <folding>
+                <element signature="e#172#27615#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -363,9 +404,11 @@
       <list>
         <option value="$PROJECT_DIR$/history.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
-        <option value="$PROJECT_DIR$/experiment/UncertaintyAnalysis.py" />
-        <option value="$PROJECT_DIR$/experiment/MonteCarlo.py" />
         <option value="$PROJECT_DIR$/experiment/__init__.py" />
+        <option value="$PROJECT_DIR$/experiment/MonteCarlo.py" />
+        <option value="$PROJECT_DIR$/experiment/UncertaintyAnalysis.py" />
+        <option value="$PROJECT_DIR$/experiment/TopologyAnalysis.py" />
+        <option value="$PROJECT_DIR$/experiment/util/sampling.py" />
       </list>
     </option>
   </component>
@@ -377,8 +420,8 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="20" />
-    <option name="y" value="41" />
+    <option name="x" value="38" />
+    <option name="y" value="33" />
     <option name="width" value="1400" />
     <option name="height" value="790" />
   </component>
@@ -437,6 +480,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pynoddy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pynoddy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="experiment" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
@@ -444,7 +505,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../docs/pics" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
@@ -647,7 +708,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="20" y="41" width="1400" height="790" extended-state="0" />
+    <frame x="38" y="33" width="1400" height="790" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -662,7 +723,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3994452" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39856115" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -670,6 +731,14 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -807,14 +876,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/util/sampling.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/experiment/util/hive_plot.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -840,14 +901,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/TopologyAnalysis.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="uml://Python/experiment.UncertaintyAnalysis.UncertaintyAnalysis">
       <provider selected="true" editor-type-id="UmlEditorProvider">
         <state>
@@ -862,14 +915,6 @@
           <settings layout="Hierarchic Group" zoom="1.0" x="180.5" y="54.0" />
           <SelectedNodes />
           <Categories />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/MonteCarlo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -935,22 +980,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/util/LDA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/MonteCarlo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="42" column="49" selection-start-line="42" selection-start-column="49" selection-end-line="42" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/output.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+          <folding>
+            <element signature="e#172#27615#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/experiment/UncertaintyAnalysis.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/__init__.py">
+    <entry file="file://$PROJECT_DIR$/experiment/TopologyAnalysis.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <caret line="2047" column="0" selection-start-line="2047" selection-start-column="0" selection-end-line="2047" selection-end-column="0" />
           <folding>
-            <element signature="e#261#270#0" expanded="true" />
+            <element signature="e#448#5399#0" expanded="false" />
+            <element signature="e#5438#88146#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -999,24 +1071,10 @@
             </edge>
           </edges>
           <settings layout="Hierarchic Group" zoom="1.0" x="-110.0" y="53.0" />
-          <SelectedNodes />
+          <SelectedNodes>
+            <node>object</node>
+          </SelectedNodes>
           <Categories />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/util/LDA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/output.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1026,30 +1084,30 @@
           <ID>Python</ID>
           <OriginalElement>#/Users/flow/git/pynoddy/pynoddy</OriginalElement>
           <nodes>
-            <node x="766.7357142857147" y="149.2066666666666">output.NoddyOutput</node>
+            <node x="909.9906450547567" y="176.59363872545396">output.NoddyOutput</node>
             <node x="1130.6723809523812" y="-119.26952380952389">output.NoddyGeophysics</node>
-            <node x="303.37809523809517" y="411.2066666666667">experiment.UncertaintyAnalysis.UncertaintyAnalysis</node>
-            <node x="949.7357142857147" y="149.2066666666666">history.NoddyHistory</node>
-            <node x="954.0" y="356.0">experiment.ResolutionTest.ResolutionTest</node>
-            <node x="849.0509523809527" y="258.2066666666667">experiment.Experiment</node>
+            <node x="1047.0397211420927" y="-317.7081281287532">experiment.UncertaintyAnalysis.UncertaintyAnalysis</node>
+            <node x="1092.9906450547567" y="176.59363872545396">history.NoddyHistory</node>
+            <node x="1097.254930769042" y="383.38697205878736">experiment.ResolutionTest.ResolutionTest</node>
+            <node x="992.3058831499945" y="285.59363872545407">experiment.Experiment</node>
             <node x="932.6723809523812" y="-119.26952380952389">output.NoddyTopology</node>
             <node x="1341.6723809523812" y="-119.26952380952389">experiment.util.hive_plot.HivePlot</node>
-            <node x="678.3780952380952" y="485.2066666666667">history._Templates</node>
+            <node x="1422.0397211420927" y="-243.70812812875317">history._Templates</node>
             <node x="1171.6723809523812" y="-10.26952380952389">events.Dyke</node>
             <node x="691.6723809523812" y="-10.26952380952389">events.Stratigraphy</node>
-            <node x="578.3780952380952" y="337.2066666666667">experiment.SensitivityAnalysis.SensitivityAnalysis</node>
+            <node x="721.633026007137" y="364.59363872545407">experiment.SensitivityAnalysis.SensitivityAnalysis</node>
             <node x="62.17238095238122" y="68.73047619047611">stochastic_events.StochasticFault</node>
             <node x="775.6723809523812" y="-287.2695238095239">_abcoll.Hashable</node>
-            <node x="945.3780952380952" y="337.2066666666667">experiment.MonteCarlo_copy.MonteCarlo</node>
+            <node x="1088.633026007137" y="364.59363872545407">experiment.MonteCarlo_copy.MonteCarlo</node>
             <node x="864.6723809523812" y="-10.26952380952389">events.Unconformity</node>
-            <node x="303.37809523809517" y="485.2066666666667">experiment.TopologyAnalysis.ModelRealisation</node>
+            <node x="-44.22578089266858" y="-172.0806627442321">experiment.TopologyAnalysis.ModelRealisation</node>
             <node x="1424.6723809523812" y="-10.26952380952389">events.Tilt</node>
             <node x="159.67238095238122" y="-10.26952380952389">stochastic_events.StochasticEvent</node>
-            <node x="303.37809523809517" y="337.2066666666667">experiment.MonteCarlo.MonteCarlo</node>
+            <node x="912.211551006524" y="-482.2958049385885">experiment.MonteCarlo.MonteCarlo</node>
             <node x="1047.6723809523812" y="-10.26952380952389">events.Plug</node>
             <node x="31.672380952381218" y="-10.26952380952389">events.Fault</node>
-            <node x="558.7357142857147" y="149.2066666666666">experiment.util.LDA.LDA</node>
-            <node x="709.3780952380952" y="411.2066666666667">experiment.TopologyAnalysis.TopologyAnalysis</node>
+            <node x="701.9906450547567" y="176.59363872545396">experiment.util.LDA.LDA</node>
+            <node x="-53.24374209121686" y="-237.6539021107592">experiment.TopologyAnalysis.TopologyAnalysis</node>
             <node x="427.6723809523812" y="-10.26952380952389">events.Strain</node>
             <node x="560.6723809523812" y="-10.26952380952389">events.Shear</node>
             <node x="801.6723809523812" y="-119.26952380952389">events.Event</node>
@@ -1060,15 +1118,19 @@
           <edges>
             <edge source="experiment.Experiment" target="output.NoddyOutput">
               <point x="-44.5" y="-14.5" />
-              <point x="893.5509523809527" y="238.2066666666667" />
-              <point x="845.5509523809527" y="238.2066666666667" />
+              <point x="1036.8058831499945" y="265.59363872545407" />
+              <point x="988.8058831499945" y="265.59363872545407" />
               <point x="0.0" y="14.5" />
             </edge>
             <edge source="experiment.SensitivityAnalysis.SensitivityAnalysis" target="experiment.Experiment">
               <point x="0.0" y="-14.5" />
-              <point x="751.8780952380952" y="317.2066666666667" />
-              <point x="915.8009523809527" y="317.2066666666667" />
+              <point x="895.133026007137" y="344.59363872545407" />
+              <point x="1059.0558831499945" y="344.59363872545407" />
               <point x="-22.25" y="14.5" />
+            </edge>
+            <edge source="experiment.UncertaintyAnalysis.UncertaintyAnalysis" target="experiment.MonteCarlo.MonteCarlo">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
             </edge>
             <edge source="stochastic_events.StochasticFault" target="events.Fault">
               <point x="-61.25" y="-14.5" />
@@ -1076,9 +1138,13 @@
               <point x="85.67238095238122" y="48.73047619047611" />
               <point x="0.0" y="14.5" />
             </edge>
+            <edge source="experiment.TopologyAnalysis.ModelRealisation" target="object">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
             <edge source="output.NoddyOutput" target="object">
               <point x="0.0" y="-14.5" />
-              <point x="846.2781461336249" y="117.72631406728215" />
+              <point x="989.5330769026668" y="145.1132861260695" />
               <point x="836.886666666667" y="-149.2695238095239" />
               <point x="-20.28571428571422" y="14.5" />
             </edge>
@@ -1090,8 +1156,8 @@
             </edge>
             <edge source="experiment.ResolutionTest.ResolutionTest" target="experiment.Experiment">
               <point x="0.0" y="-14.5" />
-              <point x="1103.5" y="326.0" />
-              <point x="1004.8009523809527" y="307.2066666666667" />
+              <point x="1246.754930769042" y="353.38697205878736" />
+              <point x="1148.0558831499945" y="334.59363872545407" />
               <point x="66.75" y="14.5" />
             </edge>
             <edge source="stochastic_events.StochasticEvent" target="events.Event">
@@ -1113,7 +1179,7 @@
             <edge source="experiment.MonteCarlo.MonteCarlo" target="experiment.Experiment">
               <point x="0.0" y="-14.5" />
               <point x="430.87809523809517" y="307.2066666666667" />
-              <point x="871.3009523809527" y="307.2066666666667" />
+              <point x="1014.5558831499945" y="334.59363872545407" />
               <point x="-66.75" y="14.5" />
             </edge>
             <edge source="experiment.util.hive_plot.HivePlot" target="object">
@@ -1154,15 +1220,19 @@
             </edge>
             <edge source="experiment.Experiment" target="history.NoddyHistory">
               <point x="44.5" y="-14.5" />
-              <point x="982.5509523809527" y="238.2066666666667" />
-              <point x="1030.5509523809528" y="238.2066666666667" />
+              <point x="1125.8058831499945" y="265.59363872545407" />
+              <point x="1173.8058831499948" y="265.59363872545407" />
               <point x="0.0" y="14.5" />
             </edge>
             <edge source="history.NoddyHistory" target="object">
               <point x="0.0" y="-14.5" />
-              <point x="999.5454203258927" y="96.87505286532024" />
+              <point x="1142.8003510949345" y="124.26202492410766" />
               <point x="847.0295238095239" y="-139.2695238095239" />
               <point x="-10.142857142857338" y="14.5" />
+            </edge>
+            <edge source="experiment.TopologyAnalysis.TopologyAnalysis" target="object">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
             </edge>
             <edge source="events.Fold" target="events.Event">
               <point x="0.0" y="-14.5" />
@@ -1200,8 +1270,8 @@
             </edge>
             <edge source="experiment.MonteCarlo_copy.MonteCarlo" target="experiment.Experiment">
               <point x="0.0" y="-14.5" />
-              <point x="1091.3780952380953" y="317.2066666666667" />
-              <point x="960.3009523809527" y="317.2066666666667" />
+              <point x="1234.6330260071372" y="344.59363872545407" />
+              <point x="1103.5558831499945" y="344.59363872545407" />
               <point x="22.25" y="14.5" />
             </edge>
             <edge source="events.Tilt" target="events.Event">
@@ -1211,9 +1281,29 @@
               <point x="49.94999999999982" y="14.5" />
             </edge>
           </edges>
-          <settings layout="Hierarchic Group" zoom="0.4746782511076754" x="763.0123331433394" y="108.14085067784492" />
+          <settings layout="Hierarchic Group" zoom="0.4746782511076754" x="355.6056380083837" y="-280.3943619916163" />
           <SelectedNodes />
           <Categories />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+          <folding>
+            <element signature="e#261#270#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/util/sampling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4047976">
+          <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
+          <folding>
+            <element signature="e#274#292#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

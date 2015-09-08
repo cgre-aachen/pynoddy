@@ -4,7 +4,7 @@ import pynoddy
 import pynoddy.experiment
 
 # from pynoddy.experiment import Experiment
-# from pynoddy.experiment.MonteCarlo import MonteCarlo
+from pynoddy.experiment.MonteCarlo import MonteCarlo
 # from pynoddy.output import NoddyOutput
 
 import numpy as np
