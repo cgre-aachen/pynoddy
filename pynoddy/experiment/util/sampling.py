@@ -69,7 +69,7 @@ def VonMises(mean, ci, count):
 def Normal(mean, ci, count):
     stdev = ci / 1.959963984540
 
-    if (count == 1):  # return single value
+    if count == 1:  # return single value
         return np.random.normal(mean, stdev, count)[0]
     else:  # return list of values
         return np.random.normal(mean, stdev, count)
