@@ -382,12 +382,13 @@ class NoddyHistory(object):
         """
         
         #get args
-        sim_type = kwds.get("type", 'Geology')
-        cube_string = 'Geology Cube Size' #get geology cube size by default
-        if ('Geophysics' in sim_type):
-            cube_string = 'Geophysics Cube Size' #instead get geophysics cube size
-            
-        # check if footer exists, if not: create from template
+        sim_type = kwds.get("type", 'Geophysics') #everything seems to use this
+        cube_string = 'Geophysics Cube Size' #get geology cube size by default
+        if ('Geology' in sim_type):
+            cube_string = 'Geology Cube Size' #instead get geology cube size
+            print "Warning: pynoddy uses the geophysics cube size for all calculations... changing the geology cube size will have no effect internally."
+       
+       # check if footer exists, if not: create from template
         if not hasattr(self, "footer_lines"):
             self.create_footer_from_template()
         
