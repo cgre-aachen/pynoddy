@@ -180,9 +180,6 @@ class UncertaintyAnalysis(MonteCarlo):
                                 
                     #keep track of the number of models we've loaded
                     n_models += 1
-                
-                if n_models > 100:
-                    break
                     
         #convert frequency fields to probabilities & calculate information entropy       
         self.e_block = np.ndarray((self.nx,self.ny,self.nz))
