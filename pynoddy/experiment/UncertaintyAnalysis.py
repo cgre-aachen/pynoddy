@@ -1,22 +1,18 @@
 import sys, os
 
 import pynoddy
-import pynoddy.experiment
-
-# from pynoddy.experiment import Experiment
 from pynoddy.experiment.MonteCarlo import MonteCarlo
-# from pynoddy.output import NoddyOutput
+from pynoddy.output import NoddyOutput
 
 import numpy as np
 import math
 
-
-class UncertaintyAnalysis(pynoddy.experiment.MonteCarlo):
+class UncertaintyAnalysis(MonteCarlo):
     """Perform uncertainty analysis experiments for kinematic models
 
     """
     
-    def __init__(self, history, parameters, basename='out', **kwds):
+    def __init__(self, history, parameters, basename="out"):
         """Creates an experiment class for uncertainty analysis methods for kinematic models
         **Arguments**:
          - *history* = The .his file this experiment is based on
@@ -34,6 +30,9 @@ class UncertaintyAnalysis(pynoddy.experiment.MonteCarlo):
         
         #init monte carlo class
         MonteCarlo.__init__(self,history,parameters,basename)
+        
+        #add empty block (otherwise something breaks...)
+        self.block = None
         
     def estimate_uncertainty( self, n_trials, **kwds ):
         '''
@@ -96,7 +95,7 @@ class UncertaintyAnalysis(pynoddy.experiment.MonteCarlo):
                         #update litho probability
                         self.p_block[litho][x][y][z] += p1
                         
-        #calculate entropy & store in self.block
+        #calculate entropy & store in self.e_block
         self.e_block = np.ndarray((self.nx,self.ny,self.nz))
         for x in range(self.nx):
             for y in range(self.ny):
@@ -128,7 +127,13 @@ class UncertaintyAnalysis(pynoddy.experiment.MonteCarlo):
             
     def estimate_uncertainty_from_existing(self, path, **kwds):
         '''
-        In progress....
+        Calculates the information entropy from a set of pre-calculated models (of the same dimensions).
+        
+        **Arguments**:
+         - *path* = The directory to load the models from. All models in this directory are loaded.
+         
+        **Optional Keywords**:
+         - *verbose* = True if this function should write to the print buffer. Default is False.
         '''
         
         vb = kwds.get('verbose',False)
@@ -137,16 +142,20 @@ class UncertaintyAnalysis(pynoddy.experiment.MonteCarlo):
         self.determine_model_stratigraphy()   
         self.n_rocktypes = len(self.model_stratigraphy)
         
-        self.nx = models[0].nx
-        self.ny = models[0].ny
-        self.nz = models[0].nz
+        #compute block dimensions
+        blocksize = self.get_cube_size()
+        ex,ey,ez = self.get_extent()
+        self.nx = (int) (ex / blocksize)
+        self.ny = (int) (ey / blocksize)
+        self.nz = (int) (ez / blocksize)
         
+        if vb:
+            print "block dimensions = %d,%d,%d" % (self.nx,self.ny,self.nz)
         
         #initialise blocks containing probability fields
         self.p_block = [[[[ 0. for z in range(self.nz)] for y in range(self.ny)] for x in range(self.nx)] for l in range(self.n_rocktypes)]
             
         #loop through directory loading models & building probability fields based on this
-        
         n_models = 0 #number of models loaded
         for root, dirnames, filenames in os.walk(path): #walk the directory
             for f in filenames:
@@ -171,9 +180,11 @@ class UncertaintyAnalysis(pynoddy.experiment.MonteCarlo):
                                 
                     #keep track of the number of models we've loaded
                     n_models += 1
+                
+                if n_models > 100:
+                    break
                     
-        #convert frequency fields to probabilities & calculate information entropy
-                    
+        #convert frequency fields to probabilities & calculate information entropy       
         self.e_block = np.ndarray((self.nx,self.ny,self.nz))
         for x in range(self.nx):
             for y in range(self.ny):
@@ -185,12 +196,13 @@ class UncertaintyAnalysis(pynoddy.experiment.MonteCarlo):
                         self.p_block[litho][x][y][z] = self.p_block[litho][x][y][z] / float(n_models)
          
                         #fix domain to 0 < p < 1
-                        if p == 0:
-                            p = 0.0000000000000001
-                        if p >= 0.9999999999999999:
-                            p = 0.9999999999999999
+                        if self.p_block[litho][x][y][z] == 0:
+                            self.p_block[litho][x][y][z] = 0.0000000000000001
+                        if self.p_block[litho][x][y][z] >= 0.9999999999999999:
+                            self.p_block[litho][x][y][z] = 0.9999999999999999
                             
                         #calculate
+                        p = self.p_block[litho][x][y][z] #shorthand
                         entropy += p * math.log(p,2) + (1 - p) * (math.log( 1 - p,2))
                         
                     entropy = entropy * -1 / float(self.n_rocktypes) #divide by n
@@ -223,6 +235,7 @@ class UncertaintyAnalysis(pynoddy.experiment.MonteCarlo):
         if not kwds.has_key('cmap'):
             kwds['cmap'] = 'RdBu_r'
         kwds['data'] = np.array(self.e_block) #specify the data we want to plot
+        
         self.plot_section(direction,position,**kwds)
         
         
@@ -252,33 +265,36 @@ class UncertaintyAnalysis(pynoddy.experiment.MonteCarlo):
             kwds['cmap'] = 'RdBu_r'
         kwds['data'] = np.array(self.p_block[litho_ID]) #specify the data we want to plot
         self.plot_section(direction,position,**kwds)
+    
+    def get_average_entropy(self):
+        '''
+        Calculates the average entropy of the model, by averaging the entropy of all the voxels.
+        
+        **Returns**
+         - the average entropy of the model suite
+        '''
+        
+        return np.average(self.e_block)
         
 if __name__ == '__main__':
-    #load pynoddy
-    sys.path.append(r"C:\Users\Sam\OneDrive\Documents\Masters\pynoddy")
-    import pynoddy
-    
     #setup
     pynoddy.ensure_discrete_volumes = True
-    
-    ###################################################
-    #MONTE CARLO PERTURBATION OF HIS FILE EXAMPLE
-    ###################################################
-    
+
     #setup working directory
-    os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\pynoddy\examples')
+    os.chdir(r'C:\Users\Sam\Documents\Temporary Model Files\NFault')
     #os.chdir("/Users/flow/git/pynoddy/sandbox")
-    his_file = "fold_dyke_fault.his"
+    his_file = "NFault.his"
 #   his_file = "simple_two_faults_no_gps.his"
-    params_file = "fold_dyke_fault.csv"
+    params_file = "NFault_ds.csv"
 #   params_file = "params.csv"
+    outpath = 'NFault_ds'
     
     #create new Uncertainty Analysis
     ua = UncertaintyAnalysis(his_file,params_file)
-    ua.change_cube_size(80)
     
-    #generate 100 random perturbations using 4 separate threads (in TOPOLOGY mode)
-    n = 20
-    ua.estimate_uncertainty(n)
+    #load models & estimate uncertainty
+    ua.estimate_uncertainty_from_existing(outpath)
+    
+    #ua.estimate_uncertainty(n)
     #ua.plot_probability(2)
     ua.plot_entropy()
