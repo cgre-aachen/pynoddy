@@ -2063,6 +2063,11 @@ if __name__ == '__main__':  # some debug stuff
 
     a = TopologyAnalysis(his, params=params, output='fold/fold_fault/fold_fault_dswa', n=0, verbose=False, threads=8)
 
+    st = a.super_topology
+    t=a.unique_topologies[0]
+    NoddyTopology.draw_graph_matrix(st)
+    t.draw_adjacency_matrix()
+    
     # a.plot_super_network()
     # a.maximum_separation_plot('')
 
