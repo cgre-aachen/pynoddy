@@ -975,9 +975,7 @@ class NoddyTopology(object):
         '''
         Collapses all topology codes down to the last (most recent) difference. Information regarding specific model topology is 
         generalised, eg. lithology A has a fault and stratigrappic contact with B (regardless of how many different faults are involved).
-        
-        Note that this function has not been properly tested, and i'm not exactly sure what it does...
-        
+                
         **Optional Arguments**:
          - *verbose* = True if this function should write to the print buffer. Default is False.
         **Returns**
@@ -1045,6 +1043,11 @@ class NoddyTopology(object):
         if isinstance(G2,NoddyTopology):
             G2 = G2.graph #we want the graph bit
         
+        #ensure we are not comparing two empty graphs
+        if G2.number_of_edges() == 0 and self.graph.number_of_edges()==0:
+            print "Warning: comparing two empty graphs... %s and %s" % (self.graph.name,G2.name)            
+            return 1 #two null graphs should be the same
+            
         #add edges from this graph to union
         union=G2.number_of_edges()
         
@@ -1103,6 +1106,11 @@ class NoddyTopology(object):
          - A NetworkX graph object containing all edges from the input graphs and weighted ('weight' parameter)
            according to their observed frequency.
         '''
+        
+        #validate input
+        if len(topology_list) < 1:
+            print "Topology list contains no topologies... cannot combine."
+            return
         
         import networkx as nx
         
@@ -1548,7 +1556,7 @@ class NoddyTopology(object):
         for node in nodes:
             if node[1].has_key('name'):
                 name = node[1]['name']
-                name+=node[0].split('_')[-1]
+                #name+=node[0].split('_')[-1]
             else:
                 name = node[0]
             
@@ -1567,8 +1575,7 @@ class NoddyTopology(object):
             f.savefig(kwds['path'],dpi=kwds.get('dpi',300))
         else:
             f.show()
-        
-    
+                                                                                                                                                                                                                                                                                                          
     def draw_adjacency_matrix(self, **kwds):
         '''
         Draws an adjacency matrix representing this topology object.
