@@ -113,10 +113,11 @@ class Fold(Event):
         self.event_lines = lines
         self.properties = {}
         self.property_lines = {} # required to reassign properties later!
-        for i,line in enumerate(lines):
+        for i, line in enumerate(lines):
             l = line.split("=")
+            # print("Load event properties")
             if "Event #" in line: continue
-            if "Fourier" in line:
+            if "Fourier Series" in line:
                 # finished with parsing events 
                 geometry_info_finished = True
             if not geometry_info_finished:
