@@ -25,33 +25,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Python/#/Users/flow/git/pynoddy/pynoddy/history.py" pinned="false" current-in-tab="false">
-        <entry file="uml://Python/#/Users/flow/git/pynoddy/pynoddy/history.py">
-          <provider selected="true" editor-type-id="UmlEditorProvider">
-            <state>
-              <ID>Python</ID>
-              <OriginalElement>#/Users/flow/git/pynoddy/pynoddy/history.py</OriginalElement>
-              <nodes>
-                <node x="0.0" y="153.0">history._Templates</node>
-                <node x="0.0" y="79.0">history.NoddyHistory</node>
-                <node x="48.0" y="0.0">object</node>
-              </nodes>
-              <notes />
-              <edges>
-                <edge source="history.NoddyHistory" target="object">
-                  <point x="0.0" y="-14.5" />
-                  <point x="0.0" y="14.5" />
-                </edge>
-              </edges>
-              <settings layout="Hierarchic Group" zoom="1.210457193030187" x="-86.6980897053034" y="3.860838207893323" />
-              <SelectedNodes>
-                <node>history._Templates</node>
-              </SelectedNodes>
-              <Categories />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="TopologyAnalysis.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/experiment/TopologyAnalysis.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -99,14 +72,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sampling.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="sampling.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/experiment/util/sampling.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.26986507">
-              <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
               <folding>
                 <element signature="e#274#292#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="events.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/events.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.2923538">
+              <caret line="119" column="30" selection-start-line="119" selection-start-column="30" selection-end-line="119" selection-end-column="30" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -409,6 +392,7 @@
         <option value="$PROJECT_DIR$/experiment/UncertaintyAnalysis.py" />
         <option value="$PROJECT_DIR$/experiment/TopologyAnalysis.py" />
         <option value="$PROJECT_DIR$/experiment/util/sampling.py" />
+        <option value="$PROJECT_DIR$/events.py" />
       </list>
     </option>
   </component>
@@ -709,7 +693,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="38" y="33" width="1400" height="790" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -721,7 +705,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39856115" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1299,11 +1283,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/experiment/util/sampling.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.26986507">
-          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
           <folding>
             <element signature="e#274#292#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/events.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2923538">
+          <caret line="119" column="30" selection-start-line="119" selection-start-column="30" selection-end-line="119" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
