@@ -975,9 +975,7 @@ class NoddyTopology(object):
         '''
         Collapses all topology codes down to the last (most recent) difference. Information regarding specific model topology is 
         generalised, eg. lithology A has a fault and stratigrappic contact with B (regardless of how many different faults are involved).
-        
-        Note that this function has not been properly tested, and i'm not exactly sure what it does...
-        
+                
         **Optional Arguments**:
          - *verbose* = True if this function should write to the print buffer. Default is False.
         **Returns**
@@ -1045,6 +1043,11 @@ class NoddyTopology(object):
         if isinstance(G2,NoddyTopology):
             G2 = G2.graph #we want the graph bit
         
+        #ensure we are not comparing two empty graphs
+        if G2.number_of_edges() == 0 and self.graph.number_of_edges()==0:
+            print "Warning: comparing two empty graphs... %s and %s" % (self.graph.name,G2.name)            
+            return 1 #two null graphs should be the same
+            
         #add edges from this graph to union
         union=G2.number_of_edges()
         
@@ -1104,9 +1107,18 @@ class NoddyTopology(object):
            according to their observed frequency.
         '''
         
+        #validate input
+        if len(topology_list) < 1:
+            print "Topology list contains no topologies... cannot combine."
+            return
+        
         import networkx as nx
         
         S = nx.Graph()
+        
+        w_inc = 1. / len(topology_list) #the amount weights go up per edge.
+                                        #if an edge is observed in every topology, then
+                                        #the weight == 1
         for G in topology_list:
             
             #ensure G is a Graph
@@ -1119,7 +1131,7 @@ class NoddyTopology(object):
                      
                      #average edge attributes
                      s_e = S.edge[e[0]][e[1]]
-                     s_e['weight'] = s_e['weight'] + 1 #increment weight
+                     s_e['weight'] = s_e['weight'] + w_inc #increment weight
                      s_e['area'] = np.mean( [float(e[2]['area']), float(s_e['area'])] ) #average area
                      
                      #thought: we could also append area's instead, recording the range
@@ -1149,7 +1161,7 @@ class NoddyTopology(object):
                          print "Warning: some attribute data could not be found for nodes %s or %s." % (e[0],e[1])
                        
                      #add edge
-                     e[2]['weight'] = 1
+                     e[2]['weight'] = w_inc
                      S.add_edge(e[0],e[1],e[2])
                      
         #return the graph
@@ -1348,6 +1360,7 @@ class NoddyTopology(object):
         NoddyTopology.draw_matrix_image() but for a networkX graph object.
         
         **Keywords**:
+         - *strat* = A dictionary linking node names to stratigraphic heights and names. Should be as follows { node_name : (height,name) }.
          - *path* = The path to save this image to. If not provided, the image is drawn to the screen
          - *dpi* = The resolution to save this image. Default is 300
          - *size* = The size of the image to save (in inches). This value will be used as the width and the height
@@ -1365,23 +1378,34 @@ class NoddyTopology(object):
         n = G.number_of_nodes()
         
         #retrieve data from network
-        ids = {}
-        nodes=G.nodes()
+        nodes=G.nodes(data=True)
         
-        #build node id dictionary
+        #sort node list alphabetically first
+        nodes = sorted(nodes,key=lambda node: str.lower( node[0] ))
+        
+        #now sort by age, if we know it
+        if nodes[0][1].has_key('age'):
+            nodes = sorted(nodes,key=lambda node: node[1]['age'])
+        
+        #build node id dictionary mapping
+        ids = {}
         for i in range(len(nodes)):
-            node = nodes[i]
+            node = nodes[i][0]
             ids[node] = i
-             
+            
         #build matrix
-        mat = [['' for i in range(n)] for j in range(n)]
+        mat = [[('',0) for i in range(n)] for j in range(n)]
         labels = {}
         dots=np.zeros( (n,n) )
         
         for e in G.edges(data=True):
-                #store colours 
-                mat[ids[e[0]]][ids[e[1]]] = e[2]['colour']
-                mat[ids[e[1]]][ids[e[0]]] = e[2]['colour']
+                #calculate alpha
+                alpha = e[2].get('weight',0.4) #super networks will have a weight
+                                               #otherwise use 0.4
+        
+                #store colours  (nb. matrix is symmetric, so operations are repeated)
+                mat[ids[e[0]]][ids[e[1]]] = (e[2]['colour'],alpha)
+                mat[ids[e[1]]][ids[e[0]]] = (e[2]['colour'],alpha)
                 
                 #label info
                 if type(e[2]['colour']) is list: #add from list
@@ -1397,7 +1421,11 @@ class NoddyTopology(object):
         f, ax = plt.subplots()
         for x in range(len(mat)):
             for y in range(len(mat[0])):
-                c = mat[x][y]
+                c = mat[x][y][0] #colour (single colour or list of colours if this is a lithological topology)
+                a = mat[x][y][1] #alpha
+                
+                if (a > 1 ): #catch floating point errors
+                    a = 0.99999
                 
                 if type(c) is list: #multiple relationships...
                     #find unique relationships, in case they are repeated (though they should not be)
@@ -1412,21 +1440,21 @@ class NoddyTopology(object):
                             #draw patch
                             patch = ax.add_patch( patches.Rectangle( 
                                             (x,y),
-                                            1,1,color=c[0],alpha=0.4))
+                                            1,1,color=c[0],alpha=a))
                             patch.set_label( labels[c[0]] )
                             labels[c[0]] = '_nolegend_' #so we don't show labels multiple times
                     elif len(unique) == 2: #draw two triangles
                         #upper triangle
                         upper = ax.add_patch( patches.Polygon(
                                                 xy=[[x,y],[x+1,y],[x,y+1]],
-                                                color=c[0],alpha=0.4))
+                                                color=c[0],alpha=a))
                         upper.set_label( labels[c[0]] )   
                         labels[c[0]] = '_nolegend_' #so we don't show labels multiple times
                         
                         #lower triangle
                         lower = ax.add_patch( patches.Polygon(
                                                 xy=[[x+1,y+1],[x+1,y],[x,y+1]],
-                                                color=c[1],alpha=0.4))
+                                                color=c[1],alpha=a))
                         upper.set_label( labels[c[1]] )   
                         labels[c[1]] = '_nolegend_' #so we don't show labels multiple times
                         
@@ -1434,14 +1462,14 @@ class NoddyTopology(object):
                         #upper triangle
                         upper = ax.add_patch( patches.Polygon(
                                                 xy=[[x,y],[x+1,y],[x,y+1]],
-                                                color=c[0],alpha=0.4))
+                                                color=c[0],alpha=a))
                         upper.set_label( labels[c[0]] )   
                         labels[c[0]] = '_nolegend_' #so we don't show labels multiple times
                         
                         #lower triangle
                         lower = ax.add_patch( patches.Polygon(
                                                 xy=[[x+1,y+1],[x+1,y],[x,y+1]],
-                                                color=c[1],alpha=0.4))
+                                                color=c[1],alpha=a))
                         lower.set_label( labels[c[1]] )   
                         labels[c[1]] = '_nolegend_' #so we don't show labels multiple times
                         
@@ -1456,27 +1484,27 @@ class NoddyTopology(object):
                         #upper left
                         patch = ax.add_patch( patches.Rectangle( 
                                         (x,y),
-                                        .5,.5,color=c[0],alpha=0.4))
+                                        .5,.5,color=c[0],alpha=a))
                         patch.set_label( labels[c[0]] )
                         labels[c[0]] = '_nolegend_' #so we don't show labels multiple times
                         
                         #upper right
                         patch = ax.add_patch( patches.Rectangle( 
                                         (x+.5,y),
-                                        .5,.5,color=c[1],alpha=0.4))
+                                        .5,.5,color=c[1],alpha=a))
                         patch.set_label( labels[c[1]] )
                         labels[c[1]] = '_nolegend_' #so we don't show labels multiple times
                         #lower left
                         patch = ax.add_patch( patches.Rectangle( 
                                         (x,y+.5),
-                                        .5,.5,color=c[2],alpha=0.4))
+                                        .5,.5,color=c[2],alpha=a))
                         patch.set_label( labels[c[2]] )
                         labels[c[2]] = '_nolegend_' #so we don't show labels multiple times
                         
                         #lower right
                         patch = ax.add_patch( patches.Rectangle( 
                                         (x+.5,y+.5),
-                                        .5,.5,color=c[3],alpha=0.4))
+                                        .5,.5,color=c[3],alpha=a))
                         patch.set_label( labels[c[3]] )
                         labels[c[3]] = '_nolegend_' #so we don't show labels multiple times
                                         
@@ -1486,11 +1514,20 @@ class NoddyTopology(object):
                         print c                        
                         break
                 else: #only one relationship, rectangular patch
-                    if c != '':
+                    if c != '':     
                         #draw patch
                         patch = ax.add_patch( patches.Rectangle( 
                                         (x,y),
-                                        1,1,color=c,alpha=0.4))
+                                        1,1,facecolor=c,alpha=a))
+                        if a < 0.05: #dot hatch
+                            patch = ax.add_patch( patches.Rectangle( 
+                                            (x,y),
+                                            1,1, facecolor='w',edgecolor=c,alpha=0.4,hatch='.'))
+                        elif a < 0.1: #cross hatch
+                            patch = ax.add_patch( patches.Rectangle( 
+                                            (x,y),
+                                            1,1, facecolor='w', edgecolor=c,alpha=0.4,hatch='x'))
+                            
                         patch.set_label( labels[c] )
                         labels[c] = '_nolegend_' #so we don't show labels multiple times
                         
@@ -1508,26 +1545,37 @@ class NoddyTopology(object):
         #set limits & flip y
         ax.set_ylim(0,n)
         ax.set_xlim(0,n)
-        ax.invert_yaxis()
+        #ax.invert_yaxis()
         
         #set ticks
         ax.set_xticks([ x + .5 for x in range(n)])
         ax.set_yticks([ y + .5 for y in range(n)])
         
-        ax.xaxis.set_ticklabels(G.nodes(),rotation=90)
-        ax.yaxis.set_ticklabels(G.nodes())
+        #build node name mapping
+        name_list = [] #order list containing node names from 0 to n
+        for node in nodes:
+            if node[1].has_key('name'):
+                name = node[1]['name']
+                #name+=node[0].split('_')[-1]
+            else:
+                name = node[0]
+            
+            name_list.append(name)
+            
+        ax.xaxis.set_ticklabels(name_list,rotation=90)
+        ax.yaxis.set_ticklabels(name_list)
         
         #set figure size
         size = kwds.get('size',5.)
         f.set_figwidth(size)
+        f.set_figheight(size)
         
         #save/show
         if kwds.has_key('path'):
             f.savefig(kwds['path'],dpi=kwds.get('dpi',300))
         else:
             f.show()
-        
-    
+                                                                                                                                                                                                                                                                                                          
     def draw_adjacency_matrix(self, **kwds):
         '''
         Draws an adjacency matrix representing this topology object.
@@ -2020,7 +2068,7 @@ if __name__ == '__main__':
     topo = NoddyTopology(NO,load_attributes=True)
     
     #topo.export_vtk(show=True)
-    topo.draw_mayavi()
+    #topo.draw_mayavi()
     #topo_c = topo.collapse_topology()
     #print len( topo_c.graph.edges() )
     #print len( topo.graph.edges() )

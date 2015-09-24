@@ -168,7 +168,10 @@ class TopologyAnalysis(object):
          - *verbose* = True if this experiment should write to the print buffer. Default is True
          - *threads* = The number of threads this experiment should utilise. The default is 4.
          - *force* = True if all noddy models should be recalculated. Default is False.
+         - *filter* = A list of lithology names to include in this analysis. All other lithologies are
+                      ignored completely. This is usefull if only a particular set of topologies are of interest.
         '''
+        
         # init variables
         self.base_history_path = None
         self.base_path = path  # if a history file has been given, this will be changed
@@ -216,6 +219,9 @@ class TopologyAnalysis(object):
         # load models from base directory
         self.models = ModelRealisation.loadModels(self.base_path, verbose=vb)
 
+        #load filter
+        self.lithology_filter = kwds.get('filter',None)
+        
         ###########################################
         # GENERATE TOPOLOGY LISTS
         ###########################################
@@ -317,10 +323,21 @@ class TopologyAnalysis(object):
 
         # generate lists
         for m in self.models:
-            self.all_topologies.append(m.topology)
-            self.all_litho_topologies.append(m.topology.collapse_topology())
-            self.all_struct_topologies.append(m.topology.collapse_stratigraphy())
-
+            
+            #filter lithologies
+            if not self.lithology_filter is None:
+                for n in m.topology.graph.nodes(data=True):
+                    if not (n[1]['name'] in self.lithology_filter or n[1]['lithology'] in self.lithology_filter):
+                        m.topology.graph.remove_node(n[0]) #remove this node
+            
+            if not len(m.topology.graph.edges()) == 0:
+                #store topology in its various forms
+                self.all_topologies.append(m.topology)
+                self.all_litho_topologies.append(m.topology.collapse_topology())
+                self.all_struct_topologies.append(m.topology.collapse_stratigraphy())
+            else:
+                print "Warning: no topology loaded from %s" % m.topology.graph.name
+                
     def _sort_topologies_by_frequency(self):
         '''
         Sorts self.unique_litho_topologies and self.unique_struct_topologies by
@@ -1813,12 +1830,12 @@ class TopologyAnalysis(object):
         # pickle this class for later
         if pickle:
             import cPickle as pickle
-            p = pickle.Pickler(open(os.path.join(output_directory, "analysis.pkl", ), "wb"),
-                               protocol=pickle.HIGHEST_PROTOCOL)
-            p.fast = True
-            p.dump(self)
-
-            # pickle.dump( self, open(os.path.join(output_directory,"analysis.pkl",), "wb" ))
+            
+            #Pickle super networks
+            pickle.dump(self.super_litho_topology,open('super_litho_topology.pkl','wb'))
+            pickle.dump(self.super_struct_topology,open('super_litho_topology.pkl','wb'))
+            pickle.dump(self.super_topology,open('super_litho_topology.pkl','wb'))
+            
 
 
         # save parameter space
@@ -1829,6 +1846,13 @@ class TopologyAnalysis(object):
         if figs:
             self.do_figures(output_directory)
 
+        if pickle:
+            #dump whole class
+            p = pickle.Pickler(open(os.path.join(output_directory, "analysis.pkl", ), "wb"),
+                               protocol=pickle.HIGHEST_PROTOCOL)
+            p.fast = True
+            p.dump(self)
+            
     def summary(self):
         out = "%d different topologies found (from %d trials)\n" % (len(self.unique_topologies), len(self.models))
         out += "%d unique lithological topologies found\n" % len(self.unique_litho_topologies)
@@ -1928,7 +1952,7 @@ class TopologyAnalysis(object):
         self.plot_n_models(8, 'litho', criterion='clust', path=os.path.join(directory, 'litho_cluster_centroids.png'))
 
 
-        # save super network
+        #plot super network
         self.plot_super_network(path=os.path.join(directory, 'super_network.png'))
         plt.close("all")
 
@@ -2061,8 +2085,14 @@ if __name__ == '__main__':  # some debug stuff
     # params="GBasin123.csv"
     params = "fold/fold_fault/fold_fault_dswa.csv"
 
-    a = TopologyAnalysis(his, params=params, output='fold/fold_fault/fold_fault_dswa', n=0, verbose=False, threads=8)
+    a = TopologyAnalysis(his, params=params, output='fold/fold_fault/fold_fault_dswa', n=0, verbose=False, threads=8, filter=['B','C','D'])
 
+    st = a.super_topology
+    NoddyTopology.draw_graph_matrix(st)
+    
+    t=a.unique_topologies[0]
+    t.draw_adjacency_matrix()
+    
     # a.plot_super_network()
     # a.maximum_separation_plot('')
 

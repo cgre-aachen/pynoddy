@@ -26,6 +26,12 @@ def VMLookupTable():
 
     kappa_lookup = OrderedDict()
 
+
+    #disable numpy warnings
+    err = np.geterr()
+    np.seterr(all='ignore')
+    
+    
     # build lookup table
     for k in range(1000, 100, -20):
         ci = sc.stats.vonmises.interval(0.95, k)
@@ -37,6 +43,9 @@ def VMLookupTable():
         ci = sc.stats.vonmises.interval(0.95, k)
         kappa_lookup[ci[1]] = k
 
+    #re-enable numpy warnings
+    np.seterr(**err)
+    
     # return lookup table
     return kappa_lookup
 
