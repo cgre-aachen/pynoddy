@@ -32,7 +32,7 @@ class ResolutionTest(Experiment):
         **Optional Keywords**:
             - *cleanup* = True if this function should delete any models it creates. Otherwise models of different resolutions
             are left in the same directory as the .his file they derive from. Default is True.
-            - *verbose* = If true, this function sends information to the print buffer. Otherwise it runs silently. Default is True.
+            - *verbose* = If true, this function sends information to the print buffer. Otherwise it runs silently. Default is False.
         **Returns**:
             - The function returns a list containing the cumulative number of model topologies
             observed, starting from the highest resolution (smallest block size) to the lowest block
@@ -42,7 +42,7 @@ class ResolutionTest(Experiment):
         #get args
         outFile = kwds.get("output", "")
         cleanup = kwds.get("cleanup",True)
-        verbose = kwds.get("verbose",True)
+        verbose = kwds.get("verbose",False)
         
         #import pynoddy bindings
         import pynoddy

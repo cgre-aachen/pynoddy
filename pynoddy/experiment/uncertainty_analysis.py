@@ -47,7 +47,7 @@ class UncertaintyAnalysis(MonteCarlo):
          - *cleanup* = True if this function should delete any models it creates (they're not needed anymore). Default
                        is True.
         '''
-        vb = kwds.get('verbose',True)
+        vb = kwds.get('verbose',False)
         model_path= kwds.get('model_path','tmp')
         cleanup = kwds.get('cleanup',True)
         

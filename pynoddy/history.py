@@ -307,10 +307,10 @@ class NoddyHistory(object):
                   this parsing might fail!
         
           **Optional Keywords**:
-           - verbose = True if this function is should write to the print bufffer, otherwise False. Default is true.
+           - verbose = True if this function is should write to the print bufffer, otherwise False. Default is False.
         """
         
-        vb = kwds.get('verbose',True)
+        vb = kwds.get('verbose',False)
         
         self._raw_events = []
         for i,line in enumerate(self.history_lines):

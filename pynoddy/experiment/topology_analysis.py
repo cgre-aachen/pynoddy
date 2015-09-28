@@ -124,13 +124,13 @@ class ModelRealisation(object):
          - *path* = The root directory that models should be loaded from. All models with the same base_name
                     as this class will be loaded (including subdirectoriess)
         **Optional Keywords**:
-         - *verbose* = True if this function should write debug information to the print buffer. Default is True.
+         - *verbose* = True if this function should write debug information to the print buffer. Default is False.
          
         **Returns**:
          - a list of ModelRealisation objects
         '''
 
-        vb = kwds.get('verbose', True)
+        vb = kwds.get('verbose', False)
 
         if vb:
             print "Loading models in %s" % path
@@ -166,7 +166,7 @@ class TopologyAnalysis(object):
         
         **Optional Keywords**:
          - *output* = The path to populate with models. Default is the base path (+ history name).
-         - *verbose* = True if this experiment should write to the print buffer. Default is True
+         - *verbose* = True if this experiment should write to the print buffer. Default is False.
          - *threads* = The number of threads this experiment should utilise. The default is 4.
          - *force* = True if all noddy models should be recalculated. Default is False.
          - *filter* = A list of lithology names to include in this analysis. All other lithologies are
@@ -176,7 +176,7 @@ class TopologyAnalysis(object):
         # init variables
         self.base_history_path = None
         self.base_path = path  # if a history file has been given, this will be changed
-        vb = kwds.get("verbose", True)
+        vb = kwds.get("verbose", False)
         n_threads = kwds.get("threads", 4)
         force = kwds.get("force", False)
 

@@ -74,7 +74,7 @@ class MonteCarlo(pynoddy.experiment.Experiment):
         '''
         
         #get keywords
-        vb = kwds.get("verbose",True)
+        vb = kwds.get("verbose",False)
         stype = kwds.get("sim_type","BLOCK")
         threads = kwds.get("threads",1)
         force = kwds.get("force_recalculate",False)
@@ -151,12 +151,12 @@ class MonteCarlo(pynoddy.experiment.Experiment):
                        'BLOCK_GEOPHYS', 'TOPOLOGY', 'BLOCK_SURFACES', 'ALL'. Default is 'BLOCK'.
         - *write_changes* = A file (path) to write the parameters used in each model realisation to (minus the extension). 
                        The default is None (no file written).
-        - *verbose* = True if this function sends output to the print buffer. Default is True.
+        - *verbose* = True if this function sends output to the print buffer. Default is False.
         - *seed* = The random seed to use in this experiment. If not specified, threads are seeded with PID * TID * time (*nodeID).
        '''
         
         #get args
-        vb = kwds.get("verbose",True)
+        vb = kwds.get("verbose",False)
         stype = kwds.get("sim_type","BLOCK")
         threads = kwds.get("threads",1)
         changes = kwds.get("write_changes",None)
@@ -386,7 +386,7 @@ class MonteCarlo(pynoddy.experiment.Experiment):
          - a list of NoddyTopology objects
         '''
         
-        vb = args.get('verbose',True)
+        vb = args.get('verbose',False)
         attr = args.get('load_attributes',True)
         
         if vb:
@@ -423,7 +423,7 @@ class MonteCarlo(pynoddy.experiment.Experiment):
          - a list of NoddyOutput objects
         '''
         
-        vb = args.get('verbose',True)
+        vb = args.get('verbose',False)
         
         if vb:
             print "Loading models in %s" % path

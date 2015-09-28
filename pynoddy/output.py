@@ -753,7 +753,7 @@ class NoddyTopology(object):
                 topoCode2 = data[1].split('_')[1]
                 lithoCode1 = data[0].split('_')[0]
                 lithoCode2 = data[1].split('_')[0]
-                count = int(data[-1]) #number of voxels with this neibour relationship (proxy of surface area)
+                count = int(data[-1]) #number of voxels with this neighbour relationship (proxy of surface area)
                 
                 #calculate edge type (dyke, fault etc)
                 eCode=0
@@ -1010,7 +1010,7 @@ class NoddyTopology(object):
                 for key in e[2].keys():
                     try:
                         try:
-                            data[key] = str(int(data[key]) + int(e[2][key])) #increment numbers
+                            data[key] = float(data[key]) + float(e[2][key]) #increment numbers
                         except (ValueError,TypeError):
                             try:
                                 data[key].append(e[2][key]) #try appending (for lists)
@@ -1168,9 +1168,6 @@ class NoddyTopology(object):
                          #add to average
                          S.node[n]['volume'] = S.node[n]['volume'] + w_inc * G.node[n]['volume']
           
-          
-        print "loaded nodes"
-         
         #now copy edges across and average/append them
         for G in topology_list:
             
@@ -1190,8 +1187,10 @@ class NoddyTopology(object):
                      
                      #cast vars to list
                      s_e['area_list'] = [s_e['area']]
-                     s_e['area'] = s_e['area'] * w_inc
-                     
+                     try:
+                         s_e['area'] = s_e['area'] * w_inc
+                     except TypeError:
+                         print "Type error combining edge %s, %s. List was observed rather than float - %s" % (e[0],e[1],str(s_e['area']))
                                           
                  else: #edge already exists
                      
@@ -1203,7 +1202,6 @@ class NoddyTopology(object):
                      #increment weight
                      s_e['weight'] = s_e['weight'] + w_inc 
                      
-        print "loaded edges"
         
         #return the graph
         return S
@@ -1575,7 +1573,7 @@ class NoddyTopology(object):
                 #draw dots
                 if dots[x][y] == 1: #draw dot
                     ax.scatter(x+0.5,y+0.5,c='k',alpha=0.6)
-                    print "dot %d, %d" % (x,y)
+                    #print "dot %d, %d" % (x,y)
                     
         #plot grid
         #ax.grid()
@@ -1710,7 +1708,7 @@ class NoddyTopology(object):
          - *node_size* = The size that nodes are drawn. Default is 1500.
          - *layout* = The layout algorithm used in 2D. Options are 'spring_layout' (default), 'shell_layout', 'circular_layout' 
                       and 'spectral_layout'.
-         - *verbose* = True if this function is allowed to write to the print buffer, otherwise false. Default is true
+         - *verbose* = True if this function is allowed to write to the print buffer, otherwise false. Default is False.
         '''
         
         #import networkx
@@ -1729,7 +1727,7 @@ class NoddyTopology(object):
         perspective=kwds.get("perspective",False)
         node_size = kwds.get("node_size",1500)
         layout = kwds.get("layout",'spring_layout')
-        verbose = kwds.get("verbose",True)
+        verbose = kwds.get("verbose",False)
         
         #get output path
         if outputname == "":
