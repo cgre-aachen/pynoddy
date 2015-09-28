@@ -10,7 +10,7 @@ import scipy as sp
 import math
 
 import pynoddy
-from pynoddy.experiment.MonteCarlo import MonteCarlo
+from pynoddy.experiment.monte_carlo import MonteCarlo
 from pynoddy.output import NoddyTopology
 from pynoddy.output import NoddyOutput
 from pynoddy.history import NoddyHistory
@@ -47,10 +47,11 @@ class ModelRealisation(object):
             pynoddy.compute_topology(self.basename)
 
         # load topology network
+        print self.basename
         self.topology = NoddyTopology(self.basename)  # overall topology
 
         # add sub-topology networks
-        # self.litho_topology = self.topology.collapse_topology() #lithological topology
+        # self.litho_topology = self.topology.collapse_structure() #lithological topology
         # self.struct_topology = self.topology.collapse_stratigraphy() #structural topology
 
     def define_parameter_space(self, parameters):
@@ -252,7 +253,7 @@ class TopologyAnalysis(object):
                 self.topo_type_ids.append(len(self.models) - 1)  # append type
                 print "Warning: all topologies generated are different to the initial topology"
 
-            self.initial_litho_topology = self.initial_topology.collapse_topology()
+            self.initial_litho_topology = self.initial_topology.collapse_structure()
             self.initial_litho_id = self.initial_litho_topology.find_first_match(self.unique_litho_topologies)
             if self.initial_litho_id == -1:  # highly unlikely, but possible
                 self.unique_litho_topologies.append(self.initial_litho_topology)
@@ -333,7 +334,7 @@ class TopologyAnalysis(object):
             if not len(m.topology.graph.edges()) == 0:
                 #store topology in its various forms
                 self.all_topologies.append(m.topology)
-                self.all_litho_topologies.append(m.topology.collapse_topology())
+                self.all_litho_topologies.append(m.topology.collapse_structure())
                 self.all_struct_topologies.append(m.topology.collapse_stratigraphy())
             else:
                 print "Warning: no topology loaded from %s" % m.topology.graph.name
@@ -628,7 +629,53 @@ class TopologyAnalysis(object):
         except ZeroDivisionError:  # average edge count = 0
             print "Warning: empty or disconnected graphs. Average edge count = 0"
             return 0
-
+            
+    @staticmethod
+    def calculate_structure_variabilities(super_network):
+        if type(super_network) is NoddyTopology:
+            super_network = super_network.graph
+        
+        #categorise edges by structure
+        structures = {}
+        for e in super_network.edges(data=True):
+            if e[2].has_key('name'):
+                if structures.has_key(e[2]['name']):
+                    structures[e[2]['name']].append(e)
+                else:
+                    structures[e[2]['name']] = [e]
+            else:
+                if structures.has_key('other'):
+                    structures['other'].append(e)
+                else:
+                    structures['other'] = [e]
+        
+        #calculate variability
+        output = {}
+        for key,value in structures.iteritems():
+            #calculate average size (sum of all the weights)
+            w = 0.
+            for e in value:
+                w += e[2]['weight']
+            
+            #calculate variability
+            output[key] = -1 + len(value) / w
+            
+        return output
+        
+        
+    def get_structure_variabilities(self, topology_type=''):
+        
+        assert not 'litho' in topology_type, "Error: Lithological topologies do not preserve structural information"
+        
+        if topology_type == '':
+                return TopologyAnalysis.calculate_structure_variabilities(self.super_topology)
+        elif 'struct' in topology_type:
+                return TopologyAnalysis.calculate_structure_variabilities(self.super_struct_topology)
+        else:
+            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+    
+                
+        
     def get_difference_matrix(self, topology_type='struct'):
         '''
         Calculates a difference matrix in which each matrix element Exy contains 1 over the jaccard
@@ -1722,8 +1769,9 @@ class TopologyAnalysis(object):
 
             if not m is None:
                 m.get_geology().plot_section(savefig=True, fig_filename=path, **kwds)
-
-    def plot_super_network(self, **kwds):
+                
+    @staticmethod
+    def super_network_hive(graph, **kwds):
         '''
         Makes a hive-plot of the topology supernetwork.
         
@@ -1737,10 +1785,10 @@ class TopologyAnalysis(object):
         # make axes
         axes = [[], [], []]
         # n.b was 'lithology'
-        axes[0] = [(n, int(d['age'])) for n, d in self.super_topology.nodes(data=True)]  # nodes
-        axes[1] = [(u, v, d['age']) for u, v, d in
-                   self.super_topology.edges(data=True)]  # edges treated as nodes on these axes
-        axes[2] = [(u, v, d['area']) for u, v, d in self.super_topology.edges(data=True)]
+        axes[0] = [(n, int(d['age'])) for n, d in graph.nodes(data=True)]  # nodes
+        #axes[1] = [(u, v, d['age']) for u, v, d in graph.edges(data=True)]  # edges treated as nodes on these axes
+        axes[1] = [(n,int(d['volume'])) for n, d in graph.nodes(data=True)]        
+        axes[2] = [(u, v, d['area']) for u, v, d in graph.edges(data=True)]
 
         # calculate node positions
         node_positions = [{}, {}, {}]
@@ -1754,14 +1802,15 @@ class TopologyAnalysis(object):
 
         # drop attributes from node ids
         axes[0] = [n for n, d in axes[0]]
-        axes[1] = [(u, v) for u, v, d in axes[1]]  # string contains edge type
+        #axes[1] = [(u, v) for u, v, d in axes[1]]  # string contains edge type
+        axes[1] = [n for n, d in axes[1]]
         axes[2] = [(u, v) for u, v, d in axes[2]]
 
         # calculate edges
         edges = {}
         edge_vals = {}
 
-        for u, v, d in self.super_topology.edges(data=True):
+        for u, v, d in graph.edges(data=True):
             if not edges.has_key(d['edgeType']):
                 edges[d['edgeType']] = []  # init list
                 edge_vals[d['edgeType']] = {'cm': 'alpha', 'color': d['colour']}
@@ -1791,11 +1840,22 @@ class TopologyAnalysis(object):
         from pynoddy.experiment.util.hive_plot import HivePlot
         h = HivePlot(axes, edges, node_positions=node_positions, node_size=0.1,
                      edge_colormap=edge_vals, lbl_axes=['Stratigraphic Age',
-                                                        'Structural Age',
+                                                        'Volume',
                                                         'Surface Area'],
                      axis_cols=ax_c)
         h.draw(**kwds)
-
+        
+        
+    def plot_super_network(self, **kwds):
+        '''
+        Draws a hive plot containing the super network contained by this TopologyAnalysis class.
+        
+        Please refer to the draw_super_network function for further documentation.
+        '''
+        
+        TopologyAnalysis.super_network_hive(self.super_topology,**kwds)
+        
+        
     def analyse(self, output_directory, **kwds):
         '''
         Performs a stock-standard analyses on the generated model suite. Essentially this puts

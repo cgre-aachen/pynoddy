@@ -27,9 +27,10 @@ if not os.path.exists(noddyPath) and not os.path.exists(noddyPath + ".exe"):
 if not os.path.exists(topologyPath) and not os.path.exists(topologyPath + ".exe"):
     print("Warning: could not find a compiled version of topology at %s. Please ensure the source has been compiled (using GCC and compile.bat (windows) or compile.sh (unix))." % topologyPath)
 
+import subprocess
+	
 # Some helper functions are defined directly here:
 def compute_model(history, output_name, **kwds):
-    import subprocess
     """Call Noddy and compute the history file
     
     **Arguments**:
@@ -43,6 +44,7 @@ def compute_model(history, output_name, **kwds):
     **Returns**:
         -Returns any text outputted by the noddy executable.
     """
+
     sim_type = kwds.get("sim_type", 'BLOCK')
     
     out = "Running noddy exectuable at %s(.exe)\n" % noddyPath
@@ -61,11 +63,10 @@ def compute_model(history, output_name, **kwds):
     return out
             
 def compute_topology(rootname, **kwds):
-    import subprocess
-    """Call topology to compute the voxel topologies
+    """Call the topology executable to compute a models topology.
     
     **Arguments**:
-        - *rootname* = string : rootname model to calculate topology for
+        - *rootname* = string : rootname of the noddy model to calculate topology for
     **Optional Keywords**:
         - *ensure_discrete_volumes* = True if topological units are broken down into
                                       separate, spatially continuous volumes. Otherwise

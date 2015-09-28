@@ -1,5 +1,5 @@
 #Filename = tmp_section.his 
-#Date Saved = 11/8/2015 15:48:47
+#Date Saved = 28/9/2015 19:30:20
 FileType = 111
 Version = 7.11
 
@@ -1108,8 +1108,8 @@ Event #5	= FAULT
     Length X    =   10000.00
     Length Y    =   55.00
     Length Z    =   5000.00
-	Geology Cube Size	=  55.00
-	Geophysics Cube Size	=  55.00
+	Geology Cube Size	=  55.00
+	Geophysics Cube Size	=  55.00
 
 #GeologyOptions
 	Scale	=  10.00

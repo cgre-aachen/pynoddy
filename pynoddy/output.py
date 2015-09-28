@@ -890,7 +890,7 @@ class NoddyTopology(object):
                     params['centroid']=[ float(data[2]), float(data[3]), float(data[4])]
                     params['litho'] = int(data[5])
                     params['topo'] = data[6]
-                    params['volume'] = 100#int(data[7]) #number of voxels of this type
+                    params['volume'] = int(data[7]) #number of voxels of this type
                     
                     #save (key = LITHO_TOPO (eg. 2_001a))
                     self.node_properties[ '%d_%s' % (params['litho'],params['topo']) ] = params
@@ -948,6 +948,7 @@ class NoddyTopology(object):
         
         #retrieve list of edges, ignoring lithology
         edges = []
+        nodes = []
         for e in topo.graph.edges(data=True):
             code1 = e[0].split("_")[1] #topology code of node 1
             code2 = e[1].split("_")[1] #topology code of node 2
@@ -956,12 +957,11 @@ class NoddyTopology(object):
             code1 = code1[:-1] + 'A' #retain last letter for compatability/concistency...
             code2 = code2[:-1] + 'A'
             
-            #todo: merge edge attributes
-            
             
             #add edge tuple to edges array
-            edges.append( (code1,code2,e[2]) ) 
+            edges.append( (code1,code2,e[2]) )
             
+                    
         #remake graph
         topo.graph.clear()
         
@@ -971,7 +971,7 @@ class NoddyTopology(object):
         topo.graph.remove_edges_from( topo.graph.selfloop_edges() )
         return topo
        
-    def collapse_topology(self, verbose=False):
+    def collapse_structure(self, verbose=False):
         '''
         Collapses all topology codes down to the last (most recent) difference. Information regarding specific model topology is 
         generalised, eg. lithology A has a fault and stratigrappic contact with B (regardless of how many different faults are involved).
@@ -1119,6 +1119,59 @@ class NoddyTopology(object):
         w_inc = 1. / len(topology_list) #the amount weights go up per edge.
                                         #if an edge is observed in every topology, then
                                         #the weight == 1
+        
+        #copy nodes from all networks in topology_list into S
+        import copy
+        for G in topology_list:
+            #ensure G is a Graph
+            if isinstance(G,NoddyTopology):
+                G = G.graph #we want the graph bit
+        
+            #loop through nodes and average/append them
+            for n in G.nodes():
+                 #Node 1
+                 if not S.has_node(n):
+                     S.add_node(n,attr_dict = copy.copy(G.node[n]))
+                     
+                     #cast variables to list (or tuple of lists from centroid)
+                     if G.node[n].has_key('volume'):
+                         S.node[n]['volume_list'] = [G.node[n]['volume']] 
+                         S.node[n]['volume'] = G.node[n]['volume'] * w_inc
+                     else:
+                         S.node[n]['volume_list'] = [0]
+                         S.node[n]['volume'] = 0
+                         
+                     if S.node[n].has_key('centroid'):
+                         S.node[n]['centroid_list'] = ([G.node[n]['centroid'][0]],[G.node[n]['centroid'][1]],[G.node[n]['centroid'][2]])                     
+                         S.node[n]['centroid'] = (w_inc * S.node[n]['centroid'][0],w_inc * S.node[n]['centroid'][1],w_inc * S.node[n]['centroid'][2])
+                 else: #node already exists, store attributes
+                     
+                     #append centroid
+                     if G.node[n].has_key('centroid'):
+                         c1 = G.node[n]['centroid']
+                         
+                         #list of all centroids
+                         S.node[n]['centroid_list'][0].append(c1[0])
+                         S.node[n]['centroid_list'][1].append(c1[1])
+                         S.node[n]['centroid_list'][2].append(c1[2])
+                         
+                         #average centroid
+                         S.node[n]['centroid'] = (S.node[n]['centroid'][0] + w_inc * c1[0],
+                                                  S.node[n]['centroid'][1] + w_inc * c1[1],
+                                                  S.node[n]['centroid'][2] + w_inc * c1[2])
+                         
+                 
+                     #append volume
+                     if G.node[n].has_key('volume'):
+                         S.node[n]['volume_list'].append(G.node[n]['volume'])
+                     
+                         #add to average
+                         S.node[n]['volume'] = S.node[n]['volume'] + w_inc * G.node[n]['volume']
+          
+          
+        print "loaded nodes"
+         
+        #now copy edges across and average/append them
         for G in topology_list:
             
             #ensure G is a Graph
@@ -1126,44 +1179,32 @@ class NoddyTopology(object):
                 G = G.graph #we want the graph bit
                 
             #loop through edges
-            for e in G.edges(data=True):
-                 if (S.has_edge(e[0],e[1])): #edge already exists
-                     
-                     #average edge attributes
-                     s_e = S.edge[e[0]][e[1]]
-                     s_e['weight'] = s_e['weight'] + w_inc #increment weight
-                     s_e['area'] = np.mean( [float(e[2]['area']), float(s_e['area'])] ) #average area
-                     
-                     #thought: we could also append area's instead, recording the range
-                     #of area variability on this edge!
-                     
-                 else: #otherwise add edge
-                     try:
-                         if not S.has_node(e[0]): #add node
-                             S.add_node(e[0],G.node[e[0]])
-                         else: #average attributes
-                             c1 = G.node[e[0]]['centroid']
-                             c2 = S.node[e[0]]['centroid']
-                             S.node[e[0]]['centroid'] = (np.mean([c1[0],c2[0]]),np.mean([c1[1],c2[1]]),np.mean([c1[2],c2[2]]),)
-                         
-                             S.node[e[0]]['volume'] = np.mean( [float(G.node[e[0]]['volume']),float(S.node[e[0]]['volume'])] )
-                             
-                         
-                         if not S.has_node(e[1]): #add node
-                             S.add_node(e[1],G.node[e[1]])
-                         else: #average attributes
-                             c1 = G.node[e[1]]['centroid']
-                             c2 = S.node[e[1]]['centroid']
-                             S.node[e[1]]['centroid'] = (np.mean([c1[0],c2[0]]),np.mean([c1[1],c2[1]]),np.mean([c1[2],c2[2]]),)
-                             S.node[e[1]]['volume'] = np.mean( [float(G.node[e[1]]['volume']),float(S.node[e[1]]['volume'])] )
-                         
-                     except KeyError: #some nodes don't have a centroid (litho topology)
-                         print "Warning: some attribute data could not be found for nodes %s or %s." % (e[0],e[1])
-                       
+            for e in G.edges(data=True):                 
+                 #average/add edges
+                 if not S.has_edge(e[0],e[1]): #add new edge
                      #add edge
-                     e[2]['weight'] = w_inc
                      S.add_edge(e[0],e[1],e[2])
                      
+                     s_e = S.edge[e[0]][e[1]]
+                     s_e['weight'] = w_inc
+                     
+                     #cast vars to list
+                     s_e['area_list'] = [s_e['area']]
+                     s_e['area'] = s_e['area'] * w_inc
+                     
+                                          
+                 else: #edge already exists
+                     
+                     #append/average attributes
+                     s_e = S.edge[e[0]][e[1]]
+                     s_e['area_list'].append(e[2]['area']) #store area
+                     s_e['area'] = s_e['area'] + e[2]['area'] * w_inc #average area
+                     
+                     #increment weight
+                     s_e['weight'] = s_e['weight'] + w_inc 
+                     
+        print "loaded edges"
+        
         #return the graph
         return S
     

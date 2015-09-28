@@ -53,12 +53,12 @@ except Exception as e: #other errors
     sys.stderr.write("There was an error loading the experiment module: %s\n" % e)
     err = True
 try:
-    from pynoddy.experiment.MonteCarlo import MonteCarlo
+    from pynoddy.experiment.monte_carlo import MonteCarlo
 except Exception as e:
     sys.stderr.write("An error occured loading the MonteCarlo class\n" % e )
     err = True
 try:
-    from pynoddy.experiment.TopologyAnalysis import TopologyAnalysis
+    from pynoddy.experiment.topology_analysis import TopologyAnalysis
 except Exception as e:
     sys.stderr.write("An error occured loading the TopologyAnalysis class\n" % e )
     err = True

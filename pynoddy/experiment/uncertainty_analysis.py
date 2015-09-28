@@ -1,7 +1,7 @@
 import sys, os
 
 import pynoddy
-from pynoddy.experiment.MonteCarlo import MonteCarlo
+from pynoddy.experiment.monte_carlo import MonteCarlo
 from pynoddy.output import NoddyOutput
 
 import numpy as np

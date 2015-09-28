@@ -1,1 +1,1 @@
-"""Package containing executable topology code."""
+"""Package containing executable topology code"""

@@ -533,9 +533,20 @@ class HivePlot(object):
                 
                 verts =[(startx,starty),(middlex,middley),(endx,endy)]
                 codes = [Path.MOVETO, Path.CURVE3, Path.CURVE3]
+                
+                #if alpha < 0.1 draw with dashes
+                style='solid'#'solid'
+                if a < 0.1 and a >= 0.05:
+                    style='dashed'
+                    a=0.6
+                #if alpha < 0.05 draw with dots                
+                if a < 0.05:
+                    style='dotted'
+                    a=0.6
+                
                 #draw
                 path = Path(verts, codes)
-                patch = patches.PathPatch(path, lw=self.linewidth, facecolor='none', edgecolor=c, alpha=a)
+                patch = patches.PathPatch(path, lw=self.linewidth, ls=style, facecolor='none', edgecolor=c, alpha=a)
                 self.ax.add_patch(patch)
 
     def get_within_group_edges(self, axis):
@@ -693,5 +704,5 @@ if __name__ == '__main__':     #test function
             node_positions[i][node] = np.random.uniform(0,100)
     
     hv = HivePlot(nodes,edges,node_positions=node_positions,node_colormap=node_cols,edge_colormap=edge_vals)
-    
+    hv.draw()
     
