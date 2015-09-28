@@ -28,16 +28,16 @@ class UncertaintyAnalysis(MonteCarlo):
                                  (titled '+-') OR one defining the standard deviation (titled 'stdev')
         """
         
-        #init monte carlo class
+        # init monte carlo class
         MonteCarlo.__init__(self,history,parameters,basename)
         
-        #add empty block (otherwise something breaks...)
+        # add empty block (otherwise something breaks...)
         self.block = None
         
     def estimate_uncertainty( self, n_trials, **kwds ):
-        '''
+        """
         Samples the specified number of models, given the pdf's defined in the params file used to create this model.
-        
+
         **Arguments**:
          - *n_trials* = The number of random draws to produce. The variation between these random draws
                         is used to estimate uncertainty.
@@ -46,77 +46,101 @@ class UncertaintyAnalysis(MonteCarlo):
          - *model_path* = The directory to write models to. Default is a local directory called 'tmp'.
          - *cleanup* = True if this function should delete any models it creates (they're not needed anymore). Default
                        is True.
-        '''
-        vb = kwds.get('verbose',True)
-        model_path= kwds.get('model_path','tmp')
-        cleanup = kwds.get('cleanup',True)
+        """
+        vb = kwds.get('verbose', True)
+        model_path= kwds.get('model_path', 'tmp')
+        cleanup = kwds.get('cleanup', True)
         
-        #generate & load initial model
+        # generate & load initial model
         self.write_history('tmp.his')
         pynoddy.compute_model('tmp.his', self.basename)
         self.load_model_info()
         self.load_geology()
         os.remove('tmp.his')
         
-        #perform monte carlo sampling
+        # perform monte carlo sampling
         if vb:
             print "Producing model realisations..."
-        self.generate_model_instances(model_path,n_trials,verbose=vb,write_changes=None)
+        self.generate_model_instances(model_path, n_trials, verbose=vb, write_changes=None)
         
-        #thought: it would be more efficient (memory wise) to load models 1 at a time rather than
-        #dumping them all in memory....
+        # thought: it would be more efficient (memory wise) to load models 1 at a time rather than
+        # dumping them all in memory....
         
-        #load results
+        # load results
         if vb:
             print "Loading models..."
             
-        models = MonteCarlo.load_noddy_realisations(model_path,verbose=vb)
+        models = MonteCarlo.load_noddy_realisations(model_path, verbose=vb)
         self.models = models
         
-        #compute strat column
-        #self.determine_model_stratigraphy()   
-        #self.n_rocktypes = len(self.model_stratigraphy)
+        # compute strat column
+        # self.determine_model_stratigraphy()
+        # self.n_rocktypes = len(self.model_stratigraphy)
         
-        #self.nx = models[0].nx
-        #self.ny = models[0].ny
-        #self.nz = models[0].nz
-        
-        #calculate probabilities for each lithology. p_block[lithology][x][y][z] = p(lithology | x, y ,z)        
-        self.p_block = [[[[ 0. for z in range(self.nz)] for y in range(self.ny)] for x in range(self.nx)] for l in range(self.n_rocktypes)]
-        p1 = 1 / float(n_trials) #probability increment gained on each observation
+        # self.nx = models[0].nx
+        # self.ny = models[0].ny
+        # self.nz = models[0].nz
+
+        if vb:
+            print("Estimating lithology probabilities")
+        # calculate probabilities for each lithology. p_block[lithology][x][y][z] = p(lithology | x, y ,z)
+        self.p_block = [[[[0. for z in range(self.nz)] for y in range(self.ny)] for x in range(self.nx)] for l in range(self.n_rocktypes)]
+        p1 = 1 / float(n_trials)  # probability increment gained on each observation
         for m in models:
-            #loop through voxels
+            # loop through voxels
             for x in range(self.nx):
                 for y in range(self.ny):
                     for z in range(self.nz):
-                        #get litho
+                        # get litho
                         litho = int(m.block[x][y][z]) - 1
 
-                        #update litho probability
+                        # update litho probability
                         self.p_block[litho][x][y][z] += p1
-                        
-        #calculate entropy & store in self.e_block
-        self.e_block = np.ndarray((self.nx,self.ny,self.nz))
-        for x in range(self.nx):
-            for y in range(self.ny):
-                for z in range(self.nz):
-                    entropy = 0 #calculate shannons information entropy
-                    for litho in range(self.n_rocktypes):
-                        p = self.p_block[litho][x][y][z]
-                        
-                        #fix domain to 0 < p < 1
-                        if p == 0:
-                            p = 0.0000000000000001
-                        if p >= 0.9999999999999999:
-                            p = 0.9999999999999999
-                        
-                        #calculate
-                        entropy += p * math.log(p,2) + (1 - p) * (math.log( 1 - p,2))
-                            
-                    entropy = entropy * -1 / float(self.n_rocktypes) #divide by n
-                    self.e_block[x][y][z] = entropy
+
+        if vb:
+            print("Calculating cell entropies")
+
+        # cast probabilities in numpy arrays (note: should be done before, fix!)
+        for i in range(len(self.p_block)):
+            self.p_block[i] = np.array(self.p_block[i])
+
+        # calculate information entropy and store in self.e_block
+        self.e_block = np.zeros_like(self.p_block[1])
+        for p_block in self.p_block:
+            for i in range(self.nx):
+                for j in range(self.ny):
+                    for k in range(self.nz):
+                        if p_block[i, j, k] > 0:
+                            self.e_block[i, j, k] -= p_block[i, j, k] * np.log2(p_block[i, j, k])
+
+        # # calculate entropy and store in self.e_block
+        # self.e_block = np.ndarray((self.nx, self.ny, self.nz))
+        # for x in range(self.nx):
+        #     # if vb:
+        #     #     print("%d of %d" % (x, self.nx))
+        #     for y in range(self.ny):
+        #         for z in range(self.nz):
+        #             entropy = 0  # calculate information entropy
+        #
+        #             for litho in range(self.n_rocktypes):
+        #                 p = self.p_block[litho][x][y][z]
+        #                 if p > 0:
+        #                     self.e_block[x, y, z] -= p * np.log2(p)
+        #             #
+        #             #     # fix domain to 0 < p < 1
+        #             #     if p == 0:
+        #             #         p = 0.0000000000000001
+        #             #     if p >= 0.9999999999999999:
+        #             #         p = 0.9999999999999999
+        #             #
+        #             #     # calculate
+        #             #     entropy -= p * math.log(p, 2) + (1 - p) * (math.log(1 - p, 2))
+        #             #
+        #             # # JFW: scaling removed, does not make any sense in this case
+        #             # # entropy = entropy * -1 / float(self.n_rocktypes)  # divide by n
+        #             # self.e_block[x][y][z] = entropy
                     
-        #cleanup
+        # cleanup
         if vb:
             print "Cleaning up..."
         if cleanup:
@@ -181,8 +205,8 @@ class UncertaintyAnalysis(MonteCarlo):
                     #keep track of the number of models we've loaded
                     n_models += 1
                     
-        #convert frequency fields to probabilities & calculate information entropy       
-        self.e_block = np.ndarray((self.nx,self.ny,self.nz))
+        # convert frequency fields to probabilities & calculate information entropy
+        self.e_block = np.ndarray((self.nx, self.ny, self.nz))
         for x in range(self.nx):
             for y in range(self.ny):
                 for z in range(self.nz):
@@ -202,7 +226,7 @@ class UncertaintyAnalysis(MonteCarlo):
                         p = self.p_block[litho][x][y][z] #shorthand
                         entropy += p * math.log(p,2) + (1 - p) * (math.log( 1 - p,2))
                         
-                    entropy = entropy * -1 / float(self.n_rocktypes) #divide by n
+                    # entropy = entropy * -1 / float(self.n_rocktypes) #divide by n
                     self.e_block[x][y][z] = entropy
                         
     def plot_entropy( self, direction='y', position='center', **kwds):
@@ -233,7 +257,7 @@ class UncertaintyAnalysis(MonteCarlo):
             kwds['cmap'] = 'RdBu_r'
         kwds['data'] = np.array(self.e_block) #specify the data we want to plot
         
-        self.plot_section(direction,position,**kwds)
+        self.plot_section(direction, position, **kwds)
         
         
     def plot_probability( self, litho_ID, direction='y', position='center', **kwds):
