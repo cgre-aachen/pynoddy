@@ -2097,7 +2097,7 @@ class TopologyAnalysis(object):
         import cPickle as pk
 
         # store current wd
-        wd = os.curdir()
+        wd = os.curdir
         os.chdir(directory)
 
         # dump files
@@ -2105,10 +2105,17 @@ class TopologyAnalysis(object):
         pk.dump(self.super_litho_topology, open('super_litho_topology.pkl', 'wb'))
         pk.dump(self.super_struct_topology, open('super_struct_topology.pkl', 'wb'))
 
-        pk.dump(self.unique_topologies, open('unique_topology.pkl', 'wb'))
-        pk.dump(self.unique_litho_topologies, open('unique_litho_topology.pkl', 'wb'))
-        pk.dump(self.unique_struct_topologies, open('unique_struct_topology.pkl', 'wb'))
+        print "Saved topology supernetworks."
+        pk.dump(self.unique_ids, open('unique_topology.pkl', 'wb'))
+        pk.dump(self.unique_litho_ids, open('unique_litho_topology.pkl', 'wb'))
+        pk.dump(self.unique_struct_ids, open('unique_struct_topology.pkl', 'wb'))
 
+        print "Saved unique topology ids."
+		
+        pk.dump(self.models,open('all_models.pkl','wb'))
+		
+        print "Saved model list"
+		
         # change back to original wd
         os.chdir(wd)
 
