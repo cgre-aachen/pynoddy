@@ -752,7 +752,7 @@ Version = 7.11
                 tmp_lines.append(layer_line)
         
         # append event name
-        tmp_lines.append("""\tName\t= Strat""")        
+        tmp_lines.append("""\tName\t= %s""" % event_options.get('name','Unconf'))        
 
         tmp_lines_list = []
         for line in tmp_lines:
