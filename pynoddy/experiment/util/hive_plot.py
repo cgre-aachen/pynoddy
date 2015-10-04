@@ -250,9 +250,12 @@ class HivePlot(object):
                 
                 if isinstance(v, numbers.Number): #if value is a number (we need to use colour ramp)
                     if c_map == 'alpha': #map values to alpha
-                        alpha = (v - minv) / (maxv - minv)
-                        color = self.edge_colormap[group].get('color','b')
-                        
+                        if not maxv == minv:
+                            alpha = (v - minv) / (maxv - minv)
+                            color = self.edge_colormap[group].get('color','b')
+                        else:
+                            alpha = 0.6
+                            color = self.edge_colormap[group].get('color','b')
                         rgb = cols.colorConverter.to_rgb(color)
                         self.edge_colormap[group][e] = rgb + (alpha,)
                     else: #use defined colormap
