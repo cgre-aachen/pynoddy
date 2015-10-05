@@ -1626,7 +1626,7 @@ class NoddyTopology(object):
          
         '''
         
-        NoddyTopology.draw_graph_matrix(self.graph,kwds=kwds)
+        NoddyTopology.draw_graph_matrix(self.graph,**kwds)
         
     def draw_difference_matrix(self, G2, **kwds):
         '''
@@ -1876,10 +1876,11 @@ class NoddyTopology(object):
                                                 axis_cols=axis_cols)
 
         h.draw(**kwds)
-               
-    def draw_mayavi( self, **kwds ):
+     
+    @staticmethod
+    def draw_mayavi_graph( G, **kwds ):
         '''
-        Draws this network with mayavi. This requires the Mayavi python library
+        Draws the provided network with mayavi. This requires the Mayavi python library
         (mayavi.mlab)
         
         **Optional Keywords**:
@@ -1901,7 +1902,7 @@ class NoddyTopology(object):
         edge_thickness = kwds.get('edge_thickness',10)
         
         #convert node labels to integers
-        G2 = nx.convert_node_labels_to_integers(self.graph)
+        G2 = nx.convert_node_labels_to_integers(G)
         
         #load positions
         x = []
@@ -1940,14 +1941,14 @@ class NoddyTopology(object):
             edge_groups[e_type][0][0].append(x[e[0]])
             edge_groups[e_type][0][1].append(y[e[0]])
             edge_groups[e_type][0][2].append(z[e[0]])
-            edge_groups[e_type][3].append(e[2].get('weight',1))
+            edge_groups[e_type][3].append(e[2].get('weight',1.0) * edge_thickness)
             
             #append end coordinates
             id_end = len(edge_groups[e_type][0][0])
             edge_groups[e_type][0][0].append(x[e[1]])
             edge_groups[e_type][0][1].append(y[e[1]])
             edge_groups[e_type][0][2].append(z[e[1]])
-            edge_groups[e_type][3].append(e[2].get('weight',1))
+            edge_groups[e_type][3].append(e[2].get('weight',1.0) * edge_thickness)
             
             #append edge pair
             edge_groups[e_type][1].append( (id_start,id_end) )
@@ -1963,14 +1964,22 @@ class NoddyTopology(object):
         #make edges
         for k in edge_groups.keys():
             e = edge_groups[k]
+                
             #make start & end points
             pts2 = mlab.points3d(e[0][0],e[0][1],e[0][2],e[3],scale_factor=edge_thickness,scale_mode='none',resolution=5)
-        
+            
+            ##pts2.mlab_source.set(edge_groups[k][3])
+            
             #bind lines
             pts2.mlab_source.dataset.lines = np.array(e[1])
             
             #build geometry
             tube = mlab.pipeline.tube(pts2,tube_radius=edge_thickness) 
+            tube.filter.vary_radius = 'vary_radius_by_scalar'
+            tube.filter.radius_factor = 5
+            
+            #tube.mlab_source.set(edge_groups[k][3] * edge_thickness)
+            
             mlab.pipeline.surface(tube,color=e[2])#color=(0.3,0.3,0.3))
             
         #ends = mlab.points3d(e_x,e_y,e_z,np_c,scale_factor=edge_thickness,scale_mode='none',resolution=10)
@@ -1994,7 +2003,21 @@ class NoddyTopology(object):
         if kwds.get('show',True):
             mlab.show()
             
+            
+    def draw_mayavi( self, **kwds ):
+        '''
+        Draws this network with mayavi. This requires the Mayavi python library
+        (mayavi.mlab)
         
+        **Optional Keywords**:
+         - *node_size* = The size of the nodes. Default is 40.
+         - *edge_thickness* = The thickness of the edges. Default is 4
+         - *show* = If true, the model is displayed in the mayavi viewer after exporting. Default is True
+         - *path* = A path to save the mayavi vtk file to after generating it.
+        '''
+        
+        NoddyTopology.draw_mayavi_graph(self.graph,**kwds)
+            
     def draw_3d_network( self, **kwds ):
         '''
         Draws a 3D network using matplotlib.
@@ -2096,15 +2119,21 @@ if __name__ == '__main__':
 #     os.chdir(r'/Users/Florian/git/pynoddy/sandbox')
 #     NO = NoddyOutput("strike_slip_out")
     #os.chdir(r'C:\Users\Sam\Documents\Temporary Model Files')
-    os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Gippsland Basin')
+    os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Primitive\Fold+Unconformity+Intrusion+Fault')
+    import cPickle as pk
+    
+    st = pk.load(open('super_topology.pkl'))
+    
+    NoddyTopology.draw_mayavi_graph(st)
+    
     
     #NO = "NFault/NFault"
     #NO = 'Fold/Fold_Fault/fold_fault'
-    NO = 'GBasin'
+    #NO = 'GBasin'
     
     #create NoddyTopology
-    geo = NoddyOutput(NO)
-    topo = NoddyTopology(NO,load_attributes=True)
+    #geo = NoddyOutput(NO)
+    #topo = NoddyTopology(NO,load_attributes=True)
     
     #topo.export_vtk(show=True)
     #topo.draw_mayavi()
