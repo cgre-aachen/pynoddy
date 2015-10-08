@@ -75,3 +75,4 @@ topology/old_version/topology.c
 pynoddy/noddyBatchProgress.txt
 docs/notebooks/parameters_thread0.csv
 docs/notebooks/parameters_thread2.csv
+*.pkl
