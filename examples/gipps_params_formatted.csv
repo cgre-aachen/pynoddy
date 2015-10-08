@@ -1,0 +1,33 @@
+Event,Parameter,Distribution Type,Mean,Shape Parameter,Event Name
+2,Amplitude,Normal,500,100,Early fold
+2,Wavelength,Normal,15000,2500,Early fold
+2,X,Normal,0,500,Early fold
+2,Z,Normal,0,500,Early fold
+3,Z,Normal,250,100,Permian Seds
+4|11,Dip,von Mises,70,10,Cape Howe Fault
+4|11,Dip Direction,von Mises,270,5,Cape Howe Fault
+4|11,X,Normal,23000,100,Cape Howe Fault
+4|11,Z,Normal,5000,100,Cape Howe Fault
+4,Slip,Normal,-100,100,Cape Howe Fault
+5|10,Dip,von Mises,70,10,Cape Everard Fault
+5|10,Dip Direction,von Mises,286,5,Cape Everard Fault
+5|10,X,Normal,18000,100,Cape Everard Fault
+5|10,Y,Normal,0,100,Cape Everard Fault
+5|10,Z,Normal,5000,100,Cape Everard Fault
+5,Slip,Normal,-100,100,Cape Everard Fault
+6,Z,Normal,750,100,Strzelecki Seds
+7,Dip,von Mises,70,10,Lake Wellington Thrust
+7,Dip Direction,von Mises,180,5,Lake Wellington Thrust
+7,Y,Normal,13000,100,Lake Wellington Thrust
+7,Z,Normal,5000,100,Lake Wellington Thrust
+7,Slip,Normal,500,100,Lake Wellington Thrust
+8,Dip,von Mises,45,10,Foster Thrust
+8,Dip Direction,von Mises,10,5,Foster Thrust
+8,X,Normal,8730,100,Foster Thrust
+8,Y,Normal,0,100,Foster Thrust
+8,Z,Normal,5000,100,Foster Thrust
+8,Slip,Normal,500,100,Foster Thrust
+9,Z,Normal,750,100,La Trobe Seds
+10,Slip,Normal,200,100,Inv Cape Everard
+11,Slip,Normal,200,100,Inv Cape Howe
+12,Z,Normal,1000,100,Angler-Seaspray seds
