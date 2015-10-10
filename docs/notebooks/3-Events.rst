@@ -1,10 +1,144 @@
-
 Geological events in pynoddy: organisation and adpatiation
 ==========================================================
 
 We will here describe how the single geological events of a Noddy
 history are organised within pynoddy. We will then evaluate in some more
 detail how aspects of events can be adapted and their effect evaluated.
+
+.. code:: python
+
+    from IPython.core.display import HTML
+    css_file = 'pynoddy.css'
+    HTML(open(css_file, "r").read())
+
+.. raw:: html
+
+   <style>
+
+   @font-face {
+       font-family: "Computer Modern";
+       src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');
+   }
+
+   #notebook_panel { /* main background */
+       background: #888;
+       color: #f6f6f6;
+   }
+
+   div.cell { /* set cell width to about 80 chars */
+       width: 800px;
+   }
+
+   div #notebook { /* centre the content */
+       background: #fff; /* white background for content */
+       width: 1000px;
+       margin: auto;
+       padding-left: 1em;
+   }
+
+   #notebook li { /* More space between bullet points */
+   margin-top:0.8em;
+   }
+
+   /* draw border around running cells */
+   div.cell.border-box-sizing.code_cell.running { 
+       border: 3px solid #111;
+   }
+
+   /* Put a solid color box around each cell and its output, visually linking them together */
+   div.cell.code_cell {
+       background: #ddd;  /* rgba(230,230,230,1.0);  */
+       border-radius: 10px; /* rounded borders */
+       width: 900px;
+       padding: 1em;
+       margin-top: 1em;
+   }
+
+   div.text_cell_render{
+       font-family: 'Arvo' sans-serif;
+       line-height: 130%;
+       font-size: 115%;
+       width:700px;
+       margin-left:auto;
+       margin-right:auto;
+   }
+
+
+   /* Formatting for header cells */
+   .text_cell_render h1 {
+       font-family: 'Alegreya Sans', sans-serif;
+       /* font-family: 'Tangerine', serif; */
+       /* font-family: 'Libre Baskerville', serif; */
+       /* font-family: 'Karla', sans-serif;
+       /* font-family: 'Lora', serif; */
+       font-size: 50px;
+       text-align: center;
+       /* font-style: italic; */
+       font-weight: 400;
+       /* font-size: 40pt; */
+       /* text-shadow: 4px 4px 4px #aaa; */
+       line-height: 120%;
+       color: rgb(12,85,97);
+       margin-bottom: .5em;
+       margin-top: 0.1em;
+       display: block;
+   }   
+   .text_cell_render h2 {
+       /* font-family: 'Arial', serif; */
+       /* font-family: 'Lora', serif; */
+       font-family: 'Alegreya Sans', sans-serif;
+       font-weight: 700;
+       font-size: 24pt;
+       line-height: 100%;
+       /* color: rgb(171,165,131); */
+       color: rgb(12,85,97);
+       margin-bottom: 0.1em;
+       margin-top: 0.1em;
+       display: block;
+   }   
+
+   .text_cell_render h3 {
+       font-family: 'Arial', serif;
+       margin-top:12px;
+       margin-bottom: 3px;
+       font-style: italic;
+       color: rgb(95,92,72);
+   }
+
+   .text_cell_render h4 {
+       font-family: 'Arial', serif;
+   }
+
+   .text_cell_render h5 {
+       font-family: 'Alegreya Sans', sans-serif;
+       font-weight: 300;
+       font-size: 16pt;
+       color: grey;
+       font-style: italic;
+       margin-bottom: .1em;
+       margin-top: 0.1em;
+       display: block;
+   }
+
+   .text_cell_render h6 {
+       font-family: 'PT Mono', sans-serif;
+       font-weight: 300;
+       font-size: 10pt;
+       color: grey;
+       margin-bottom: 1px;
+       margin-top: 1px;
+   }
+
+   .CodeMirror{
+           font-family: "PT Mono";
+           font-size: 100%;
+   }
+
+   </style>
+
+.. code:: python
+
+    %matplotlib inline
 
 Loading events from a Noddy history
 -----------------------------------
@@ -25,20 +159,28 @@ object:
     # print rcParams
     rcParams['font.size'] = 15
     # determine path of repository to set paths corretly below
-    os.chdir(r'/Users/Florian/git/pynoddy/docs/notebooks/')# some basic module imports
     repo_path = os.path.realpath('../..')
-    
+
     import pynoddy
+    import pynoddy.history
+    import pynoddy.events
+    import pynoddy.output
+    reload(pynoddy)
+
+::
+
+    <module 'pynoddy' from '/Users/flow/git/pynoddy/pynoddy/__init__.pyc'>
+
 .. code:: python
 
     # Change to sandbox directory to store results
     os.chdir(os.path.join(repo_path, 'sandbox'))
-    
+
     # Path to exmaple directory in this repository
     example_directory = os.path.join(repo_path,'examples')
     # Compute noddy model for history file
     history = 'simple_two_faults.his'
-    history_ori = os.path.join(example_directory, history_file)
+    history_ori = os.path.join(example_directory, history)
     output_name = 'noddy_out'
     reload(pynoddy.history)
     reload(pynoddy.events)
@@ -49,6 +191,11 @@ object:
     # compute model - note: not strictly required, here just to ensure changed cube size
     H1.write_history(history)
     pynoddy.compute_model(history, output_name)
+
+::
+
+    ''
+
 Events are stored in the object dictionary "events" (who would have
 thought), where the key corresponds to the position in the timeline:
 
@@ -56,15 +203,11 @@ thought), where the key corresponds to the position in the timeline:
 
     H1.events
 
+::
 
-
-.. parsed-literal::
-
-    {1: <pynoddy.events.Stratigraphy instance at 0x1046863b0>,
-     2: <pynoddy.events.Fault instance at 0x1046863f8>,
-     3: <pynoddy.events.Fault instance at 0x104686950>}
-
-
+    {1: <pynoddy.events.Stratigraphy at 0x1104de2d0>,
+     2: <pynoddy.events.Fault at 0x1104dea10>,
+     3: <pynoddy.events.Fault at 0x1104debd0>}
 
 We can see here that three events are defined in the history. Events are
 organised as objects themselves, containing all the relevant properties
@@ -75,9 +218,7 @@ defined as:
 
     H1.events[3].properties
 
-
-
-.. parsed-literal::
+::
 
     {'Amplitude': 2000.0,
      'Blue': 0.0,
@@ -85,7 +226,6 @@ defined as:
      'Cyl Index': 0.0,
      'Dip': 60.0,
      'Dip Direction': 270.0,
-     'Event #3': 'FAULT',
      'Geometry': 'Translation',
      'Green': 0.0,
      'Movement': 'Hanging Wall',
@@ -102,73 +242,48 @@ defined as:
      'Z': 5000.0,
      'ZAxis': 2000.0}
 
-
-
 Changing aspects of geological events
 -------------------------------------
 
 So what we now want to do, of course, is to change aspects of these
 events and to evaluate the effect on the resulting geological model.
-
-Changes are best
+Parameters can directly be updated in the properties dictionary:
 
 .. code:: python
 
-    reload(pynoddy.history)
-    reload(pynoddy.events)
-    H1 = pynoddy.history.NoddyHistory(history)
+    H1 = pynoddy.history.NoddyHistory(history_ori)
     # get the original dip of the fault
     dip_ori = H1.events[3].properties['Dip']
-    # dip_ori1 = H1.events[2].properties['Dip']
+
     # add 10 degrees to dip
     add_dip = -10
     dip_new = dip_ori + add_dip
-    # dip_new1 = dip_ori1 + add_dip
-    
+
     # and assign back to properties dictionary:
     H1.events[3].properties['Dip'] = dip_new
     # H1.events[2].properties['Dip'] = dip_new1
 
 .. code:: python
 
-    H1.events[3]
-
-
-
-.. parsed-literal::
-
-    <pynoddy.events.Fault instance at 0x10437e950>
-
-
-
-What is left now is to write the model back to a new history file, to
-recompute the model, and then visualise the output, as before, to
-compare the results:
-
-.. code:: python
-
-    reload(pynoddy.output)
     new_history = "dip_changed"
-    new_output = "dip_changed_out"
-    H1.write_history(new_history)
-    pynoddy.compute_model(new_history, new_output)
+    new_output = "dip_changed_out" 
+    H1.write_history(new_history) 
+    pynoddy.compute_model(new_history, new_output) 
     # load output from both models
-    NO1 = pynoddy.output.NoddyOutput(output_name)
+    NO1 = pynoddy.output.NoddyOutput(output_name) 
     NO2 = pynoddy.output.NoddyOutput(new_output)
-    
     # create basic figure layout
     fig = plt.figure(figsize = (15,5))
     ax1 = fig.add_subplot(121)
     ax2 = fig.add_subplot(122)
-    NO1.plot_section('x', position=0, ax = ax1, colorbar=False, title="Dip = %.0f" % dip_ori)
-    NO2.plot_section('x', position=1, ax = ax2, colorbar=False, title="Dip = %.0f" % dip_new)
-    
+    NO1.plot_section('y', position=0, ax = ax1, colorbar=False, title="Dip = %.0f" % dip_ori) 
+    NO2.plot_section('y', position=1, ax = ax2, colorbar=False, title="Dip = %.0f" % dip_new)
     plt.show()
 
+.. figure:: 3-Events_files/3-Events_13_0.png
+   :alt: png
 
-
-.. image:: 3-Events_files/3-Events_13_0.png
-
+   png
 
 Changing the order of geological events
 ---------------------------------------
@@ -189,41 +304,34 @@ history object:
 
 .. code:: python
 
-    reload(pynoddy.history)
-    reload(pynoddy.events)
-    H1 = pynoddy.history.NoddyHistory(history)
-    H1.change_cube_size(100)
-    # compute model - note: not strictly required, here just to ensure changed cube size
-    
-    H1.write_history(history)
-    pynoddy.compute_model(history, output_name)
+    H1 = pynoddy.history.NoddyHistory(history_ori)
+
 .. code:: python
 
     # The names of the two fault events defined in the history file are:
     print H1.events[2].name
     print H1.events[3].name
 
-.. parsed-literal::
+::
 
     Fault2
     Fault1
-
 
 .. code:: python
 
     # Now: swap the events:
     H1.swap_events(2,3)
+
 .. code:: python
 
     # And let's check if this is correctly relfected in the events order now:
     print H1.events[2].name
     print H1.events[3].name
 
-.. parsed-literal::
+::
 
     Fault1
     Fault2
-
 
 Now let's create a new history file and evaluate the effect of the
 changed order in a cross section view:
@@ -234,6 +342,11 @@ changed order in a cross section view:
     new_output = "faults_out"
     H1.write_history(new_history)
     pynoddy.compute_model(new_history, new_output)
+
+::
+
+    ''
+
 .. code:: python
 
     reload(pynoddy.output)
@@ -244,15 +357,15 @@ changed order in a cross section view:
     fig = plt.figure(figsize = (15,5))
     ax1 = fig.add_subplot(121)
     ax2 = fig.add_subplot(122)
-    NO1.plot_section('x', ax = ax1, colorbar=False, title="Model 1")
-    NO2.plot_section('x', ax = ax2, colorbar=False, title="Model 2")
-    
+    NO1.plot_section('y', ax = ax1, colorbar=False, title="Model 1")
+    NO2.plot_section('y', ax = ax2, colorbar=False, title="Model 2")
+
     plt.show()
 
+.. figure:: 3-Events_files/3-Events_21_0.png
+   :alt: png
 
-
-.. image:: 3-Events_files/3-Events_21_0.png
-
+   png
 
 Determining the stratigraphic difference between two models
 -----------------------------------------------------------
@@ -271,26 +384,24 @@ compute:
 .. code:: python
 
     diff = (NO2.block - NO1.block)
+
 And create a simple visualisation of the difference in a slice plot
 with:
 
 .. code:: python
 
-    fig = plt.figure()
+    fig = plt.figure(figsize = (5,3))
     ax = fig.add_subplot(111)
-    ax.imshow(diff[10,:,:].transpose(), interpolation='nearest')
+    ax.imshow(diff[:,10,:].transpose(), interpolation='nearest', cmap = "RdBu")
 
+::
 
+    <matplotlib.image.AxesImage at 0x112a38a90>
 
-.. parsed-literal::
+.. figure:: 3-Events_files/3-Events_25_1.png
+   :alt: png
 
-    <matplotlib.image.AxesImage at 0x104651b90>
-
-
-
-
-.. image:: 3-Events_files/3-Events_25_1.png
-
+   png
 
 (Adding a meaningful title and axis labels to the plot is left to the
 reader as simple excercise :-) Future versions of pynoddy might provide
@@ -298,4 +409,4 @@ an automatic implementation for this step...)
 
 .. code:: python
 
-    
+

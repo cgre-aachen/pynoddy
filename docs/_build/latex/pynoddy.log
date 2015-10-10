@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  10 OCT 2015 14:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  10 OCT 2015 15:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1028,75 +1028,94 @@ Package pdftex.def Info: 2-Adjust-input_37_1.png used on input line 824.
  [14 <./2-Adjust-input_37_1.png>]
 Chapter 4.
 LaTeX Font Info:    Font shape `TS1/pcr/m/it' in size <9> not available
-(Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 875.
+(Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 893.
 [15
 
-] [16] <3-Events_13_0.png, id=314, 895.345pt x 275.0275pt>
+] [16] <3-Events_13_0.png, id=314, 900.36375pt x 225.84375pt>
 File: 3-Events_13_0.png Graphic file (type png)
 
 <use 3-Events_13_0.png>
-Package pdftex.def Info: 3-Events_13_0.png used on input line 987.
-(pdftex.def)             Requested size: 895.34282pt x 275.02682pt.
+Package pdftex.def Info: 3-Events_13_0.png used on input line 992.
+(pdftex.def)             Requested size: 900.36156pt x 225.84319pt.
 File: 3-Events_13_0.png Graphic file (type png)
  <use 3-Events_13_0.png>
-Package pdftex.def Info: 3-Events_13_0.png used on input line 987.
-(pdftex.def)             Requested size: 452.96788pt x 139.14168pt.
- [17 <./3-Events_13_0.png>]
-<3-Events_21_0.png, id=322, 895.345pt x 275.0275pt>
+Package pdftex.def Info: 3-Events_13_0.png used on input line 992.
+(pdftex.def)             Requested size: 452.96788pt x 113.62114pt.
+ [17pdfTeX warning (ext4): destination with the same identifier (name{figure.4.
+1}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1043 \begin{Verbatim}[commandchars=\\\{\}]
+                                             <./3-Events_13_0.png>]
+<3-Events_21_0.png, id=323, 900.36375pt x 225.84375pt>
 File: 3-Events_21_0.png Graphic file (type png)
  <use 3-Events_21_0.png>
-Package pdftex.def Info: 3-Events_21_0.png used on input line 1074.
-(pdftex.def)             Requested size: 895.34282pt x 275.02682pt.
+Package pdftex.def Info: 3-Events_21_0.png used on input line 1080.
+(pdftex.def)             Requested size: 900.36156pt x 225.84319pt.
 File: 3-Events_21_0.png Graphic file (type png)
 
 <use 3-Events_21_0.png>
-Package pdftex.def Info: 3-Events_21_0.png used on input line 1074.
-(pdftex.def)             Requested size: 452.96788pt x 139.14168pt.
- [18 <./3-Events_21_0.png>]
-<3-Events_25_1.png, id=328, 371.3875pt x 217.81375pt>
-File: 3-Events_25_1.png Graphic file (type png)
- <use 3-Events_25_1.png>
-Package pdftex.def Info: 3-Events_25_1.png used on input line 1107.
-(pdftex.def)             Requested size: 371.38658pt x 217.8132pt.
+Package pdftex.def Info: 3-Events_21_0.png used on input line 1080.
+(pdftex.def)             Requested size: 452.96788pt x 113.62114pt.
+ <3-Events_25_1.png, id=324, 323.2075pt x 152.57pt>
 File: 3-Events_25_1.png Graphic file (type png)
 
 <use 3-Events_25_1.png>
-Package pdftex.def Info: 3-Events_25_1.png used on input line 1107.
-(pdftex.def)             Requested size: 371.38658pt x 217.8132pt.
- [19 <./3-Events_25_1.png>] [20
+Package pdftex.def Info: 3-Events_25_1.png used on input line 1117.
+(pdftex.def)             Requested size: 323.20671pt x 152.56963pt.
+File: 3-Events_25_1.png Graphic file (type png)
+ <use 3-Events_25_1.png>
+Package pdftex.def Info: 3-Events_25_1.png used on input line 1117.
+(pdftex.def)             Requested size: 323.20671pt x 152.56963pt.
+ [18pdfTeX warning (ext4): destination with the same identifier (name{figure.4.
+2}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1125 \chapter
+               {Read and Visualise Geophysical Potential-Fields} <./3-Events_21
+_0.png>] [19pdfTeX warning (ext4): destination with the same identifier (name{f
+igure.4.3}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1125 \chapter
+               {Read and Visualise Geophysical Potential-Fields} <./3-Events_25
+_1.png>] [20
 
 ]
 Chapter 5.
 
-Overfull \hbox (21.03212pt too wide) in paragraph at lines 1160--1161
+Overfull \hbox (21.03212pt too wide) in paragraph at lines 1171--1172
 []\T1/pcr/m/n/10 http://virtualexplorer.com.au/special/noddyatlas/ch3/ch3_5/his
 /nfold_thrust.his 
  []
 
-[21] <Doc_04_potential_fields_11_0.png, id=343, 617.30624pt x 192.72pt>
+[21] <Doc_04_potential_fields_11_0.png, id=346, 617.30624pt x 192.72pt>
 File: Doc_04_potential_fields_11_0.png Graphic file (type png)
 
 <use Doc_04_potential_fields_11_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_11_0.png used on input line 12
-15.
+26.
 (pdftex.def)             Requested size: 617.30473pt x 192.71951pt.
 File: Doc_04_potential_fields_11_0.png Graphic file (type png)
  <use Doc_04_potential_fields_11_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_11_0.png used on input line 12
-15.
+26.
 (pdftex.def)             Requested size: 452.96788pt x 141.41959pt.
 
-<Doc_04_potential_fields_12_0.png, id=344, 617.30624pt x 178.6675pt>
+<Doc_04_potential_fields_12_0.png, id=347, 617.30624pt x 178.6675pt>
 File: Doc_04_potential_fields_12_0.png Graphic file (type png)
 
 <use Doc_04_potential_fields_12_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_12_0.png used on input line 12
-28.
+39.
 (pdftex.def)             Requested size: 617.30473pt x 178.66705pt.
 File: Doc_04_potential_fields_12_0.png Graphic file (type png)
  <use Doc_04_potential_fields_12_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_12_0.png used on input line 12
-28.
+39.
 (pdftex.def)             Requested size: 452.96788pt x 131.10774pt.
 
 [22pdfTeX warning (ext4): destination with the same identifier (name{figure.5.1
@@ -1104,27 +1123,27 @@ Package pdftex.def Info: Doc_04_potential_fields_12_0.png used on input line 12
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1241 \begin{Verbatim}[commandchars=\\\{\}]
+l.1252 \begin{Verbatim}[commandchars=\\\{\}]
                                             pdfTeX warning (ext4): destination 
 with the same identifier (name{figure.5.2}) has been already used, duplicate ig
 nored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1241 \begin{Verbatim}[commandchars=\\\{\}]
+l.1252 \begin{Verbatim}[commandchars=\\\{\}]
                                              <./Doc_04_potential_fields_11_0.pn
 g> <./Doc_04_potential_fields_12_0.png>]
-<Doc_04_potential_fields_18_0.png, id=353, 508.90125pt x 436.63126pt>
+<Doc_04_potential_fields_18_0.png, id=356, 508.90125pt x 436.63126pt>
 File: Doc_04_potential_fields_18_0.png Graphic file (type png)
 
 <use Doc_04_potential_fields_18_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_18_0.png used on input line 12
-72.
+83.
 (pdftex.def)             Requested size: 508.90001pt x 436.63019pt.
 File: Doc_04_potential_fields_18_0.png Graphic file (type png)
  <use Doc_04_potential_fields_18_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_18_0.png used on input line 12
-72.
+83.
 (pdftex.def)             Requested size: 452.96788pt x 388.6539pt.
 
 [23pdfTeX warning (ext4): destination with the same identifier (name{figure.5.3
@@ -1132,58 +1151,58 @@ Package pdftex.def Info: Doc_04_potential_fields_18_0.png used on input line 12
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1282 
+l.1293 
         <./Doc_04_potential_fields_18_0.png>] [24]
-<Doc_04_potential_fields_30_0.png, id=364, 508.90125pt x 436.63126pt>
+<Doc_04_potential_fields_30_0.png, id=367, 508.90125pt x 436.63126pt>
 File: Doc_04_potential_fields_30_0.png Graphic file (type png)
 
 <use Doc_04_potential_fields_30_0.png>
-Package pdftex.def Info: Doc_04_potential_fields_30_0.png used on input line 13
-99.
+Package pdftex.def Info: Doc_04_potential_fields_30_0.png used on input line 14
+10.
 (pdftex.def)             Requested size: 508.90001pt x 436.63019pt.
 File: Doc_04_potential_fields_30_0.png Graphic file (type png)
  <use Doc_04_potential_fields_30_0.png>
-Package pdftex.def Info: Doc_04_potential_fields_30_0.png used on input line 13
-99.
+Package pdftex.def Info: Doc_04_potential_fields_30_0.png used on input line 14
+10.
 (pdftex.def)             Requested size: 452.96788pt x 388.6539pt.
 
-<Doc_04_potential_fields_31_0.png, id=365, 494.84875pt x 436.63126pt>
+<Doc_04_potential_fields_31_0.png, id=368, 494.84875pt x 436.63126pt>
 File: Doc_04_potential_fields_31_0.png Graphic file (type png)
 
 <use Doc_04_potential_fields_31_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_31_0.png used on input line 14
-15.
+26.
 (pdftex.def)             Requested size: 494.84755pt x 436.63019pt.
 File: Doc_04_potential_fields_31_0.png Graphic file (type png)
  <use Doc_04_potential_fields_31_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_31_0.png used on input line 14
-15.
+26.
 (pdftex.def)             Requested size: 452.96788pt x 399.68024pt.
 
-<Doc_04_potential_fields_32_0.png, id=366, 617.30624pt x 156.585pt>
+<Doc_04_potential_fields_32_0.png, id=369, 617.30624pt x 156.585pt>
 File: Doc_04_potential_fields_32_0.png Graphic file (type png)
 
 <use Doc_04_potential_fields_32_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_32_0.png used on input line 14
-27.
+38.
 (pdftex.def)             Requested size: 617.30473pt x 156.58461pt.
 File: Doc_04_potential_fields_32_0.png Graphic file (type png)
  <use Doc_04_potential_fields_32_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_32_0.png used on input line 14
-27.
+38.
 (pdftex.def)             Requested size: 452.96788pt x 114.90341pt.
 
-<Doc_04_potential_fields_32_1.png, id=367, 617.30624pt x 156.585pt>
+<Doc_04_potential_fields_32_1.png, id=370, 617.30624pt x 156.585pt>
 File: Doc_04_potential_fields_32_1.png Graphic file (type png)
 
 <use Doc_04_potential_fields_32_1.png>
 Package pdftex.def Info: Doc_04_potential_fields_32_1.png used on input line 14
-33.
+44.
 (pdftex.def)             Requested size: 617.30473pt x 156.58461pt.
 File: Doc_04_potential_fields_32_1.png Graphic file (type png)
  <use Doc_04_potential_fields_32_1.png>
 Package pdftex.def Info: Doc_04_potential_fields_32_1.png used on input line 14
-33.
+44.
 (pdftex.def)             Requested size: 452.96788pt x 114.90341pt.
 
 [25] [26pdfTeX warning (ext4): destination with the same identifier (name{figur
@@ -1191,47 +1210,47 @@ e.5.4}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1463 \begin{Verbatim}[commandchars=\\\{\}]
+l.1474 \begin{Verbatim}[commandchars=\\\{\}]
                                              <./Doc_04_potential_fields_30_0.pn
 g>] [27pdfTeX warning (ext4): destination with the same identifier (name{figure
 .5.5}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1463 \begin{Verbatim}[commandchars=\\\{\}]
+l.1474 \begin{Verbatim}[commandchars=\\\{\}]
                                             pdfTeX warning (ext4): destination 
 with the same identifier (name{figure.5.6}) has been already used, duplicate ig
 nored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1463 \begin{Verbatim}[commandchars=\\\{\}]
+l.1474 \begin{Verbatim}[commandchars=\\\{\}]
                                              <./Doc_04_potential_fields_31_0.pn
 g> <./Doc_04_potential_fields_32_0.png>]
-<Doc_04_potential_fields_36_0.png, id=387, 617.30624pt x 192.72pt>
+<Doc_04_potential_fields_36_0.png, id=390, 617.30624pt x 192.72pt>
 File: Doc_04_potential_fields_36_0.png Graphic file (type png)
 
 <use Doc_04_potential_fields_36_0.png>
-Package pdftex.def Info: Doc_04_potential_fields_36_0.png used on input line 14
-89.
+Package pdftex.def Info: Doc_04_potential_fields_36_0.png used on input line 15
+00.
 (pdftex.def)             Requested size: 617.30473pt x 192.71951pt.
 File: Doc_04_potential_fields_36_0.png Graphic file (type png)
  <use Doc_04_potential_fields_36_0.png>
-Package pdftex.def Info: Doc_04_potential_fields_36_0.png used on input line 14
-89.
+Package pdftex.def Info: Doc_04_potential_fields_36_0.png used on input line 15
+00.
 (pdftex.def)             Requested size: 452.96788pt x 141.41959pt.
 
-<Doc_04_potential_fields_37_0.png, id=388, 617.30624pt x 178.6675pt>
+<Doc_04_potential_fields_37_0.png, id=391, 617.30624pt x 178.6675pt>
 File: Doc_04_potential_fields_37_0.png Graphic file (type png)
 
 <use Doc_04_potential_fields_37_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_37_0.png used on input line 15
-03.
+14.
 (pdftex.def)             Requested size: 617.30473pt x 178.66705pt.
 File: Doc_04_potential_fields_37_0.png Graphic file (type png)
  <use Doc_04_potential_fields_37_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_37_0.png used on input line 15
-03.
+14.
 (pdftex.def)             Requested size: 452.96788pt x 131.10774pt.
 
 [28pdfTeX warning (ext4): destination with the same identifier (name{figure.5.7
@@ -1239,25 +1258,25 @@ Package pdftex.def Info: Doc_04_potential_fields_37_0.png used on input line 15
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1524 
+l.1535 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
 .5.8}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1524 
+l.1535 
         <./Doc_04_potential_fields_32_1.png> <./Doc_04_potential_fields_36_0.pn
-g>] <Doc_04_potential_fields_41_0.png, id=397, 1167.36125pt x 449.68pt>
+g>] <Doc_04_potential_fields_41_0.png, id=400, 1167.36125pt x 449.68pt>
 File: Doc_04_potential_fields_41_0.png Graphic file (type png)
 
 <use Doc_04_potential_fields_41_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_41_0.png used on input line 15
-59.
+70.
 (pdftex.def)             Requested size: 1167.35841pt x 449.6789pt.
 File: Doc_04_potential_fields_41_0.png Graphic file (type png)
  <use Doc_04_potential_fields_41_0.png>
 Package pdftex.def Info: Doc_04_potential_fields_41_0.png used on input line 15
-59.
+70.
 (pdftex.def)             Requested size: 452.96788pt x 174.48935pt.
 
 [29pdfTeX warning (ext4): destination with the same identifier (name{figure.5.9
@@ -1265,202 +1284,197 @@ Package pdftex.def Info: Doc_04_potential_fields_41_0.png used on input line 15
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1563 \chapter
+l.1574 \chapter
                {Gippsland Basin Uncertainty Study} <./Doc_04_potential_fields_3
 7_0.png>] [30pdfTeX warning (ext4): destination with the same identifier (name{
 figure.5.10}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1563 \chapter
+l.1574 \chapter
                {Gippsland Basin Uncertainty Study} <./Doc_04_potential_fields_4
 1_0.png>]
 Chapter 6.
 [31
 
 ]
-<15-Gippsland-Basin-Uncertainty_11_0.png, id=414, 625.33624pt x 201.75375pt>
+<15-Gippsland-Basin-Uncertainty_11_0.png, id=417, 625.33624pt x 201.75375pt>
 File: 15-Gippsland-Basin-Uncertainty_11_0.png Graphic file (type png)
 
 <use 15-Gippsland-Basin-Uncertainty_11_0.png>
 Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_0.png used on input 
-line 1657.
+line 1668.
 (pdftex.def)             Requested size: 625.33472pt x 201.75325pt.
 File: 15-Gippsland-Basin-Uncertainty_11_0.png Graphic file (type png)
 
 <use 15-Gippsland-Basin-Uncertainty_11_0.png>
 Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_0.png used on input 
-line 1657.
+line 1668.
 (pdftex.def)             Requested size: 452.96788pt x 146.14612pt.
 
-<15-Gippsland-Basin-Uncertainty_11_1.png, id=415, 625.33624pt x 201.75375pt>
+<15-Gippsland-Basin-Uncertainty_11_1.png, id=418, 625.33624pt x 201.75375pt>
 File: 15-Gippsland-Basin-Uncertainty_11_1.png Graphic file (type png)
 
 <use 15-Gippsland-Basin-Uncertainty_11_1.png>
 Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_1.png used on input 
-line 1663.
+line 1674.
 (pdftex.def)             Requested size: 625.33472pt x 201.75325pt.
 File: 15-Gippsland-Basin-Uncertainty_11_1.png Graphic file (type png)
 
 <use 15-Gippsland-Basin-Uncertainty_11_1.png>
 Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_1.png used on input 
-line 1663.
+line 1674.
 (pdftex.def)             Requested size: 452.96788pt x 146.14612pt.
  [32pdfTeX warning (ext4): destination with the same identifier (name{figure.6.
 1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1679 \begin{Verbatim}[commandchars=\\\{\}]
+l.1690 \begin{Verbatim}[commandchars=\\\{\}]
                                             pdfTeX warning (ext4): destination 
 with the same identifier (name{figure.6.2}) has been already used, duplicate ig
 nored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1679 \begin{Verbatim}[commandchars=\\\{\}]
+l.1690 \begin{Verbatim}[commandchars=\\\{\}]
                                              <./15-Gippsland-Basin-Uncertainty_
 11_0.png> <./15-Gippsland-Basin-Uncertainty_11_1.png>]
-<3D-render.png, id=425, 1572.87625pt x 800.9925pt>
+<3D-render.png, id=428, 1572.87625pt x 800.9925pt>
 File: 3D-render.png Graphic file (type png)
  <use 3D-render.png>
-Package pdftex.def Info: 3D-render.png used on input line 1694.
+Package pdftex.def Info: 3D-render.png used on input line 1705.
 (pdftex.def)             Requested size: 1572.87242pt x 800.99054pt.
 File: 3D-render.png Graphic file (type png)
 
 <use 3D-render.png>
-Package pdftex.def Info: 3D-render.png used on input line 1694.
+Package pdftex.def Info: 3D-render.png used on input line 1705.
 (pdftex.def)             Requested size: 452.96788pt x 230.66855pt.
  [33pdfTeX warning (ext4): destination with the same identifier (name{figure.6.
 3}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1698 \chapter
+l.1709 \chapter
                {Pynoddy modules, classes and functions} <./3D-render.png>]
 [34
 
 ]
 Chapter 7.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 1708.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 1719.
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 1714.
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 1725.
 LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1728.
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1749.
 
-Overfull \hbox (156.94736pt too wide) in paragraph at lines 1728--1730
-[]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1770--1774
+Underfull \hbox (badness 10000) in paragraph at lines 1791--1795
 []
  []
 
 [35] [36] [37] [38]
-Overfull \hbox (54.09668pt too wide) in paragraph at lines 2340--2341
+Overfull \hbox (54.09668pt too wide) in paragraph at lines 2361--2362
 []\T1/ptm/m/n/10 ..Note:: Re-quires pyevtk, avail-able for free on: [][]https:/
 /github.com/firedrakeproject/firedrake/tree/master/python/evtk[][] 
  []
 
 [39]
-Underfull \hbox (badness 10000) in paragraph at lines 2431--2433
+Underfull \hbox (badness 10000) in paragraph at lines 2452--2454
 []\T1/ptm/m/n/10 the top
  []
 
 [40]
-Overfull \hbox (56.48782pt too wide) in paragraph at lines 2617--2619
+Overfull \hbox (56.48782pt too wide) in paragraph at lines 2638--2640
 []
  []
 
 [41]
-Underfull \hbox (badness 10000) in paragraph at lines 2729--2731
+Underfull \hbox (badness 10000) in paragraph at lines 2750--2752
 []
  []
 
 [42] [43]
-Overfull \hbox (112.51709pt too wide) in paragraph at lines 2920--2922
+Overfull \hbox (112.51709pt too wide) in paragraph at lines 2941--2943
 []
  []
 
 [44]
-Overfull \hbox (121.73694pt too wide) in paragraph at lines 3069--3071
+Overfull \hbox (121.73694pt too wide) in paragraph at lines 3090--3092
 []
  []
 
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 3098.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 3119.
 [45] [46]
-Overfull \hbox (54.09668pt too wide) in paragraph at lines 3421--3422
+Overfull \hbox (54.09668pt too wide) in paragraph at lines 3442--3443
 []\T1/ptm/m/n/10 ..Note:: Re-quires pyevtk, avail-able for free on: [][]https:/
 /github.com/firedrakeproject/firedrake/tree/master/python/evtk[][] 
  []
 
 [47] [48] [49] [50]
-Overfull \hbox (59.71811pt too wide) in paragraph at lines 3895--3897
+Overfull \hbox (59.71811pt too wide) in paragraph at lines 3916--3918
 []
  []
 
 
-Overfull \hbox (67.08788pt too wide) in paragraph at lines 3905--3907
+Overfull \hbox (67.08788pt too wide) in paragraph at lines 3926--3928
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 3905--3907
+Underfull \hbox (badness 10000) in paragraph at lines 3926--3928
 \T1/ptm/m/n/10 `BLOCK_GEOPHYS', `TOPOL-OGY', `BLOCK_SURFACES', `ALL'. De-fault 
 is
  []
 
 
-Overfull \hbox (82.32701pt too wide) in paragraph at lines 3911--3913
+Overfull \hbox (82.32701pt too wide) in paragraph at lines 3932--3934
 []
  []
 
 
-Overfull \hbox (38.64828pt too wide) in paragraph at lines 3940--3943
+Overfull \hbox (38.64828pt too wide) in paragraph at lines 3961--3964
 []
  []
 
 
-Overfull \hbox (67.08788pt too wide) in paragraph at lines 3951--3953
+Overfull \hbox (67.08788pt too wide) in paragraph at lines 3972--3974
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 3951--3953
+Underfull \hbox (badness 10000) in paragraph at lines 3972--3974
 \T1/ptm/m/n/10 `BLOCK_GEOPHYS', `TOPOL-OGY', `BLOCK_SURFACES', `ALL'. De-fault 
 is
  []
 
 
-Overfull \hbox (14.42744pt too wide) in paragraph at lines 3957--3959
+Overfull \hbox (14.42744pt too wide) in paragraph at lines 3978--3980
 []
  []
 
 
-Overfull \hbox (54.08815pt too wide) in paragraph at lines 3977--3979
+Overfull \hbox (54.08815pt too wide) in paragraph at lines 3998--4000
 []
  []
 
 [51]
-Overfull \hbox (54.08815pt too wide) in paragraph at lines 4008--4010
+Overfull \hbox (54.08815pt too wide) in paragraph at lines 4029--4031
 []
  []
 
 
-Overfull \hbox (134.49673pt too wide) in paragraph at lines 4017--4019
+Overfull \hbox (134.49673pt too wide) in paragraph at lines 4038--4040
 []
  []
 
 
-Overfull \hbox (6.67114pt too wide) in paragraph at lines 4046--4046
+Overfull \hbox (6.67114pt too wide) in paragraph at lines 4067--4067
 []\T1/ptm/m/it/10 history=None\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4095--4097
+Underfull \hbox (badness 10000) in paragraph at lines 4116--4118
 []\T1/ptm/m/n/10 Note: pa-ram-e-ter statis-tics have to be de-fined in self.par
 am_stats dic-tio-nary (use
  []
@@ -1468,7 +1482,7 @@ am_stats dic-tio-nary (use
 [52] [53] [54
 
 ]
-Overfull \hbox (9.01607pt too wide) in paragraph at lines 4241--4242
+Overfull \hbox (9.01607pt too wide) in paragraph at lines 4262--4263
 []\T1/pcr/m/n/10 pynoddy.experiment.SensitivityAnalysis\T1/ptm/m/n/10 ,
  []
 
@@ -2047,19 +2061,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 201--202
  []
 
 [59])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 4248.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 4248.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 4269.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 4269.
  (./pynoddy.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 4248.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 4248.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 4269.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 4269.
 
 Package rerunfilecheck Info: File `pynoddy.out' has not changed.
 (rerunfilecheck)             Checksum: D55D912B6FBDF525E7CB76A61B1A5CF2;2813.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 4248.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 4269.
  ) 
 Here is how much of TeX's memory you used:
- 9794 strings out of 493117
- 144687 string characters out of 6135433
+ 9797 strings out of 493117
+ 144717 string characters out of 6135433
  245888 words of memory out of 5000000
  12699 multiletter control sequences out of 15000+600000
  65691 words of font info for 76 fonts, out of 8000000 for 9000
@@ -2075,10 +2089,10 @@ rw/helvetic/uhvr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/time
 s/utmb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmbi8a.
 pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/
 local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on pynoddy.pdf (63 pages, 686900 bytes).
+Output written on pynoddy.pdf (63 pages, 683721 bytes).
 PDF statistics:
- 942 PDF objects out of 1000 (max. 8388607)
- 809 compressed objects within 9 object streams
- 262 named destinations out of 1000 (max. 500000)
+ 946 PDF objects out of 1000 (max. 8388607)
+ 813 compressed objects within 9 object streams
+ 265 named destinations out of 1000 (max. 500000)
  435 words of extra memory for PDF output out of 10000 (max. 10000000)
 
