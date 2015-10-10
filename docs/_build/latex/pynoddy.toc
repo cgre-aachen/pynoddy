@@ -12,27 +12,36 @@
 \contentsline {section}{\numberline {2.1}Compute the model}{5}{section.2.1}
 \contentsline {section}{\numberline {2.2}Loading Noddy output files}{6}{section.2.2}
 \contentsline {section}{\numberline {2.3}Plotting sections through the model}{6}{section.2.3}
-\contentsline {section}{\numberline {2.4}Export model to VTK}{7}{section.2.4}
-\contentsline {chapter}{\numberline {3}Change Noddy input file and recompute model}{9}{chapter.3}
-\contentsline {section}{\numberline {3.1}Get basic information on the model}{9}{section.3.1}
-\contentsline {section}{\numberline {3.2}Change model cube size and recompute model}{10}{section.3.2}
-\contentsline {section}{\numberline {3.3}Estimating computation time for a high-resolution model}{12}{section.3.3}
-\contentsline {section}{\numberline {3.4}Simple convergence study}{15}{section.3.4}
-\contentsline {chapter}{\numberline {4}Geological events in pynoddy: organisation and adpatiation}{17}{chapter.4}
-\contentsline {section}{\numberline {4.1}Loading events from a Noddy history}{17}{section.4.1}
-\contentsline {section}{\numberline {4.2}Changing aspects of geological events}{18}{section.4.2}
-\contentsline {section}{\numberline {4.3}Changing the order of geological events}{19}{section.4.3}
-\contentsline {section}{\numberline {4.4}Determining the stratigraphic difference between two models}{21}{section.4.4}
-\contentsline {chapter}{\numberline {5}Pynoddy modules, classes and functions}{23}{chapter.5}
-\contentsline {section}{\numberline {5.1}Basic modules (low-level access)}{23}{section.5.1}
-\contentsline {subsection}{\numberline {5.1.1}Main module}{23}{subsection.5.1.1}
-\contentsline {subsection}{\numberline {5.1.2}History file parser: pynoddy.history}{23}{subsection.5.1.2}
-\contentsline {subsection}{\numberline {5.1.3}Output file parser: pynoddy.output}{27}{subsection.5.1.3}
-\contentsline {subsection}{\numberline {5.1.4}Additional useful classes}{32}{subsection.5.1.4}
-\contentsline {subsubsection}{pynoddy.events}{32}{subsubsection*.72}
-\contentsline {section}{\numberline {5.2}Modules for Kinematic experiments}{34}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}Base classes for pynoddy experiments}{34}{subsection.5.2.1}
-\contentsline {subsection}{\numberline {5.2.2}MonteCarlo class}{38}{subsection.5.2.2}
-\contentsline {subsection}{\numberline {5.2.3}SensitivityAnalysis class}{40}{subsection.5.2.3}
-\contentsline {chapter}{Python Module Index}{43}{section*.130}
-\contentsline {chapter}{Index}{45}{section*.131}
+\contentsline {section}{\numberline {2.4}Export model to VTK}{6}{section.2.4}
+\contentsline {chapter}{\numberline {3}Change Noddy input file and recompute model}{7}{chapter.3}
+\contentsline {section}{\numberline {3.1}Get basic information on the model}{7}{section.3.1}
+\contentsline {section}{\numberline {3.2}Change model cube size and recompute model}{8}{section.3.2}
+\contentsline {section}{\numberline {3.3}Estimating computation time for a high-resolution model}{9}{section.3.3}
+\contentsline {section}{\numberline {3.4}Simple convergence study}{13}{section.3.4}
+\contentsline {chapter}{\numberline {4}Geological events in pynoddy: organisation and adpatiation}{15}{chapter.4}
+\contentsline {section}{\numberline {4.1}Loading events from a Noddy history}{15}{section.4.1}
+\contentsline {section}{\numberline {4.2}Changing aspects of geological events}{16}{section.4.2}
+\contentsline {section}{\numberline {4.3}Changing the order of geological events}{17}{section.4.3}
+\contentsline {section}{\numberline {4.4}Determining the stratigraphic difference between two models}{18}{section.4.4}
+\contentsline {chapter}{\numberline {5}Read and Visualise Geophysical Potential-Fields}{21}{chapter.5}
+\contentsline {section}{\numberline {5.1}Read history file from Virtual Explorer}{21}{section.5.1}
+\contentsline {section}{\numberline {5.2}Visualise calculated geophysical fields}{23}{section.5.2}
+\contentsline {section}{\numberline {5.3}Change history and compare gravity}{24}{section.5.3}
+\contentsline {section}{\numberline {5.4}Figure with all results}{29}{section.5.4}
+\contentsline {chapter}{\numberline {6}Gippsland Basin Uncertainty Study}{31}{chapter.6}
+\contentsline {section}{\numberline {6.1}The Gippsland Basin Model}{31}{section.6.1}
+\contentsline {section}{\numberline {6.2}Generate randomised model realisations}{32}{section.6.2}
+\contentsline {section}{\numberline {6.3}Exporting results to VTk for visualisation}{33}{section.6.3}
+\contentsline {chapter}{\numberline {7}Pynoddy modules, classes and functions}{35}{chapter.7}
+\contentsline {section}{\numberline {7.1}Basic modules (low-level access)}{35}{section.7.1}
+\contentsline {subsection}{\numberline {7.1.1}Main module}{35}{subsection.7.1.1}
+\contentsline {subsection}{\numberline {7.1.2}History file parser: pynoddy.history}{36}{subsection.7.1.2}
+\contentsline {subsection}{\numberline {7.1.3}Output file parser: pynoddy.output}{39}{subsection.7.1.3}
+\contentsline {subsection}{\numberline {7.1.4}Additional useful classes}{45}{subsection.7.1.4}
+\contentsline {subsubsection}{pynoddy.events}{45}{subsubsection*.74}
+\contentsline {section}{\numberline {7.2}Modules for Kinematic experiments}{47}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}Base classes for pynoddy experiments}{47}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}MonteCarlo class}{50}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3}SensitivityAnalysis class}{52}{subsection.7.2.3}
+\contentsline {chapter}{Python Module Index}{55}{section*.135}
+\contentsline {chapter}{Index}{57}{section*.136}

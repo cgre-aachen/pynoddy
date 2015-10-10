@@ -1,288 +1,203 @@
 \begin{theindex}
+\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
 
-  \item add\_event() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{23}
+  \bigletter A
+  \item add\_event() (pynoddy.history.NoddyHistory method), \hyperpage{36}
   \item add\_sampling\_line() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method), 
-		\hyperpage{40}
+		\hyperpage{52}
 
   \indexspace
-
-  \item calculate\_difference() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{29}
-  \item calculate\_overlap() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{29}
+  \bigletter C
+  \item calculate\_difference() (pynoddy.output.NoddyTopology method), \hyperpage{41}
+  \item calculate\_overlap() (pynoddy.output.NoddyTopology method), \hyperpage{41}
   \item calculate\_unique\_topologies() (pynoddy.output.NoddyTopology static method), 
-		\hyperpage{29}
-  \item change\_cube\_size() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{23}
-  \item change\_event\_params() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{23}
-  \item change\_height() (pynoddy.events.Unconformity method), 
-		\hyperpage{34}
-  \item clean() (pynoddy.experiment.MonteCarlo.MonteCarlo static method), 
-		\hyperpage{38}
-  \item cleanup() (pynoddy.experiment.MonteCarlo.MonteCarlo method), 
-		\hyperpage{38}
-  \item collapse\_stratigraphy() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{29}
-  \item collapse\_topology() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{29}
-  \item combine\_topologies() (pynoddy.output.NoddyTopology static method), 
-		\hyperpage{30}
-  \item compare\_dimensions\_to() (pynoddy.output.NoddyOutput method), 
-		\hyperpage{27}
-  \item compute\_model() (in module pynoddy), \hyperpage{23}
-  \item compute\_topology() (in module pynoddy), \hyperpage{23}
-  \item copy\_events() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{24}
-  \item create\_footer\_from\_template() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{24}
-  \item create\_new\_history() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{24}
+		\hyperpage{41}
+  \item change\_cube\_size() (pynoddy.history.NoddyHistory method), \hyperpage{36}
+  \item change\_event\_params() (pynoddy.history.NoddyHistory method), \hyperpage{36}
+  \item change\_height() (pynoddy.events.Unconformity method), \hyperpage{46}
+  \item clean() (pynoddy.experiment.MonteCarlo.MonteCarlo static method), \hyperpage{50}
+  \item cleanup() (pynoddy.experiment.MonteCarlo.MonteCarlo method), \hyperpage{50}
+  \item collapse\_stratigraphy() (pynoddy.output.NoddyTopology method), \hyperpage{41}
+  \item collapse\_structure() (pynoddy.output.NoddyTopology method), \hyperpage{42}
+  \item combine\_topologies() (pynoddy.output.NoddyTopology static method), \hyperpage{42}
+  \item compare\_dimensions\_to() (pynoddy.output.NoddyOutput method), \hyperpage{39}
+  \item compute\_model() (in module pynoddy), \hyperpage{35}
+  \item compute\_topology() (in module pynoddy), \hyperpage{35}
+  \item copy\_events() (pynoddy.history.NoddyHistory method), \hyperpage{36}
+  \item create\_footer\_from\_template() (pynoddy.history.NoddyHistory method), \hyperpage{36}
+  \item create\_new\_history() (pynoddy.history.NoddyHistory method), \hyperpage{36}
   \item create\_params\_file() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method), 
-		\hyperpage{40}
+		\hyperpage{52}
 
   \indexspace
-
+  \bigletter D
   \item determine\_distances() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method), 
-		\hyperpage{40}
-  \item determine\_events() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{24}
-  \item determine\_model\_stratigraphy() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{24}
-  \item determine\_unit\_volumes() (pynoddy.output.NoddyOutput method), 
-		\hyperpage{27}
+		\hyperpage{52}
+  \item determine\_events() (pynoddy.history.NoddyHistory method), \hyperpage{36}
+  \item determine\_model\_stratigraphy() (pynoddy.history.NoddyHistory method), \hyperpage{36}
+  \item determine\_unit\_volumes() (pynoddy.output.NoddyOutput method), \hyperpage{39}
   \item distance() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method), 
-		\hyperpage{40}
-  \item draw\_3d\_network() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{30}
-  \item draw\_adjacency\_matrix() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{30}
-  \item draw\_difference\_matrix() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{30}
-  \item draw\_graph\_matrix() (pynoddy.output.NoddyTopology static method), 
-		\hyperpage{31}
-  \item draw\_network\_hive() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{31}
-  \item draw\_network\_image() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{31}
-  \item Dyke (class in pynoddy.events), \hyperpage{32}
+		\hyperpage{53}
+  \item draw\_3d\_network() (pynoddy.output.NoddyTopology method), \hyperpage{42}
+  \item draw\_adjacency\_matrix() (pynoddy.output.NoddyTopology method), \hyperpage{42}
+  \item draw\_difference\_matrix() (pynoddy.output.NoddyTopology method), \hyperpage{42}
+  \item draw\_graph\_matrix() (pynoddy.output.NoddyTopology static method), \hyperpage{43}
+  \item draw\_mayavi() (pynoddy.output.NoddyTopology method), \hyperpage{43}
+  \item draw\_mayavi\_graph() (pynoddy.output.NoddyTopology static method), \hyperpage{43}
+  \item draw\_network\_hive() (pynoddy.output.NoddyTopology method), \hyperpage{43}
+  \item draw\_network\_image() (pynoddy.output.NoddyTopology method), \hyperpage{43}
+  \item Dyke (class in pynoddy.events), \hyperpage{45}
 
   \indexspace
-
-  \item Event (class in pynoddy.events), \hyperpage{33}
-  \item Experiment (class in pynoddy.experiment), \hyperpage{34}
-  \item export\_to\_vtk() (pynoddy.experiment.Experiment method), 
-		\hyperpage{35}
-  \item export\_to\_vtk() (pynoddy.output.NoddyOutput method), 
-		\hyperpage{27}
+  \bigletter E
+  \item Event (class in pynoddy.events), \hyperpage{45}
+  \item Experiment (class in pynoddy.experiment), \hyperpage{47}
+  \item export\_to\_vtk() (pynoddy.experiment.Experiment method), \hyperpage{47}
+  \item export\_to\_vtk() (pynoddy.output.NoddyOutput method), \hyperpage{39}
 
   \indexspace
-
-  \item Fault (class in pynoddy.events), \hyperpage{33}
-  \item filter\_node\_volumes() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{31}
-  \item find\_first\_match() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{31}
-  \item find\_matching() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{32}
-  \item Fold (class in pynoddy.events), \hyperpage{33}
-  \item freeze() (pynoddy.experiment.Experiment method), \hyperpage{35}
+  \bigletter F
+  \item Fault (class in pynoddy.events), \hyperpage{45}
+  \item filter\_node\_volumes() (pynoddy.output.NoddyTopology method), \hyperpage{44}
+  \item find\_first\_match() (pynoddy.output.NoddyTopology method), \hyperpage{44}
+  \item find\_matching() (pynoddy.output.NoddyTopology method), \hyperpage{44}
+  \item Fold (class in pynoddy.events), \hyperpage{45}
+  \item freeze() (pynoddy.experiment.Experiment method), \hyperpage{47}
 
   \indexspace
-
+  \bigletter G
   \item generate\_model\_instances() (pynoddy.experiment.MonteCarlo.MonteCarlo method), 
-		\hyperpage{38}
+		\hyperpage{51}
   \item generate\_models\_from\_existing\_histories() (pynoddy.experiment.MonteCarlo.MonteCarlo static method), 
-		\hyperpage{39}
-  \item get\_cube\_size() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{24}
-  \item get\_date\_saved() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{24}
-  \item get\_drillhole\_data() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{24}
-  \item get\_ev\_counter() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{24}
-  \item get\_event\_param() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{25}
-  \item get\_event\_params() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{25}
-  \item get\_extent() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{25}
-  \item get\_filename() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{25}
-  \item get\_footer\_lines() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{25}
-  \item get\_info\_string() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{25}
+		\hyperpage{51}
+  \item get\_cube\_size() (pynoddy.history.NoddyHistory method), \hyperpage{36}
+  \item get\_date\_saved() (pynoddy.history.NoddyHistory method), \hyperpage{37}
+  \item get\_drillhole\_data() (pynoddy.history.NoddyHistory method), \hyperpage{37}
+  \item get\_ev\_counter() (pynoddy.history.NoddyHistory method), \hyperpage{37}
+  \item get\_event\_param() (pynoddy.history.NoddyHistory method), \hyperpage{37}
+  \item get\_event\_params() (pynoddy.history.NoddyHistory method), \hyperpage{37}
+  \item get\_extent() (pynoddy.history.NoddyHistory method), \hyperpage{37}
+  \item get\_filename() (pynoddy.history.NoddyHistory method), \hyperpage{37}
+  \item get\_footer\_lines() (pynoddy.history.NoddyHistory method), \hyperpage{37}
+  \item get\_info\_string() (pynoddy.history.NoddyHistory method), \hyperpage{37}
   \item get\_model\_lines() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method), 
-		\hyperpage{40}
-  \item get\_origin() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{25}
-  \item get\_sampling\_line\_data() (pynoddy.experiment.Experiment method), 
-		\hyperpage{35}
-  \item get\_section() (pynoddy.experiment.Experiment method), 
-		\hyperpage{35}
-  \item get\_section\_lines() (pynoddy.output.NoddyOutput method), 
-		\hyperpage{27}
-  \item get\_section\_voxels() (pynoddy.output.NoddyOutput method), 
-		\hyperpage{27}
-  \item get\_surface\_grid() (pynoddy.output.NoddyOutput method), 
-		\hyperpage{28}
-  \item get\_up\_to\_date() (pynoddy.experiment.Experiment method), 
-		\hyperpage{35}
+		\hyperpage{53}
+  \item get\_origin() (pynoddy.history.NoddyHistory method), \hyperpage{38}
+  \item get\_sampling\_line\_data() (pynoddy.experiment.Experiment method), \hyperpage{47}
+  \item get\_section() (pynoddy.experiment.Experiment method), \hyperpage{48}
+  \item get\_section\_lines() (pynoddy.output.NoddyOutput method), \hyperpage{39}
+  \item get\_section\_voxels() (pynoddy.output.NoddyOutput method), \hyperpage{40}
+  \item get\_surface\_grid() (pynoddy.output.NoddyOutput method), \hyperpage{40}
+  \item get\_up\_to\_date() (pynoddy.experiment.Experiment method), \hyperpage{48}
 
   \indexspace
-
-  \item info() (pynoddy.history.NoddyHistory method), \hyperpage{25}
-  \item is\_unique() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{32}
-  \item is\_up\_to\_date (pynoddy.experiment.Experiment attribute), 
-		\hyperpage{35}
+  \bigletter I
+  \item info() (pynoddy.history.NoddyHistory method), \hyperpage{38}
+  \item is\_unique() (pynoddy.output.NoddyTopology method), \hyperpage{44}
+  \item is\_up\_to\_date (pynoddy.experiment.Experiment attribute), \hyperpage{48}
 
   \indexspace
-
-  \item jaccard\_coefficient() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{32}
+  \bigletter J
+  \item jaccard\_coefficient() (pynoddy.output.NoddyTopology method), \hyperpage{44}
 
   \indexspace
-
-  \item load\_geology() (pynoddy.output.NoddyOutput method), 
-		\hyperpage{28}
-  \item load\_history() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{25}
-  \item load\_history\_from\_url() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{25}
-  \item load\_model\_info() (pynoddy.output.NoddyOutput method), 
-		\hyperpage{28}
+  \bigletter L
+  \item load\_geology() (pynoddy.output.NoddyOutput method), \hyperpage{40}
+  \item load\_history() (pynoddy.history.NoddyHistory method), \hyperpage{38}
+  \item load\_history\_from\_url() (pynoddy.history.NoddyHistory method), \hyperpage{38}
+  \item load\_model\_info() (pynoddy.output.NoddyOutput method), \hyperpage{40}
   \item load\_noddy\_realisations() (pynoddy.experiment.MonteCarlo.MonteCarlo static method), 
-		\hyperpage{39}
-  \item load\_parameter\_file() (pynoddy.experiment.Experiment method), 
-		\hyperpage{35}
+		\hyperpage{51}
+  \item load\_parameter\_file() (pynoddy.experiment.Experiment method), \hyperpage{48}
   \item load\_topology\_realisations() (pynoddy.experiment.MonteCarlo.MonteCarlo static method), 
-		\hyperpage{39}
-  \item loadNetwork() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{32}
+		\hyperpage{52}
+  \item loadNetwork() (pynoddy.output.NoddyTopology method), \hyperpage{45}
 
   \indexspace
-
-  \item MonteCarlo (class in pynoddy.experiment.MonteCarlo), 
-		\hyperpage{38}
-
-  \indexspace
-
-  \item NoddyGeophysics (class in pynoddy.output), \hyperpage{27}
-  \item NoddyHistory (class in pynoddy.history), \hyperpage{23}
-  \item NoddyOutput (class in pynoddy.output), \hyperpage{27}
-  \item NoddyTopology (class in pynoddy.output), \hyperpage{29}
+  \bigletter M
+  \item MonteCarlo (class in pynoddy.experiment.MonteCarlo), \hyperpage{50}
 
   \indexspace
+  \bigletter N
+  \item NoddyGeophysics (class in pynoddy.output), \hyperpage{39}
+  \item NoddyHistory (class in pynoddy.history), \hyperpage{36}
+  \item NoddyOutput (class in pynoddy.output), \hyperpage{39}
+  \item NoddyTopology (class in pynoddy.output), \hyperpage{41}
 
-  \item parse\_event\_lines() (pynoddy.events.Dyke method), 
-		\hyperpage{33}
-  \item parse\_event\_lines() (pynoddy.events.Fault method), 
-		\hyperpage{33}
-  \item parse\_event\_lines() (pynoddy.events.Fold method), 
-		\hyperpage{33}
-  \item parse\_event\_lines() (pynoddy.events.Strain method), 
-		\hyperpage{33}
-  \item parse\_event\_lines() (pynoddy.events.Stratigraphy method), 
-		\hyperpage{34}
-  \item parse\_event\_lines() (pynoddy.events.Tilt method), 
-		\hyperpage{34}
-  \item parse\_event\_lines() (pynoddy.events.Unconformity method), 
-		\hyperpage{34}
+  \indexspace
+  \bigletter P
+  \item parse\_event\_lines() (pynoddy.events.Dyke method), \hyperpage{45}
+  \item parse\_event\_lines() (pynoddy.events.Fault method), \hyperpage{45}
+  \item parse\_event\_lines() (pynoddy.events.Fold method), \hyperpage{46}
+  \item parse\_event\_lines() (pynoddy.events.Plug method), \hyperpage{46}
+  \item parse\_event\_lines() (pynoddy.events.Shear method), \hyperpage{46}
+  \item parse\_event\_lines() (pynoddy.events.Strain method), \hyperpage{46}
+  \item parse\_event\_lines() (pynoddy.events.Stratigraphy method), \hyperpage{46}
+  \item parse\_event\_lines() (pynoddy.events.Tilt method), \hyperpage{46}
+  \item parse\_event\_lines() (pynoddy.events.Unconformity method), \hyperpage{47}
   \item perform\_analsis() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method), 
-		\hyperpage{41}
+		\hyperpage{53}
   \item plot\_distances() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method), 
-		\hyperpage{41}
-  \item plot\_section() (pynoddy.experiment.Experiment method), 
-		\hyperpage{36}
-  \item plot\_section() (pynoddy.output.NoddyOutput method), 
-		\hyperpage{28}
+		\hyperpage{53}
+  \item plot\_section() (pynoddy.experiment.Experiment method), \hyperpage{48}
+  \item plot\_section() (pynoddy.output.NoddyOutput method), \hyperpage{40}
   \item plot\_sensitivity\_matrix() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method), 
-		\hyperpage{41}
-  \item Plug (class in pynoddy.events), \hyperpage{33}
-  \item pynoddy (module), \hyperpage{23}
-  \item pynoddy.events (module), \hyperpage{32}
-  \item pynoddy.experiment (module), \hyperpage{34}
-  \item pynoddy.experiment.MonteCarlo (module), \hyperpage{38}
-  \item pynoddy.experiment.SensitivityAnalysis (module), \hyperpage{40}
-  \item pynoddy.history (module), \hyperpage{23}
-  \item pynoddy.output (module), \hyperpage{27}
+		\hyperpage{53}
+  \item Plug (class in pynoddy.events), \hyperpage{46}
+  \item pynoddy (module), \hyperpage{35}
+  \item pynoddy.events (module), \hyperpage{45}
+  \item pynoddy.experiment (module), \hyperpage{47}
+  \item pynoddy.experiment.MonteCarlo (module), \hyperpage{50}
+  \item pynoddy.experiment.SensitivityAnalysis (module), \hyperpage{52}
+  \item pynoddy.history (module), \hyperpage{36}
+  \item pynoddy.output (module), \hyperpage{39}
 
   \indexspace
-
-  \item random\_draw() (pynoddy.experiment.Experiment method), 
-		\hyperpage{36}
-  \item random\_perturbation() (pynoddy.experiment.Experiment method), 
-		\hyperpage{37}
-  \item read\_adjacency\_matrix() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{32}
-  \item read\_gravity() (pynoddy.output.NoddyGeophysics method), 
-		\hyperpage{27}
-  \item read\_magnetics() (pynoddy.output.NoddyGeophysics method), 
-		\hyperpage{27}
-  \item read\_properties() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{32}
-  \item reorder\_events() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{26}
-  \item reset\_base() (pynoddy.experiment.Experiment method), 
-		\hyperpage{37}
-  \item reset\_random\_seed() (pynoddy.experiment.Experiment method), 
-		\hyperpage{37}
+  \bigletter R
+  \item random\_draw() (pynoddy.experiment.Experiment method), \hyperpage{49}
+  \item random\_perturbation() (pynoddy.experiment.Experiment method), \hyperpage{49}
+  \item read\_adjacency\_matrix() (pynoddy.output.NoddyTopology method), \hyperpage{45}
+  \item read\_gravity() (pynoddy.output.NoddyGeophysics method), \hyperpage{39}
+  \item read\_magnetics() (pynoddy.output.NoddyGeophysics method), \hyperpage{39}
+  \item read\_properties() (pynoddy.output.NoddyTopology method), \hyperpage{45}
+  \item reorder\_events() (pynoddy.history.NoddyHistory method), \hyperpage{38}
+  \item reset\_base() (pynoddy.experiment.Experiment method), \hyperpage{49}
+  \item reset\_random\_seed() (pynoddy.experiment.Experiment method), \hyperpage{49}
 
   \indexspace
-
-  \item SensitivityAnalysis (class in pynoddy.experiment.SensitivityAnalysis), 
-		\hyperpage{40}
-  \item set\_basename() (pynoddy.output.NoddyOutput method), 
-		\hyperpage{29}
-  \item set\_event\_lines() (pynoddy.events.Event method), 
-		\hyperpage{33}
-  \item set\_event\_number() (pynoddy.events.Event method), 
-		\hyperpage{33}
-  \item set\_event\_params() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{26}
-  \item set\_extent() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{26}
-  \item set\_origin() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{26}
-  \item set\_parameter\_statistics() (pynoddy.experiment.Experiment method), 
-		\hyperpage{37}
-  \item set\_random\_seed() (pynoddy.experiment.Experiment method), 
-		\hyperpage{37}
-  \item set\_up\_to\_date() (pynoddy.experiment.Experiment method), 
-		\hyperpage{37}
-  \item shuffle\_event\_order() (pynoddy.experiment.Experiment method), 
-		\hyperpage{37}
-  \item Strain (class in pynoddy.events), \hyperpage{33}
-  \item Stratigraphy (class in pynoddy.events), \hyperpage{33}
-  \item swap\_events() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{26}
+  \bigletter S
+  \item SensitivityAnalysis (class in pynoddy.experiment.SensitivityAnalysis), \hyperpage{52}
+  \item set\_basename() (pynoddy.output.NoddyOutput method), \hyperpage{41}
+  \item set\_event\_lines() (pynoddy.events.Event method), \hyperpage{45}
+  \item set\_event\_number() (pynoddy.events.Event method), \hyperpage{45}
+  \item set\_event\_params() (pynoddy.history.NoddyHistory method), \hyperpage{38}
+  \item set\_extent() (pynoddy.history.NoddyHistory method), \hyperpage{38}
+  \item set\_origin() (pynoddy.history.NoddyHistory method), \hyperpage{38}
+  \item set\_parameter\_statistics() (pynoddy.experiment.Experiment method), \hyperpage{49}
+  \item set\_random\_seed() (pynoddy.experiment.Experiment method), \hyperpage{50}
+  \item set\_up\_to\_date() (pynoddy.experiment.Experiment method), \hyperpage{50}
+  \item Shear (class in pynoddy.events), \hyperpage{46}
+  \item shuffle\_event\_order() (pynoddy.experiment.Experiment method), \hyperpage{50}
+  \item Strain (class in pynoddy.events), \hyperpage{46}
+  \item Stratigraphy (class in pynoddy.events), \hyperpage{46}
+  \item swap\_events() (pynoddy.history.NoddyHistory method), \hyperpage{38}
 
   \indexspace
-
-  \item Tilt (class in pynoddy.events), \hyperpage{34}
-
-  \indexspace
-
-  \item Unconformity (class in pynoddy.events), \hyperpage{34}
-  \item update() (pynoddy.experiment.Experiment method), \hyperpage{38}
-  \item update\_all\_event\_properties() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{26}
-  \item update\_event\_numbers() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{26}
-  \item update\_properties() (pynoddy.events.Event method), 
-		\hyperpage{33}
+  \bigletter T
+  \item Tilt (class in pynoddy.events), \hyperpage{46}
 
   \indexspace
+  \bigletter U
+  \item Unconformity (class in pynoddy.events), \hyperpage{46}
+  \item update() (pynoddy.experiment.Experiment method), \hyperpage{50}
+  \item update\_all\_event\_properties() (pynoddy.history.NoddyHistory method), \hyperpage{39}
+  \item update\_event\_numbers() (pynoddy.history.NoddyHistory method), \hyperpage{39}
+  \item update\_properties() (pynoddy.events.Event method), \hyperpage{45}
 
-  \item write\_history() (pynoddy.history.NoddyHistory method), 
-		\hyperpage{26}
-  \item write\_parameter\_changes() (pynoddy.experiment.Experiment method), 
-		\hyperpage{38}
-  \item write\_summary\_file() (pynoddy.output.NoddyTopology method), 
-		\hyperpage{32}
+  \indexspace
+  \bigletter W
+  \item write\_history() (pynoddy.history.NoddyHistory method), \hyperpage{39}
+  \item write\_parameter\_changes() (pynoddy.experiment.Experiment method), \hyperpage{50}
+  \item write\_summary\_file() (pynoddy.output.NoddyTopology method), \hyperpage{45}
 
 \end{theindex}

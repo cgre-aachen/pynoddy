@@ -15,6 +15,8 @@ Contents:
    notebooks/1-Simulation
    notebooks/2-Adjust-input
    notebooks/3-Events
+   notebooks/Doc_04_potential_fields
+   notebooks/15-Gippsland-Basin-Uncertainty
 
    pynoddy
 

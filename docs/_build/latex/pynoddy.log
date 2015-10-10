@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  16 AUG 2015 13:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  10 OCT 2015 14:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -957,7 +957,7 @@ File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
 ) [5
 
 ]
-<1-Simulation_12_0.png, id=209, 556.0775pt x 355.3275pt>
+<1-Simulation_12_0.png, id=254, 556.0775pt x 355.3275pt>
 File: 1-Simulation_12_0.png Graphic file (type png)
 
 <use 1-Simulation_12_0.png>
@@ -966,12 +966,12 @@ Package pdftex.def Info: 1-Simulation_12_0.png used on input line 355.
 File: 1-Simulation_12_0.png Graphic file (type png)
  <use 1-Simulation_12_0.png>
 Package pdftex.def Info: 1-Simulation_12_0.png used on input line 355.
-(pdftex.def)             Requested size: 469.755pt x 300.1755pt.
- [6 <./1-Simulation_12_0.png>] [7] [8
-
-]
+(pdftex.def)             Requested size: 452.96788pt x 289.44566pt.
+ [6 <./1-Simulation_12_0.png>]
 Chapter 3.
-[9] [10] <2-Adjust-input_17_0.png, id=233, 895.345pt x 275.0275pt>
+[7
+
+] [8] <2-Adjust-input_17_0.png, id=269, 895.345pt x 275.0275pt>
 File: 2-Adjust-input_17_0.png Graphic file (type png)
 
 <use 2-Adjust-input_17_0.png>
@@ -980,9 +980,9 @@ Package pdftex.def Info: 2-Adjust-input_17_0.png used on input line 556.
 File: 2-Adjust-input_17_0.png Graphic file (type png)
  <use 2-Adjust-input_17_0.png>
 Package pdftex.def Info: 2-Adjust-input_17_0.png used on input line 556.
-(pdftex.def)             Requested size: 469.755pt x 144.29927pt.
- [11 <./2-Adjust-input_17_0.png>] [12] <2-Adjust-input_23_1.png, id=243, 1072.0
-05pt x 296.10625pt>
+(pdftex.def)             Requested size: 452.96788pt x 139.14168pt.
+ [9 <./2-Adjust-input_17_0.png>] <2-Adjust-input_23_1.png, id=276, 1072.005pt x
+ 296.10625pt>
 File: 2-Adjust-input_23_1.png Graphic file (type png)
 
 <use 2-Adjust-input_23_1.png>
@@ -991,9 +991,9 @@ Package pdftex.def Info: 2-Adjust-input_23_1.png used on input line 645.
 File: 2-Adjust-input_23_1.png Graphic file (type png)
  <use 2-Adjust-input_23_1.png>
 Package pdftex.def Info: 2-Adjust-input_23_1.png used on input line 645.
-(pdftex.def)             Requested size: 469.755pt x 129.754pt.
-
-<2-Adjust-input_27_1.png, id=244, 393.47pt x 266.9975pt>
+(pdftex.def)             Requested size: 452.96788pt x 125.11378pt.
+ [10]
+<2-Adjust-input_27_1.png, id=281, 393.47pt x 266.9975pt>
 File: 2-Adjust-input_27_1.png Graphic file (type png)
 
 <use 2-Adjust-input_27_1.png>
@@ -1003,7 +1003,7 @@ File: 2-Adjust-input_27_1.png Graphic file (type png)
  <use 2-Adjust-input_27_1.png>
 Package pdftex.def Info: 2-Adjust-input_27_1.png used on input line 694.
 (pdftex.def)             Requested size: 393.46902pt x 266.99683pt.
- [13 <./2-Adjust-input_23_1.png>] <2-Adjust-input_33_1.png, id=250, 393.47pt x 
+ [11 <./2-Adjust-input_23_1.png>] <2-Adjust-input_33_1.png, id=287, 393.47pt x 
 266.9975pt>
 File: 2-Adjust-input_33_1.png Graphic file (type png)
 
@@ -1014,8 +1014,8 @@ File: 2-Adjust-input_33_1.png Graphic file (type png)
  <use 2-Adjust-input_33_1.png>
 Package pdftex.def Info: 2-Adjust-input_33_1.png used on input line 742.
 (pdftex.def)             Requested size: 393.46902pt x 266.99683pt.
- [14 <./2-Adjust-input_27_1.png>] [15 <./2-Adjust-input_33_1.png>]
-<2-Adjust-input_37_1.png, id=262, 964.60374pt x 292.09125pt>
+ [12 <./2-Adjust-input_27_1.png>] [13 <./2-Adjust-input_33_1.png>]
+<2-Adjust-input_37_1.png, id=298, 964.60374pt x 292.09125pt>
 File: 2-Adjust-input_37_1.png Graphic file (type png)
 
 <use 2-Adjust-input_37_1.png>
@@ -1024,14 +1024,14 @@ Package pdftex.def Info: 2-Adjust-input_37_1.png used on input line 824.
 File: 2-Adjust-input_37_1.png Graphic file (type png)
  <use 2-Adjust-input_37_1.png>
 Package pdftex.def Info: 2-Adjust-input_37_1.png used on input line 824.
-(pdftex.def)             Requested size: 469.755pt x 142.24347pt.
- [16 <./2-Adjust-input_37_1.png>]
+(pdftex.def)             Requested size: 452.96788pt x 137.16255pt.
+ [14 <./2-Adjust-input_37_1.png>]
 Chapter 4.
 LaTeX Font Info:    Font shape `TS1/pcr/m/it' in size <9> not available
 (Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 875.
-[17
+[15
 
-] [18] <3-Events_13_0.png, id=276, 895.345pt x 275.0275pt>
+] [16] <3-Events_13_0.png, id=314, 895.345pt x 275.0275pt>
 File: 3-Events_13_0.png Graphic file (type png)
 
 <use 3-Events_13_0.png>
@@ -1040,9 +1040,9 @@ Package pdftex.def Info: 3-Events_13_0.png used on input line 987.
 File: 3-Events_13_0.png Graphic file (type png)
  <use 3-Events_13_0.png>
 Package pdftex.def Info: 3-Events_13_0.png used on input line 987.
-(pdftex.def)             Requested size: 469.755pt x 144.29927pt.
- [19 <./3-Events_13_0.png>]
-<3-Events_21_0.png, id=284, 895.345pt x 275.0275pt>
+(pdftex.def)             Requested size: 452.96788pt x 139.14168pt.
+ [17 <./3-Events_13_0.png>]
+<3-Events_21_0.png, id=322, 895.345pt x 275.0275pt>
 File: 3-Events_21_0.png Graphic file (type png)
  <use 3-Events_21_0.png>
 Package pdftex.def Info: 3-Events_21_0.png used on input line 1074.
@@ -1051,9 +1051,9 @@ File: 3-Events_21_0.png Graphic file (type png)
 
 <use 3-Events_21_0.png>
 Package pdftex.def Info: 3-Events_21_0.png used on input line 1074.
-(pdftex.def)             Requested size: 469.755pt x 144.29927pt.
- [20 <./3-Events_21_0.png>]
-<3-Events_25_1.png, id=290, 371.3875pt x 217.81375pt>
+(pdftex.def)             Requested size: 452.96788pt x 139.14168pt.
+ [18 <./3-Events_21_0.png>]
+<3-Events_25_1.png, id=328, 371.3875pt x 217.81375pt>
 File: 3-Events_25_1.png Graphic file (type png)
  <use 3-Events_25_1.png>
 Package pdftex.def Info: 3-Events_25_1.png used on input line 1107.
@@ -1063,544 +1063,1008 @@ File: 3-Events_25_1.png Graphic file (type png)
 <use 3-Events_25_1.png>
 Package pdftex.def Info: 3-Events_25_1.png used on input line 1107.
 (pdftex.def)             Requested size: 371.38658pt x 217.8132pt.
- [21 <./3-Events_25_1.png>] [22
+ [19 <./3-Events_25_1.png>] [20
 
 ]
 Chapter 5.
+
+Overfull \hbox (21.03212pt too wide) in paragraph at lines 1160--1161
+[]\T1/pcr/m/n/10 http://virtualexplorer.com.au/special/noddyatlas/ch3/ch3_5/his
+/nfold_thrust.his 
+ []
+
+[21] <Doc_04_potential_fields_11_0.png, id=343, 617.30624pt x 192.72pt>
+File: Doc_04_potential_fields_11_0.png Graphic file (type png)
+
+<use Doc_04_potential_fields_11_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_11_0.png used on input line 12
+15.
+(pdftex.def)             Requested size: 617.30473pt x 192.71951pt.
+File: Doc_04_potential_fields_11_0.png Graphic file (type png)
+ <use Doc_04_potential_fields_11_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_11_0.png used on input line 12
+15.
+(pdftex.def)             Requested size: 452.96788pt x 141.41959pt.
+
+<Doc_04_potential_fields_12_0.png, id=344, 617.30624pt x 178.6675pt>
+File: Doc_04_potential_fields_12_0.png Graphic file (type png)
+
+<use Doc_04_potential_fields_12_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_12_0.png used on input line 12
+28.
+(pdftex.def)             Requested size: 617.30473pt x 178.66705pt.
+File: Doc_04_potential_fields_12_0.png Graphic file (type png)
+ <use Doc_04_potential_fields_12_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_12_0.png used on input line 12
+28.
+(pdftex.def)             Requested size: 452.96788pt x 131.10774pt.
+
+[22pdfTeX warning (ext4): destination with the same identifier (name{figure.5.1
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1241 \begin{Verbatim}[commandchars=\\\{\}]
+                                            pdfTeX warning (ext4): destination 
+with the same identifier (name{figure.5.2}) has been already used, duplicate ig
+nored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1241 \begin{Verbatim}[commandchars=\\\{\}]
+                                             <./Doc_04_potential_fields_11_0.pn
+g> <./Doc_04_potential_fields_12_0.png>]
+<Doc_04_potential_fields_18_0.png, id=353, 508.90125pt x 436.63126pt>
+File: Doc_04_potential_fields_18_0.png Graphic file (type png)
+
+<use Doc_04_potential_fields_18_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_18_0.png used on input line 12
+72.
+(pdftex.def)             Requested size: 508.90001pt x 436.63019pt.
+File: Doc_04_potential_fields_18_0.png Graphic file (type png)
+ <use Doc_04_potential_fields_18_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_18_0.png used on input line 12
+72.
+(pdftex.def)             Requested size: 452.96788pt x 388.6539pt.
+
+[23pdfTeX warning (ext4): destination with the same identifier (name{figure.5.3
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1282 
+        <./Doc_04_potential_fields_18_0.png>] [24]
+<Doc_04_potential_fields_30_0.png, id=364, 508.90125pt x 436.63126pt>
+File: Doc_04_potential_fields_30_0.png Graphic file (type png)
+
+<use Doc_04_potential_fields_30_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_30_0.png used on input line 13
+99.
+(pdftex.def)             Requested size: 508.90001pt x 436.63019pt.
+File: Doc_04_potential_fields_30_0.png Graphic file (type png)
+ <use Doc_04_potential_fields_30_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_30_0.png used on input line 13
+99.
+(pdftex.def)             Requested size: 452.96788pt x 388.6539pt.
+
+<Doc_04_potential_fields_31_0.png, id=365, 494.84875pt x 436.63126pt>
+File: Doc_04_potential_fields_31_0.png Graphic file (type png)
+
+<use Doc_04_potential_fields_31_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_31_0.png used on input line 14
+15.
+(pdftex.def)             Requested size: 494.84755pt x 436.63019pt.
+File: Doc_04_potential_fields_31_0.png Graphic file (type png)
+ <use Doc_04_potential_fields_31_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_31_0.png used on input line 14
+15.
+(pdftex.def)             Requested size: 452.96788pt x 399.68024pt.
+
+<Doc_04_potential_fields_32_0.png, id=366, 617.30624pt x 156.585pt>
+File: Doc_04_potential_fields_32_0.png Graphic file (type png)
+
+<use Doc_04_potential_fields_32_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_32_0.png used on input line 14
+27.
+(pdftex.def)             Requested size: 617.30473pt x 156.58461pt.
+File: Doc_04_potential_fields_32_0.png Graphic file (type png)
+ <use Doc_04_potential_fields_32_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_32_0.png used on input line 14
+27.
+(pdftex.def)             Requested size: 452.96788pt x 114.90341pt.
+
+<Doc_04_potential_fields_32_1.png, id=367, 617.30624pt x 156.585pt>
+File: Doc_04_potential_fields_32_1.png Graphic file (type png)
+
+<use Doc_04_potential_fields_32_1.png>
+Package pdftex.def Info: Doc_04_potential_fields_32_1.png used on input line 14
+33.
+(pdftex.def)             Requested size: 617.30473pt x 156.58461pt.
+File: Doc_04_potential_fields_32_1.png Graphic file (type png)
+ <use Doc_04_potential_fields_32_1.png>
+Package pdftex.def Info: Doc_04_potential_fields_32_1.png used on input line 14
+33.
+(pdftex.def)             Requested size: 452.96788pt x 114.90341pt.
+
+[25] [26pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.5.4}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1463 \begin{Verbatim}[commandchars=\\\{\}]
+                                             <./Doc_04_potential_fields_30_0.pn
+g>] [27pdfTeX warning (ext4): destination with the same identifier (name{figure
+.5.5}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1463 \begin{Verbatim}[commandchars=\\\{\}]
+                                            pdfTeX warning (ext4): destination 
+with the same identifier (name{figure.5.6}) has been already used, duplicate ig
+nored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1463 \begin{Verbatim}[commandchars=\\\{\}]
+                                             <./Doc_04_potential_fields_31_0.pn
+g> <./Doc_04_potential_fields_32_0.png>]
+<Doc_04_potential_fields_36_0.png, id=387, 617.30624pt x 192.72pt>
+File: Doc_04_potential_fields_36_0.png Graphic file (type png)
+
+<use Doc_04_potential_fields_36_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_36_0.png used on input line 14
+89.
+(pdftex.def)             Requested size: 617.30473pt x 192.71951pt.
+File: Doc_04_potential_fields_36_0.png Graphic file (type png)
+ <use Doc_04_potential_fields_36_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_36_0.png used on input line 14
+89.
+(pdftex.def)             Requested size: 452.96788pt x 141.41959pt.
+
+<Doc_04_potential_fields_37_0.png, id=388, 617.30624pt x 178.6675pt>
+File: Doc_04_potential_fields_37_0.png Graphic file (type png)
+
+<use Doc_04_potential_fields_37_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_37_0.png used on input line 15
+03.
+(pdftex.def)             Requested size: 617.30473pt x 178.66705pt.
+File: Doc_04_potential_fields_37_0.png Graphic file (type png)
+ <use Doc_04_potential_fields_37_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_37_0.png used on input line 15
+03.
+(pdftex.def)             Requested size: 452.96788pt x 131.10774pt.
+
+[28pdfTeX warning (ext4): destination with the same identifier (name{figure.5.7
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1524 
+       pdfTeX warning (ext4): destination with the same identifier (name{figure
+.5.8}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1524 
+        <./Doc_04_potential_fields_32_1.png> <./Doc_04_potential_fields_36_0.pn
+g>] <Doc_04_potential_fields_41_0.png, id=397, 1167.36125pt x 449.68pt>
+File: Doc_04_potential_fields_41_0.png Graphic file (type png)
+
+<use Doc_04_potential_fields_41_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_41_0.png used on input line 15
+59.
+(pdftex.def)             Requested size: 1167.35841pt x 449.6789pt.
+File: Doc_04_potential_fields_41_0.png Graphic file (type png)
+ <use Doc_04_potential_fields_41_0.png>
+Package pdftex.def Info: Doc_04_potential_fields_41_0.png used on input line 15
+59.
+(pdftex.def)             Requested size: 452.96788pt x 174.48935pt.
+
+[29pdfTeX warning (ext4): destination with the same identifier (name{figure.5.9
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1563 \chapter
+               {Gippsland Basin Uncertainty Study} <./Doc_04_potential_fields_3
+7_0.png>] [30pdfTeX warning (ext4): destination with the same identifier (name{
+figure.5.10}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1563 \chapter
+               {Gippsland Basin Uncertainty Study} <./Doc_04_potential_fields_4
+1_0.png>]
+Chapter 6.
+[31
+
+]
+<15-Gippsland-Basin-Uncertainty_11_0.png, id=414, 625.33624pt x 201.75375pt>
+File: 15-Gippsland-Basin-Uncertainty_11_0.png Graphic file (type png)
+
+<use 15-Gippsland-Basin-Uncertainty_11_0.png>
+Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_0.png used on input 
+line 1657.
+(pdftex.def)             Requested size: 625.33472pt x 201.75325pt.
+File: 15-Gippsland-Basin-Uncertainty_11_0.png Graphic file (type png)
+
+<use 15-Gippsland-Basin-Uncertainty_11_0.png>
+Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_0.png used on input 
+line 1657.
+(pdftex.def)             Requested size: 452.96788pt x 146.14612pt.
+
+<15-Gippsland-Basin-Uncertainty_11_1.png, id=415, 625.33624pt x 201.75375pt>
+File: 15-Gippsland-Basin-Uncertainty_11_1.png Graphic file (type png)
+
+<use 15-Gippsland-Basin-Uncertainty_11_1.png>
+Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_1.png used on input 
+line 1663.
+(pdftex.def)             Requested size: 625.33472pt x 201.75325pt.
+File: 15-Gippsland-Basin-Uncertainty_11_1.png Graphic file (type png)
+
+<use 15-Gippsland-Basin-Uncertainty_11_1.png>
+Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_1.png used on input 
+line 1663.
+(pdftex.def)             Requested size: 452.96788pt x 146.14612pt.
+ [32pdfTeX warning (ext4): destination with the same identifier (name{figure.6.
+1}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1679 \begin{Verbatim}[commandchars=\\\{\}]
+                                            pdfTeX warning (ext4): destination 
+with the same identifier (name{figure.6.2}) has been already used, duplicate ig
+nored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1679 \begin{Verbatim}[commandchars=\\\{\}]
+                                             <./15-Gippsland-Basin-Uncertainty_
+11_0.png> <./15-Gippsland-Basin-Uncertainty_11_1.png>]
+<3D-render.png, id=425, 1572.87625pt x 800.9925pt>
+File: 3D-render.png Graphic file (type png)
+ <use 3D-render.png>
+Package pdftex.def Info: 3D-render.png used on input line 1694.
+(pdftex.def)             Requested size: 1572.87242pt x 800.99054pt.
+File: 3D-render.png Graphic file (type png)
+
+<use 3D-render.png>
+Package pdftex.def Info: 3D-render.png used on input line 1694.
+(pdftex.def)             Requested size: 452.96788pt x 230.66855pt.
+ [33pdfTeX warning (ext4): destination with the same identifier (name{figure.6.
+3}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1698 \chapter
+               {Pynoddy modules, classes and functions} <./3D-render.png>]
+[34
+
+]
+Chapter 7.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 1124.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 1708.
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 1130.
-[23] [24] [25] [26]
-Overfull \hbox (37.30956pt too wide) in paragraph at lines 1693--1694
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 1714.
+LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1728.
+
+Overfull \hbox (156.94736pt too wide) in paragraph at lines 1728--1730
+[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1770--1774
+[]
+ []
+
+[35] [36] [37] [38]
+Overfull \hbox (54.09668pt too wide) in paragraph at lines 2340--2341
 []\T1/ptm/m/n/10 ..Note:: Re-quires pyevtk, avail-able for free on: [][]https:/
 /github.com/firedrakeproject/firedrake/tree/master/python/evtk[][] 
  []
 
-LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1719.
-[27]
-Underfull \hbox (badness 6284) in paragraph at lines 1784--1786
-[]\T1/ptm/m/n/10 the top sur-
+[39]
+Underfull \hbox (badness 10000) in paragraph at lines 2431--2433
+[]\T1/ptm/m/n/10 the top
  []
 
-[28]
-Overfull \hbox (39.7007pt too wide) in paragraph at lines 1970--1972
+[40]
+Overfull \hbox (56.48782pt too wide) in paragraph at lines 2617--2619
 []
  []
 
-[29]
-Underfull \hbox (badness 5077) in paragraph at lines 2066--2068
-[]\T1/ptm/m/n/10 interactive mayavi
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 2084--2086
-[]\T1/ptm/m/n/10 See
- []
-
-[30]
-Overfull \hbox (95.72997pt too wide) in paragraph at lines 2219--2221
+[41]
+Underfull \hbox (badness 10000) in paragraph at lines 2729--2731
 []
  []
 
-[31]
-Overfull \hbox (104.94981pt too wide) in paragraph at lines 2368--2370
+[42] [43]
+Overfull \hbox (112.51709pt too wide) in paragraph at lines 2920--2922
+[]
+ []
+
+[44]
+Overfull \hbox (121.73694pt too wide) in paragraph at lines 3069--3071
 []
  []
 
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 2397.
-[32] [33] [34]
-Overfull \hbox (37.30956pt too wide) in paragraph at lines 2678--2679
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 3098.
+[45] [46]
+Overfull \hbox (54.09668pt too wide) in paragraph at lines 3421--3422
 []\T1/ptm/m/n/10 ..Note:: Re-quires pyevtk, avail-able for free on: [][]https:/
 /github.com/firedrakeproject/firedrake/tree/master/python/evtk[][] 
  []
 
-[35] [36] [37]
-Overfull \hbox (42.93098pt too wide) in paragraph at lines 3152--3154
+[47] [48] [49] [50]
+Overfull \hbox (59.71811pt too wide) in paragraph at lines 3895--3897
 []
  []
 
 
-Overfull \hbox (50.30075pt too wide) in paragraph at lines 3162--3164
+Overfull \hbox (67.08788pt too wide) in paragraph at lines 3905--3907
 []
  []
 
 
-Overfull \hbox (65.53989pt too wide) in paragraph at lines 3168--3170
-[]
- []
-
-[38]
-Overfull \hbox (21.86116pt too wide) in paragraph at lines 3197--3200
-[]
+Underfull \hbox (badness 10000) in paragraph at lines 3905--3907
+\T1/ptm/m/n/10 `BLOCK_GEOPHYS', `TOPOL-OGY', `BLOCK_SURFACES', `ALL'. De-fault 
+is
  []
 
 
-Overfull \hbox (50.30075pt too wide) in paragraph at lines 3208--3210
+Overfull \hbox (82.32701pt too wide) in paragraph at lines 3911--3913
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 3214--3216
+Overfull \hbox (38.64828pt too wide) in paragraph at lines 3940--3943
 []
  []
 
 
-Overfull \hbox (37.30103pt too wide) in paragraph at lines 3234--3236
+Overfull \hbox (67.08788pt too wide) in paragraph at lines 3951--3953
 []
  []
 
 
-Overfull \hbox (37.30103pt too wide) in paragraph at lines 3265--3267
+Underfull \hbox (badness 10000) in paragraph at lines 3951--3953
+\T1/ptm/m/n/10 `BLOCK_GEOPHYS', `TOPOL-OGY', `BLOCK_SURFACES', `ALL'. De-fault 
+is
+ []
+
+
+Overfull \hbox (14.42744pt too wide) in paragraph at lines 3957--3959
 []
  []
 
 
-Overfull \hbox (117.70961pt too wide) in paragraph at lines 3274--3276
+Overfull \hbox (54.08815pt too wide) in paragraph at lines 3977--3979
+[]
+ []
+
+[51]
+Overfull \hbox (54.08815pt too wide) in paragraph at lines 4008--4010
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 3303--3303
+Overfull \hbox (134.49673pt too wide) in paragraph at lines 4017--4019
+[]
+ []
+
+
+Overfull \hbox (6.67114pt too wide) in paragraph at lines 4046--4046
 []\T1/ptm/m/it/10 history=None\T1/ptm/m/n/10 ,
  []
 
-[39]
-Underfull \hbox (badness 10000) in paragraph at lines 3352--3354
+
+Underfull \hbox (badness 10000) in paragraph at lines 4095--4097
 []\T1/ptm/m/n/10 Note: pa-ram-e-ter statis-tics have to be de-fined in self.par
 am_stats dic-tio-nary (use
  []
 
-[40] [41] [42
+[52] [53] [54
 
 ]
-Overfull \hbox (0.6225pt too wide) in paragraph at lines 3498--3499
+Overfull \hbox (9.01607pt too wide) in paragraph at lines 4241--4242
 []\T1/pcr/m/n/10 pynoddy.experiment.SensitivityAnalysis\T1/ptm/m/n/10 ,
  []
 
-[43
+[55
 
 
-] (./pynoddy.ind [44
+] (./pynoddy.ind [56
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 5--7
+Underfull \hbox (badness 10000) in paragraph at lines 6--8
 []\T1/ptm/m/n/10 add_sampling_line() (pyn-
  []
 
 
-Overfull \hbox (36.88957pt too wide) in paragraph at lines 5--7
+Overfull \hbox (45.28314pt too wide) in paragraph at lines 6--8
 \T1/ptm/m/n/10 oddy.experiment.SensitivityAnalysis.SensitivityAnalysis
  []
 
 
-Underfull \hbox (badness 7925) in paragraph at lines 10--12
-[]\T1/ptm/m/n/10 calculate_difference() (pyn-oddy.output.NoddyTopology
+Underfull \hbox (badness 10000) in paragraph at lines 11--12
+[]\T1/ptm/m/n/10 calculate_difference() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 12--14
+Underfull \hbox (badness 10000) in paragraph at lines 11--12
+\T1/ptm/m/n/10 oddy.output.NoddyTopology method),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 12--13
 []\T1/ptm/m/n/10 calculate_overlap() (pyn-oddy.output.NoddyTopology
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 14--16
+Underfull \hbox (badness 10000) in paragraph at lines 13--15
 []\T1/ptm/m/n/10 calculate_unique_topologies() (pyn-
  []
 
 
-Underfull \hbox (badness 7613) in paragraph at lines 14--16
-\T1/ptm/m/n/10 oddy.output.NoddyTopology static method),
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 16--18
+Underfull \hbox (badness 10000) in paragraph at lines 15--16
 []\T1/ptm/m/n/10 change_cube_size() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 22--24
-[]\T1/ptm/m/n/10 clean() (pyn-oddy.experiment.MonteCarlo.MonteCarlo
+Underfull \hbox (badness 10000) in paragraph at lines 16--17
+[]\T1/ptm/m/n/10 change_event_params() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 28--30
-[]\T1/ptm/m/n/10 collapse_topology() (pyn-oddy.output.NoddyTopology
+Underfull \hbox (badness 10000) in paragraph at lines 17--18
+[]\T1/ptm/m/n/10 change_height() (pyn-oddy.events.Unconformity
  []
 
 
-Underfull \hbox (badness 6910) in paragraph at lines 30--32
-[]\T1/ptm/m/n/10 combine_topologies() (pyn-oddy.output.NoddyTopology
+Overfull \hbox (4.75421pt too wide) in paragraph at lines 19--20
+[]\T1/ptm/m/n/10 cleanup() (pyn-oddy.experiment.MonteCarlo.MonteCarlo
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 38--40
+Underfull \hbox (badness 10000) in paragraph at lines 20--21
+[]\T1/ptm/m/n/10 collapse_stratigraphy() (pyn-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 20--21
+\T1/ptm/m/n/10 oddy.output.NoddyTopology method),
+ []
+
+
+Underfull \hbox (badness 6758) in paragraph at lines 21--22
+[]\T1/ptm/m/n/10 collapse_structure() (pyn-oddy.output.NoddyTopology
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 22--23
+[]\T1/ptm/m/n/10 combine_topologies() (pyn-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 23--24
+[]\T1/ptm/m/n/10 compare_dimensions_to() (pyn-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 26--27
+[]\T1/ptm/m/n/10 copy_events() (pyn-oddy.history.NoddyHistory
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
 []\T1/ptm/m/n/10 create_footer_from_template() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 40--42
+Underfull \hbox (badness 10000) in paragraph at lines 28--29
 []\T1/ptm/m/n/10 create_new_history() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 42--44
+Underfull \hbox (badness 10000) in paragraph at lines 29--31
 []\T1/ptm/m/n/10 create_params_file() (pyn-
  []
 
 
-Overfull \hbox (36.88957pt too wide) in paragraph at lines 42--44
+Overfull \hbox (45.28314pt too wide) in paragraph at lines 29--31
 \T1/ptm/m/n/10 oddy.experiment.SensitivityAnalysis.SensitivityAnalysis
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 47--49
+Underfull \hbox (badness 10000) in paragraph at lines 34--36
 []\T1/ptm/m/n/10 determine_distances() (pyn-
  []
 
 
-Overfull \hbox (36.88957pt too wide) in paragraph at lines 47--49
+Overfull \hbox (45.28314pt too wide) in paragraph at lines 34--36
 \T1/ptm/m/n/10 oddy.experiment.SensitivityAnalysis.SensitivityAnalysis
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 49--51
+Underfull \hbox (badness 10000) in paragraph at lines 36--37
 []\T1/ptm/m/n/10 determine_events() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--53
+Underfull \hbox (badness 10000) in paragraph at lines 37--38
 []\T1/ptm/m/n/10 determine_model_stratigraphy() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 53--55
+Underfull \hbox (badness 10000) in paragraph at lines 38--39
 []\T1/ptm/m/n/10 determine_unit_volumes() (pyn-
  []
 
 
-Overfull \hbox (56.44897pt too wide) in paragraph at lines 55--57
+Overfull \hbox (64.84254pt too wide) in paragraph at lines 39--41
 []\T1/ptm/m/n/10 distance() (pyn-oddy.experiment.SensitivityAnalysis.Sensitivit
 yAnalysis
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 57--59
+Underfull \hbox (badness 7631) in paragraph at lines 41--42
 []\T1/ptm/m/n/10 draw_3d_network() (pyn-oddy.output.NoddyTopology
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 59--61
+Underfull \hbox (badness 10000) in paragraph at lines 42--43
 []\T1/ptm/m/n/10 draw_adjacency_matrix() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 61--63
+Underfull \hbox (badness 10000) in paragraph at lines 42--43
+\T1/ptm/m/n/10 oddy.output.NoddyTopology method),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 43--44
 []\T1/ptm/m/n/10 draw_difference_matrix() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 63--65
-[]\T1/ptm/m/n/10 draw_graph_matrix() (pyn-oddy.output.NoddyTopology
+Underfull \hbox (badness 10000) in paragraph at lines 43--44
+\T1/ptm/m/n/10 oddy.output.NoddyTopology method),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 65--67
-[]\T1/ptm/m/n/10 draw_network_hive() (pyn-oddy.output.NoddyTopology
+Underfull \hbox (badness 10000) in paragraph at lines 45--46
+[]\T1/ptm/m/n/10 draw_mayavi() (pyn-oddy.output.NoddyTopology
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 75--77
+Underfull \hbox (badness 10000) in paragraph at lines 46--47
+[]\T1/ptm/m/n/10 draw_mayavi_graph() (pyn-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 48--49
+[]\T1/ptm/m/n/10 draw_network_image() (pyn-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 48--49
+\T1/ptm/m/n/10 oddy.output.NoddyTopology method),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 55--56
 []\T1/ptm/m/n/10 export_to_vtk() (pyn-oddy.experiment.Experiment
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 85--87
+Underfull \hbox (badness 10000) in paragraph at lines 56--57
+[]\T1/ptm/m/n/10 export_to_vtk() (pyn-oddy.output.NoddyOutput
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 61--62
+[]\T1/ptm/m/n/10 filter_node_volumes() (pyn-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 61--62
+\T1/ptm/m/n/10 oddy.output.NoddyTopology method),
+ []
+
+[57
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 62--63
 []\T1/ptm/m/n/10 find_first_match() (pyn-oddy.output.NoddyTopology
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 87--89
+Underfull \hbox (badness 10000) in paragraph at lines 63--64
 []\T1/ptm/m/n/10 find_matching() (pyn-oddy.output.NoddyTopology
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 94--96
+Underfull \hbox (badness 10000) in paragraph at lines 69--71
 []\T1/ptm/m/n/10 generate_model_instances() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 94--96
+Underfull \hbox (badness 10000) in paragraph at lines 69--71
 \T1/ptm/m/n/10 oddy.experiment.MonteCarlo.MonteCarlo
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 96--98
+Underfull \hbox (badness 10000) in paragraph at lines 71--73
 []\T1/ptm/m/n/10 generate_models_from_existing_histories() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 96--98
+Underfull \hbox (badness 10000) in paragraph at lines 71--73
 \T1/ptm/m/n/10 oddy.experiment.MonteCarlo.MonteCarlo
  []
 
-[45
 
-]
-Underfull \hbox (badness 10000) in paragraph at lines 100--102
+Underfull \hbox (badness 10000) in paragraph at lines 73--74
+[]\T1/ptm/m/n/10 get_cube_size() (pyn-oddy.history.NoddyHistory
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 74--75
 []\T1/ptm/m/n/10 get_date_saved() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 102--104
+Underfull \hbox (badness 10000) in paragraph at lines 75--76
 []\T1/ptm/m/n/10 get_drillhole_data() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 104--106
+Underfull \hbox (badness 10000) in paragraph at lines 76--77
 []\T1/ptm/m/n/10 get_ev_counter() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 106--108
+Underfull \hbox (badness 10000) in paragraph at lines 77--78
 []\T1/ptm/m/n/10 get_event_param() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--110
+Underfull \hbox (badness 10000) in paragraph at lines 78--79
 []\T1/ptm/m/n/10 get_event_params() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 114--116
+Underfull \hbox (badness 10000) in paragraph at lines 80--81
+[]\T1/ptm/m/n/10 get_filename() (pyn-oddy.history.NoddyHistory
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 81--82
 []\T1/ptm/m/n/10 get_footer_lines() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 116--118
+Underfull \hbox (badness 10000) in paragraph at lines 82--83
 []\T1/ptm/m/n/10 get_info_string() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 118--120
+Underfull \hbox (badness 10000) in paragraph at lines 83--85
 []\T1/ptm/m/n/10 get_model_lines() (pyn-
  []
 
 
-Overfull \hbox (36.88957pt too wide) in paragraph at lines 118--120
+Overfull \hbox (45.28314pt too wide) in paragraph at lines 83--85
 \T1/ptm/m/n/10 oddy.experiment.SensitivityAnalysis.SensitivityAnalysis
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--124
+Underfull \hbox (badness 10000) in paragraph at lines 86--87
 []\T1/ptm/m/n/10 get_sampling_line_data() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--128
+Underfull \hbox (badness 10000) in paragraph at lines 86--87
+\T1/ptm/m/n/10 oddy.experiment.Experiment method),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 87--88
+[]\T1/ptm/m/n/10 get_section() (pyn-oddy.experiment.Experiment
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--89
 []\T1/ptm/m/n/10 get_section_lines() (pyn-oddy.output.NoddyOutput
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 128--130
+Underfull \hbox (badness 10000) in paragraph at lines 89--90
 []\T1/ptm/m/n/10 get_section_voxels() (pyn-oddy.output.NoddyOutput
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 130--132
+Underfull \hbox (badness 10000) in paragraph at lines 90--91
 []\T1/ptm/m/n/10 get_surface_grid() (pyn-oddy.output.NoddyOutput
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 132--134
+Underfull \hbox (badness 10000) in paragraph at lines 91--92
 []\T1/ptm/m/n/10 get_up_to_date() (pyn-oddy.experiment.Experiment
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 140--142
-[]\T1/ptm/m/n/10 is_up_to_date (pyn-oddy.experiment.Experiment at-
+Underfull \hbox (badness 10000) in paragraph at lines 97--98
+[]\T1/ptm/m/n/10 is_up_to_date (pyn-oddy.experiment.Experiment
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 145--147
-[]\T1/ptm/m/n/10 jaccard_coefficient() (pyn-oddy.output.NoddyTopology
+Underfull \hbox (badness 10000) in paragraph at lines 105--106
+[]\T1/ptm/m/n/10 load_geology() (pyn-oddy.output.NoddyOutput
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--158
+Underfull \hbox (badness 10000) in paragraph at lines 106--107
+[]\T1/ptm/m/n/10 load_history() (pyn-oddy.history.NoddyHistory
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 107--108
+[]\T1/ptm/m/n/10 load_history_from_url() (pyn-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 108--109
 []\T1/ptm/m/n/10 load_model_info() (pyn-oddy.output.NoddyOutput
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 158--160
+Underfull \hbox (badness 10000) in paragraph at lines 109--111
 []\T1/ptm/m/n/10 load_noddy_realisations() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 158--160
+Underfull \hbox (badness 10000) in paragraph at lines 109--111
 \T1/ptm/m/n/10 oddy.experiment.MonteCarlo.MonteCarlo
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 160--162
-[]\T1/ptm/m/n/10 load_parameter_file() (pyn-oddy.experiment.Experiment
+Underfull \hbox (badness 10000) in paragraph at lines 111--112
+[]\T1/ptm/m/n/10 load_parameter_file() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 162--164
+Underfull \hbox (badness 10000) in paragraph at lines 111--112
+\T1/ptm/m/n/10 oddy.experiment.Experiment method),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--114
 []\T1/ptm/m/n/10 load_topology_realisations() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 162--164
+Underfull \hbox (badness 10000) in paragraph at lines 112--114
 \T1/ptm/m/n/10 oddy.experiment.MonteCarlo.MonteCarlo
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 164--166
+Underfull \hbox (badness 10000) in paragraph at lines 114--115
 []\T1/ptm/m/n/10 loadNetwork() (pyn-oddy.output.NoddyTopology
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 189--191
+Underfull \hbox (badness 10000) in paragraph at lines 118--119
+[]\T1/ptm/m/n/10 MonteCarlo (class in pyn-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 135--136
 []\T1/ptm/m/n/10 parse_event_lines() (pyn-oddy.events.Stratigraphy
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 193--195
+Underfull \hbox (badness 10000) in paragraph at lines 137--138
 []\T1/ptm/m/n/10 parse_event_lines() (pyn-oddy.events.Unconformity
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 195--197
+Underfull \hbox (badness 10000) in paragraph at lines 138--140
 []\T1/ptm/m/n/10 perform_analsis() (pyn-
  []
 
 
-Overfull \hbox (36.88957pt too wide) in paragraph at lines 195--197
+Overfull \hbox (45.28314pt too wide) in paragraph at lines 138--140
 \T1/ptm/m/n/10 oddy.experiment.SensitivityAnalysis.SensitivityAnalysis
  []
 
 
-Overfull \hbox (80.89865pt too wide) in paragraph at lines 197--199
-[]\T1/ptm/m/n/10 plot_distances() (pyn-oddy.experiment.SensitivityAnalysis.Sens
-itivityAnalysis
+Underfull \hbox (badness 10000) in paragraph at lines 140--142
+[]\T1/ptm/m/n/10 plot_distances() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 203--205
+Overfull \hbox (45.28314pt too wide) in paragraph at lines 140--142
+\T1/ptm/m/n/10 oddy.experiment.SensitivityAnalysis.SensitivityAnalysis
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 142--143
+[]\T1/ptm/m/n/10 plot_section() (pyn-oddy.experiment.Experiment
+ []
+
+[58]
+Underfull \hbox (badness 10000) in paragraph at lines 144--146
 []\T1/ptm/m/n/10 plot_sensitivity_matrix() (pyn-
  []
 
 
-Overfull \hbox (36.88957pt too wide) in paragraph at lines 203--205
+Overfull \hbox (45.28314pt too wide) in paragraph at lines 144--146
 \T1/ptm/m/n/10 oddy.experiment.SensitivityAnalysis.SensitivityAnalysis
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 216--218
+Underfull \hbox (badness 10000) in paragraph at lines 157--158
 []\T1/ptm/m/n/10 random_draw() (pyn-oddy.experiment.Experiment
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 220--222
+Underfull \hbox (badness 10000) in paragraph at lines 158--159
+[]\T1/ptm/m/n/10 random_perturbation() (pyn-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 158--159
+\T1/ptm/m/n/10 oddy.experiment.Experiment method),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 159--160
 []\T1/ptm/m/n/10 read_adjacency_matrix() (pyn-
  []
 
-[46]
-Underfull \hbox (badness 10000) in paragraph at lines 222--224
+
+Underfull \hbox (badness 10000) in paragraph at lines 159--160
+\T1/ptm/m/n/10 oddy.output.NoddyTopology method),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 160--161
 []\T1/ptm/m/n/10 read_gravity() (pyn-oddy.output.NoddyGeophysics
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--226
+Underfull \hbox (badness 10000) in paragraph at lines 161--162
 []\T1/ptm/m/n/10 read_magnetics() (pyn-oddy.output.NoddyGeophysics
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 226--228
+Underfull \hbox (badness 10000) in paragraph at lines 162--163
 []\T1/ptm/m/n/10 read_properties() (pyn-oddy.output.NoddyTopology
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 228--230
+Underfull \hbox (badness 10000) in paragraph at lines 163--164
 []\T1/ptm/m/n/10 reorder_events() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 232--234
-[]\T1/ptm/m/n/10 reset_random_seed() (pyn-oddy.experiment.Experiment
+Underfull \hbox (badness 10000) in paragraph at lines 164--165
+[]\T1/ptm/m/n/10 reset_base() (pyn-oddy.experiment.Experiment
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 237--239
+Underfull \hbox (badness 10000) in paragraph at lines 169--170
 []\T1/ptm/m/n/10 SensitivityAnalysis (class in pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 245--247
+Underfull \hbox (badness 10000) in paragraph at lines 169--170
+\T1/ptm/m/n/10 oddy.experiment.SensitivityAnalysis),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--171
+[]\T1/ptm/m/n/10 set_basename() (pyn-oddy.output.NoddyOutput
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 173--174
 []\T1/ptm/m/n/10 set_event_params() (pyn-oddy.history.NoddyHistory
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 251--253
+Underfull \hbox (badness 10000) in paragraph at lines 176--177
 []\T1/ptm/m/n/10 set_parameter_statistics() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 253--255
+Underfull \hbox (badness 10000) in paragraph at lines 176--177
+\T1/ptm/m/n/10 oddy.experiment.Experiment method),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 177--178
 []\T1/ptm/m/n/10 set_random_seed() (pyn-oddy.experiment.Experiment
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 255--257
+Underfull \hbox (badness 10000) in paragraph at lines 178--179
 []\T1/ptm/m/n/10 set_up_to_date() (pyn-oddy.experiment.Experiment
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 257--259
-[]\T1/ptm/m/n/10 shuffle_event_order() (pyn-oddy.experiment.Experiment
+Underfull \hbox (badness 10000) in paragraph at lines 180--181
+[]\T1/ptm/m/n/10 shuffle_event_order() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 272--274
+Underfull \hbox (badness 10000) in paragraph at lines 180--181
+\T1/ptm/m/n/10 oddy.experiment.Experiment method),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 183--184
+[]\T1/ptm/m/n/10 swap_events() (pyn-oddy.history.NoddyHistory
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 193--194
 []\T1/ptm/m/n/10 update_all_event_properties() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 283--285
+Underfull \hbox (badness 10000) in paragraph at lines 194--195
+[]\T1/ptm/m/n/10 update_event_numbers() (pyn-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 199--200
+[]\T1/ptm/m/n/10 write_history() (pyn-oddy.history.NoddyHistory
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 200--201
 []\T1/ptm/m/n/10 write_parameter_changes() (pyn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 285--287
-[]\T1/ptm/m/n/10 write_summary_file() (pyn-oddy.output.NoddyTopology
+Underfull \hbox (badness 10000) in paragraph at lines 200--201
+\T1/ptm/m/n/10 oddy.experiment.Experiment method),
  []
 
-[47
 
-])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3505.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 3505.
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
+[]\T1/ptm/m/n/10 write_summary_file() (pyn-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
+\T1/ptm/m/n/10 oddy.output.NoddyTopology method),
+ []
+
+[59])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 4248.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 4248.
  (./pynoddy.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 3505.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3505.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 4248.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 4248.
 
 Package rerunfilecheck Info: File `pynoddy.out' has not changed.
-(rerunfilecheck)             Checksum: 5180D6C3849425528E22B84356379AC4;2092.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 3505.
+(rerunfilecheck)             Checksum: D55D912B6FBDF525E7CB76A61B1A5CF2;2813.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 4248.
  ) 
 Here is how much of TeX's memory you used:
- 9664 strings out of 493117
- 140904 string characters out of 6135433
- 241932 words of memory out of 5000000
- 12621 multiletter control sequences out of 15000+600000
+ 9794 strings out of 493117
+ 144687 string characters out of 6135433
+ 245888 words of memory out of 5000000
+ 12699 multiletter control sequences out of 15000+600000
  65691 words of font info for 76 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 36i,12n,45p,475b,579s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,12n,45p,1209b,577s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2014/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2
 014/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2014/texm
@@ -1611,10 +2075,10 @@ rw/helvetic/uhvr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/time
 s/utmb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmbi8a.
 pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/
 local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on pynoddy.pdf (51 pages, 357024 bytes).
+Output written on pynoddy.pdf (63 pages, 686900 bytes).
 PDF statistics:
- 788 PDF objects out of 1000 (max. 8388607)
- 695 compressed objects within 7 object streams
- 223 named destinations out of 1000 (max. 500000)
- 298 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 942 PDF objects out of 1000 (max. 8388607)
+ 809 compressed objects within 9 object streams
+ 262 named destinations out of 1000 (max. 500000)
+ 435 words of extra memory for PDF output out of 10000 (max. 10000000)
 

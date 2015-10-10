@@ -1,5 +1,5 @@
 #Filename = fold_thrust.his 
-#Date Saved = 24/9/2015 10:36:56
+#Date Saved = 8/10/2015 21:15:29
 FileType = 111
 Version = 7.11
 
@@ -1270,17 +1270,17 @@ Event #5	= FAULT
 	Surface ZDim	= 0.000000
 	Name	= Fault
 Event #6	= FOLD
-	Type	= Fourier
-	Single Fold	= FALSE
-	X	=   0.00
-	Y	=   0.00
-	Z	=   0.00
-	Dip Direction	= 110.00
-	Dip	= 130.00
-	Pitch	=   0.00
-	Wavelength	= 12000.00
-	Amplitude	= 1000.00
-	Cylindricity	=   0.00
+	Type = Fourier
+	Single Fold = FALSE
+	X = 0.000000
+	Y = 0.000000
+	Z = 0.000000
+	Dip Direction = 110.000000
+	Dip = 130.000000
+	Pitch = 0.000000
+	Wavelength = 12000.000000
+	Amplitude = 1000.000000
+	Cylindricity = 0.000000
 	Fourier Series
 		Term A 0	=   0.00
 		Term B 0	=   0.00

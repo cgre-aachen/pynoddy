@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pynoddy'
-copyright = u'2014, Florian Wellmann'
+copyright = u'2014, Florian Wellmann, Sam Thiele'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -81,7 +81,7 @@ exclude_patterns = ['_build']
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
-#add_module_names = True
+# add_module_names = True
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.
@@ -186,7 +186,7 @@ htmlhelp_basename = 'pynoddydoc'
 
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
+'papersize': 'a4paper',
 
 # The font size ('10pt', '11pt' or '12pt').
 #'pointsize': '10pt',
@@ -200,12 +200,12 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'pynoddy.tex', u'pynoddy Documentation',
-   u'Florian Wellmann', 'manual'),
+   u'Florian Wellmann, Sam Thiele', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-#latex_logo = None
+latex_logo = None # "notebooks/15-Gippsland-Basin-Uncertainty_files/3D-render.png"
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
@@ -230,7 +230,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'pynoddy', u'pynoddy Documentation',
-     [u'Florian Wellmann'], 1)
+     [u'Florian Wellmann, Sam Thiele'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -244,7 +244,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'pynoddy', u'pynoddy Documentation',
-   u'Florian Wellmann', 'pynoddy', 'One line description of project.',
+   u'Florian Wellmann, Sam Thiele', 'pynoddy', 'Automatic kinematic modelling and potential-field simulation with Python.',
    'Miscellaneous'),
 ]
 
@@ -265,9 +265,9 @@ texinfo_documents = [
 
 # Bibliographic Dublin Core info.
 epub_title = u'pynoddy'
-epub_author = u'Florian Wellmann'
+epub_author = u'Florian Wellmann, Sam Thiele'
 epub_publisher = u'Florian Wellmann'
-epub_copyright = u'2014, Florian Wellmann'
+epub_copyright = u'2014, Florian Wellmann, Sam Thiele'
 
 # The basename for the epub file. It defaults to the project name.
 #epub_basename = u'pynoddy'

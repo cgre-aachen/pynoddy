@@ -1,6 +1,7 @@
 This is makeindex, version 2.15 [TeX Live 2014] (kpathsea + Thai support).
-Scanning input file pynoddy.idx....done (131 entries accepted, 0 rejected).
-Sorting entries....done (994 comparisons).
-Generating output file pynoddy.ind....done (288 lines written, 0 warnings).
+Scanning style file ./python.ist......done (6 attributes redefined, 0 ignored).
+Scanning input file pynoddy.idx....done (136 entries accepted, 0 rejected).
+Sorting entries....done (1041 comparisons).
+Generating output file pynoddy.ind....done (203 lines written, 0 warnings).
 Output written in pynoddy.ind.
 Transcript written in pynoddy.ilg.
