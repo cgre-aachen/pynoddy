@@ -144,9 +144,7 @@ available, for example:
 License
 -------
 
-``pynoddy`` is free software and published under a MIT license (see
-license file included in the repository). Please attribute the work when
-you use it, feel free to change and adapt it otherwise!
+``pynoddy`` is free software (see license file included in the repository). Please attribute the work when you use it and cite the publication if you use it in a scientific context - feel free to change and adapt it otherwise!
 
 What is Noddy?
 --------------
