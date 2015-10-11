@@ -21,6 +21,9 @@ pandoc --from=markdown --to=rst --output=4-Create-model.rst 4-Create-model.md
 jupyter nbconvert 5-Geophysical-Potential-Fields.ipynb --to markdown
 pandoc --from=markdown --to=rst --output=5-Geophysical-Potential-Fields.rst 5-Geophysical-Potential-Fields.md
 
+jupyter nbconvert 6-Reproducible-Experiments.ipynb --to markdown
+pandoc --from=markdown --to=rst --output=6-Reproducible-Experiments.rst 6-Reproducible-Experiments.md
+
 jupyter nbconvert 7-Gippsland-Basin-Uncertainty.ipynb --to markdown
 pandoc --from=markdown --to=rst --output=7-Gippsland-Basin-Uncertainty.rst 7-Gippsland-Basin-Uncertainty.md 
 

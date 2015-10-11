@@ -32,28 +32,7 @@
 \contentsline {section}{\numberline {6.2}Visualise calculated geophysical fields}{31}{section.6.2}
 \contentsline {section}{\numberline {6.3}Change history and compare gravity}{31}{section.6.3}
 \contentsline {section}{\numberline {6.4}Figure with all results}{36}{section.6.4}
-\contentsline {chapter}{\numberline {7}Gippsland Basin Uncertainty Study}{39}{chapter.7}
-\contentsline {section}{\numberline {7.1}The Gippsland Basin Model}{39}{section.7.1}
-\contentsline {section}{\numberline {7.2}Generate randomised model realisations}{40}{section.7.2}
-\contentsline {section}{\numberline {7.3}Exporting results to VTk for visualisation}{41}{section.7.3}
-\contentsline {chapter}{\numberline {8}Sensitivity Analysis}{43}{chapter.8}
-\contentsline {section}{\numberline {8.1}Theory: local sensitivity analysis}{43}{section.8.1}
-\contentsline {section}{\numberline {8.2}Defining the responses \relax $\mathaccentV {vec}17E{z}\relax \GenericError { }{LaTeX Error: Bad math environment delimiter}{See the LaTeX manual or LaTeX Companion for explanation.}{Your command was ignored.\MessageBreak Type I <command> <return> to replace it with another command,\MessageBreak or <return> to continue without it.}}{43}{section.8.2}
-\contentsline {section}{\numberline {8.3}Setting up the base model}{44}{section.8.3}
-\contentsline {section}{\numberline {8.4}Define parameter uncertainties}{45}{section.8.4}
-\contentsline {section}{\numberline {8.5}Calculate total stratigraphic distance}{46}{section.8.5}
-\contentsline {section}{\numberline {8.6}Function to modify parameters}{46}{section.8.6}
-\contentsline {section}{\numberline {8.7}Full sensitivity analysis}{47}{section.8.7}
-\contentsline {chapter}{\numberline {9}Pynoddy modules, classes and functions}{51}{chapter.9}
-\contentsline {section}{\numberline {9.1}Basic modules (low-level access)}{51}{section.9.1}
-\contentsline {subsection}{\numberline {9.1.1}Main module}{51}{subsection.9.1.1}
-\contentsline {subsection}{\numberline {9.1.2}History file parser: pynoddy.history}{52}{subsection.9.1.2}
-\contentsline {subsection}{\numberline {9.1.3}Output file parser: pynoddy.output}{55}{subsection.9.1.3}
-\contentsline {subsection}{\numberline {9.1.4}Additional useful classes}{61}{subsection.9.1.4}
-\contentsline {subsubsection}{pynoddy.events}{61}{subsubsection*.74}
-\contentsline {section}{\numberline {9.2}Modules for Kinematic experiments}{63}{section.9.2}
-\contentsline {subsection}{\numberline {9.2.1}Base classes for pynoddy experiments}{63}{subsection.9.2.1}
-\contentsline {subsection}{\numberline {9.2.2}MonteCarlo class}{66}{subsection.9.2.2}
-\contentsline {subsection}{\numberline {9.2.3}SensitivityAnalysis class}{68}{subsection.9.2.3}
-\contentsline {chapter}{Python Module Index}{71}{section*.135}
-\contentsline {chapter}{Index}{73}{section*.136}
+\contentsline {chapter}{\numberline {7}Reproducible Experiments with pynoddy}{39}{chapter.7}
+\contentsline {section}{\numberline {7.1}Defining an experiment}{39}{section.7.1}
+\contentsline {section}{\numberline {7.2}Setting up the experiment class}{40}{section.7.2}
+\contentsline {section}{\numberline {7.3}Loading an example model from the Virtual Explorer Atlas}{40}{section.7.3}
