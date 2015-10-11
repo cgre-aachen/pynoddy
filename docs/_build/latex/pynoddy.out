@@ -22,17 +22,21 @@
 \BOOKMARK [1][-]{section.4.2}{Changing aspects of geological events}{chapter.4}% 22
 \BOOKMARK [1][-]{section.4.3}{Changing the order of geological events}{chapter.4}% 23
 \BOOKMARK [1][-]{section.4.4}{Determining the stratigraphic difference between two models}{chapter.4}% 24
-\BOOKMARK [0][-]{chapter.5}{Read and Visualise Geophysical Potential-Fields}{}% 25
-\BOOKMARK [1][-]{section.5.1}{Read history file from Virtual Explorer}{chapter.5}% 26
-\BOOKMARK [1][-]{section.5.2}{Visualise calculated geophysical fields}{chapter.5}% 27
-\BOOKMARK [1][-]{section.5.3}{Change history and compare gravity}{chapter.5}% 28
-\BOOKMARK [1][-]{section.5.4}{Figure with all results}{chapter.5}% 29
-\BOOKMARK [0][-]{chapter.6}{Gippsland Basin Uncertainty Study}{}% 30
-\BOOKMARK [1][-]{section.6.1}{The Gippsland Basin Model}{chapter.6}% 31
-\BOOKMARK [1][-]{section.6.2}{Generate randomised model realisations}{chapter.6}% 32
-\BOOKMARK [1][-]{section.6.3}{Exporting results to VTk for visualisation}{chapter.6}% 33
-\BOOKMARK [0][-]{chapter.7}{Pynoddy modules, classes and functions}{}% 34
-\BOOKMARK [1][-]{section.7.1}{Basic modules \(low-level access\)}{chapter.7}% 35
-\BOOKMARK [1][-]{section.7.2}{Modules for Kinematic experiments}{chapter.7}% 36
-\BOOKMARK [0][-]{section*.135}{Python Module Index}{}% 37
-\BOOKMARK [0][-]{section*.136}{Index}{}% 38
+\BOOKMARK [0][-]{chapter.5}{Creating a model from scratch}{}% 25
+\BOOKMARK [1][-]{section.5.1}{Defining a stratigraphy}{chapter.5}% 26
+\BOOKMARK [1][-]{section.5.2}{Add a fault event}{chapter.5}% 27
+\BOOKMARK [1][-]{section.5.3}{Complete Model Set-up}{chapter.5}% 28
+\BOOKMARK [0][-]{chapter.6}{Read and Visualise Geophysical Potential-Fields}{}% 29
+\BOOKMARK [1][-]{section.6.1}{Read history file from Virtual Explorer}{chapter.6}% 30
+\BOOKMARK [1][-]{section.6.2}{Visualise calculated geophysical fields}{chapter.6}% 31
+\BOOKMARK [1][-]{section.6.3}{Change history and compare gravity}{chapter.6}% 32
+\BOOKMARK [1][-]{section.6.4}{Figure with all results}{chapter.6}% 33
+\BOOKMARK [0][-]{chapter.7}{Gippsland Basin Uncertainty Study}{}% 34
+\BOOKMARK [1][-]{section.7.1}{The Gippsland Basin Model}{chapter.7}% 35
+\BOOKMARK [1][-]{section.7.2}{Generate randomised model realisations}{chapter.7}% 36
+\BOOKMARK [1][-]{section.7.3}{Exporting results to VTk for visualisation}{chapter.7}% 37
+\BOOKMARK [0][-]{chapter.8}{Pynoddy modules, classes and functions}{}% 38
+\BOOKMARK [1][-]{section.8.1}{Basic modules \(low-level access\)}{chapter.8}% 39
+\BOOKMARK [1][-]{section.8.2}{Modules for Kinematic experiments}{chapter.8}% 40
+\BOOKMARK [0][-]{section*.135}{Python Module Index}{}% 41
+\BOOKMARK [0][-]{section*.136}{Index}{}% 42

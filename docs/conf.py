@@ -31,6 +31,7 @@ import os
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
+    'sphinx.ext.pngmath'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -205,7 +206,7 @@ latex_documents = [
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-latex_logo = None # "notebooks/15-Gippsland-Basin-Uncertainty_files/3D-render.png"
+latex_logo = "./pynoddy_logo_3.pdf" # "notebooks/15-Gippsland-Basin-Uncertainty_files/3D-render.png"
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.

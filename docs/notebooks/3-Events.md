@@ -226,9 +226,9 @@ H1.events
 
 
 
-    {1: <pynoddy.events.Stratigraphy at 0x1104de2d0>,
-     2: <pynoddy.events.Fault at 0x1104dea10>,
-     3: <pynoddy.events.Fault at 0x1104debd0>}
+    {1: <pynoddy.events.Stratigraphy at 0x10cf2b410>,
+     2: <pynoddy.events.Fault at 0x10cf2b450>,
+     3: <pynoddy.events.Fault at 0x10cf2b490>}
 
 
 
@@ -300,7 +300,7 @@ NO2 = pynoddy.output.NoddyOutput(new_output)
 fig = plt.figure(figsize = (15,5))
 ax1 = fig.add_subplot(121)
 ax2 = fig.add_subplot(122)
-NO1.plot_section('y', position=0, ax = ax1, colorbar=False, title="Dip = %.0f" % dip_ori) 
+NO1.plot_section('y', position=0, ax = ax1, colorbar=False, title="Dip = %.0f" % dip_ori, savefig=True, fig_filename ="tmp.eps") 
 NO2.plot_section('y', position=1, ax = ax2, colorbar=False, title="Dip = %.0f" % dip_new)
 plt.show()
 
@@ -337,6 +337,8 @@ print H1.events[3].name
     Fault2
     Fault1
 
+
+We now swap the position of two events in the kinematic history. For this purpose, a high-level function can directly be used:
 
 
 ```python
@@ -390,7 +392,7 @@ plt.show()
 ```
 
 
-![png](3-Events_files/3-Events_21_0.png)
+![png](3-Events_files/3-Events_22_0.png)
 
 
 Determining the stratigraphic difference between two models
@@ -411,23 +413,30 @@ And create a simple visualisation of the difference in a slice plot with:
 ```python
 fig = plt.figure(figsize = (5,3))
 ax = fig.add_subplot(111)
-ax.imshow(diff[:,10,:].transpose(), interpolation='nearest', cmap = "RdBu")
+ax.imshow(diff[:,10,:].transpose(), interpolation='nearest', 
+          cmap = "RdBu", origin = 'lower left')
 ```
 
 
 
 
-    <matplotlib.image.AxesImage at 0x112a38a90>
+    <matplotlib.image.AxesImage at 0x10cf3be10>
 
 
 
 
-![png](3-Events_files/3-Events_25_1.png)
+![png](3-Events_files/3-Events_26_1.png)
 
 
 (Adding a meaningful title and axis labels to the plot is left to the reader as simple excercise :-) Future versions of pynoddy might provide an automatic implementation for this step...)
 
+Again, we may want to visualise results in 3-D. We can use the `export_to_vtk`-function as before, but now assing the data array to be exported as the calulcated differnce field:
+
 
 ```python
-
+NO1.export_to_vtk(vtk_filename = "model_diff", data = diff)
 ```
+
+A 3-D view of the difference plot is presented below.
+
+![3-D visualisation of stratigraphic id difference](3-Events_files/diff_3d_3.png "3-D visualisation of stratigraphic id difference")

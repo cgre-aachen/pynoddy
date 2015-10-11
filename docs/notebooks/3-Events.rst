@@ -205,9 +205,9 @@ thought), where the key corresponds to the position in the timeline:
 
 ::
 
-    {1: <pynoddy.events.Stratigraphy at 0x1104de2d0>,
-     2: <pynoddy.events.Fault at 0x1104dea10>,
-     3: <pynoddy.events.Fault at 0x1104debd0>}
+    {1: <pynoddy.events.Stratigraphy at 0x10cf2b410>,
+     2: <pynoddy.events.Fault at 0x10cf2b450>,
+     3: <pynoddy.events.Fault at 0x10cf2b490>}
 
 We can see here that three events are defined in the history. Events are
 organised as objects themselves, containing all the relevant properties
@@ -276,7 +276,7 @@ Parameters can directly be updated in the properties dictionary:
     fig = plt.figure(figsize = (15,5))
     ax1 = fig.add_subplot(121)
     ax2 = fig.add_subplot(122)
-    NO1.plot_section('y', position=0, ax = ax1, colorbar=False, title="Dip = %.0f" % dip_ori) 
+    NO1.plot_section('y', position=0, ax = ax1, colorbar=False, title="Dip = %.0f" % dip_ori, savefig=True, fig_filename ="tmp.eps") 
     NO2.plot_section('y', position=1, ax = ax2, colorbar=False, title="Dip = %.0f" % dip_new)
     plt.show()
 
@@ -316,6 +316,9 @@ history object:
 
     Fault2
     Fault1
+
+We now swap the position of two events in the kinematic history. For
+this purpose, a high-level function can directly be used:
 
 .. code:: python
 
@@ -362,7 +365,7 @@ changed order in a cross section view:
 
     plt.show()
 
-.. figure:: 3-Events_files/3-Events_21_0.png
+.. figure:: 3-Events_files/3-Events_22_0.png
    :alt: png
 
    png
@@ -392,13 +395,14 @@ with:
 
     fig = plt.figure(figsize = (5,3))
     ax = fig.add_subplot(111)
-    ax.imshow(diff[:,10,:].transpose(), interpolation='nearest', cmap = "RdBu")
+    ax.imshow(diff[:,10,:].transpose(), interpolation='nearest', 
+              cmap = "RdBu", origin = 'lower left')
 
 ::
 
-    <matplotlib.image.AxesImage at 0x112a38a90>
+    <matplotlib.image.AxesImage at 0x10cf3be10>
 
-.. figure:: 3-Events_files/3-Events_25_1.png
+.. figure:: 3-Events_files/3-Events_26_1.png
    :alt: png
 
    png
@@ -407,6 +411,17 @@ with:
 reader as simple excercise :-) Future versions of pynoddy might provide
 an automatic implementation for this step...)
 
+Again, we may want to visualise results in 3-D. We can use the
+``export_to_vtk``-function as before, but now assing the data array to
+be exported as the calulcated differnce field:
+
 .. code:: python
 
+    NO1.export_to_vtk(vtk_filename = "model_diff", data = diff)
 
+A 3-D view of the difference plot is presented below.
+
+.. figure:: 3-Events_files/diff_3d_3.png
+   :alt: 3-D visualisation of stratigraphic id difference
+
+   3-D visualisation of stratigraphic id difference

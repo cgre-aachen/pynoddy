@@ -251,9 +251,9 @@ The resulting vtr file can (in the sandbox directory) can now be loaded
 and properly analysed in a 3D visualisation package such as ParaView.
 
 .. figure:: 15-Gippsland-Basin-Uncertainty_files/3D-render.png
-   :alt: png
+   :alt: 3-D visualisation of cell information entropy
 
-   3D visualisation of cell information entropy as a measure of uncertainty
+   3-D visualisation of cell information entropy
 
 .. code:: python
 

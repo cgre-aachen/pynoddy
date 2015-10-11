@@ -1,5 +1,5 @@
-#Filename = two_faults_sensi.his 
-#Date Saved = 4/11/2014 12:9:24
+#Filename = param_dict_changes.his 
+#Date Saved = 11/10/2015 4:40:36
 FileType = 111
 Version = 7.11
 
@@ -761,6 +761,7 @@ Event #3	= FAULT
     Surface YDim    = 0.000000
     Surface ZDim    = 0.000000
     Name    = Fault_E
+
 #BlockOptions
 	Number of Views	= 1
 	Current View	= 0
@@ -772,7 +773,7 @@ Event #3	= FAULT
 	Length Y	= 7000.00
 	Length Z	= 5000.00
 	Geology Cube Size	=  50.00
-	Geophysics Cube Size	= 100.00
+	Geophysics Cube Size	= 50.00
 
 #GeologyOptions
 	Scale	=  10.00

@@ -1,4 +1,3 @@
-
 Change Noddy input file and recompute model
 ===========================================
 
@@ -13,16 +12,162 @@ events themselves, please be patient until we get to the next section.
 
 .. code:: python
 
+    from IPython.core.display import HTML
+    css_file = 'pynoddy.css'
+    HTML(open(css_file, "r").read())
+
+.. raw:: html
+
+   <style>
+
+   @font-face {
+       font-family: "Computer Modern";
+       src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');
+   }
+
+   #notebook_panel { /* main background */
+       background: #888;
+       color: #f6f6f6;
+   }
+
+   div.cell { /* set cell width to about 80 chars */
+       width: 800px;
+   }
+
+   div #notebook { /* centre the content */
+       background: #fff; /* white background for content */
+       width: 1000px;
+       margin: auto;
+       padding-left: 1em;
+   }
+
+   #notebook li { /* More space between bullet points */
+   margin-top:0.8em;
+   }
+
+   /* draw border around running cells */
+   div.cell.border-box-sizing.code_cell.running { 
+       border: 3px solid #111;
+   }
+
+   /* Put a solid color box around each cell and its output, visually linking them together */
+   div.cell.code_cell {
+       background: #ddd;  /* rgba(230,230,230,1.0);  */
+       border-radius: 10px; /* rounded borders */
+       width: 900px;
+       padding: 1em;
+       margin-top: 1em;
+   }
+
+   div.text_cell_render{
+       font-family: 'Arvo' sans-serif;
+       line-height: 130%;
+       font-size: 115%;
+       width:700px;
+       margin-left:auto;
+       margin-right:auto;
+   }
+
+
+   /* Formatting for header cells */
+   .text_cell_render h1 {
+       font-family: 'Alegreya Sans', sans-serif;
+       /* font-family: 'Tangerine', serif; */
+       /* font-family: 'Libre Baskerville', serif; */
+       /* font-family: 'Karla', sans-serif;
+       /* font-family: 'Lora', serif; */
+       font-size: 50px;
+       text-align: center;
+       /* font-style: italic; */
+       font-weight: 400;
+       /* font-size: 40pt; */
+       /* text-shadow: 4px 4px 4px #aaa; */
+       line-height: 120%;
+       color: rgb(12,85,97);
+       margin-bottom: .5em;
+       margin-top: 0.1em;
+       display: block;
+   }   
+   .text_cell_render h2 {
+       /* font-family: 'Arial', serif; */
+       /* font-family: 'Lora', serif; */
+       font-family: 'Alegreya Sans', sans-serif;
+       font-weight: 700;
+       font-size: 24pt;
+       line-height: 100%;
+       /* color: rgb(171,165,131); */
+       color: rgb(12,85,97);
+       margin-bottom: 0.1em;
+       margin-top: 0.1em;
+       display: block;
+   }   
+
+   .text_cell_render h3 {
+       font-family: 'Arial', serif;
+       margin-top:12px;
+       margin-bottom: 3px;
+       font-style: italic;
+       color: rgb(95,92,72);
+   }
+
+   .text_cell_render h4 {
+       font-family: 'Arial', serif;
+   }
+
+   .text_cell_render h5 {
+       font-family: 'Alegreya Sans', sans-serif;
+       font-weight: 300;
+       font-size: 16pt;
+       color: grey;
+       font-style: italic;
+       margin-bottom: .1em;
+       margin-top: 0.1em;
+       display: block;
+   }
+
+   .text_cell_render h6 {
+       font-family: 'PT Mono', sans-serif;
+       font-weight: 300;
+       font-size: 10pt;
+       color: grey;
+       margin-bottom: 1px;
+       margin-top: 1px;
+   }
+
+   .CodeMirror{
+           font-family: "PT Mono";
+           font-size: 100%;
+   }
+
+   </style>
+
+.. code:: python
+
+    cd ../docs/notebooks/
+
+::
+
+    /Users/flow/git/pynoddy/docs/notebooks
+
+.. code:: python
+
+    %matplotlib inline
+
+.. code:: python
+
     import sys, os
     import matplotlib.pyplot as plt
+    import numpy as np
     # adjust some settings for matplotlib
     from matplotlib import rcParams
     # print rcParams
     rcParams['font.size'] = 15
     # determine path of repository to set paths corretly below
-    os.chdir(r'/Users/Florian/git/pynoddy/docs/notebooks/')
     repo_path = os.path.realpath('../..')
     import pynoddy
+    import pynoddy.history
+    import pynoddy.output
+
 First step: load the history file into a Python object:
 
 .. code:: python
@@ -36,6 +181,7 @@ First step: load the history file into a Python object:
     history = os.path.join(example_directory, history_file)
     output_name = 'noddy_out'
     H1 = pynoddy.history.NoddyHistory(history)
+
 **Technical note**: the ``NoddyHistory`` class can be accessed on the
 level of pynoddy (as it is imported in the ``__init__.py`` module) with
 the shortcut:
@@ -59,10 +205,9 @@ more will be added soon!), for example the total number of events:
 
     print("The history contains %d events" % H1.n_events)
 
-.. parsed-literal::
+::
 
     The history contains 3 events
-
 
 Events are implemented as objects, the classes are defined in
 ``H1.events``. All events are accessible in a list on the level of the
@@ -72,15 +217,11 @@ history object:
 
     H1.events
 
+::
 
-
-.. parsed-literal::
-
-    {1: <pynoddy.events.Stratigraphy instance at 0x10a6c3bd8>,
-     2: <pynoddy.events.Fault instance at 0x10a6c3c20>,
-     3: <pynoddy.events.Fault instance at 0x10a6c3cf8>}
-
-
+    {1: <pynoddy.events.Stratigraphy at 0x103ac2a50>,
+     2: <pynoddy.events.Fault at 0x103ac2a90>,
+     3: <pynoddy.events.Fault at 0x103ac2ad0>}
 
 The properties of an event are stored in the event objects themselves.
 To date, only a subset of the properties (deemed as relevant for the
@@ -95,9 +236,7 @@ For example, the properties of a fault object are:
     H1.events[2].properties
     # print H1.events[5].properties.keys()
 
-
-
-.. parsed-literal::
+::
 
     {'Amplitude': 2000.0,
      'Blue': 254.0,
@@ -105,7 +244,6 @@ For example, the properties of a fault object are:
      'Cyl Index': 0.0,
      'Dip': 60.0,
      'Dip Direction': 90.0,
-     'Event #2': 'FAULT',
      'Geometry': 'Translation',
      'Green': 0.0,
      'Movement': 'Hanging Wall',
@@ -122,8 +260,6 @@ For example, the properties of a fault object are:
      'Z': 0.0,
      'ZAxis': 2000.0}
 
-
-
 Change model cube size and recompute model
 ------------------------------------------
 
@@ -138,16 +274,9 @@ A simple example to change the cube size and write a new history file:
 .. code:: python
 
     # We will first recompute the model and store results in an output file for comparison
-    reload(pynoddy.history)
-    reload(pynoddy.output)
     NH1 = pynoddy.history.NoddyHistory(history)
     pynoddy.compute_model(history, output_name) 
     NO1 = pynoddy.output.NoddyOutput(output_name)
-
-.. parsed-literal::
-
-    (62, 47, 25)
-
 
 .. code:: python
 
@@ -160,11 +289,6 @@ A simple example to change the cube size and write a new history file:
     pynoddy.compute_model(new_history, new_output_name)
     NO2 = pynoddy.output.NoddyOutput(new_output_name)
 
-.. parsed-literal::
-
-    (248, 188, 100)
-
-
 The different cell sizes are also represented in the output files:
 
 .. code:: python
@@ -174,11 +298,10 @@ The different cell sizes are also represented in the output files:
     print("Model 2 contains a total of %7d cells with a blocksize %.0f m" %
           (NO2.n_total, NO2.delx)) 
 
-.. parsed-literal::
+::
 
-    Model 1 contains a total of   72850 cells with a blocksize 200 m
+    Model 1 contains a total of  582800 cells with a blocksize 100 m
     Model 2 contains a total of 4662400 cells with a blocksize 50 m
-
 
 We can compare the effect of the different model discretisations in
 section plots, created with the plot\_section method described before.
@@ -192,15 +315,15 @@ comparison:
     fig = plt.figure(figsize = (15,5))
     ax1 = fig.add_subplot(121)
     ax2 = fig.add_subplot(122)
-    NO1.plot_section('x', position=0, ax = ax1, colorbar=False, title="Low resolution")
-    NO2.plot_section('x', position=1, ax = ax2, colorbar=False, title="High resolution")
-    
+    NO1.plot_section('y', position=0, ax = ax1, colorbar=False, title="Low resolution")
+    NO2.plot_section('y', position=1, ax = ax2, colorbar=False, title="High resolution")
+
     plt.show()
 
+.. figure:: 2-Adjust-input_files/2-Adjust-input_20_0.png
+   :alt: png
 
-
-.. image:: 2-Adjust-input_files/2-Adjust-input_17_0.png
-
+   png
 
 Note: the following two subsections contain some slighly advanced
 examples on how to use the possibility to adjust cell sizes through
@@ -225,21 +348,19 @@ practical case, this can be very important.
     start_time = time.time()
     pynoddy.compute_model(history, output_name) 
     end_time = time.time()
-    
+
     print("Simulation time for low-resolution model: %5.2f seconds" % (end_time - start_time))
-    
+
     start_time = time.time()
     pynoddy.compute_model(new_history, new_output_name)
     end_time = time.time()
-    
+
     print("Simulation time for high-resolution model: %5.2f seconds" % (end_time - start_time))
 
+::
 
-.. parsed-literal::
-
-    Simulation time for low-resolution model:  0.08 seconds
-    Simulation time for high-resolution model: 32.43 seconds
-
+    Simulation time for low-resolution model:  0.73 seconds
+    Simulation time for high-resolution model:  5.78 seconds
 
 For an estimation of required computing time for a given discretisation,
 let's evaulate the time for a couple of steps, plot, and extrapolate:
@@ -268,36 +389,33 @@ let's evaulate the time for a couple of steps, plot, and extrapolate:
     ax1 = fig.add_subplot(131)
     ax2 = fig.add_subplot(132)
     ax3 = fig.add_subplot(133)
-    
+
     ax1.plot(cube_sizes, np.array(times), 'ro-')
     ax1.set_xlabel('cubesize [m]')
     ax1.set_ylabel('time [s]')
     ax1.set_title('Computation time')
     ax1.set_xlim(ax1.get_xlim()[::-1])
-    
+
     ax2.plot(cube_sizes, times**(1/3.), 'bo-')
     ax2.set_xlabel('cubesize [m]')
     ax2.set_ylabel('(time [s])**(1/3)')
     ax2.set_title('Computation time (cuberoot)')
     ax2.set_xlim(ax2.get_xlim()[::-1])
-    
+
     ax3.semilogy(cube_sizes, times, 'go-')
     ax3.set_xlabel('cubesize [m]')
     ax3.set_ylabel('time [s]')
     ax3.set_title('Computation time (y-log)')
     ax3.set_xlim(ax3.get_xlim()[::-1])
 
-
-
-.. parsed-literal::
+::
 
     (200.0, 40.0)
 
+.. figure:: 2-Adjust-input_files/2-Adjust-input_26_1.png
+   :alt: png
 
-
-
-.. image:: 2-Adjust-input_files/2-Adjust-input_23_1.png
-
+   png
 
 It is actually quite interesting that the computation time does not
 scale with cubesize to the power of three (as could be expected, given
@@ -311,6 +429,8 @@ something like:
 
 .. math::  f(x) = a + \left( b \log_{10}(x) \right)^{-c} 
 
+Let's try to fit the curve with ``scipy.optimize.curve_fit``:
+
 .. code:: python
 
     # perform curve fitting with scipy.optimize
@@ -318,21 +438,17 @@ something like:
     # define function to be fit
     def func(x,a,b,c):
         return a + (b*np.log10(x))**(-c)
-    
-    popt, pcov = scipy.optimize.curve_fit(func, cube_sizes, np.array(times))
+
+    popt, pcov = scipy.optimize.curve_fit(func, cube_sizes, np.array(times), p0 = [-1, 0.5, 2])
     popt
 
+::
 
-
-.. parsed-literal::
-
-    array([ -1.15814515e-02,   4.94030524e-01,   1.99015465e+01])
-
-
+    array([ -0.05618538,   0.50990774,  12.45183398])
 
 Interesting, it looks like Noody scales with something like:
 
-.. math::  f(x) = -1.16 + \left( 0.5 \log_{10}(x) \right)^{-2} 
+.. math::  f(x) = \left( 0.5 \log_{10}(x) \right)^{-12} 
 
 **Note**: if you understand more about computational complexity than me,
 it might not be that interesting to you at all - if this is the case,
@@ -350,17 +466,14 @@ please contact me and tell me why this result could be expected...
     # reverse x-axis
     ax.set_xlim(ax.get_xlim()[::-1])
 
-
-
-.. parsed-literal::
+::
 
     (200.0, 20.0)
 
+.. figure:: 2-Adjust-input_files/2-Adjust-input_30_1.png
+   :alt: png
 
-
-
-.. image:: 2-Adjust-input_files/2-Adjust-input_27_1.png
-
+   png
 
 Not too bad... let's evaluate the time for a cube size of 40 m:
 
@@ -370,10 +483,9 @@ Not too bad... let's evaluate the time for a cube size of 40 m:
     time_est = func(cube_size, a, b, c)
     print("Estimated time for a cube size of %d m: %.1f seconds" % (cube_size, time_est))
 
-.. parsed-literal::
+::
 
-    Estimated time for a cube size of 40 m: 105.0 seconds
-
+    Estimated time for a cube size of 40 m: 12.4 seconds
 
 Now let's check the actual simulation time:
 
@@ -385,13 +497,12 @@ Now let's check the actual simulation time:
     pynoddy.compute_model(tmp_history, tmp_output)
     end_time = time.time()
     time_comp = end_time - start_time
-    
+
     print("Actual computation time for a cube size of %d m: %.1f seconds" % (cube_size, time_comp))
 
-.. parsed-literal::
+::
 
-    Actual computation time for a cube size of 40 m: 94.4 seconds
-
+    Actual computation time for a cube size of 40 m: 11.6 seconds
 
 Not too bad, probably in the range of the inherent variability... and if
 we check it in the plot:
@@ -406,17 +517,14 @@ we check it in the plot:
     # reverse x-axis
     ax.set_xlim(ax.get_xlim()[::-1])
 
-
-
-.. parsed-literal::
+::
 
     (200.0, 20.0)
 
+.. figure:: 2-Adjust-input_files/2-Adjust-input_36_1.png
+   :alt: png
 
-
-
-.. image:: 2-Adjust-input_files/2-Adjust-input_33_1.png
-
+   png
 
 Anyway, the point of this excercise was not a precise evaluation of
 Noddy's computational complexity, but to provide a simple means of
@@ -468,51 +576,42 @@ the rock volumes of each defined geological unit:
         O_tmp = pynoddy.output.NoddyOutput(tmp_output)
         O_tmp.determine_unit_volumes()
         all_volumes.append(O_tmp.unit_volumes)
+
 .. code:: python
 
     all_volumes = np.array(all_volumes)
     fig = plt.figure(figsize=(16,4))
     ax1 = fig.add_subplot(121)
     ax2 = fig.add_subplot(122)
-    
+
     # separate into two plots for better visibility:
     for i in range(np.shape(all_volumes)[1]):
         if i < 4:
             ax1.plot(cube_sizes, all_volumes[:,i], 'o-', label='unit %d' %i)
         else:
             ax2.plot(cube_sizes, all_volumes[:,i], 'o-', label='unit %d' %i)
-    
+
     ax1.legend(loc=2)
     ax2.legend(loc=2)
     # reverse axes
     ax1.set_xlim(ax1.get_xlim()[::-1])
     ax2.set_xlim(ax2.get_xlim()[::-1])
-    
+
     ax1.set_xlabel("Block size [m]")
     ax1.set_ylabel("Total unit volume [m**3]")
     ax2.set_xlabel("Block size [m]")
     ax2.set_ylabel("Total unit volume [m**3]")
 
+::
 
+    <matplotlib.text.Text at 0x107eb7250>
 
-.. parsed-literal::
+.. figure:: 2-Adjust-input_files/2-Adjust-input_40_1.png
+   :alt: png
 
-    <matplotlib.text.Text at 0x1103cc810>
-
-
-
-
-.. image:: 2-Adjust-input_files/2-Adjust-input_37_1.png
-
+   png
 
 It looks like the volumes would start to converge from about a block
 size of 100 m. The example model is pretty small and simple, probably
 not the best example for this study. Try it out with your own, highly
 complex, favourite pet model :-)
-
-.. code:: python
-
-    
-.. code:: python
-
-    

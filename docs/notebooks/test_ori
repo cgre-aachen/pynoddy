@@ -1,5 +1,5 @@
 #Filename = test_ori 
-#Date Saved = 27/1/2015 15:33:10
+#Date Saved = 11/10/2015 4:29:48
 FileType = 111
 Version = 7.11
 
@@ -760,6 +760,7 @@ Event #3	= FAULT
 	Surface YDim	= 0.000000
 	Surface ZDim	= 0.000000
 	Name	= Fault1
+
 #BlockOptions
 	Number of Views	= 1
 	Current View	= 0

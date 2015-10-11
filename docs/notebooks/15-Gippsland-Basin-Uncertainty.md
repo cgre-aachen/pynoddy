@@ -245,7 +245,7 @@ ua.export_to_vtk(vtk_filename=output_path,data=ua.e_block)
 
 The resulting vtr file can (in the sandbox directory) can now be loaded and properly analysed in a 3D visualisation package such as ParaView. 
 
-<img src="15-Gippsland-Basin-Uncertainty_files/3D-render.png">
+![3-D visualisation of cell information entropy](15-Gippsland-Basin-Uncertainty_files/3D-render.png "3-D visualisation of cell information entropy")
 
 
 ```python
