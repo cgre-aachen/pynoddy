@@ -1935,7 +1935,7 @@ can easily be combined with pynoddy classes.
 
 
 \chapter{Gippsland Basin Uncertainty Study}
-\label{notebooks/15-Gippsland-Basin-Uncertainty::doc}\label{notebooks/15-Gippsland-Basin-Uncertainty:gippsland-basin-uncertainty-study}
+\label{notebooks/7-Gippsland-Basin-Uncertainty::doc}\label{notebooks/7-Gippsland-Basin-Uncertainty:gippsland-basin-uncertainty-study}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{k+kn}{from} \PYG{n+nn}{IPython.core.display} \PYG{k+kn}{import} \PYG{n}{HTML}
 \PYG{n}{css\PYGZus{}file} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{pynoddy.css}\PYG{l+s}{\PYGZsq{}}
@@ -1966,7 +1966,7 @@ can easily be combined with pynoddy classes.
 
 
 \section{The Gippsland Basin Model}
-\label{notebooks/15-Gippsland-Basin-Uncertainty:the-gippsland-basin-model}
+\label{notebooks/7-Gippsland-Basin-Uncertainty:the-gippsland-basin-model}
 In this example we will apply the UncertaintyAnalysis class we have been
 playing with in the previous example to a `realistic' (though highly
 simplified) geological model of the Gippsland Basin, a petroleum field
@@ -1995,7 +1995,7 @@ directory.
 
 
 \section{Generate randomised model realisations}
-\label{notebooks/15-Gippsland-Basin-Uncertainty:generate-randomised-model-realisations}
+\label{notebooks/7-Gippsland-Basin-Uncertainty:generate-randomised-model-realisations}
 Now we have all the information required to perform a Monte-Carlo based
 uncertainty analysis. In this example we will generate 100 model
 realisations and use them to estimate the information entropy of each
@@ -2006,7 +2006,7 @@ convinience we only generate a small number of models here.
 
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{c}{\PYGZsh{} \PYGZpc{}\PYGZpc{}timeit   \PYGZsh{} Uncomment to test execution time}
-\PYG{n}{ua} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{experiment}\PYG{o}{.}\PYG{n}{uncertainty\PYGZus{}analysis}\PYG{o}{.}\PYG{n}{UncertaintyAnalysis}\PYG{p}{(}\PYG{n}{history\PYGZus{}file}\PYG{p}{,}\PYG{n}{params}\PYG{p}{)}
+\PYG{n}{ua} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{experiment}\PYG{o}{.}\PYG{n}{uncertainty\PYGZus{}analysis}\PYG{o}{.}\PYG{n}{UncertaintyAnalysis}\PYG{p}{(}\PYG{n}{history\PYGZus{}file}\PYG{p}{,} \PYG{n}{params}\PYG{p}{)}
 \PYG{n}{ua}\PYG{o}{.}\PYG{n}{estimate\PYGZus{}uncertainty}\PYG{p}{(}\PYG{l+m+mi}{100}\PYG{p}{,}\PYG{n}{verbose}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{)}
 \end{Verbatim}
 
@@ -2028,13 +2028,13 @@ exagguration of 3, in order to highlight vertical structure.
 \centering
 \capstart
 
-\includegraphics{15-Gippsland-Basin-Uncertainty_11_0.png}
+\includegraphics{7-Gippsland-Basin-Uncertainty_11_0.png}
 \caption{png}\end{figure}
 \begin{figure}[htbp]
 \centering
 \capstart
 
-\includegraphics{15-Gippsland-Basin-Uncertainty_11_1.png}
+\includegraphics{7-Gippsland-Basin-Uncertainty_11_1.png}
 \caption{png}\end{figure}
 
 It is immediately apparent (and not particularly surprising) that
@@ -2045,7 +2045,7 @@ uncertainty, though not by a huge amount.
 
 
 \section{Exporting results to VTk for visualisation}
-\label{notebooks/15-Gippsland-Basin-Uncertainty:exporting-results-to-vtk-for-visualisation}
+\label{notebooks/7-Gippsland-Basin-Uncertainty:exporting-results-to-vtk-for-visualisation}
 It is also possible (and useful!) to export the uncertainty information
 to .vtk format for 3D analysis in software such as ParaView. This can be
 done as follows:
@@ -2067,6 +2067,416 @@ and properly analysed in a 3D visualisation package such as ParaView.
 
 \includegraphics{3D-render.png}
 \caption{3-D visualisation of cell information entropy}\end{figure}
+
+
+\chapter{Sensitivity Analysis}
+\label{notebooks/8-Sensitivity-Analysis:sensitivity-analysis}\label{notebooks/8-Sensitivity-Analysis::doc}
+Test here: (local) sensitivity analysis of kinematic parameters with
+respect to a defined objective function. Aim: test how sensitivity the
+resulting model is to uncertainties in kinematic parameters to:
+\begin{enumerate}
+\item {} 
+Evaluate which the most important parameters are, and to
+
+\item {} 
+Determine which parameters could, in principle, be inverted with
+suitable information.
+
+\end{enumerate}
+
+
+\section{Theory: local sensitivity analysis}
+\label{notebooks/8-Sensitivity-Analysis:theory-local-sensitivity-analysis}
+Basic considerations:
+\begin{itemize}
+\item {} 
+parameter vector \(\vec{p}\)
+
+\item {} 
+residual vector \(\vec{r}\)
+
+\item {} 
+calculated values at observation points \(\vec{z}\)
+
+\item {} 
+Jacobian matrix
+\(J_{ij} = \frac{\partial \vec{z}}{\partial \vec{p}}\)
+
+\end{itemize}
+
+Numerical estimation of Jacobian matrix with central difference scheme
+(see Finsterle):
+\begin{gather}
+\begin{split}J_{ij} = \frac{\partial z_i}{\partial p_j} \approx \frac{z_i(\vec{p}; p_j + \delta p_j) - z_i(\vec{p};p_j - \delta p_j)}{2 \delta p_j}\end{split}\notag
+\end{gather}
+where \(\delta p_j\) is a small perturbation of parameter \(j\),
+often as a fraction of the value.
+
+
+\section{Defining the responses \(\vec{z}\)}
+\label{notebooks/8-Sensitivity-Analysis:defining-the-responses}
+A meaningful sensitivity analysis obviously depends on the definition of
+a suitable response vector \(\vec{z}\). Ideally, these responses are
+related to actual observations. In our case, we first want to determine
+how sensitive a kinematic structural geological model is with respect to
+uncertainties in the kinematic parameters. We therefore need
+calculatable measures that describe variations of the model.
+
+As a first-order assumption, we will use a notation of a stratigraphic
+distance for discrete subsections of the model, for example in single
+voxets for the calculated model. We define distance \(d\) of a
+subset \(\omega\) as the (discrete) difference between the
+(discrete) stratigraphic value of an ideal model, \(\hat{s}\), to
+the value of a model realisation \(s_i\):
+\begin{gather}
+\begin{split}d(\omega) = \hat{s} - s_i\end{split}\notag
+\end{gather}
+In the first example, we will consider only one response: the overall
+sum of stratigraphic distances for a model realisation \(r\) of all
+subsets (= voxets, in the practical sense), scaled by the number of
+subsets (for a subsequent comparison of model discretisations):
+\begin{gather}
+\begin{split}D_r = \frac{1}{n} \sum_{i=1}^n d(\omega_i)\end{split}\notag
+\end{gather}
+Note: mistake before: not considering distances at single nodes but only
+the sum - this lead to ``zero-difference'' for simple translation! Now:
+consider more realistic objective function, squared distance:
+\begin{gather}
+\begin{split}r = \sqrt{\sum_i (z_{i calc} - z_{i ref})^2}\end{split}\notag
+\end{gather}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{from} \PYG{n+nn}{IPython.core.display} \PYG{k+kn}{import} \PYG{n}{HTML}
+\PYG{n}{css\PYGZus{}file} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{pynoddy.css}\PYG{l+s}{\PYGZsq{}}
+\PYG{n}{HTML}\PYG{p}{(}\PYG{n+nb}{open}\PYG{p}{(}\PYG{n}{css\PYGZus{}file}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{r}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{read}\PYG{p}{(}\PYG{p}{)}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZpc{}matplotlib inline
+\end{Verbatim}
+
+
+\section{Setting up the base model}
+\label{notebooks/8-Sensitivity-Analysis:setting-up-the-base-model}
+For a first test: use simple two-fault model from paper
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{sys}\PYG{o}{,} \PYG{n+nn}{os}
+\PYG{k+kn}{import} \PYG{n+nn}{matplotlib.pyplot} \PYG{k+kn}{as} \PYG{n+nn}{plt}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k+kn}{as} \PYG{n+nn}{np}
+\PYG{c}{\PYGZsh{} adjust some settings for matplotlib}
+\PYG{k+kn}{from} \PYG{n+nn}{matplotlib} \PYG{k+kn}{import} \PYG{n}{rcParams}
+\PYG{c}{\PYGZsh{} print rcParams}
+\PYG{n}{rcParams}\PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{font.size}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{15}
+\PYG{c}{\PYGZsh{} determine path of repository to set paths corretly below}
+\PYG{n}{os}\PYG{o}{.}\PYG{n}{chdir}\PYG{p}{(}\PYG{l+s}{r\PYGZsq{}}\PYG{l+s}{/Users/flow/git/pynoddy/docs/notebooks/}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{repo\PYGZus{}path} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{realpath}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{../..}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
+\PYG{k+kn}{import} \PYG{n+nn}{pynoddy.history}
+\PYG{k+kn}{import} \PYG{n+nn}{pynoddy.events}
+\PYG{k+kn}{import} \PYG{n+nn}{pynoddy.output}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{p}{)}
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{events}\PYG{p}{)}
+\PYG{n}{nm} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} add stratigraphy}
+\PYG{n}{strati\PYGZus{}options} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{num\PYGZus{}layers}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+m+mi}{8}\PYG{p}{,}
+                  \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{layer\PYGZus{}names}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{layer 1}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{layer 2}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{layer 3}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{layer 4}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{layer 5}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{layer 6}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{layer 7}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{layer 8}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]}\PYG{p}{,}
+                  \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{layer\PYGZus{}thickness}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{p}{[}\PYG{l+m+mi}{1500}\PYG{p}{,} \PYG{l+m+mi}{500}\PYG{p}{,} \PYG{l+m+mi}{500}\PYG{p}{,} \PYG{l+m+mi}{500}\PYG{p}{,} \PYG{l+m+mi}{500}\PYG{p}{,} \PYG{l+m+mi}{500}\PYG{p}{,} \PYG{l+m+mi}{500}\PYG{p}{,} \PYG{l+m+mi}{500}\PYG{p}{]}\PYG{p}{\PYGZcb{}}
+\PYG{n}{nm}\PYG{o}{.}\PYG{n}{add\PYGZus{}event}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{stratigraphy}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{strati\PYGZus{}options} \PYG{p}{)}
+
+\PYG{c}{\PYGZsh{} The following options define the fault geometry:}
+\PYG{n}{fault\PYGZus{}options} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{name}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Fault\PYGZus{}W}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,}
+                 \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{pos}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{p}{(}\PYG{l+m+mi}{4000}\PYG{p}{,} \PYG{l+m+mi}{3500}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}\PYG{p}{,}
+                 \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{dip\PYGZus{}dir}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+m+mi}{90}\PYG{p}{,}
+                 \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{dip}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+m+mi}{60}\PYG{p}{,}
+                 \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{slip}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+m+mi}{1000}\PYG{p}{\PYGZcb{}}
+
+\PYG{n}{nm}\PYG{o}{.}\PYG{n}{add\PYGZus{}event}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{fault}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{fault\PYGZus{}options}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} The following options define the fault geometry:}
+\PYG{n}{fault\PYGZus{}options} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{name}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Fault\PYGZus{}E}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,}
+                 \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{pos}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{p}{(}\PYG{l+m+mi}{6000}\PYG{p}{,} \PYG{l+m+mi}{3500}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}\PYG{p}{,}
+                 \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{dip\PYGZus{}dir}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+m+mi}{270}\PYG{p}{,}
+                 \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{dip}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+m+mi}{60}\PYG{p}{,}
+                 \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{slip}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+m+mi}{1000}\PYG{p}{\PYGZcb{}}
+
+\PYG{n}{nm}\PYG{o}{.}\PYG{n}{add\PYGZus{}event}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{fault}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{fault\PYGZus{}options}\PYG{p}{)}
+\PYG{n}{history} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{two\PYGZus{}faults\PYGZus{}sensi.his}\PYG{l+s}{\PYGZdq{}}
+\PYG{n}{nm}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{output\PYGZus{}name} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{two\PYGZus{}faults\PYGZus{}sensi\PYGZus{}out}\PYG{l+s}{\PYGZdq{}}
+\PYG{c}{\PYGZsh{} Compute the model}
+\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{history}\PYG{p}{,} \PYG{n}{output\PYGZus{}name}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{\PYGZsq{}}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZsh{} Plot output}
+\PYG{n}{nout} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{output\PYGZus{}name}\PYG{p}{)}
+\PYG{n}{nout}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{y}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{layer\PYGZus{}labels} \PYG{o}{=} \PYG{n}{strati\PYGZus{}options}\PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{layer\PYGZus{}names}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]}\PYG{p}{[}\PYG{p}{:}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{,}
+                  \PYG{n}{colorbar} \PYG{o}{=} \PYG{n+nb+bp}{True}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+                  \PYG{n}{savefig} \PYG{o}{=} \PYG{n+nb+bp}{False}\PYG{p}{)}
+\end{Verbatim}
+\begin{figure}[htbp]
+\centering
+\capstart
+
+\includegraphics{8-Sensitivity-Analysis_7_0.png}
+\caption{png}\end{figure}
+
+
+\section{Define parameter uncertainties}
+\label{notebooks/8-Sensitivity-Analysis:define-parameter-uncertainties}
+We will start with a sensitivity analysis for the parameters of the
+fault events.
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{H1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} get the original dip of the fault}
+\PYG{n}{dip\PYGZus{}ori} \PYG{o}{=} \PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{]}\PYG{o}{.}\PYG{n}{properties}\PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Dip}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]}
+\PYG{c}{\PYGZsh{} dip\PYGZus{}ori1 = H1.events[2].properties[\PYGZsq{}Dip\PYGZsq{}]}
+\PYG{c}{\PYGZsh{} add 10 degrees to dip}
+\PYG{n}{add\PYGZus{}dip} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{20}
+\PYG{n}{dip\PYGZus{}new} \PYG{o}{=} \PYG{n}{dip\PYGZus{}ori} \PYG{o}{+} \PYG{n}{add\PYGZus{}dip}
+\PYG{c}{\PYGZsh{} dip\PYGZus{}new1 = dip\PYGZus{}ori1 + add\PYGZus{}dip}
+
+\PYG{c}{\PYGZsh{} and assign back to properties dictionary:}
+\PYG{n}{H1}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{]}\PYG{o}{.}\PYG{n}{properties}\PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Dip}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{dip\PYGZus{}new}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{p}{)}
+\PYG{n}{new\PYGZus{}history} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{sensi\PYGZus{}test\PYGZus{}dip\PYGZus{}changed.his}\PYG{l+s}{\PYGZdq{}}
+\PYG{n}{new\PYGZus{}output} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{sensi\PYGZus{}test\PYGZus{}dip\PYGZus{}changed\PYGZus{}out}\PYG{l+s}{\PYGZdq{}}
+\PYG{n}{H1}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{)}
+\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{,} \PYG{n}{new\PYGZus{}output}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} load output from both models}
+\PYG{n}{NO1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{output\PYGZus{}name}\PYG{p}{)}
+\PYG{n}{NO2} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{new\PYGZus{}output}\PYG{p}{)}
+
+\PYG{c}{\PYGZsh{} create basic figure layout}
+\PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize} \PYG{o}{=} \PYG{p}{(}\PYG{l+m+mi}{15}\PYG{p}{,}\PYG{l+m+mi}{5}\PYG{p}{)}\PYG{p}{)}
+\PYG{n}{ax1} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{121}\PYG{p}{)}
+\PYG{n}{ax2} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{122}\PYG{p}{)}
+\PYG{n}{NO1}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{y}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{position}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{ax} \PYG{o}{=} \PYG{n}{ax1}\PYG{p}{,} \PYG{n}{colorbar}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Dip = }\PYG{l+s+si}{\PYGZpc{}.0f}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{n}{dip\PYGZus{}ori}\PYG{p}{)}
+\PYG{n}{NO2}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{y}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{position}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{ax} \PYG{o}{=} \PYG{n}{ax2}\PYG{p}{,} \PYG{n}{colorbar}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Dip = }\PYG{l+s+si}{\PYGZpc{}.0f}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{n}{dip\PYGZus{}new}\PYG{p}{)}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{(}\PYG{p}{)}
+\end{Verbatim}
+\begin{figure}[htbp]
+\centering
+\capstart
+
+\includegraphics{8-Sensitivity-Analysis_10_0.png}
+\caption{png}\end{figure}
+
+
+\section{Calculate total stratigraphic distance}
+\label{notebooks/8-Sensitivity-Analysis:calculate-total-stratigraphic-distance}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZsh{} def determine\PYGZus{}strati\PYGZus{}diff(NO1, NO2):}
+\PYG{c}{\PYGZsh{}     \PYGZdq{}\PYGZdq{}\PYGZdq{}calculate total stratigraphic distance between two models\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{c}{\PYGZsh{}     return np.sum(NO1.block \PYGZhy{} NO2.block) / float(len(NO1.block))}
+
+\PYG{k}{def} \PYG{n+nf}{determine\PYGZus{}strati\PYGZus{}diff}\PYG{p}{(}\PYG{n}{NO1}\PYG{p}{,} \PYG{n}{NO2}\PYG{p}{)}\PYG{p}{:}
+    \PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}calculate total stratigraphic distance between two models\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{k}{return} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sqrt}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{(}\PYG{p}{(}\PYG{n}{NO1}\PYG{o}{.}\PYG{n}{block} \PYG{o}{\PYGZhy{}} \PYG{n}{NO2}\PYG{o}{.}\PYG{n}{block}\PYG{p}{)}\PYG{o}{*}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{p}{)} \PYG{o}{/} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{NO1}\PYG{o}{.}\PYG{n}{block}\PYG{p}{)}\PYG{p}{)}
+
+
+
+\PYG{n}{diff} \PYG{o}{=} \PYG{n}{determine\PYGZus{}strati\PYGZus{}diff}\PYG{p}{(}\PYG{n}{NO1}\PYG{p}{,} \PYG{n}{NO2}\PYG{p}{)}
+\PYG{k}{print}\PYG{p}{(}\PYG{n}{diff}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{l+m+mf}{5.56205897128}
+\end{Verbatim}
+
+
+\section{Function to modify parameters}
+\label{notebooks/8-Sensitivity-Analysis:function-to-modify-parameters}
+Multiple event parameters can be changed directly with the function
+\code{change\_event\_params}, which takes a dictionarly of events and
+parameters with according changes relative to the defined parameters.
+Here a brief example:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZsh{} set parameter changes in dictionary}
+
+\PYG{n}{changes\PYGZus{}fault\PYGZus{}1} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Dip}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{20}\PYG{p}{\PYGZcb{}}
+\PYG{n}{changes\PYGZus{}fault\PYGZus{}2} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Dip}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{20}\PYG{p}{\PYGZcb{}}
+\PYG{n}{param\PYGZus{}changes} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+m+mi}{2} \PYG{p}{:} \PYG{n}{changes\PYGZus{}fault\PYGZus{}1}\PYG{p}{,}
+                 \PYG{l+m+mi}{3} \PYG{p}{:} \PYG{n}{changes\PYGZus{}fault\PYGZus{}2}\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{p}{)}
+\PYG{n}{H2} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history}\PYG{p}{)}
+\PYG{n}{H2}\PYG{o}{.}\PYG{n}{change\PYGZus{}event\PYGZus{}params}\PYG{p}{(}\PYG{n}{param\PYGZus{}changes}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{new\PYGZus{}history} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{param\PYGZus{}dict\PYGZus{}changes.his}\PYG{l+s}{\PYGZdq{}}
+\PYG{n}{new\PYGZus{}output} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{param\PYGZus{}dict\PYGZus{}changes\PYGZus{}out}\PYG{l+s}{\PYGZdq{}}
+\PYG{n}{H2}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{)}
+\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{,} \PYG{n}{new\PYGZus{}output}\PYG{p}{)}
+\PYG{c}{\PYGZsh{} load output from both models}
+\PYG{n}{NO1} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{output\PYGZus{}name}\PYG{p}{)}
+\PYG{n}{NO2} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{new\PYGZus{}output}\PYG{p}{)}
+
+\PYG{c}{\PYGZsh{} create basic figure layout}
+\PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize} \PYG{o}{=} \PYG{p}{(}\PYG{l+m+mi}{15}\PYG{p}{,}\PYG{l+m+mi}{5}\PYG{p}{)}\PYG{p}{)}
+\PYG{n}{ax1} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{121}\PYG{p}{)}
+\PYG{n}{ax2} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{122}\PYG{p}{)}
+\PYG{n}{NO1}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{y}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{position}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{ax} \PYG{o}{=} \PYG{n}{ax1}\PYG{p}{,} \PYG{n}{colorbar}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Original Model}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{NO2}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{y}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{position}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{ax} \PYG{o}{=} \PYG{n}{ax2}\PYG{p}{,} \PYG{n}{colorbar}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Changed Model}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{(}\PYG{p}{)}
+\end{Verbatim}
+\begin{figure}[htbp]
+\centering
+\capstart
+
+\includegraphics{8-Sensitivity-Analysis_16_0.png}
+\caption{png}\end{figure}
+
+
+\section{Full sensitivity analysis}
+\label{notebooks/8-Sensitivity-Analysis:full-sensitivity-analysis}
+Perform now a full sensitivity analysis for all defined parameters and
+analyse the output matrix. For a better overview, we first create a
+function to perform the sensitivity analysis:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{copy}
+\PYG{n}{new\PYGZus{}history} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{sensi\PYGZus{}tmp.his}\PYG{l+s}{\PYGZdq{}}
+\PYG{n}{new\PYGZus{}output} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{sensi\PYGZus{}out}\PYG{l+s}{\PYGZdq{}}
+\PYG{k}{def} \PYG{n+nf}{noddy\PYGZus{}sensitivity}\PYG{p}{(}\PYG{n}{history\PYGZus{}filename}\PYG{p}{,} \PYG{n}{param\PYGZus{}change\PYGZus{}vals}\PYG{p}{)}\PYG{p}{:}
+    \PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Perform noddy sensitivity analysis for a model\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{param\PYGZus{}list} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]} \PYG{c}{\PYGZsh{} list to store parameters for later analysis}
+    \PYG{n}{distances} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]} \PYG{c}{\PYGZsh{} list to store calcualted distances}
+    \PYG{c}{\PYGZsh{} Step 1:}
+    \PYG{c}{\PYGZsh{} create new parameter list to change model}
+    \PYG{k}{for} \PYG{n}{event\PYGZus{}id}\PYG{p}{,} \PYG{n}{event\PYGZus{}dict} \PYG{o+ow}{in} \PYG{n}{param\PYGZus{}change\PYGZus{}vals}\PYG{o}{.}\PYG{n}{items}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:} \PYG{c}{\PYGZsh{} iterate over events}
+        \PYG{k}{for} \PYG{n}{key}\PYG{p}{,} \PYG{n}{val} \PYG{o+ow}{in} \PYG{n}{event\PYGZus{}dict}\PYG{o}{.}\PYG{n}{items}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:} \PYG{c}{\PYGZsh{} iterate over all properties separately}
+            \PYG{n}{changes\PYGZus{}list} \PYG{o}{=} \PYG{n+nb}{dict}\PYG{p}{(}\PYG{p}{)}
+            \PYG{n}{changes\PYGZus{}list}\PYG{p}{[}\PYG{n}{event\PYGZus{}id}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb}{dict}\PYG{p}{(}\PYG{p}{)}
+            \PYG{n}{param\PYGZus{}list}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{event\PYGZus{}}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s}{\PYGZus{}property\PYGZus{}}\PYG{l+s+si}{\PYGZpc{}s}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{p}{(}\PYG{n}{event\PYGZus{}id}\PYG{p}{,} \PYG{n}{key}\PYG{p}{)}\PYG{p}{)}
+            \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{p}{:}
+                \PYG{c}{\PYGZsh{} calculate positive and negative values}
+                \PYG{n}{his} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{o}{.}\PYG{n}{NoddyHistory}\PYG{p}{(}\PYG{n}{history\PYGZus{}filename}\PYG{p}{)}
+                \PYG{k}{if} \PYG{n}{i} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{:}
+                    \PYG{n}{changes\PYGZus{}list}\PYG{p}{[}\PYG{n}{event\PYGZus{}id}\PYG{p}{]}\PYG{p}{[}\PYG{n}{key}\PYG{p}{]} \PYG{o}{=} \PYG{n}{val}
+                    \PYG{c}{\PYGZsh{} set changes}
+                    \PYG{n}{his}\PYG{o}{.}\PYG{n}{change\PYGZus{}event\PYGZus{}params}\PYG{p}{(}\PYG{n}{changes\PYGZus{}list}\PYG{p}{)}
+                    \PYG{c}{\PYGZsh{} save and calculate model}
+                    \PYG{n}{his}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{)}
+                    \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{,} \PYG{n}{new\PYGZus{}output}\PYG{p}{)}
+                    \PYG{c}{\PYGZsh{} open output and calculate distance}
+                    \PYG{n}{NO\PYGZus{}tmp} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{new\PYGZus{}output}\PYG{p}{)}
+                    \PYG{n}{dist\PYGZus{}pos} \PYG{o}{=} \PYG{n}{determine\PYGZus{}strati\PYGZus{}diff}\PYG{p}{(}\PYG{n}{NO1}\PYG{p}{,} \PYG{n}{NO\PYGZus{}tmp}\PYG{p}{)}
+                    \PYG{n}{NO\PYGZus{}tmp}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{y}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{position} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{colorbar} \PYG{o}{=} \PYG{n+nb+bp}{False}\PYG{p}{,}
+                                        \PYG{n}{title} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Dist: }\PYG{l+s+si}{\PYGZpc{}.2f}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{n}{dist\PYGZus{}pos}\PYG{p}{,}
+                                        \PYG{n}{savefig} \PYG{o}{=} \PYG{n+nb+bp}{True}\PYG{p}{,}
+                                        \PYG{n}{fig\PYGZus{}filename} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{event\PYGZus{}}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s}{\PYGZus{}property\PYGZus{}}\PYG{l+s+si}{\PYGZpc{}s}\PYG{l+s}{\PYGZus{}val\PYGZus{}}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s}{.png}\PYG{l+s}{\PYGZdq{}} \PYGZbs{}
+                                        \PYG{o}{\PYGZpc{}} \PYG{p}{(}\PYG{n}{event\PYGZus{}id}\PYG{p}{,} \PYG{n}{key}\PYG{p}{,}\PYG{n}{val}\PYG{p}{)}\PYG{p}{)}
+                \PYG{k}{if} \PYG{n}{i} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{:}
+                    \PYG{n}{changes\PYGZus{}list}\PYG{p}{[}\PYG{n}{event\PYGZus{}id}\PYG{p}{]}\PYG{p}{[}\PYG{n}{key}\PYG{p}{]} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{n}{val}
+                    \PYG{n}{his}\PYG{o}{.}\PYG{n}{change\PYGZus{}event\PYGZus{}params}\PYG{p}{(}\PYG{n}{changes\PYGZus{}list}\PYG{p}{)}
+                    \PYG{c}{\PYGZsh{} save and calculate model}
+                    \PYG{n}{his}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{)}
+                    \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{compute\PYGZus{}model}\PYG{p}{(}\PYG{n}{new\PYGZus{}history}\PYG{p}{,} \PYG{n}{new\PYGZus{}output}\PYG{p}{)}
+                    \PYG{c}{\PYGZsh{} open output and calculate distance}
+                    \PYG{n}{NO\PYGZus{}tmp} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{o}{.}\PYG{n}{NoddyOutput}\PYG{p}{(}\PYG{n}{new\PYGZus{}output}\PYG{p}{)}
+                    \PYG{n}{dist\PYGZus{}neg} \PYG{o}{=} \PYG{n}{determine\PYGZus{}strati\PYGZus{}diff}\PYG{p}{(}\PYG{n}{NO1}\PYG{p}{,} \PYG{n}{NO\PYGZus{}tmp}\PYG{p}{)}
+                    \PYG{n}{NO\PYGZus{}tmp}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{y}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{position}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{colorbar}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{,}
+                                        \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Dist: }\PYG{l+s+si}{\PYGZpc{}.2f}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{n}{dist\PYGZus{}neg}\PYG{p}{,}
+                                        \PYG{n}{savefig}\PYG{o}{=}\PYG{n+nb+bp}{True}\PYG{p}{,}
+                                        \PYG{n}{fig\PYGZus{}filename}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{event\PYGZus{}}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s}{\PYGZus{}property\PYGZus{}}\PYG{l+s+si}{\PYGZpc{}s}\PYG{l+s}{\PYGZus{}val\PYGZus{}}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s}{.png}\PYG{l+s}{\PYGZdq{}} \PYGZbs{}
+                                        \PYG{o}{\PYGZpc{}} \PYG{p}{(}\PYG{n}{event\PYGZus{}id}\PYG{p}{,} \PYG{n}{key}\PYG{p}{,}\PYG{n}{val}\PYG{p}{)}\PYG{p}{)}
+            \PYG{c}{\PYGZsh{} calculate central difference}
+            \PYG{n}{central\PYGZus{}diff} \PYG{o}{=} \PYG{p}{(}\PYG{n}{dist\PYGZus{}pos} \PYG{o}{+} \PYG{n}{dist\PYGZus{}neg}\PYG{p}{)} \PYG{o}{/} \PYG{p}{(}\PYG{l+m+mf}{2.}\PYG{p}{)}
+            \PYG{n}{distances}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{central\PYGZus{}diff}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{param\PYGZus{}list}\PYG{p}{,} \PYG{n}{distances}
+\end{Verbatim}
+
+As a next step, we define the parameter ranges for the local sensitivity
+analysis (i.e. the \(\delta p_j\) from the theoretical description
+above):
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{changes\PYGZus{}fault\PYGZus{}1} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Dip}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+m+mf}{1.5}\PYG{p}{,}
+                   \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Dip Direction}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+m+mi}{10}\PYG{p}{,}
+                   \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Slip}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mf}{100.0}\PYG{p}{,}
+                   \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{X}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mf}{500.0}\PYG{p}{\PYGZcb{}}
+\PYG{n}{changes\PYGZus{}fault\PYGZus{}2} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Dip}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+m+mf}{1.5}\PYG{p}{,}
+                   \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Dip Direction}\PYG{l+s}{\PYGZsq{}} \PYG{p}{:} \PYG{l+m+mi}{10}\PYG{p}{,}
+                   \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{Slip}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mf}{100.0}\PYG{p}{,}
+                   \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{X}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mf}{500.0}\PYG{p}{\PYGZcb{}}
+\PYG{n}{param\PYGZus{}changes} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+m+mi}{2} \PYG{p}{:} \PYG{n}{changes\PYGZus{}fault\PYGZus{}1}\PYG{p}{,}
+                 \PYG{l+m+mi}{3} \PYG{p}{:} \PYG{n}{changes\PYGZus{}fault\PYGZus{}2}\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
+
+And now, we perform the local sensitivity analysis:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{param\PYGZus{}list\PYGZus{}1}\PYG{p}{,} \PYG{n}{distances} \PYG{o}{=} \PYG{n}{noddy\PYGZus{}sensitivity}\PYG{p}{(}\PYG{n}{history}\PYG{p}{,} \PYG{n}{param\PYGZus{}changes}\PYG{p}{)}
+\end{Verbatim}
+
+The function passes back a list of the changed parameters and the
+calculated distances according to this change. Let's have a look at the
+results:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{for} \PYG{n}{p}\PYG{p}{,}\PYG{n}{d} \PYG{o+ow}{in} \PYG{n+nb}{zip}\PYG{p}{(}\PYG{n}{param\PYGZus{}list\PYGZus{}1}\PYG{p}{,} \PYG{n}{distances}\PYG{p}{)}\PYG{p}{:}
+    \PYG{k}{print} \PYG{l+s}{\PYGZdq{}}\PYG{l+s+si}{\PYGZpc{}s}\PYG{l+s}{ }\PYG{l+s+se}{\PYGZbs{}t}\PYG{l+s+se}{\PYGZbs{}t}\PYG{l+s}{ }\PYG{l+s+si}{\PYGZpc{}f}\PYG{l+s}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{d}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+event\PYGZus{}2\PYGZus{}property\PYGZus{}X       2.716228
+event\PYGZus{}2\PYGZus{}property\PYGZus{}Dip         1.410039
+event\PYGZus{}2\PYGZus{}property\PYGZus{}Dip Direction       2.133553
+event\PYGZus{}2\PYGZus{}property\PYGZus{}Slip        1.824993
+event\PYGZus{}3\PYGZus{}property\PYGZus{}X       3.323528
+event\PYGZus{}3\PYGZus{}property\PYGZus{}Dip         1.644589
+event\PYGZus{}3\PYGZus{}property\PYGZus{}Dip Direction       2.606573
+event\PYGZus{}3\PYGZus{}property\PYGZus{}Slip        1.930455
+\end{Verbatim}
+
+Results of this local sensitivity analysis suggest that the model is
+most sensitive to the X-position of the fault, when we evaluate
+distances as simple stratigraphic id differences. Here just a bar plot
+for better visualisation (feel free to add proper labels):
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{d} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{p}{[}\PYG{n}{distances}\PYG{p}{]}\PYG{p}{)}
+\PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{)}\PYG{p}{)}
+\PYG{n}{ax} \PYG{o}{=} \PYG{n}{fig}\PYG{o}{.}\PYG{n}{add\PYGZus{}subplot}\PYG{p}{(}\PYG{l+m+mi}{111}\PYG{p}{)}
+\PYG{n}{ax}\PYG{o}{.}\PYG{n}{bar}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{arange}\PYG{p}{(}\PYG{l+m+mf}{0.6}\PYG{p}{,}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{distances}\PYG{p}{)}\PYG{p}{,}\PYG{l+m+mf}{1.}\PYG{p}{)}\PYG{p}{,} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{distances}\PYG{p}{[}\PYG{p}{:}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZlt{}Container object of 8 artists\PYGZgt{}
+\end{Verbatim}
+\begin{figure}[htbp]
+\centering
+\capstart
+
+\includegraphics{8-Sensitivity-Analysis_26_1.png}
+\caption{png}\end{figure}
+
+The previous experiment showed how \code{pynoddy} can be used for simple
+scientific experiments. The sensitivity analysis itself is purely local.
+A better way would be to use (more) global sensitivity analysis, for
+example using the Morris or Sobol methods. These methods are implemented
+in the Python package \code{SALib}, and an experimental implementation of
+this method into \code{pynoddy} exists, as well (see further notebooks on
+repository, note: no guaranteed working, so far!).
 
 
 \chapter{Pynoddy modules, classes and functions}

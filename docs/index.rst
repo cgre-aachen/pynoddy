@@ -17,7 +17,8 @@ Contents:
    notebooks/3-Events
    notebooks/4-Create-model
    notebooks/5-Geophysical-Potential-Fields
-   notebooks/15-Gippsland-Basin-Uncertainty
+   notebooks/7-Gippsland-Basin-Uncertainty
+   notebooks/8-Sensitivity-Analysis
 
    pynoddy
 

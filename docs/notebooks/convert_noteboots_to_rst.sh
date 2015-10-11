@@ -21,7 +21,8 @@ pandoc --from=markdown --to=rst --output=4-Create-model.rst 4-Create-model.md
 jupyter nbconvert 5-Geophysical-Potential-Fields.ipynb --to markdown
 pandoc --from=markdown --to=rst --output=5-Geophysical-Potential-Fields.rst 5-Geophysical-Potential-Fields.md
 
-jupyter nbconvert 15-Gippsland-Basin-Uncertainty.ipynb --to markdown
-pandoc --from=markdown --to=rst --output=15-Gippsland-Basin-Uncertainty.rst 15-Gippsland-Basin-Uncertainty.md
+jupyter nbconvert 7-Gippsland-Basin-Uncertainty.ipynb --to markdown
+pandoc --from=markdown --to=rst --output=7-Gippsland-Basin-Uncertainty.rst 7-Gippsland-Basin-Uncertainty.md 
 
-
+jupyter nbconvert 8-Sensitivity-Analysis.ipynb --to markdown
+pandoc --from=markdown --to=rst --output=8-Sensitivity-Analysis.rst 8-Sensitivity-Analysis.md

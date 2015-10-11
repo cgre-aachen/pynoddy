@@ -35,8 +35,16 @@
 \BOOKMARK [1][-]{section.7.1}{The Gippsland Basin Model}{chapter.7}% 35
 \BOOKMARK [1][-]{section.7.2}{Generate randomised model realisations}{chapter.7}% 36
 \BOOKMARK [1][-]{section.7.3}{Exporting results to VTk for visualisation}{chapter.7}% 37
-\BOOKMARK [0][-]{chapter.8}{Pynoddy modules, classes and functions}{}% 38
-\BOOKMARK [1][-]{section.8.1}{Basic modules \(low-level access\)}{chapter.8}% 39
-\BOOKMARK [1][-]{section.8.2}{Modules for Kinematic experiments}{chapter.8}% 40
-\BOOKMARK [0][-]{section*.135}{Python Module Index}{}% 41
-\BOOKMARK [0][-]{section*.136}{Index}{}% 42
+\BOOKMARK [0][-]{chapter.8}{Sensitivity Analysis}{}% 38
+\BOOKMARK [1][-]{section.8.1}{Theory: local sensitivity analysis}{chapter.8}% 39
+\BOOKMARK [1][-]{section.8.2}{Defining the responses }{chapter.8}% 40
+\BOOKMARK [1][-]{section.8.3}{Setting up the base model}{chapter.8}% 41
+\BOOKMARK [1][-]{section.8.4}{Define parameter uncertainties}{chapter.8}% 42
+\BOOKMARK [1][-]{section.8.5}{Calculate total stratigraphic distance}{chapter.8}% 43
+\BOOKMARK [1][-]{section.8.6}{Function to modify parameters}{chapter.8}% 44
+\BOOKMARK [1][-]{section.8.7}{Full sensitivity analysis}{chapter.8}% 45
+\BOOKMARK [0][-]{chapter.9}{Pynoddy modules, classes and functions}{}% 46
+\BOOKMARK [1][-]{section.9.1}{Basic modules \(low-level access\)}{chapter.9}% 47
+\BOOKMARK [1][-]{section.9.2}{Modules for Kinematic experiments}{chapter.9}% 48
+\BOOKMARK [0][-]{section*.135}{Python Module Index}{}% 49
+\BOOKMARK [0][-]{section*.136}{Index}{}% 50

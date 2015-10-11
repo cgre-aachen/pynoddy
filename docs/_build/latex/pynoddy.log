@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  11 OCT 2015 05:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  11 OCT 2015 06:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -892,7 +892,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 128--128
 
  []
 
-<pynoddy_logo_3.pdf, id=173, 544.83984pt x 172.29814pt>
+<pynoddy_logo_3.pdf, id=206, 544.83984pt x 172.29814pt>
 File: pynoddy_logo_3.pdf Graphic file (type pdf)
 
 <use pynoddy_logo_3.pdf>
@@ -925,16 +925,44 @@ dy_logo_3.pdf>] [2
 ] (./pynoddy.toc
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 2.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.41 ...to continue without it.}}{43}{section.8.2}
+                                                  
+? 
+! Extra }, or forgotten $.
+<argument> ...r <return> to continue without it.}}
+                                                  \hyper@linkend 
+l.41 ...to continue without it.}}{43}{section.8.2}
+                                                  
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+l.41 ...to continue without it.}}{43}{section.8.2}
+                                                  
+? 
+! Missing } inserted.
+<inserted text> 
+                }
+l.41 ...to continue without it.}}{43}{section.8.2}
+                                                  
+? 
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 50.
- [1
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 42.
+[1
 
 ])
 \tf@toc=\write7
 \openout7 = `pynoddy.toc'.
 
-
-[2] [1
+ [2] [1
 
 ] [2
 
@@ -969,7 +997,7 @@ LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
  [5
 
 ]
-<1-Simulation_14_0.png, id=285, 327.2225pt x 170.6375pt>
+<1-Simulation_14_0.png, id=327, 327.2225pt x 170.6375pt>
 File: 1-Simulation_14_0.png Graphic file (type png)
 
 <use 1-Simulation_14_0.png>
@@ -986,7 +1014,7 @@ Package pdftex.def Info: 1-Simulation_14_0.png used on input line 374.
                                                   \fi \fi 
 l.384 \begin{Verbatim}[commandchars=\\\{\}]
                                             <./1-Simulation_14_0.png>]
-<3d_render_fault_model_2.png, id=293, 687.56876pt x 392.46625pt>
+<3d_render_fault_model_2.png, id=335, 687.56876pt x 392.46625pt>
 File: 3d_render_fault_model_2.png Graphic file (type png)
 
 <use 3d_render_fault_model_2.png>
@@ -1007,7 +1035,7 @@ model_2.png>] [8
 
 ]
 Chapter 3.
-[9] [10] <2-Adjust-input_20_0.png, id=313, 897.3525pt x 225.84375pt>
+[9] [10] <2-Adjust-input_20_0.png, id=354, 897.3525pt x 225.84375pt>
 File: 2-Adjust-input_20_0.png Graphic file (type png)
 
 <use 2-Adjust-input_20_0.png>
@@ -1024,7 +1052,7 @@ Package pdftex.def Info: 2-Adjust-input_20_0.png used on input line 598.
                                                   \fi \fi 
 l.631 \end{Verbatim}
                      <./2-Adjust-input_20_0.png>]
-<2-Adjust-input_26_1.png, id=320, 1064.97874pt x 296.10625pt>
+<2-Adjust-input_26_1.png, id=361, 1064.97874pt x 296.10625pt>
 File: 2-Adjust-input_26_1.png Graphic file (type png)
 
 <use 2-Adjust-input_26_1.png>
@@ -1035,7 +1063,7 @@ File: 2-Adjust-input_26_1.png Graphic file (type png)
 Package pdftex.def Info: 2-Adjust-input_26_1.png used on input line 691.
 (pdftex.def)             Requested size: 452.96788pt x 125.94063pt.
  [12]
-<2-Adjust-input_30_1.png, id=325, 395.4775pt x 266.9975pt>
+<2-Adjust-input_30_1.png, id=366, 395.4775pt x 266.9975pt>
 File: 2-Adjust-input_30_1.png Graphic file (type png)
 
 <use 2-Adjust-input_30_1.png>
@@ -1052,7 +1080,7 @@ Package pdftex.def Info: 2-Adjust-input_30_1.png used on input line 750.
                                                   \fi \fi 
 l.776 \end{Verbatim}
                      <./2-Adjust-input_26_1.png>]
-<2-Adjust-input_36_1.png, id=337, 395.4775pt x 266.9975pt>
+<2-Adjust-input_36_1.png, id=377, 395.4775pt x 266.9975pt>
 File: 2-Adjust-input_36_1.png Graphic file (type png)
 
 <use 2-Adjust-input_36_1.png>
@@ -1076,7 +1104,7 @@ the same identifier (name{figure.3.4}) has been already used, duplicate ignored
                                                   \fi \fi 
 l.879 \end{Verbatim}
                      <./2-Adjust-input_36_1.png>]
-<2-Adjust-input_40_1.png, id=351, 967.615pt x 292.09125pt>
+<2-Adjust-input_40_1.png, id=391, 967.615pt x 292.09125pt>
 File: 2-Adjust-input_40_1.png Graphic file (type png)
 
 <use 2-Adjust-input_40_1.png>
@@ -1099,7 +1127,7 @@ LaTeX Font Info:    Font shape `TS1/pcr/m/it' in size <9> not available
 (Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 957.
 [17
 
-] [18] <3-Events_13_0.png, id=366, 900.36375pt x 225.84375pt>
+] [18] <3-Events_13_0.png, id=406, 900.36375pt x 225.84375pt>
 File: 3-Events_13_0.png Graphic file (type png)
 
 <use 3-Events_13_0.png>
@@ -1116,7 +1144,7 @@ Package pdftex.def Info: 3-Events_13_0.png used on input line 1056.
                                                   \fi \fi 
 l.1110 \begin{Verbatim}[commandchars=\\\{\}]
                                              <./3-Events_13_0.png>]
-<3-Events_22_0.png, id=375, 900.36375pt x 225.84375pt>
+<3-Events_22_0.png, id=415, 900.36375pt x 225.84375pt>
 File: 3-Events_22_0.png Graphic file (type png)
  <use 3-Events_22_0.png>
 Package pdftex.def Info: 3-Events_22_0.png used on input line 1147.
@@ -1126,7 +1154,7 @@ File: 3-Events_22_0.png Graphic file (type png)
 <use 3-Events_22_0.png>
 Package pdftex.def Info: 3-Events_22_0.png used on input line 1147.
 (pdftex.def)             Requested size: 452.96788pt x 113.62114pt.
- <3-Events_26_1.png, id=376, 323.2075pt x 145.54375pt>
+ <3-Events_26_1.png, id=416, 323.2075pt x 145.54375pt>
 File: 3-Events_26_1.png Graphic file (type png)
 
 <use 3-Events_26_1.png>
@@ -1142,7 +1170,7 @@ Package pdftex.def Info: 3-Events_26_1.png used on input line 1185.
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.1195 
-        <./3-Events_22_0.png>] <diff_3d_3.png, id=383, 957.5775pt x 578.16pt>
+        <./3-Events_22_0.png>] <diff_3d_3.png, id=423, 957.5775pt x 578.16pt>
 File: diff_3d_3.png Graphic file (type png)
 
 <use diff_3d_3.png>
@@ -1170,7 +1198,7 @@ _3.png>] [22
 
 ]
 Chapter 5.
-[23] <4-Create-model_9_0.png, id=400, 627.34375pt x 341.275pt>
+[23] <4-Create-model_9_0.png, id=440, 627.34375pt x 341.275pt>
 File: 4-Create-model_9_0.png Graphic file (type png)
 
 <use 4-Create-model_9_0.png>
@@ -1187,7 +1215,7 @@ Package pdftex.def Info: 4-Create-model_9_0.png used on input line 1300.
                                                   \fi \fi 
 l.1329 \end{Verbatim}
                       <./4-Create-model_9_0.png>]
-<4-Create-model_15_0.png, id=407, 627.34375pt x 341.275pt>
+<4-Create-model_15_0.png, id=447, 627.34375pt x 341.275pt>
 File: 4-Create-model_15_0.png Graphic file (type png)
 
 <use 4-Create-model_15_0.png>
@@ -1204,7 +1232,7 @@ Package pdftex.def Info: 4-Create-model_15_0.png used on input line 1365.
                                                   \fi \fi 
 l.1381 \end{Verbatim}
                       <./4-Create-model_15_0.png>]
-<4-Create-model_19_0.png, id=414, 627.34375pt x 365.365pt>
+<4-Create-model_19_0.png, id=454, 627.34375pt x 365.365pt>
 File: 4-Create-model_19_0.png Graphic file (type png)
 
 <use 4-Create-model_19_0.png>
@@ -1221,7 +1249,7 @@ Package pdftex.def Info: 4-Create-model_19_0.png used on input line 1402.
                                                   \fi \fi 
 l.1453 \end{Verbatim}
                       <./4-Create-model_19_0.png>]
-<4-Create-model_26_0.png, id=421, 627.34375pt x 341.275pt>
+<4-Create-model_26_0.png, id=462, 627.34375pt x 341.275pt>
 File: 4-Create-model_26_0.png Graphic file (type png)
 
 <use 4-Create-model_26_0.png>
@@ -1248,7 +1276,7 @@ Overfull \hbox (21.03212pt too wide) in paragraph at lines 1534--1535
 /nfold_thrust.his 
  []
 
-[29] <5-Geophysical-Potential-Fields_11_0.png, id=437, 617.30624pt x 192.72pt>
+[29] <5-Geophysical-Potential-Fields_11_0.png, id=478, 617.30624pt x 192.72pt>
 File: 5-Geophysical-Potential-Fields_11_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_11_0.png>
@@ -1262,7 +1290,7 @@ Package pdftex.def Info: 5-Geophysical-Potential-Fields_11_0.png used on input
 line 1588.
 (pdftex.def)             Requested size: 452.96788pt x 141.41959pt.
 
-<5-Geophysical-Potential-Fields_12_0.png, id=438, 617.30624pt x 178.6675pt>
+<5-Geophysical-Potential-Fields_12_0.png, id=479, 617.30624pt x 178.6675pt>
 File: 5-Geophysical-Potential-Fields_12_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_12_0.png>
@@ -1290,7 +1318,7 @@ nored
 l.1614 \begin{Verbatim}[commandchars=\\\{\}]
                                              <./5-Geophysical-Potential-Fields_
 11_0.png> <./5-Geophysical-Potential-Fields_12_0.png>]
-<5-Geophysical-Potential-Fields_18_0.png, id=447, 341.275pt x 285.065pt>
+<5-Geophysical-Potential-Fields_18_0.png, id=488, 341.275pt x 285.065pt>
 File: 5-Geophysical-Potential-Fields_18_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_18_0.png>
@@ -1311,7 +1339,7 @@ line 1645.
 l.1659 \begin{Verbatim}[commandchars=\\\{\}]
                                              <./5-Geophysical-Potential-Fields_
 18_0.png>] [32]
-<5-Geophysical-Potential-Fields_30_0.png, id=459, 341.275pt x 285.065pt>
+<5-Geophysical-Potential-Fields_30_0.png, id=499, 341.275pt x 285.065pt>
 File: 5-Geophysical-Potential-Fields_30_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_30_0.png>
@@ -1325,7 +1353,7 @@ Package pdftex.def Info: 5-Geophysical-Potential-Fields_30_0.png used on input
 line 1772.
 (pdftex.def)             Requested size: 341.27415pt x 285.0643pt.
 
-<5-Geophysical-Potential-Fields_31_0.png, id=460, 326.21875pt x 285.065pt>
+<5-Geophysical-Potential-Fields_31_0.png, id=500, 326.21875pt x 285.065pt>
 File: 5-Geophysical-Potential-Fields_31_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_31_0.png>
@@ -1339,7 +1367,7 @@ Package pdftex.def Info: 5-Geophysical-Potential-Fields_31_0.png used on input
 line 1789.
 (pdftex.def)             Requested size: 326.21794pt x 285.0643pt.
 
-<5-Geophysical-Potential-Fields_32_0.png, id=461, 617.30624pt x 156.585pt>
+<5-Geophysical-Potential-Fields_32_0.png, id=501, 617.30624pt x 156.585pt>
 File: 5-Geophysical-Potential-Fields_32_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_32_0.png>
@@ -1353,7 +1381,7 @@ Package pdftex.def Info: 5-Geophysical-Potential-Fields_32_0.png used on input
 line 1801.
 (pdftex.def)             Requested size: 452.96788pt x 114.90341pt.
 
-<5-Geophysical-Potential-Fields_32_1.png, id=462, 617.30624pt x 156.585pt>
+<5-Geophysical-Potential-Fields_32_1.png, id=502, 617.30624pt x 156.585pt>
 File: 5-Geophysical-Potential-Fields_32_1.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_32_1.png>
@@ -1396,7 +1424,7 @@ l.1810 \begin{Verbatim}[commandchars=\\\{\}]
                                              <./5-Geophysical-Potential-Fields_
 31_0.png> <./5-Geophysical-Potential-Fields_32_0.png> <./5-Geophysical-Potentia
 l-Fields_32_1.png>]
-<5-Geophysical-Potential-Fields_36_0.png, id=480, 617.30624pt x 192.72pt>
+<5-Geophysical-Potential-Fields_36_0.png, id=520, 617.30624pt x 192.72pt>
 File: 5-Geophysical-Potential-Fields_36_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_36_0.png>
@@ -1410,7 +1438,7 @@ Package pdftex.def Info: 5-Geophysical-Potential-Fields_36_0.png used on input
 line 1863.
 (pdftex.def)             Requested size: 452.96788pt x 141.41959pt.
 
-<5-Geophysical-Potential-Fields_37_0.png, id=481, 617.30624pt x 178.6675pt>
+<5-Geophysical-Potential-Fields_37_0.png, id=521, 617.30624pt x 178.6675pt>
 File: 5-Geophysical-Potential-Fields_37_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_37_0.png>
@@ -1430,7 +1458,7 @@ line 1877.
                                                   \fi \fi 
 l.1885 \end{Verbatim}
                       <./5-Geophysical-Potential-Fields_36_0.png>]
-<5-Geophysical-Potential-Fields_41_0.png, id=488, 1167.36125pt x 449.68pt>
+<5-Geophysical-Potential-Fields_41_0.png, id=528, 1167.36125pt x 449.68pt>
 File: 5-Geophysical-Potential-Fields_41_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_41_0.png>
@@ -1462,32 +1490,32 @@ ields_41_0.png>] [38
 ]
 Chapter 7.
 [39]
-<15-Gippsland-Basin-Uncertainty_11_0.png, id=510, 625.33624pt x 201.75375pt>
-File: 15-Gippsland-Basin-Uncertainty_11_0.png Graphic file (type png)
+<7-Gippsland-Basin-Uncertainty_11_0.png, id=550, 625.33624pt x 201.75375pt>
+File: 7-Gippsland-Basin-Uncertainty_11_0.png Graphic file (type png)
 
-<use 15-Gippsland-Basin-Uncertainty_11_0.png>
-Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_0.png used on input 
-line 2031.
+<use 7-Gippsland-Basin-Uncertainty_11_0.png>
+Package pdftex.def Info: 7-Gippsland-Basin-Uncertainty_11_0.png used on input l
+ine 2031.
 (pdftex.def)             Requested size: 625.33472pt x 201.75325pt.
-File: 15-Gippsland-Basin-Uncertainty_11_0.png Graphic file (type png)
+File: 7-Gippsland-Basin-Uncertainty_11_0.png Graphic file (type png)
 
-<use 15-Gippsland-Basin-Uncertainty_11_0.png>
-Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_0.png used on input 
-line 2031.
+<use 7-Gippsland-Basin-Uncertainty_11_0.png>
+Package pdftex.def Info: 7-Gippsland-Basin-Uncertainty_11_0.png used on input l
+ine 2031.
 (pdftex.def)             Requested size: 452.96788pt x 146.14612pt.
 
-<15-Gippsland-Basin-Uncertainty_11_1.png, id=511, 625.33624pt x 201.75375pt>
-File: 15-Gippsland-Basin-Uncertainty_11_1.png Graphic file (type png)
+<7-Gippsland-Basin-Uncertainty_11_1.png, id=551, 625.33624pt x 201.75375pt>
+File: 7-Gippsland-Basin-Uncertainty_11_1.png Graphic file (type png)
 
-<use 15-Gippsland-Basin-Uncertainty_11_1.png>
-Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_1.png used on input 
-line 2037.
+<use 7-Gippsland-Basin-Uncertainty_11_1.png>
+Package pdftex.def Info: 7-Gippsland-Basin-Uncertainty_11_1.png used on input l
+ine 2037.
 (pdftex.def)             Requested size: 625.33472pt x 201.75325pt.
-File: 15-Gippsland-Basin-Uncertainty_11_1.png Graphic file (type png)
+File: 7-Gippsland-Basin-Uncertainty_11_1.png Graphic file (type png)
 
-<use 15-Gippsland-Basin-Uncertainty_11_1.png>
-Package pdftex.def Info: 15-Gippsland-Basin-Uncertainty_11_1.png used on input 
-line 2037.
+<use 7-Gippsland-Basin-Uncertainty_11_1.png>
+Package pdftex.def Info: 7-Gippsland-Basin-Uncertainty_11_1.png used on input l
+ine 2037.
 (pdftex.def)             Requested size: 452.96788pt x 146.14612pt.
  [40pdfTeX warning (ext4): destination with the same identifier (name{figure.7.
 1}) has been already used, duplicate ignored
@@ -1502,9 +1530,9 @@ nored
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.2053 \begin{Verbatim}[commandchars=\\\{\}]
-                                             <./15-Gippsland-Basin-Uncertainty_
-11_0.png> <./15-Gippsland-Basin-Uncertainty_11_1.png>]
-<3D-render.png, id=521, 2007.5pt x 1003.75pt>
+                                             <./7-Gippsland-Basin-Uncertainty_1
+1_0.png> <./7-Gippsland-Basin-Uncertainty_11_1.png>]
+<3D-render.png, id=561, 2007.5pt x 1003.75pt>
 File: 3D-render.png Graphic file (type png)
  <use 3D-render.png>
 Package pdftex.def Info: 3D-render.png used on input line 2068.
@@ -1520,140 +1548,230 @@ Package pdftex.def Info: 3D-render.png used on input line 2068.
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.2072 \chapter
-               {Pynoddy modules, classes and functions} <./3D-render.png (PNG c
-opy)>] [42
+               {Sensitivity Analysis} <./3D-render.png (PNG copy)>] [42
 
 ]
 Chapter 8.
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 2082.
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 2088.
-LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 2112.
 
-Underfull \hbox (badness 10000) in paragraph at lines 2154--2158
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 2116.
+
+[43] [44] <8-Sensitivity-Analysis_7_0.png, id=584, 617.30624pt x 333.245pt>
+File: 8-Sensitivity-Analysis_7_0.png Graphic file (type png)
+
+<use 8-Sensitivity-Analysis_7_0.png>
+Package pdftex.def Info: 8-Sensitivity-Analysis_7_0.png used on input line 2229
+.
+(pdftex.def)             Requested size: 617.30473pt x 333.24417pt.
+File: 8-Sensitivity-Analysis_7_0.png Graphic file (type png)
+ <use 8-Sensitivity-Analysis_7_0.png>
+Package pdftex.def Info: 8-Sensitivity-Analysis_7_0.png used on input line 2229
+.
+(pdftex.def)             Requested size: 452.96788pt x 244.53804pt.
+
+[45pdfTeX warning (ext4): destination with the same identifier (name{figure.8.1
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2270 \end{Verbatim}
+                      <./8-Sensitivity-Analysis_7_0.png>]
+<8-Sensitivity-Analysis_10_0.png, id=592, 897.3525pt x 262.9825pt>
+File: 8-Sensitivity-Analysis_10_0.png Graphic file (type png)
+
+<use 8-Sensitivity-Analysis_10_0.png>
+Package pdftex.def Info: 8-Sensitivity-Analysis_10_0.png used on input line 227
+5.
+(pdftex.def)             Requested size: 897.3503pt x 262.98184pt.
+File: 8-Sensitivity-Analysis_10_0.png Graphic file (type png)
+ <use 8-Sensitivity-Analysis_10_0.png>
+Package pdftex.def Info: 8-Sensitivity-Analysis_10_0.png used on input line 227
+5.
+(pdftex.def)             Requested size: 452.96788pt x 132.74692pt.
+
+[46pdfTeX warning (ext4): destination with the same identifier (name{figure.8.2
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2321 \end{Verbatim}
+                      <./8-Sensitivity-Analysis_10_0.png>]
+<8-Sensitivity-Analysis_16_0.png, id=599, 897.3525pt x 262.9825pt>
+File: 8-Sensitivity-Analysis_16_0.png Graphic file (type png)
+
+<use 8-Sensitivity-Analysis_16_0.png>
+Package pdftex.def Info: 8-Sensitivity-Analysis_16_0.png used on input line 234
+5.
+(pdftex.def)             Requested size: 897.3503pt x 262.98184pt.
+File: 8-Sensitivity-Analysis_16_0.png Graphic file (type png)
+ <use 8-Sensitivity-Analysis_16_0.png>
+Package pdftex.def Info: 8-Sensitivity-Analysis_16_0.png used on input line 234
+5.
+(pdftex.def)             Requested size: 452.96788pt x 132.74692pt.
+
+[47pdfTeX warning (ext4): destination with the same identifier (name{figure.8.3
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2406 \end{Verbatim}
+                      <./8-Sensitivity-Analysis_16_0.png>]
+Overfull \vbox (1.24298pt too high) detected at line 2449
+ []
+
+[48] <8-Sensitivity-Analysis_26_1.png, id=611, 326.21875pt x 208.78pt>
+File: 8-Sensitivity-Analysis_26_1.png Graphic file (type png)
+
+<use 8-Sensitivity-Analysis_26_1.png>
+Package pdftex.def Info: 8-Sensitivity-Analysis_26_1.png used on input line 247
+0.
+(pdftex.def)             Requested size: 326.21794pt x 208.77946pt.
+File: 8-Sensitivity-Analysis_26_1.png Graphic file (type png)
+ <use 8-Sensitivity-Analysis_26_1.png>
+Package pdftex.def Info: 8-Sensitivity-Analysis_26_1.png used on input line 247
+0.
+(pdftex.def)             Requested size: 326.21794pt x 208.77946pt.
+
+[49pdfTeX warning (ext4): destination with the same identifier (name{figure.8.4
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2482 \chapter
+               {Pynoddy modules, classes and functions} <./8-Sensitivity-Analys
+is_26_1.png>] [50
+
+]
+Chapter 9.
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 2492.
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 2498.
+LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 2522.
+
+Underfull \hbox (badness 10000) in paragraph at lines 2564--2568
 []
  []
 
-[43] [44] [45] [46]
-Overfull \hbox (54.09668pt too wide) in paragraph at lines 2724--2725
+[51] [52] [53] [54]
+Overfull \hbox (54.09668pt too wide) in paragraph at lines 3134--3135
 []\T1/ptm/m/n/10 ..Note:: Re-quires pyevtk, avail-able for free on: [][]https:/
 /github.com/firedrakeproject/firedrake/tree/master/python/evtk[][] 
  []
 
-[47]
-Underfull \hbox (badness 10000) in paragraph at lines 2815--2817
+[55]
+Underfull \hbox (badness 10000) in paragraph at lines 3225--3227
 []\T1/ptm/m/n/10 the top
  []
 
-[48]
-Overfull \hbox (56.48782pt too wide) in paragraph at lines 3001--3003
+[56]
+Overfull \hbox (56.48782pt too wide) in paragraph at lines 3411--3413
 []
  []
 
-[49]
-Underfull \hbox (badness 10000) in paragraph at lines 3113--3115
+[57]
+Underfull \hbox (badness 10000) in paragraph at lines 3523--3525
 []
  []
 
-[50] [51]
-Overfull \hbox (112.51709pt too wide) in paragraph at lines 3304--3306
+[58] [59]
+Overfull \hbox (112.51709pt too wide) in paragraph at lines 3714--3716
 []
  []
 
-[52]
-Overfull \hbox (121.73694pt too wide) in paragraph at lines 3453--3455
+[60]
+Overfull \hbox (121.73694pt too wide) in paragraph at lines 3863--3865
 []
  []
 
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 3482.
-[53] [54]
-Overfull \hbox (54.09668pt too wide) in paragraph at lines 3805--3806
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 3892.
+[61] [62]
+Overfull \hbox (54.09668pt too wide) in paragraph at lines 4215--4216
 []\T1/ptm/m/n/10 ..Note:: Re-quires pyevtk, avail-able for free on: [][]https:/
 /github.com/firedrakeproject/firedrake/tree/master/python/evtk[][] 
  []
 
-[55] [56] [57] [58]
-Overfull \hbox (59.71811pt too wide) in paragraph at lines 4279--4281
+[63] [64] [65] [66]
+Overfull \hbox (59.71811pt too wide) in paragraph at lines 4689--4691
 []
  []
 
 
-Overfull \hbox (67.08788pt too wide) in paragraph at lines 4289--4291
+Overfull \hbox (67.08788pt too wide) in paragraph at lines 4699--4701
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4289--4291
+Underfull \hbox (badness 10000) in paragraph at lines 4699--4701
 \T1/ptm/m/n/10 `BLOCK_GEOPHYS', `TOPOL-OGY', `BLOCK_SURFACES', `ALL'. De-fault 
 is
  []
 
 
-Overfull \hbox (82.32701pt too wide) in paragraph at lines 4295--4297
+Overfull \hbox (82.32701pt too wide) in paragraph at lines 4705--4707
 []
  []
 
 
-Overfull \hbox (38.64828pt too wide) in paragraph at lines 4324--4327
+Overfull \hbox (38.64828pt too wide) in paragraph at lines 4734--4737
 []
  []
 
 
-Overfull \hbox (67.08788pt too wide) in paragraph at lines 4335--4337
+Overfull \hbox (67.08788pt too wide) in paragraph at lines 4745--4747
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4335--4337
+Underfull \hbox (badness 10000) in paragraph at lines 4745--4747
 \T1/ptm/m/n/10 `BLOCK_GEOPHYS', `TOPOL-OGY', `BLOCK_SURFACES', `ALL'. De-fault 
 is
  []
 
 
-Overfull \hbox (14.42744pt too wide) in paragraph at lines 4341--4343
+Overfull \hbox (14.42744pt too wide) in paragraph at lines 4751--4753
 []
  []
 
 
-Overfull \hbox (54.08815pt too wide) in paragraph at lines 4361--4363
+Overfull \hbox (54.08815pt too wide) in paragraph at lines 4771--4773
 []
  []
 
-[59]
-Overfull \hbox (54.08815pt too wide) in paragraph at lines 4392--4394
-[]
- []
-
-
-Overfull \hbox (134.49673pt too wide) in paragraph at lines 4401--4403
+[67]
+Overfull \hbox (54.08815pt too wide) in paragraph at lines 4802--4804
 []
  []
 
 
-Overfull \hbox (6.67114pt too wide) in paragraph at lines 4430--4430
+Overfull \hbox (134.49673pt too wide) in paragraph at lines 4811--4813
+[]
+ []
+
+
+Overfull \hbox (6.67114pt too wide) in paragraph at lines 4840--4840
 []\T1/ptm/m/it/10 history=None\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4479--4481
+Underfull \hbox (badness 10000) in paragraph at lines 4889--4891
 []\T1/ptm/m/n/10 Note: pa-ram-e-ter statis-tics have to be de-fined in self.par
 am_stats dic-tio-nary (use
  []
 
-[60] [61] [62
+[68] [69] [70
 
 ]
-Overfull \hbox (9.01607pt too wide) in paragraph at lines 4625--4626
+Overfull \hbox (9.01607pt too wide) in paragraph at lines 5035--5036
 []\T1/pcr/m/n/10 pynoddy.experiment.SensitivityAnalysis\T1/ptm/m/n/10 ,
  []
 
-[63
+[71
 
 
-] (./pynoddy.ind [64
+] (./pynoddy.ind [72
 
 
 ]
@@ -1852,7 +1970,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 61--62
 \T1/ptm/m/n/10 oddy.output.NoddyTopology method),
  []
 
-[65
+[73
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 62--63
@@ -2074,7 +2192,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 142--143
 []\T1/ptm/m/n/10 plot_section() (pyn-oddy.experiment.Experiment
  []
 
-[66]
+[74]
 Underfull \hbox (badness 10000) in paragraph at lines 144--146
 []\T1/ptm/m/n/10 plot_sensitivity_matrix() (pyn-
  []
@@ -2224,44 +2342,47 @@ Underfull \hbox (badness 10000) in paragraph at lines 201--202
 \T1/ptm/m/n/10 oddy.output.NoddyTopology method),
  []
 
-[67])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 4632.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 4632.
+[75])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 5042.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 5042.
  (./pynoddy.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 4632.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 4632.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 5042.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 5042.
 
 Package rerunfilecheck Info: File `pynoddy.out' has not changed.
-(rerunfilecheck)             Checksum: 9B895DB90CD49C1B46CCF5B1B545B1A0;3080.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 4632.
+(rerunfilecheck)             Checksum: 4C178AD088947478E733328523B82993;3669.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 5042.
  ) 
 Here is how much of TeX's memory you used:
- 9865 strings out of 493117
- 146484 string characters out of 6135433
- 244164 words of memory out of 5000000
- 12736 multiletter control sequences out of 15000+600000
- 65691 words of font info for 76 fonts, out of 8000000 for 9000
+ 9932 strings out of 493117
+ 148136 string characters out of 6135433
+ 246658 words of memory out of 5000000
+ 12773 multiletter control sequences out of 15000+600000
+ 66828 words of font info for 80 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 37i,15n,49p,1209b,577s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,16n,51p,1209b,575s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
-exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
-xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texl
-ive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texliv
-e/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2
-014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/201
-4/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2014/texmf-
-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2014/texmf-dist/fon
-ts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type
-1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/h
-elvetic/uhvbo8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/helveti
-c/uhvr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmb8a.p
-fb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/
-local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texl
-ive/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on pynoddy.pdf (71 pages, 1047256 bytes).
+exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
+xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
+live/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texl
+ive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texliv
+e/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/
+2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/201
+4/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2014
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2014/t
+exmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2014/texmf-dis
+t/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/
+type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/u
+rw/helvetic/uhvb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/helv
+etic/uhvbo8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/helvetic/u
+hvr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmb8a.pfb>
+</usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/loc
+al/texlive/2014/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive
+/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on pynoddy.pdf (79 pages, 1127272 bytes).
 PDF statistics:
- 1056 PDF objects out of 1200 (max. 8388607)
- 898 compressed objects within 9 object streams
- 289 named destinations out of 1000 (max. 500000)
- 502 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1161 PDF objects out of 1200 (max. 8388607)
+ 983 compressed objects within 10 object streams
+ 311 named destinations out of 1000 (max. 500000)
+ 586 words of extra memory for PDF output out of 10000 (max. 10000000)
 
