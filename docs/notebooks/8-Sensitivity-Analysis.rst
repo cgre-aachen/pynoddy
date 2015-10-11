@@ -210,7 +210,6 @@ For a first test: use simple two-fault model from paper
     # print rcParams
     rcParams['font.size'] = 15
     # determine path of repository to set paths corretly below
-    os.chdir(r'/Users/flow/git/pynoddy/docs/notebooks/')
     repo_path = os.path.realpath('../..')
     import pynoddy.history
     import pynoddy.events

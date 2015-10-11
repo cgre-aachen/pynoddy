@@ -24,11 +24,11 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
     '''
 
     def __init__(self, history=None, **kwds):
-        '''Combination of input and output methods for complete kinematic experiments with NOddy
-        
+        """Combination of input and output methods for complete kinematic experiments with NOddy
+
         **Optional Keywords**:
             - *his_file* = string : filename of Noddy history input file
-        '''
+        """
         super(Experiment, self).__init__(history, **kwds)
 
     #        super(Experiment, self).test()

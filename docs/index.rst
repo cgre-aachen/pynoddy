@@ -11,6 +11,7 @@ Contents:
 .. toctree::
 
    readme
+   topology
 
    notebooks/1-Simulation
    notebooks/2-Adjust-input

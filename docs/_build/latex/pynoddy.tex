@@ -134,66 +134,144 @@ Contents:
 
 \chapter{pynoddy}
 \label{readme:welcome-to-pynoddy-s-documentation}\label{readme::doc}\label{readme:pynoddy}
-pynoddy is a python package to write, change, and analyse kinematic
+\code{pynoddy} is a python package to write, change, and analyse kinematic
 geological modelling simulations performed with Noddy (see below for
-more infomration on Noddy).
+more information on Noddy).
 
 
 \section{How does it work?}
 \label{readme:how-does-it-work}
-At this stage, pynoddy provides wrapper modules for existing Noddy
-history (.his) and result files (.g00, etc.). It is
+\code{pynoddy} provides methods to define, load, modify, and safe kinematic
+models for simulation with \code{Noddy}. In addition, the package contains
+an extensive range for postprocessing of results. One main aspect of
+\code{pynoddy} is that it enables the encapsulation of full scientific
+kinematic modelling experiments for full reproducibility of results.
+
+A successful installation of \code{pynoddy} requires two steps:
+\begin{enumerate}
+\item {} 
+An installation of the python modules in the package \code{pynoddy}
+
+\item {} 
+The existance of an executable \code{Noddy(.exe)} program
+
+\end{enumerate}
 
 
-\section{Installation}
-\label{readme:installation}
-To install pynoddy simply run:
+\section{Installation of the \texttt{pynoddy} package}
+\label{readme:installation-of-the-pynoddy-package}
+Installation of the first part is straight-forward:
+
+For the best (and most complete) installation, we suggest to clone the
+\code{pynoddy} repository on:
+
+\href{https://github.com/flohorovicic/pynoddy}{https://github.com/flohorovicic/pynoddy}
+
+To install \code{pynoddy} simply run:
 
 \begin{Verbatim}[commandchars=\\\{\}]
 python setup.py install
 \end{Verbatim}
 
-Note:
+sufficient privileges are required (i.e. run in \code{sudo} with MacOSX/
+Linux and set permissions on Windows)
+
+The pynoddy packages themselves can also be installed directly from the
+Python Package Index (pypi.org) via pip:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+pip install pynoddy
+\end{Verbatim}
+
+A Windows installer is also available on the Pypi page:
+
+\href{https://pypi.python.org/pypi/pynoddy/}{https://pypi.python.org/pypi/pynoddy/}
+
+
+\section{Installation of \texttt{Noddy}}
+\label{readme:installation-of-noddy}
+\code{Noddy} is a command line program, written in C, that performs the
+kinematic simulation itself. The program compilation is platform
+dependent, and therefore several ways for installation are possible (see
+below information for specific platforms).
+
+The C-code for Noddy itself is also part of the \code{pynoddy} repository.
+
+\textbf{Windows}: An executeable version of the command line program is available for
+download .
+
+\textbf{MacOSX}: Compile from source (using gcc):
 \begin{itemize}
 \item {} 
-sufficient privileges are required (i.e. run in sudo with MacOSX/
-Linux and set permissions on Windows)
+go to directory pynoddy/noddy (contains source files)
+
+\item {} 
+run ./adjust\_for\_MacOSX.sh
+
+\item {} 
+run ./compile.sh
 
 \end{itemize}
 
-Important: the Noddy executable has to be in a directory defined in the
-PATH variable!!
+\textbf{Linux}: Compile from source (using gcc):
+\begin{itemize}
+\item {} 
+go to directory pynoddy/noddy (contains source files)
 
-Important: the topology executable has to be in a directory defined in
-the PATH variable!!
+\item {} 
+run ./compile.sh
+
+\end{itemize}
 
 
 \section{Documentation}
 \label{readme:documentation}
+Documentation is available within the \code{pynoddy} repository
+(pynoddy/docs).
 
-\section{Tutorial}
-\label{readme:tutorial}
-A tutorial starting with simple examples for changing the geological
-history and visualisation of output, as well as the implementation of
-stochastic simulations and uncertainty visualisation are available as
-interactive ipython notebooks.
+In addition, an up-to-date online html version of the documentation is
+also hosted on readthedocs:
+
+\href{http://pynoddy.readthedocs.org}{http://pynoddy.readthedocs.org}
+
+
+\section{How to get started: tutorial notebooks}
+\label{readme:how-to-get-started-tutorial-notebooks}
+The best way to get started with \code{pynoddy} is to have a look at the
+IPython notebooks in pynoddy/docs/notebooks. The numbered notebooks are
+those that are part of the documentation, and a good point to get
+started.
+
+The notebooks require an installed Jupyter notebook. More information
+here:
+
+\href{https://jupyter.org}{https://jupyter.org}
+
+The notebook can be installed via \code{pip} or \code{conda}.
 
 
 \section{Dependencies}
 \label{readme:dependencies}
-pynoddy depends on several standard Python packages that should be
+\code{pynoddy} depends on several standard Python packages that should be
 shipped with any standard distribution (and are easy to install,
 otherwise):
+\begin{itemize}
+\item {} 
+numpy
 
-. numpy . matplotlib . pickle
+\item {} 
+matplotlib
 
-The uncertainty anaysis, quantification, and visualisation methods based
-on information theory are implemented in the python package pygeoinfo.
-This package is available on github and part of the python package
-index. It is automatically installed with the setup script provided with
-this package. For more information, please see:
+\item {} 
+pickle
 
-(todo: include package info!)
+\end{itemize}
+
+The uncertainty analysis, quantification, and visualisation methods
+based on information theory are implemented in the python package
+pygeoinfo. This package is available on github and part of the python
+package index. It is automatically installed with the setup script
+provided with this package.
 
 In addition, to export model results for full 3-D visualisation with
 VTK, the pyevtk package is used, available on bitbucket:
@@ -204,11 +282,31 @@ The package is automatically downloaded and installed when running
 python setup.py install.
 
 
+\section{3-D Visualisation}
+\label{readme:d-visualisation}
+At this stage, we do not supply methods for 3-D visualisation in python
+(although this may change in the future). However, we provide methods to
+export results into a VTK format. Exported files can then be viewed with
+the highly functional VTK viewers, and several free options are
+available, for example:
+\begin{itemize}
+\item {} 
+Paraview: \href{http://www.paraview.org}{http://www.paraview.org}
+
+\item {} 
+Visit: \href{https://wci.llnl.gov/simulation/computer-codes/visit/}{https://wci.llnl.gov/simulation/computer-codes/visit/}
+
+\item {} 
+Mayavi: \href{http://docs.enthought.com/mayavi/mayavi/}{http://docs.enthought.com/mayavi/mayavi/}
+
+\end{itemize}
+
+
 \section{License}
 \label{readme:license}
-pynoddy is free software and published under a MIT license (see license
-file included in the repository). Please attribute the work when you use
-it, feel free to change and adapt it otherwise!
+\code{pynoddy} is free software and published under a MIT license (see
+license file included in the repository). Please attribute the work when
+you use it, feel free to change and adapt it otherwise!
 
 
 \section{What is Noddy?}
@@ -236,6 +334,8 @@ Finally, add a sequence of late faults affecting the entire system.
 
 The result could look something like this:
 
+\includegraphics{noddy_block_example.png}
+
 The software runs on Windows only, but the source files (written in C)
 are available for download to generate a command line version of the
 modelling step alone:
@@ -254,6 +354,113 @@ geophysical modelling, In: Declan G. De Paor, Editor(s), Computer
 Methods in the Geosciences, Pergamon, 1996, Volume 15, Pages 303-324,
 ISSN 1874-561X, ISBN 9780080424309,
 \href{http://dx.doi.org/10.1016/S1874-561X(96)80027-7}{http://dx.doi.org/10.1016/S1874-561X(96)80027-7}.
+
+
+\chapter{pynoddy.topology module}
+\label{topology:pynoddy-topology-module}\label{topology::doc}
+This module contains the c code that constructs topology networks from the voxset of
+topology codes generated when noddy is called in TOPOLOGY mode (ie. using
+\code{pynoddy.compute\_model('my\_history.his','output\_name',sim\_type='TOPOLOGY')}.
+
+Note that this code \emph{must be compiled} before \code{pynoddy.compute\_topology}
+will function correctly. \emph{topology.c} can be compiled on a machine with gcc installed
+using the following:
+
+Windows:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+gcc \PYGZhy{}Wl,\PYGZhy{}\PYGZhy{}stack,1073741824 \PYGZhy{}O3 \PYGZhy{}w \PYGZhy{}g \PYGZhy{}o topology.exe topology.c
+\end{Verbatim}
+
+Unix:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+gcc gcc \PYGZhy{}O3 \PYGZhy{}o topology topology.c
+\end{Verbatim}
+
+These compilation commands are bundled with the c code in \emph{compile.bat} (for windows) and
+\emph{compile.sh} (for unix based systems).
+
+\textbf{Usage}
+
+The compiled topology code can be run directly from the command line to generate topology
+network files (.g23), or called through \code{pynoddy.compute\_topology}.
+
+If the binary is called directly from the command line it takes the following arguments:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+topology [rootname] [discrete volumes flag] [null volume threshold]
+\end{Verbatim}
+\begin{description}
+\item[{Where:}] \leavevmode\begin{itemize}
+\item {} 
+\code{rootname} is the filepath (without any extension) of the noddy output files
+
+\item {} 
+\code{discrete volumes flag} is 1 (default) if the application should ensure that topology
+nodes represent discrete volumes (and have not been divided by erosive events, such as an
+unconformity dividing a folded unit into two parts)
+
+\item {} 
+\code{null volume threshold} is the minimum number of voxels a volume must comprise for it to
+be considered a valid topological volume. This is useful if thin units are decomposing into
+small groups of voxels within the model (ie. voxelisation artefacts), as they will have a
+small volume and hence can (and should) be ignored.
+
+\end{itemize}
+
+\end{description}
+
+\textbf{Python Wrapper}
+
+As mentioned earlier, the topology executable can also be called via pynoddy, in much the same
+way as the noddy executable is. This is performed by calling the \code{pynoddy.compute\_topology}
+function, as defined below:
+\index{compute\_topology() (in module pynoddy)}
+
+\begin{fulllineitems}
+\phantomsection\label{topology:pynoddy.compute_topology}\pysiglinewithargsret{\code{pynoddy.}\bfcode{compute\_topology}}{\emph{rootname}, \emph{**kwds}}{}
+Call the topology executable to compute a models topology.
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{rootname} = string : rootname of the noddy model to calculate topology for
+
+\end{itemize}
+
+\item[{\textbf{Optional Keywords}:}] \leavevmode\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{ensure\_discrete\_volumes} = True if topological units are broken down into}] \leavevmode
+separate, spatially continuous volumes. Otherwise
+some topological units may represent two separate
+rock volumes (eg. if a folded unit has been truncated
+by an unconformity). Default is True, though this is
+a global variable (pynoddy.ensure\_discrete\_volumes)
+so it can be changed during runtime.
+
+\end{description}
+
+\item {} \begin{description}
+\item[{\emph{null\_volume\_threshold} = The smallest non-null volume. volumes smaller than this are}] \leavevmode
+ignored by the topology algorithm (as they represent pixelation artefacts).
+The default is 20 voxels, though this is a global variable and can be changed
+with pynoddy.null\_volume\_threshold.
+
+\end{description}
+
+\end{itemize}
+
+\item[{\textbf{Returns}}] \leavevmode
+-Returns any text outputted by the topology executable, including errors.
+
+\end{description}
+
+\end{fulllineitems}
+
+
+It is worth noting here that default values for the \code{ensure\_discrete\_volumes} and \code{null\_volume\_threshold}
+options can be set by changing the \code{pynoddy.ensure\_discrete\_volumes} and \code{pynoddy.null\_volume\_threshold}
+variables.
 
 
 \chapter{Simulation of a Noddy history and visualisation of output}
@@ -1955,8 +2162,10 @@ kinematic models.
 \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c}{\PYGZsh{} here the usual imports. If any of the imports fails, make sure that pynoddy is installed}
-\PYG{c}{\PYGZsh{} properly, ideally with \PYGZsq{}python setup.py develop\PYGZsq{} or \PYGZsq{}python setup.py install\PYGZsq{}}
+\PYG{c}{\PYGZsh{} here the usual imports. If any of the imports fails,}
+\PYG{c}{\PYGZsh{} make sure that pynoddy is installed}
+\PYG{c}{\PYGZsh{} properly, ideally with \PYGZsq{}python setup.py develop\PYGZsq{}}
+\PYG{c}{\PYGZsh{} or \PYGZsq{}python setup.py install\PYGZsq{}}
 \PYG{k+kn}{import} \PYG{n+nn}{sys}\PYG{o}{,} \PYG{n+nn}{os}
 \PYG{k+kn}{import} \PYG{n+nn}{matplotlib.pyplot} \PYG{k+kn}{as} \PYG{n+nn}{plt}
 \PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k+kn}{as} \PYG{n+nn}{np}
@@ -2024,53 +2233,31 @@ will enable a higher level of flexibility, extensibility, and
 reproducibility.
 
 
-\section{Setting up the experiment class}
-\label{notebooks/6-Reproducible-Experiments:setting-up-the-experiment-class}
-We use an experiment class that is pre-defined in the pynoddy.experiment
-module and inherits many base functions from the Experiment-class
-definition.
-
-
-\section{Loading an example model from the Virtual Explorer Atlas}
-\label{notebooks/6-Reproducible-Experiments:loading-an-example-model-from-the-virtual-explorer-atlas}
-As in the last example, we will use a model from the Virtual Explorer
-Atlas as an examlpe model for this simulation. We use a model for a fold
-interference structure. A discretised 3-D version of this model (from
-the Virtual Explorer website) is presented in the figure below. The
-model represents a fold interference pattern of ``Type 1'' according to
-the definition of Ramsey (1967).
+\section{Loading an example model from the Atlas of Structural Geophysics}
+\label{notebooks/6-Reproducible-Experiments:loading-an-example-model-from-the-atlas-of-structural-geophysics}
+As in the example for geophysical potential-field simulation, we will
+use a model from the Atlas of Structural Geophysics as an examlpe model
+for this simulation. We use a model for a fold interference structure. A
+discretised 3-D version of this model is presented in the figure below.
+The model represents a fold interference pattern of ``Type 1'' according
+to the definition of Ramsey (1967).
 \begin{figure}[htbp]
 \centering
-\end{figure}
+\capstart
+
+\includegraphics{typeb.jpg}
+\caption{Fold interference pattern}\end{figure}
 
 Instead of loading the model into a history object, we are now directly
-creating an experiment object for the type of uncertainty analysis:
+creating an experiment object:
 
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{p}{)}
 \PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{experiment}\PYG{p}{)}
 
-\PYG{k+kn}{from} \PYG{n+nn}{pynoddy.experiment} \PYG{k+kn}{import} \PYG{n}{UncertaintyAnalysis}
-\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{UncertaintyAnalysis}\PYG{p}{)}
-\PYG{c}{\PYGZsh{} model\PYGZus{}url = \PYGZsq{}http://virtualexplorer.com.au/special/noddyatlas/ch3/ch3\PYGZus{}7/his/typeb.his\PYGZsq{}}
+\PYG{k+kn}{from} \PYG{n+nn}{pynoddy.experiment} \PYG{k+kn}{import} \PYG{n}{monte\PYGZus{}carlo}
 \PYG{n}{model\PYGZus{}url} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{http://tectonique.net/asg/ch3/ch3\PYGZus{}7/his/typeb.his}\PYG{l+s}{\PYGZsq{}}
-\PYG{n}{ue} \PYG{o}{=} \PYG{n}{UncertaintyAnalysis}\PYG{o}{.}\PYG{n}{UncertaintyAnalysis}\PYG{p}{(}\PYG{n}{url} \PYG{o}{=} \PYG{n}{model\PYGZus{}url}\PYG{p}{)}
-\PYG{c}{\PYGZsh{} ue = pynoddy.experiment.UncertaintyAnalysis(history = \PYGZdq{}typeb\PYGZus{}tmp.his\PYGZdq{})}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}
-
-TypeError                                 Traceback (most recent call last)
-
-\PYGZlt{}ipython\PYGZhy{}input\PYGZhy{}4\PYGZhy{}0906eece45d0\PYGZgt{} in \PYGZlt{}module\PYGZgt{}()
-      6 \PYGZsh{} model\PYGZus{}url = \PYGZsq{}http://virtualexplorer.com.au/special/noddyatlas/ch3/ch3\PYGZus{}7/his/typeb.his\PYGZsq{}
-      7 model\PYGZus{}url = \PYGZsq{}http://tectonique.net/asg/ch3/ch3\PYGZus{}7/his/typeb.his\PYGZsq{}
-\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZgt{} 8 ue = UncertaintyAnalysis.UncertaintyAnalysis(url = model\PYGZus{}url)
-      9 \PYGZsh{} ue = pynoddy.experiment.UncertaintyAnalysis(history = \PYGZdq{}typeb\PYGZus{}tmp.his\PYGZdq{})
-
-
-TypeError: \PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}() got an unexpected keyword argument \PYGZsq{}url\PYGZsq{}
+\PYG{n}{ue} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{experiment}\PYG{o}{.}\PYG{n}{Experiment}\PYG{p}{(}\PYG{n}{url} \PYG{o}{=} \PYG{n}{model\PYGZus{}url}\PYG{p}{)}
 \end{Verbatim}
 
 For simpler visualisation in this notebook, we will analyse the
@@ -2094,7 +2281,7 @@ We consider a section in y-direction through the model:
 \centering
 \capstart
 
-\includegraphics{6-Reproducible-Experiments_11_0.png}
+\includegraphics{6-Reproducible-Experiments_10_0.png}
 \caption{png}\end{figure}
 
 Before we start to draw random realisations of the model, we should
@@ -2177,7 +2364,7 @@ parameters:
 \PYG{n}{ue}\PYG{o}{.}\PYG{n}{change\PYGZus{}cube\PYGZus{}size}\PYG{p}{(}\PYG{n}{resolution}\PYG{p}{)}
 \PYG{n}{tmp} \PYG{o}{=} \PYG{n}{ue}\PYG{o}{.}\PYG{n}{get\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{y}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
 \PYG{n}{prob\PYGZus{}4} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros\PYGZus{}like}\PYG{p}{(}\PYG{n}{tmp}\PYG{o}{.}\PYG{n}{block}\PYG{p}{[}\PYG{p}{:}\PYG{p}{,}\PYG{p}{:}\PYG{p}{,}\PYG{p}{:}\PYG{p}{]}\PYG{p}{)}
-\PYG{n}{n\PYGZus{}draws} \PYG{o}{=} \PYG{l+m+mi}{10}
+\PYG{n}{n\PYGZus{}draws} \PYG{o}{=} \PYG{l+m+mi}{100}
 
 
 \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{n\PYGZus{}draws}\PYG{p}{)}\PYG{p}{:}
@@ -2201,170 +2388,19 @@ parameters:
 \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYGZlt{}matplotlib.text.Text at 0x10c0b6a50\PYGZgt{}
+\PYGZlt{}matplotlib.text.Text at 0x10ba80250\PYGZgt{}
 \end{Verbatim}
 \begin{figure}[htbp]
 \centering
 \capstart
 
-\includegraphics{6-Reproducible-Experiments_23_1.png}
+\includegraphics{6-Reproducible-Experiments_22_1.png}
 \caption{png}\end{figure}
 
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{history}\PYG{p}{)}
-\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{output}\PYG{p}{)}
-\PYG{n+nb}{reload}\PYG{p}{(}\PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{experiment}\PYG{p}{)}
-\PYG{n}{model\PYGZus{}url} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{http://virtualexplorer.com.au/special/noddyatlas/ch3/ch3\PYGZus{}7/his/typeb.his}\PYG{l+s}{\PYGZsq{}}
-\PYG{c}{\PYGZsh{} ue = pynoddy.experiment.UncertaintyAnalysis(url = model\PYGZus{}url)}
-\PYG{n}{ue} \PYG{o}{=} \PYG{n}{pynoddy}\PYG{o}{.}\PYG{n}{experiment}\PYG{o}{.}\PYG{n}{UncertaintyAnalysis}\PYG{p}{(}\PYG{n}{history} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{typeb\PYGZus{}tmp.his}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
-\PYG{n}{ue}\PYG{o}{.}\PYG{n}{change\PYGZus{}cube\PYGZus{}size}\PYG{p}{(}\PYG{l+m+mi}{100}\PYG{p}{)}
-\PYG{c}{\PYGZsh{} tmp = ue.get\PYGZus{}section(\PYGZsq{}y\PYGZsq{})}
-\PYG{c}{\PYGZsh{} tmp.plot\PYGZus{}section(\PYGZsq{}y\PYGZsq{}, position = 0, data = prob\PYGZus{}4, cmap = \PYGZsq{}jet\PYGZsq{})}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{STRATIGRAPHY}
-\PYG{n}{FOLD}
-\PYG{n}{FOLD}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{ue}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{y}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
-\end{Verbatim}
-\begin{figure}[htbp]
-\centering
-\capstart
-
-\includegraphics{6-Reproducible-Experiments_25_0.png}
-\caption{png}\end{figure}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{ue}\PYG{o}{.}\PYG{n}{export\PYGZus{}to\PYGZus{}vtk}\PYG{p}{(}\PYG{n}{vtk\PYGZus{}filename} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{typeb}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{ue}\PYG{o}{.}\PYG{n}{export\PYGZus{}to\PYGZus{}vtk}\PYG{p}{(}\PYG{n}{vtk\PYGZus{}filename} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{prob4}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{data} \PYG{o}{=} \PYG{n}{prob\PYGZus{}4}\PYG{p}{)}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{pwd}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{l+s}{u\PYGZsq{}}\PYG{l+s}{/Users/flow/git/pynoddy/docs/notebooks}\PYG{l+s}{\PYGZsq{}}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{block} \PYG{o}{=} \PYG{n}{ue}\PYG{o}{.}\PYG{n}{get\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{y}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{tmp} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros\PYGZus{}like}\PYG{p}{(}\PYG{n}{block}\PYG{o}{.}\PYG{n}{block}\PYG{p}{)}
-\PYG{n}{tmp} \PYG{o}{+}\PYG{o}{=} \PYG{p}{(}\PYG{n}{block}\PYG{o}{.}\PYG{n}{block}\PYG{p}{[}\PYG{p}{:}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{p}{:}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{2}\PYG{p}{)}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{tmp}\PYG{p}{[}\PYG{p}{:}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{p}{:}\PYG{p}{]}\PYG{o}{.}\PYG{n}{transpose}\PYG{p}{(}\PYG{p}{)}\PYG{p}{)}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYGZlt{}matplotlib.image.AxesImage at 0x10e9e5750\PYGZgt{}
-\end{Verbatim}
-\begin{figure}[htbp]
-\centering
-\capstart
-
-\includegraphics{6-Reproducible-Experiments_31_1.png}
-\caption{png}\end{figure}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{block}\PYG{o}{.}\PYG{n}{plot\PYGZus{}section}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{y}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
-\end{Verbatim}
-\begin{figure}[htbp]
-\centering
-\capstart
-
-\includegraphics{6-Reproducible-Experiments_32_0.png}
-\caption{png}\end{figure}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{block}\PYG{o}{.}\PYG{n}{block}\PYG{p}{[}\PYG{p}{:}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{p}{:}\PYG{p}{]}\PYG{o}{.}\PYG{n}{transpose}\PYG{p}{(}\PYG{p}{)}\PYG{p}{,} \PYG{n}{origin} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{lower left}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{interpolation} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{none}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
-\PYG{n}{plt}\PYG{o}{.}\PYG{n}{colorbar}\PYG{p}{(}\PYG{n}{orientation} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{horizontal}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYGZlt{}matplotlib.colorbar.Colorbar instance at 0x10eb97b48\PYGZgt{}
-\end{Verbatim}
-\begin{figure}[htbp]
-\centering
-\capstart
-
-\includegraphics{6-Reproducible-Experiments_33_1.png}
-\caption{png}\end{figure}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c}{\PYGZsh{} filter out unit 4:}
-\PYG{n}{test} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros\PYGZus{}like}\PYG{p}{(}\PYG{n}{block}\PYG{o}{.}\PYG{n}{block}\PYG{p}{[}\PYG{p}{:}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{p}{:}\PYG{p}{]}\PYG{p}{)}
-\PYG{n}{test} \PYG{o}{+}\PYG{o}{=} \PYG{p}{(}\PYG{n}{block}\PYG{o}{.}\PYG{n}{block}\PYG{p}{[}\PYG{p}{:}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{p}{:}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{4}\PYG{p}{)}
-\PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{test}\PYG{o}{.}\PYG{n}{transpose}\PYG{p}{(}\PYG{p}{)}\PYG{p}{,} \PYG{n}{origin} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{lower left}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{interpolation} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{none}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYGZlt{}matplotlib.image.AxesImage at 0x10ed5cc90\PYGZgt{}
-\end{Verbatim}
-\begin{figure}[htbp]
-\centering
-\capstart
-
-\includegraphics{6-Reproducible-Experiments_34_1.png}
-\caption{png}\end{figure}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{ue}\PYG{o}{.}\PYG{n}{write\PYGZus{}history}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{typeb\PYGZus{}tmp.his}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{ue}\PYG{o}{.}\PYG{n}{events}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{o}{.}\PYG{n}{event\PYGZus{}lines}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{l+s}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}t}\PYG{l+s}{Name}\PYG{l+s+se}{\PYGZbs{}t}\PYG{l+s}{= Fold}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZsq{}}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{k}{for} \PYG{n}{i}\PYG{p}{,}\PYG{n}{line} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{ue}\PYG{o}{.}\PYG{n}{history\PYGZus{}lines}\PYG{p}{)}\PYG{p}{:}
-    \PYG{k}{if} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{BlockOptions}\PYG{l+s}{\PYGZsq{}} \PYG{o+ow}{in} \PYG{n}{line}\PYG{p}{:}
-        \PYG{k}{print} \PYG{n}{ue}\PYG{o}{.}\PYG{n}{history\PYGZus{}lines}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{==} \PYG{l+s}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZsq{}}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n+nb+bp}{True}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-list.insert??
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{a} \PYG{o}{=} \PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{a}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{b}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{c}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{k}{print} \PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}
-\PYG{n}{a}\PYG{o}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{2}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{c}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{a}
-\end{Verbatim}
-
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{a}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{b}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{2}\PYG{l+s}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{c}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]}
-\end{Verbatim}
+This example shows how the base module for reproducible experiments with
+kinematics can be used. For further specification, child classes of
+\code{Experiment} can be defined, and we show examples of this type of
+extension in the next sections.
 
 
 \chapter{Gippsland Basin Uncertainty Study}
@@ -2601,7 +2637,6 @@ For a first test: use simple two-fault model from paper
 \PYG{c}{\PYGZsh{} print rcParams}
 \PYG{n}{rcParams}\PYG{p}{[}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{font.size}\PYG{l+s}{\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{15}
 \PYG{c}{\PYGZsh{} determine path of repository to set paths corretly below}
-\PYG{n}{os}\PYG{o}{.}\PYG{n}{chdir}\PYG{p}{(}\PYG{l+s}{r\PYGZsq{}}\PYG{l+s}{/Users/flow/git/pynoddy/docs/notebooks/}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
 \PYG{n}{repo\PYGZus{}path} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{realpath}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{../..}\PYG{l+s}{\PYGZsq{}}\PYG{p}{)}
 \PYG{k+kn}{import} \PYG{n+nn}{pynoddy.history}
 \PYG{k+kn}{import} \PYG{n+nn}{pynoddy.events}

@@ -11,11 +11,11 @@ def read(fname):
 
 
 setup(name='pynoddy',
-      version='0.2',
+      version='1.0',
       description='Python wrappers for kinematic geological simulations with Noddy',
       long_description=read('README.md'),
       classifiers=[
-          "Development Status :: 2 - Pre-Alpha",
+          "Development Status :: 4 - Beta",
           "Intended Audience :: Science/Research",
           "Programming Language :: Python :: 2.7",
           "Intended Audience :: Education",
@@ -26,7 +26,7 @@ setup(name='pynoddy',
           "License :: OSI Approved :: MIT License",
       ],
       url='http://github.com/flohorovicic/pynoddy',
-      author='Florian Wellmann, Mark Jessell',
+      author='Florian Wellmann, Mark Jessell, Sam Thiele',
       author_email='flohorovicic@gmail.com',
       install_requires = ['SALib', 'pyevtk'],
       license='MIT',

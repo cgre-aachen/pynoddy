@@ -157,8 +157,10 @@ div.text_cell_render{
 
 
 ```python
-# here the usual imports. If any of the imports fails, make sure that pynoddy is installed
-# properly, ideally with 'python setup.py develop' or 'python setup.py install'
+# here the usual imports. If any of the imports fails, 
+# make sure that pynoddy is installed
+# properly, ideally with 'python setup.py develop' 
+# or 'python setup.py install'
 import sys, os
 import matplotlib.pyplot as plt
 import numpy as np
@@ -194,45 +196,23 @@ It would be possible to write a Python script to perform all of these steps in o
 
 
 
-## Setting up the experiment class
+## Loading an example model from the Atlas of Structural Geophysics
 
-We use an experiment class that is pre-defined in the pynoddy.experiment module and inherits many base functions from the Experiment-class definition. 
+As in the example for geophysical potential-field simulation, we will use a model from the Atlas of Structural Geophysics as an examlpe model for this simulation. We use a model for a fold interference structure. A discretised 3-D version of this model is presented in the figure below. The model represents a fold interference pattern of "Type 1" according to the definition of Ramsey (1967).
 
-## Loading an example model from the Virtual Explorer Atlas
+![Fold interference pattern](6-Reproducible-Experiments_files/typeb.jpg "Fold interference pattern")
 
-As in the last example, we will use a model from the Virtual Explorer Atlas as an examlpe model for this simulation. We use a model for a fold interference structure. A discretised 3-D version of this model (from the Virtual Explorer website) is presented in the figure below. The model represents a fold interference pattern of "Type 1" according to the definition of Ramsey (1967).
-
-![](http://tectonique.net/asg/ch3/ch3_7/jpeg/geol/typeb.jpg)
-
-Instead of loading the model into a history object, we are now directly creating an experiment object for the type of uncertainty analysis:
+Instead of loading the model into a history object, we are now directly creating an experiment object:
 
 
 ```python
 reload(pynoddy.history)
 reload(pynoddy.experiment)
 
-from pynoddy.experiment import UncertaintyAnalysis
-reload(UncertaintyAnalysis)
-# model_url = 'http://virtualexplorer.com.au/special/noddyatlas/ch3/ch3_7/his/typeb.his'
+from pynoddy.experiment import monte_carlo
 model_url = 'http://tectonique.net/asg/ch3/ch3_7/his/typeb.his'
-ue = UncertaintyAnalysis.UncertaintyAnalysis(url = model_url)
-# ue = pynoddy.experiment.UncertaintyAnalysis(history = "typeb_tmp.his")
+ue = pynoddy.experiment.Experiment(url = model_url)
 ```
-
-
-    ---------------------------------------------------------------------------
-
-    TypeError                                 Traceback (most recent call last)
-
-    <ipython-input-4-0906eece45d0> in <module>()
-          6 # model_url = 'http://virtualexplorer.com.au/special/noddyatlas/ch3/ch3_7/his/typeb.his'
-          7 model_url = 'http://tectonique.net/asg/ch3/ch3_7/his/typeb.his'
-    ----> 8 ue = UncertaintyAnalysis.UncertaintyAnalysis(url = model_url)
-          9 # ue = pynoddy.experiment.UncertaintyAnalysis(history = "typeb_tmp.his")
-
-
-    TypeError: __init__() got an unexpected keyword argument 'url'
-
 
 For simpler visualisation in this notebook, we will analyse the following steps in a section view of the model.
 
@@ -255,7 +235,7 @@ ue.plot_section('y')
 ```
 
 
-![png](6-Reproducible-Experiments_files/6-Reproducible-Experiments_11_0.png)
+![png](6-Reproducible-Experiments_files/6-Reproducible-Experiments_10_0.png)
 
 
 Before we start to draw random realisations of the model, we should first store the base state of the model for later reference. This is simply possibel with the freeze() method which stores the current state of the model as the "base-state":
@@ -339,7 +319,7 @@ resolution = 100
 ue.change_cube_size(resolution)
 tmp = ue.get_section('y')
 prob_4 = np.zeros_like(tmp.block[:,:,:])
-n_draws = 10
+n_draws = 100
 
 
 for i in range(n_draws):
@@ -366,192 +346,15 @@ plt.ylabel("z")
 
 
 
-    <matplotlib.text.Text at 0x10c0b6a50>
+    <matplotlib.text.Text at 0x10ba80250>
 
 
 
 
-![png](6-Reproducible-Experiments_files/6-Reproducible-Experiments_23_1.png)
+![png](6-Reproducible-Experiments_files/6-Reproducible-Experiments_22_1.png)
 
 
-
-```python
-reload(pynoddy.history)
-reload(pynoddy.output)
-reload(pynoddy.experiment)
-model_url = 'http://virtualexplorer.com.au/special/noddyatlas/ch3/ch3_7/his/typeb.his'
-# ue = pynoddy.experiment.UncertaintyAnalysis(url = model_url)
-ue = pynoddy.experiment.UncertaintyAnalysis(history = "typeb_tmp.his")
-ue.change_cube_size(100)
-# tmp = ue.get_section('y')
-# tmp.plot_section('y', position = 0, data = prob_4, cmap = 'jet')
-```
-
-     STRATIGRAPHY
-     FOLD
-     FOLD
-
-
-
-```python
-ue.plot_section('y')
-```
-
-
-![png](6-Reproducible-Experiments_files/6-Reproducible-Experiments_25_0.png)
-
-
-
-```python
-ue.export_to_vtk(vtk_filename = "typeb")
-```
-
-
-```python
-ue.export_to_vtk(vtk_filename = "prob4", data = prob_4)
-```
-
-
-```python
-pwd
-```
-
-
-
-
-    u'/Users/flow/git/pynoddy/docs/notebooks'
-
-
-
-
-```python
-block = ue.get_section('y')
-```
-
-
-```python
-tmp = np.zeros_like(block.block)
-tmp += (block.block[:,0,:] == 2)
-```
-
-
-```python
-plt.imshow(tmp[:,0,:].transpose())
-```
-
-
-
-
-    <matplotlib.image.AxesImage at 0x10e9e5750>
-
-
-
-
-![png](6-Reproducible-Experiments_files/6-Reproducible-Experiments_31_1.png)
-
-
-
-```python
-block.plot_section('y')
-```
-
-
-![png](6-Reproducible-Experiments_files/6-Reproducible-Experiments_32_0.png)
-
-
-
-```python
-plt.imshow(block.block[:,0,:].transpose(), origin = 'lower left', interpolation = 'none')
-plt.colorbar(orientation = "horizontal")
-```
-
-
-
-
-    <matplotlib.colorbar.Colorbar instance at 0x10eb97b48>
-
-
-
-
-![png](6-Reproducible-Experiments_files/6-Reproducible-Experiments_33_1.png)
-
-
-
-```python
-# filter out unit 4:
-test = np.zeros_like(block.block[:,0,:])
-test += (block.block[:,0,:] == 4)
-plt.imshow(test.transpose(), origin = 'lower left', interpolation = 'none')
-```
-
-
-
-
-    <matplotlib.image.AxesImage at 0x10ed5cc90>
-
-
-
-
-![png](6-Reproducible-Experiments_files/6-Reproducible-Experiments_34_1.png)
-
-
-
-```python
-ue.write_history("typeb_tmp.his")
-```
-
-
-```python
-ue.events[2].event_lines[-1]
-```
-
-
-
-
-    '\tName\t= Fold\n'
-
-
-
-
-```python
-for i,line in enumerate(ue.history_lines):
-    if 'BlockOptions' in line:
-        print ue.history_lines[i-1] == '\n'
-```
-
-    True
-
-
-
-```python
-list.insert??
-```
-
-
-```python
-a = ['a', 'b', 'c']
-```
-
-
-```python
-print a[2]
-a.insert(2,'2')
-```
-
-    c
-
-
-
-```python
-a
-```
-
-
-
-
-    ['a', 'b', '2', 'c']
-
-
+This example shows how the base module for reproducible experiments with kinematics can be used. For further specification, child classes of `Experiment` can be defined, and we show examples of this type of extension in the next sections.
 
 
 ```python
