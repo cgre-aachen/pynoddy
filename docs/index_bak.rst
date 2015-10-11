@@ -9,24 +9,18 @@ Welcome to pynoddy's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 4
 
    readme
 
    notebooks/1-Simulation
    notebooks/2-Adjust-input
    notebooks/3-Events
-   notebooks/4-Stochastic-Events
-   notebooks/5-Uncertainties
+   notebooks/4-Create-model
+   notebooks/5-Geophysical-Potential-Fields
+   notebooks/6-Reproducible-Experiments
+   notebooks/7-Gippsland-Basin-Uncertainty
+   notebooks/8-Sensitivity-Analysis
 
    pynoddy
-   pynoddy.events
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 

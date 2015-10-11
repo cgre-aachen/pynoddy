@@ -1,6 +1,8 @@
 
-Gippsland Basin Uncertainty Study
-================
+Simulation of a Noddy history and analysis of its voxel topology
+=============
+
+Example of how the module can be used to run Noddy simulations and analyse the output.
 
 
 ```python
@@ -150,102 +152,117 @@ div.text_cell_render{
 
 
 ```python
+# Basic settings
+import sys, os
+import subprocess
+
+# Now import pynoddy
+import pynoddy
 %matplotlib inline
-```
-
-
-```python
-#import the ususal libraries + the pynoddy UncertaintyAnalysis class
-
-import sys, os, pynoddy
-# from pynoddy.experiment.UncertaintyAnalysis import UncertaintyAnalysis
-
-# adjust some settings for matplotlib
-from matplotlib import rcParams
-# print rcParams
-rcParams['font.size'] = 15
 
 # determine path of repository to set paths corretly below
+
 repo_path = os.path.realpath('../..')
-import pynoddy.history
-import pynoddy.experiment.uncertainty_analysis
-rcParams.update({'font.size': 20})
-
 ```
 
-The Gippsland Basin Model
--------
+Compute the model
+------------------
 
-In this example we will apply the UncertaintyAnalysis class we have been playing with in the previous example to a 'realistic' (though highly simplified) geological model of the Gippsland Basin, a petroleum field south of Victoria, Australia. The model has been included as part of the PyNoddy directory, and can be found at `pynoddy/examples/GBasin_Ve1_V4.his`
+The simplest way to perform the Noddy simulation through Python is simply to call the executable. One way that should be fairly platform independent is to use Python's own subprocess module:
 
 
 ```python
-reload(pynoddy.history)
-reload(pynoddy.output)
-reload(pynoddy.experiment.uncertainty_analysis)
-reload(pynoddy)
+# Change to sandbox directory to store results
+os.chdir(os.path.join(repo_path, 'sandbox'))
 
-# the model itself is now part of the repository, in the examples directory:
-history_file = os.path.join(repo_path, "examples/GBasin_Ve1_V4.his")
+# Path to exmaple directory in this repository
+example_directory = os.path.join(repo_path,'examples')
+# Compute noddy model for history file
+history_file = 'strike_slip.his'
+history = os.path.join(example_directory, history_file)
+nfiles = 1
+files = '_'+str(nfiles).zfill(4)
+print "files", files
+root_name = 'noddy_out'
+output_name = root_name + files
+print root_name
+print output_name
+# call Noddy
+
+# NOTE: Make sure that the noddy executable is accessible in the system!!
+sys
+print subprocess.Popen(['noddy.exe', history, output_name, 'TOPOLOGY'], 
+                       shell=False, stderr=subprocess.PIPE, 
+                       stdout=subprocess.PIPE).stdout.read()
+#
+sys
+print subprocess.Popen(['topology.exe', root_name, files], 
+                       shell=False, stderr=subprocess.PIPE, 
+                       stdout=subprocess.PIPE).stdout.read()
 ```
 
-While we could hard-code parameter variations here, it is much easier to store our statistical information in a csv file, so we load that instead. This file accompanies the `GBasin_Ve1_V4` model in the pynoddy directory.
+    files _0001
+    noddy_out
+    noddy_out_0001
+    
+    
+
+
+For convenience, the model computations are wrapped into a Python function in pynoddy:
 
 
 ```python
-params = os.path.join(repo_path,"examples/gipps_params.csv")
+pynoddy.compute_model(history, output_name)
+pynoddy.compute_topology(root_name, files)
+
 ```
 
-Generate randomised model realisations
--------------
+Note: The Noddy call from Python is, to date, calling Noddy through the subprocess function. In a future implementation, this call could be subsituted with a full wrapper for the C-functions written in Python. Therefore, using the member function compute_model is not only easier, but also the more "future-proof" way to compute the Noddy model.
 
-Now we have all the information required to perform a Monte-Carlo based uncertainty analysis. In this example we will generate 100 model realisations and use them to estimate the information entropy of each voxel in the model, and hence visualise uncertainty. It is worth noting that in reality we would need to produce several thousand model realisations in order to adequately sample the model space, however for convinience we only generate a small number of models here.
+Loading Topology output files
+--------------------------
+
+Here we load the binary adjacency matrix for one topology calculation and display it as an image
+
 
 
 ```python
-# %%timeit   # Uncomment to test execution time
-ua = pynoddy.experiment.uncertainty_analysis.UncertaintyAnalysis(history_file, params)
-ua.estimate_uncertainty(100,verbose=False)
+from matplotlib import pyplot as plt
+import matplotlib.image as mpimg
+import numpy as np
+
+N1 = pynoddy.NoddyOutput(output_name)
+AM= pynoddy.NoddyTopology(output_name)
+
+am_name=root_name +'_uam.bin'
+print am_name
+print AM.maxlitho
+
+image = np.empty((int(AM.maxlitho),int(AM.maxlitho)), np.uint8)
+
+image.data[:] = open(am_name).read()
+cmap=plt.get_cmap('Paired')
+cmap.set_under('white')  # Color for values less than vmin
+
+plt.imshow(image, interpolation="nearest", vmin=1, cmap=cmap)
+plt.show()
 ```
 
-A few utility functions for visualising uncertainty have been included in the UncertaintyAnalysis class, and can be used to gain an understanding of the most uncertain parts of the Gippsland Basin. The probabability voxets for each lithology can also be accessed using `ua.p_block[lithology_id]`, and the information entropy voxset accessed using `ua.e_block`.
+    maxlitho = 7
+    
+    noddy_out_uam.bin
+    7
+    
 
-Note that the Gippsland Basin model has been computed with a vertical exaggeration of 3, in order to highlight vertical structure.
+
+
+![png](9-Topology_files/9-Topology_9_1.png)
+
 
 
 ```python
-ua.plot_section(direction='x',data=ua.block)
-ua.plot_entropy(direction='x')
+
 ```
-
-
-![png](7-Gippsland-Basin-Uncertainty_files/7-Gippsland-Basin-Uncertainty_11_0.png)
-
-
-
-![png](7-Gippsland-Basin-Uncertainty_files/7-Gippsland-Basin-Uncertainty_11_1.png)
-
-
-It is immediately apparent (and not particularly surprising) that uncertainty in the Gippsland Basin model is concentrated around the thin (but economically interesting) formations comprising the La Trobe and Strzelecki Groups. The faults in the model also contribute to this uncertainty, though not by a huge amount.
-
-Exporting results to VTK for visualisation
------------
-
-It is also possible (and useful!) to export the uncertainty information to .vtk format for 3D analysis in software such as ParaView. This can be done as follows:
-
-
-```python
-ua.extent_x = 29000
-ua.extent_y = 21600
-ua.extent_z = 4500
-
-output_path = os.path.join(repo_path,"sandbox/GBasin_Uncertainty")
-ua.export_to_vtk(vtk_filename=output_path,data=ua.e_block)
-```
-
-The resulting vtr file can (in the sandbox directory) can now be loaded and properly analysed in a 3D visualisation package such as ParaView. 
-
-![3-D visualisation of cell information entropy](15-Gippsland-Basin-Uncertainty_files/3D-render.png "3-D visualisation of cell information entropy")
 
 
 ```python

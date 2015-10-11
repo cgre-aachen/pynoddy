@@ -29,3 +29,6 @@ pandoc --from=markdown --to=rst --output=7-Gippsland-Basin-Uncertainty.rst 7-Gip
 
 jupyter nbconvert 8-Sensitivity-Analysis.ipynb --to markdown
 pandoc --from=markdown --to=rst --output=8-Sensitivity-Analysis.rst 8-Sensitivity-Analysis.md
+
+jupyter nbconvert 9-Topology.ipynb --to markdown
+pandoc --from=markdown --to=rst --output=9-Topology.rst 9-Topology.md

@@ -22,7 +22,7 @@ $$J_{ij} = \frac{\partial z_i}{\partial p_j} \approx \frac{z_i(\vec{p}; p_j + \d
 where $\delta p_j$ is a small perturbation of parameter $j$, often as a fraction of the value.
 
 
-## Defining the responses $\vec{z}$
+## Defining the responses
 
 A meaningful sensitivity analysis obviously depends on the definition of a suitable response vector $\vec{z}$. Ideally, these responses are related to actual observations. In our case, we first want to determine how sensitive a kinematic structural geological model is with respect to uncertainties in the kinematic parameters. We therefore need calculatable measures that describe variations of the model.
 

@@ -18,8 +18,9 @@ Contents:
    notebooks/4-Create-model
    notebooks/5-Geophysical-Potential-Fields
    notebooks/6-Reproducible-Experiments
-..   notebooks/7-Gippsland-Basin-Uncertainty
+   notebooks/7-Gippsland-Basin-Uncertainty
    notebooks/8-Sensitivity-Analysis
+   notebooks/9-Topology
 
    pynoddy
 

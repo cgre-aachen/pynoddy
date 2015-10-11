@@ -162,7 +162,7 @@ playing with in the previous example to a 'realistic' (though highly
 simplified) geological model of the Gippsland Basin, a petroleum field
 south of Victoria, Australia. The model has been included as part of the
 PyNoddy directory, and can be found at
-pynoddy/examples/GBasin\_Ve1\_V4.his
+``pynoddy/examples/GBasin_Ve1_V4.his``
 
 .. code:: python
 
@@ -176,8 +176,8 @@ pynoddy/examples/GBasin\_Ve1\_V4.his
 
 While we could hard-code parameter variations here, it is much easier to
 store our statistical information in a csv file, so we load that
-instead. This file accompanies the GBasin\_Ve1\_V4 model in the pynoddy
-directory.
+instead. This file accompanies the ``GBasin_Ve1_V4`` model in the
+pynoddy directory.
 
 .. code:: python
 
@@ -204,11 +204,11 @@ A few utility functions for visualising uncertainty have been included
 in the UncertaintyAnalysis class, and can be used to gain an
 understanding of the most uncertain parts of the Gippsland Basin. The
 probabability voxets for each lithology can also be accessed using
-*ua.p\_block[lithology\_id]*, and the information entropy voxset
-accessed using *ua.e\_block*.
+``ua.p_block[lithology_id]``, and the information entropy voxset
+accessed using ``ua.e_block``.
 
 Note that the Gippsland Basin model has been computed with a vertical
-exagguration of 3, in order to highlight vertical structure.
+exaggeration of 3, in order to highlight vertical structure.
 
 .. code:: python
 
@@ -231,7 +231,7 @@ uncertainty in the Gippsland Basin model is concentrated around the thin
 Strzelecki Groups. The faults in the model also contribute to this
 uncertainty, though not by a huge amount.
 
-Exporting results to VTk for visualisation
+Exporting results to VTK for visualisation
 ------------------------------------------
 
 It is also possible (and useful!) to export the uncertainty information

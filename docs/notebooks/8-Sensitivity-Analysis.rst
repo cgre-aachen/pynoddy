@@ -28,8 +28,8 @@ Numerical estimation of Jacobian matrix with central difference scheme
 where :math:`\delta p_j` is a small perturbation of parameter :math:`j`,
 often as a fraction of the value.
 
-Defining the responses :math:`\vec{z}`
---------------------------------------
+Defining the responses
+----------------------
 
 A meaningful sensitivity analysis obviously depends on the definition of
 a suitable response vector :math:`\vec{z}`. Ideally, these responses are
