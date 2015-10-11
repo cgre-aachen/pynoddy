@@ -22,8 +22,8 @@ class UncertaintyAnalysis(MonteCarlo):
                           of python dictionaries with the same function. This file/dictionary array
                           should have collumns/keys defining:
                               1) the event and parameter being varied (titled 'event' and 'parameter')
-                              2) the statistical distribution to sample from (titled 'type' and containing either 'normal',
-                                 'vonmises' or 'uniform')
+                              2) the statistical distribution to sample from (titled 'type' and
+                                containing either 'normal', 'vonmises' or 'uniform')
                               3) the distribution mean (titled 'mean') and,
                               4) a collumn defining the distance between the 2.5th and 97.5th percentiles 
                                  (titled '+-') OR one defining the standard deviation (titled 'stdev')
@@ -82,6 +82,8 @@ class UncertaintyAnalysis(MonteCarlo):
         # self.ny = models[0].ny
         # self.nz = models[0].nz
 
+        if vb:
+            print("Estimating lithology probabilities")
         # calculate probabilities for each lithology. p_block[lithology][x][y][z] = p(lithology | x, y ,z)
         self.p_block = [[[[0. for z in range(self.nz)] for y in range(self.ny)] for x in range(self.nx)] for l in
                         range(self.n_rocktypes)]
@@ -97,26 +99,48 @@ class UncertaintyAnalysis(MonteCarlo):
                         # update litho probability
                         self.p_block[litho][x][y][z] += p1
 
-        # calculate entropy & store in self.e_block
-        self.e_block = np.ndarray((self.nx, self.ny, self.nz))
-        for x in range(self.nx):
-            for y in range(self.ny):
-                for z in range(self.nz):
-                    entropy = 0  # calculate shannons information entropy
-                    for litho in range(self.n_rocktypes):
-                        p = self.p_block[litho][x][y][z]
+        if vb:
+            print("Calculating cell entropies")
 
-                        # fix domain to 0 < p < 1
-                        if p == 0:
-                            p = 0.0000000000000001
-                        if p >= 0.9999999999999999:
-                            p = 0.9999999999999999
+        # cast probabilities in numpy arrays (note: should be done before, fix!)
+        for i in range(len(self.p_block)):
+            self.p_block[i] = np.array(self.p_block[i])
 
-                        # calculate
-                        entropy += p * math.log(p, 2) + (1 - p) * (math.log(1 - p, 2))
+        # calculate information entropy and store in self.e_block
+        self.e_block = np.zeros_like(self.p_block[1])
+        for p_block in self.p_block:
+            for i in range(self.nx):
+                for j in range(self.ny):
+                    for k in range(self.nz):
+                        if p_block[i, j, k] > 0:
+                            self.e_block[i, j, k] -= p_block[i, j, k] * np.log2(p_block[i, j, k])
 
-                    entropy = entropy * -1 / float(self.n_rocktypes)  # divide by n
-                    self.e_block[x][y][z] = entropy
+        # # calculate entropy and store in self.e_block
+        # self.e_block = np.ndarray((self.nx, self.ny, self.nz))
+        # for x in range(self.nx):
+        #     # if vb:
+        #     #     print("%d of %d" % (x, self.nx))
+        #     for y in range(self.ny):
+        #         for z in range(self.nz):
+        #             entropy = 0  # calculate information entropy
+        #
+        #             for litho in range(self.n_rocktypes):
+        #                 p = self.p_block[litho][x][y][z]
+        #                 if p > 0:
+        #                     self.e_block[x, y, z] -= p * np.log2(p)
+        #             #
+        #             #     # fix domain to 0 < p < 1
+        #             #     if p == 0:
+        #             #         p = 0.0000000000000001
+        #             #     if p >= 0.9999999999999999:
+        #             #         p = 0.9999999999999999
+        #             #
+        #             #     # calculate
+        #             #     entropy -= p * math.log(p, 2) + (1 - p) * (math.log(1 - p, 2))
+        #             #
+        #             # # JFW: scaling removed, does not make any sense in this case
+        #             # # entropy = entropy * -1 / float(self.n_rocktypes)  # divide by n
+        #             # self.e_block[x][y][z] = entropy
 
         # cleanup
         if vb:
@@ -127,15 +151,15 @@ class UncertaintyAnalysis(MonteCarlo):
             print "Finished."
 
     def estimate_uncertainty_from_existing(self, path, **kwds):
-        '''
+        """
         Calculates the information entropy from a set of pre-calculated models (of the same dimensions).
-        
+
         **Arguments**:
          - *path* = The directory to load the models from. All models in this directory are loaded.
-         
+
         **Optional Keywords**:
          - *verbose* = True if this function should write to the print buffer. Default is False.
-        '''
+        """
 
         vb = kwds.get('verbose', False)
 
@@ -204,20 +228,20 @@ class UncertaintyAnalysis(MonteCarlo):
                         p = self.p_block[litho][x][y][z]  # shorthand
                         entropy += p * math.log(p, 2) + (1 - p) * (math.log(1 - p, 2))
 
-                    entropy = entropy * -1 / float(self.n_rocktypes)  # divide by n
+                    # entropy = entropy * -1 / float(self.n_rocktypes) #divide by n
                     self.e_block[x][y][z] = entropy
 
     def plot_entropy(self, direction='y', position='center', **kwds):
-        '''
+        """
         Plots the information entropy of each cell in the model. This can be used
         as a proxy for uncertainty, as cells with higher entropy values have a higher
         uncertainty.
-        
+
         **Arguments**:
         - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
         - *position* = int or 'center' : cell position of section as integer value
             or identifier (default: 'center')
-        
+
         **Optional Keywords**:
             - *ax* = matplotlib.axis : append plot to axis (default: create new plot)
             - *figsize* = (x,y) : matplotlib figsize
@@ -229,8 +253,8 @@ class UncertaintyAnalysis(MonteCarlo):
             - *cmap* = matplotlib.cmap : colormap (default: RdBu_r)
             - *fig_filename* = string : figure filename
             - *ve* = float : vertical exaggeration
-            - *layer_labels* = list of strings: labels for each unit in plot            
-        '''
+            - *layer_labels* = list of strings: labels for each unit in plot
+        """
         if not kwds.has_key('cmap'):
             kwds['cmap'] = 'RdBu_r'
         kwds['data'] = np.array(self.e_block)  # specify the data we want to plot
@@ -238,14 +262,14 @@ class UncertaintyAnalysis(MonteCarlo):
         self.plot_section(direction, position, **kwds)
 
     def plot_probability(self, litho_ID, direction='y', position='center', **kwds):
-        '''
+        """
         Plots the probability of observing the given lithology in space.
-        
+
         **Arguments**:
         - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
         - *position* = int or 'center' : cell position of section as integer value
             or identifier (default: 'center')
-        
+
         **Optional Keywords**:
             - *ax* = matplotlib.axis : append plot to axis (default: create new plot)
             - *figsize* = (x,y) : matplotlib figsize
@@ -257,8 +281,8 @@ class UncertaintyAnalysis(MonteCarlo):
             - *cmap* = matplotlib.cmap : colormap (default: RdBu_r)
             - *fig_filename* = string : figure filename
             - *ve* = float : vertical exaggeration
-            - *layer_labels* = list of strings: labels for each unit in plot            
-        '''
+            - *layer_labels* = list of strings: labels for each unit in plot
+        """
         if not kwds.has_key('cmap'):
             kwds['cmap'] = 'RdBu_r'
         kwds['data'] = np.array(self.p_block[litho_ID])  # specify the data we want to plot
