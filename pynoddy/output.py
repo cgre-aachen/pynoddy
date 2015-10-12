@@ -1004,6 +1004,30 @@ class NoddyTopology(object):
             u = "%s" % (lith1)
             v = "%s" % (lith2)
             
+            #update attributes of u
+            if not topo.graph.has_node(u): #new node, add
+                topo.graph.add_node(u,age=self.graph.node[e[0]]['age'],
+                                      colour=self.graph.node[e[0]]['colour'],
+                                      name=self.graph.node[e[0]]['name'],
+                                      volume=self.graph.node[e[0]]['volume'],
+                                      lithology=self.graph.node[e[0]]['lithology'])
+            
+            else:
+                topo.graph.node[u]['volume'] = topo.graph.node[u]['volume'] + self.graph.node[e[0]]['volume'] #increment volume
+            
+            #do the same for v
+            if not topo.graph.has_node(v): #new node, add
+                topo.graph.add_node(v,age=self.graph.node[e[1]]['age'],
+                                     colour=self.graph.node[e[1]]['colour'],
+                                     name=self.graph.node[e[1]]['name'],
+                                     volume=self.graph.node[e[1]]['volume'],
+                                     lithology=self.graph.node[e[1]]['lithology'])
+            
+            else:
+                topo.graph.node[v]['volume'] = topo.graph.node[v]['volume'] + self.graph.node[e[1]]['volume'] #increment volume
+            
+            
+            #generate edges
             if topo.graph.has_edge(u,v): #edge already exists
                 #do our best to append/merge attributes
                 data = topo.graph.get_edge_data(u,v)
@@ -1625,7 +1649,6 @@ class NoddyTopology(object):
          - *size* = The size of the image to save (in inches). This value will be used as the width and the height
          
         '''
-        
         NoddyTopology.draw_graph_matrix(self.graph,**kwds)
         
     def draw_difference_matrix(self, G2, **kwds):
@@ -1636,6 +1659,7 @@ class NoddyTopology(object):
          - *G2* = A different NoddyTopology or NetworkX Graph to compare to
         
         **Optional Keywords**:
+         - *strat* = A dictionary linking node names to stratigraphic heights and names. Should be as follows { node_name : (height,name) }.
          - *path* = The path to save this image to. If not provided, the image is drawn to the screen
          - *dpi* = The resolution to save this image. Default is 300
          - *size* = The size of the image to save (in inches). This value will be used as the width and the height
