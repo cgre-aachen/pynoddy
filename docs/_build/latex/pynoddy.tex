@@ -19,7 +19,7 @@
 
 
 \title{pynoddy Documentation}
-\date{October 11, 2015}
+\date{October 12, 2015}
 \release{}
 \author{Florian Wellmann, Sam Thiele}
 \newcommand{\sphinxlogo}{\includegraphics{pynoddy_logo_3.pdf}\par}
@@ -352,6 +352,119 @@ geophysical modelling, In: Declan G. De Paor, Editor(s), Computer
 Methods in the Geosciences, Pergamon, 1996, Volume 15, Pages 303-324,
 ISSN 1874-561X, ISBN 9780080424309,
 \href{http://dx.doi.org/10.1016/S1874-561X(96)80027-7}{http://dx.doi.org/10.1016/S1874-561X(96)80027-7}.
+
+
+\chapter{pynoddy.noddy module}
+\label{noddy_module::doc}\label{noddy_module:pynoddy-noddy-module}
+This module contains the Noddy code that is actually used to compute the kinematic models
+defined in .his files.
+
+Note that this code \emph{must be compiled} before \code{pynoddy.compute\_model}
+will function correctly. It should compile easily (plus or minus a few thousand
+warnings) using the \code{compile.sh} script. Windows users will first need to install the GCC
+library (e.g. through MinGW), but otherwise the code requires no non-standard libraries.
+
+\textbf{Usage}
+
+The compiled noddy code can be run directly from the command line to a realisation of a model
+defined in a .his file, or called through \code{pynoddy.compute\_model}.
+
+If the binary is called from the command line it takes the following arguments:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{noddy} \PYG{p}{[}\PYG{n}{history\PYGZus{}file}\PYG{p}{]} \PYG{p}{[}\PYG{n}{output\PYGZus{}name}\PYG{p}{]} \PYG{p}{[}\PYG{n}{calculation\PYGZus{}mode}\PYG{p}{]}
+\end{Verbatim}
+\begin{description}
+\item[{Where:}] \leavevmode\begin{itemize}
+\item {} 
+\code{history\_file} is the filepath (including the extension) of the .his file defining the model
+
+\item {} 
+\code{output\_name} is the name that will be assigned to the noddy output files
+
+\end{itemize}
+
+\item[{The \code{mode} argument determines the type of output that noddy generates, and can be any one of:}] \leavevmode\begin{itemize}
+\item {} 
+BLOCK - calculates the lithology block model
+
+\item {} 
+GEOPHYSICS - calculates the geophysical expression (magnetics and gravity) of the model
+
+\item {} 
+SURFACES - calculates surfaces representing the lithological contacts
+
+\item {} 
+BLOCK\_GEOPHYS - calculates the lithology block model and its geophysical expression
+
+\item {} 
+BLOCK\_SURFACES - calculates the lithology block model and lithological surfaces
+
+\item {} 
+TOPOLOGY - calculates the lithology block model and associated topology information
+
+\item {} 
+ANOM\_FROM\_BLOCK - calculates the geophysical expression of an existing lithology block (output\_name.g12)
+
+\item {} 
+ALL - calculates the block, geophysics, topology and surfaces
+
+\end{itemize}
+
+\end{description}
+
+\textbf{Python Wrapper}
+
+As mentioned earlier, the executable can also be accessed from python via pynoddy.
+This is performed by calling the \code{pynoddy.compute\_model} function, as defined below:
+\index{compute\_model() (in module pynoddy)}
+
+\begin{fulllineitems}
+\phantomsection\label{noddy_module:pynoddy.compute_model}\pysiglinewithargsret{\code{pynoddy.}\bfcode{compute\_model}}{\emph{history}, \emph{output\_name}, \emph{**kwds}}{}
+Call Noddy and compute the history file
+\begin{description}
+\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{history} = string : filename of history file
+
+\item {} 
+\emph{output\_name} = string : basename for output files
+
+\end{itemize}
+
+\item[{\textbf{Optional Keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{sim\_type} = `BLOCK', `GEOPHYSICS', `SURFACES', `BLOCK\_GEOPHYS',
+
+\end{itemize}
+\begin{description}
+\item[{`TOPOLOGY', `BLOCK\_SURFACES', `ALL':}] \leavevmode
+type of Noddy simulation (default: `BLOCK')
+
+\end{description}
+\begin{itemize}
+\item {} \begin{description}
+\item[{\emph{program\_name} = string}] \leavevmode{[}name of program{]}
+(default: noddy.exe or noddy, both checked)
+
+\end{description}
+
+\item {} 
+\emph{verbose} = bool: verbose mode, print out information for debugging (default = False)
+
+\end{itemize}
+
+\item[{\textbf{Returns}:}] \leavevmode
+-Returns any text outputted by the noddy executable.
+
+\end{description}
+
+\end{fulllineitems}
+
+
+It is worth noting here that by default pynoddy looks for the compiled Noddy executable in the pynoddy.noddy directory. However
+this can be changed by updating the \code{pynoddy.noddyPath} variable to point to a new executable file (without any extension, .exe
+is added automatically to the path on windows machines).
 
 
 \chapter{pynoddy.topology module}
@@ -1736,7 +1849,7 @@ models here as the base model.
 We start with the history file of a ``Fold and Thrust Belt'' setting
 stored on:
 
-\code{http://virtualexplorer.com.au/special/noddyatlas/ch3/ch3\_5/his/nfold\_thrust.his}
+\code{http://tectonique.net/asg/ch3/ch3\_5/his/fold\_thrust.his}
 
 The file can directly be downloaded and opened with pynoddy:
 
@@ -3512,7 +3625,7 @@ Directly load a Noddy history from a URL
 
 This method is useful to load a model from the Structural Geophysics
 Atlas on the pages of the Virtual Explorer.
-See: \href{http://virtualexplorer.com.au/special/noddyatlas/index.html}{http://virtualexplorer.com.au/special/noddyatlas/index.html}
+See: \href{http://tectonique.net/asg}{http://tectonique.net/asg}
 \begin{description}
 \item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
 \item {} 
@@ -4159,6 +4272,9 @@ Draws an adjacency matrix containing the difference between this topology and th
 \end{itemize}
 
 \item[{\textbf{Optional Keywords}:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{strat} = A dictionary linking node names to stratigraphic heights and names. Should be as follows \{ node\_name : (height,name) \}.
+
 \item {} 
 \emph{path} = The path to save this image to. If not provided, the image is drawn to the screen
 
@@ -5193,426 +5309,10 @@ Update model computation
 \label{pynoddy:montecarlo-class}
 This class provides the basic functionality to perform MonteCarlo error propagation
 experiments with Noddy.
-\phantomsection\label{pynoddy:module-pynoddy.experiment.MonteCarlo}\index{pynoddy.experiment.MonteCarlo (module)}
-Created on Monday Jul 13 10:09:55 2015
-
-@author: Sam Thiele
-\index{MonteCarlo (class in pynoddy.experiment.MonteCarlo)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo}\pysiglinewithargsret{\strong{class }\code{pynoddy.experiment.MonteCarlo.}\bfcode{MonteCarlo}}{\emph{history}, \emph{parameters}, \emph{base\_name='out'}}{}
-Bases: {\hyperref[pynoddy:pynoddy.experiment.Experiment]{\emph{\code{pynoddy.experiment.Experiment}}}}
-
-Perform Monte Carlo simulations on a model using defined input statistics
-\index{clean() (pynoddy.experiment.MonteCarlo.MonteCarlo static method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.clean}\pysiglinewithargsret{\strong{static }\bfcode{clean}}{\emph{path}, \emph{basename=None}, \emph{**kwds}}{}~\begin{quote}
-
-Deletes files and folders created during Monte Carlo simulations
-\end{quote}
-\begin{description}
-\item[{\textbf{Arguments}}] \leavevmode\begin{itemize}
-\item {} 
-\emph{path} = The directory to search. Subdirectories are included in the search.
-
-\item {} 
-\emph{basename} = The basename of files to delete. If left as None (default) all files are deleted.
-
-\end{itemize}
-
-\item[{\textbf{Optional Kewords}}] \leavevmode\begin{itemize}
-\item {} 
-\emph{delete\_noddy\_working\_files} = If True, noddy working files are deleled. Default is True.
-
-\item {} 
-\emph{delete\_noddy\_history\_files} = If True, noddy history files are deleted. Default is True.
-
-\item {} 
-\emph{delete\_topology\_files} = If True, topology files are deleted. Default is True.
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-\index{cleanup() (pynoddy.experiment.MonteCarlo.MonteCarlo method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.cleanup}\pysiglinewithargsret{\bfcode{cleanup}}{\emph{**kwds}}{}
-Deletes files and folders created during Monte Carlo simulations
-\begin{description}
-\item[{\textbf{Optional Kewords}}] \leavevmode\begin{itemize}
-\item {} 
-\emph{delete\_noddy\_working\_files} = If True, noddy working files are deleled. Default is True.
-
-\item {} 
-\emph{delete\_noddy\_history\_files} = If True, noddy history files are deleted. Default is True.
-
-\item {} 
-\emph{delete\_topology\_files} = If True, topology files are deleted. Default is True.
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-\index{generate\_model\_instances() (pynoddy.experiment.MonteCarlo.MonteCarlo method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.generate_model_instances}\pysiglinewithargsret{\bfcode{generate\_model\_instances}}{\emph{path}, \emph{count}, \emph{**kwds}}{}
-Generates the specified of randomly varied Noddy models.
-\begin{description}
-\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{path} = The directory that Noddy models should be generated in
-
-\item {} 
-\emph{count} = The number of random variations to generate
-
-\end{itemize}
-
-\item[{\textbf{Optional Kewords}:}] \leavevmode\begin{itemize}
-\item {} \begin{description}
-\item[{\emph{threads} = The number of seperate threads to run when generating noddy models. Note that RAM is }] \leavevmode
-often a limiting factor (at this point every thread requires at least \textasciitilde{}1Gb of ram).
-
-\end{description}
-
-\end{itemize}
-
-\end{description}
-\begin{itemize}
-\item {} \begin{description}
-\item[{\emph{sim\_type} = The type of simulation to run. This can be any of: `BLOCK', `GEOPHYSICS', `SURFACES', }] \leavevmode
-`BLOCK\_GEOPHYS', `TOPOLOGY', `BLOCK\_SURFACES', `ALL'. Default is `BLOCK'.
-
-\end{description}
-
-\item {} \begin{description}
-\item[{\emph{write\_changes} = A file (path) to write the parameters used in each model realisation to (minus the extension). }] \leavevmode
-The default is None (no file written).
-
-\end{description}
-
-\item {} 
-\emph{verbose} = True if this function sends output to the print buffer. Default is True.
-
-\item {} 
-\emph{seed} = The random seed to use in this experiment. If not specified, threads are seeded with PID * TID * time ({\color{red}\bfseries{}*}nodeID).
-
-\end{itemize}
-
-\end{fulllineitems}
-
-\index{generate\_models\_from\_existing\_histories() (pynoddy.experiment.MonteCarlo.MonteCarlo static method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.generate_models_from_existing_histories}\pysiglinewithargsret{\strong{static }\bfcode{generate\_models\_from\_existing\_histories}}{\emph{path}, \emph{**kwds}}{}
-Processes all existing his files in the given directory
-\begin{description}
-\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{path} = The directory that will be searched for .his files
-
-\end{itemize}
-
-\item[{\textbf{Optional Kewords}:}] \leavevmode\begin{itemize}
-\item {} \begin{description}
-\item[{\emph{threads} = The number of seperate threads to run when generating noddy models. For optimum}] \leavevmode
-performance this should equal the number of logical cores - 1, unless RAM is a 
-limiting factor (at this point every thread requires at least 2Gb of ram).
-
-\end{description}
-
-\end{itemize}
-
-\end{description}
-\begin{itemize}
-\item {} \begin{description}
-\item[{\emph{sim\_type} = The type of simulation to run. This can be any of: `BLOCK', `GEOPHYSICS', `SURFACES', }] \leavevmode
-`BLOCK\_GEOPHYS', `TOPOLOGY', `BLOCK\_SURFACES', `ALL'. Default is `BLOCK'.
-
-\end{description}
-
-\item {} \begin{description}
-\item[{\emph{force\_recalculate} = Forces the recalculation of existing noddy files. Default is False, hence this}] \leavevmode
-function will not run history files that are already associated with Noddy data files.
-
-\end{description}
-
-\item {} 
-\emph{verbose} = True if this function sends output to the print buffer. Default is True.
-
-\end{itemize}
-
-\end{fulllineitems}
-
-\index{load\_noddy\_realisations() (pynoddy.experiment.MonteCarlo.MonteCarlo static method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.load_noddy_realisations}\pysiglinewithargsret{\strong{static }\bfcode{load\_noddy\_realisations}}{\emph{path}, \emph{**args}}{}
-Loads all model realisations and returns them as an array of NoddyOutput objects
-\begin{description}
-\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
-\item {} \begin{description}
-\item[{\emph{path} = The root directory that models should be loaded from. All models with the same base\_name}] \leavevmode
-as this class will be loaded (including subdirectoriess)
-
-\end{description}
-
-\end{itemize}
-
-\item[{\textbf{Optional Arguments}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{verbose} = True if this function should write debug information to the print buffer. Default is True.
-
-\end{itemize}
-
-\item[{\textbf{Returns}:}] \leavevmode\begin{itemize}
-\item {} 
-a list of NoddyOutput objects
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-\index{load\_topology\_realisations() (pynoddy.experiment.MonteCarlo.MonteCarlo static method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.MonteCarlo.MonteCarlo.load_topology_realisations}\pysiglinewithargsret{\strong{static }\bfcode{load\_topology\_realisations}}{\emph{path}, \emph{**args}}{}
-Loads all model topology realisations and returns them as an array of NoddyTopology objects
-\begin{description}
-\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
-\item {} \begin{description}
-\item[{\emph{path} = The root directory that models should be loaded from. All models with the same base\_name}] \leavevmode
-as this class will be loaded (including subdirectoriess)
-
-\end{description}
-
-\end{itemize}
-
-\item[{\textbf{Optional Arguments}:}] \leavevmode\begin{itemize}
-\item {} \begin{description}
-\item[{\emph{load\_attributes} = True if nodes and edges in the topology network should be attributed with properties such as volume}] \leavevmode
-and surface area and lithology colour. Default is True.
-
-\end{description}
-
-\item {} 
-\emph{verbose} = True if this function should write debug information to the print buffer. Default is True.
-
-\end{itemize}
-
-\item[{\textbf{Returns}:}] \leavevmode\begin{itemize}
-\item {} 
-a list of NoddyTopology objects
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-
-\end{fulllineitems}
-
 
 
 \subsection{SensitivityAnalysis class}
-\label{pynoddy:sensitivityanalysis-class}\label{pynoddy:module-pynoddy.experiment.SensitivityAnalysis}\index{pynoddy.experiment.SensitivityAnalysis (module)}\index{SensitivityAnalysis (class in pynoddy.experiment.SensitivityAnalysis)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis}\pysiglinewithargsret{\strong{class }\code{pynoddy.experiment.SensitivityAnalysis.}\bfcode{SensitivityAnalysis}}{\emph{history=None}, \emph{**kwds}}{}
-Bases: {\hyperref[pynoddy:pynoddy.experiment.Experiment]{\emph{\code{pynoddy.experiment.Experiment}}}}
-
-Sensitivity analysis experiments for kinematic models
-
-Sensitivity analysis with methods from the SALib package:
-\href{https://github.com/jdherman/SALib}{https://github.com/jdherman/SALib}
-\index{add\_sampling\_line() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.add_sampling_line}\pysiglinewithargsret{\bfcode{add\_sampling\_line}}{\emph{x}, \emph{y}, \emph{**kwds}}{}
-Define a vertical sampling line, for example as a drillhole at position (x,y)
-
-As default, the entire length for the model extent is exported. Ohter depth ranges
-can be defined with optional keywords.
-\begin{description}
-\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{x} = float: x-position of drillhole
-
-\end{itemize}
-\begin{itemize}
-\item {} 
-\emph{y} = float: y-position of drillhole
-
-\end{itemize}
-
-\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{z\_min} = float : minimum z-value (default: model origin)
-
-\item {} 
-\emph{z\_max} = float : maximum z-value (default: surface)
-
-\item {} 
-\emph{label} = string : add a label to line (e.g. drillhole name, location, etc.)
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-\index{create\_params\_file() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.create_params_file}\pysiglinewithargsret{\bfcode{create\_params\_file}}{\emph{**kwds}}{}
-Create params file from defined parameter statistics for SALib analysis
-
-Note: parameter statistics have to be defined in self.param\_stats dictionary
-(use self.set\_parameter\_statistics)
-\begin{description}
-\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{filename} = string : name of parameter file (default: params\_file\_tmp.txt)
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-\index{determine\_distances() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.determine_distances}\pysiglinewithargsret{\bfcode{determine\_distances}}{\emph{**kwds}}{}
-Determine distances for a given parameter sets, based on defined sampling lines
-\begin{description}
-\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{param\_values} = list of parameter values (as, for example, created by SALib methods)
-
-\item {} 
-\emph{resolution} = float : model resolution to calculate distance at sampling lines
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-\index{distance() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.distance}\pysiglinewithargsret{\bfcode{distance}}{\emph{**kwds}}{}
-Calculate distance between current state and base model
-
-The standard distance is calculated as L1 norm of relative stratigraphic difference
-along sampling lines.
-\begin{description}
-\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{norm} = `L1', `L2' : norm to calculate distance
-
-\item {} 
-\emph{resolution} = float : model resolution to calculate distance at sampling lines
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-\index{get\_model\_lines() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.get_model_lines}\pysiglinewithargsret{\bfcode{get\_model\_lines}}{\emph{**kwds}}{}
-Get base model along the defined sampling lines
-\begin{description}
-\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{model\_type} = `base', `current' : model type (select base to get freezed model)
-
-\item {} 
-\emph{resolution} = float : model resolution to calculate distance at sampling lines
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-\index{perform\_analsis() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.perform_analsis}\pysiglinewithargsret{\bfcode{perform\_analsis}}{\emph{n=10}, \emph{**kwds}}{}
-Perform Sobol sensitivity analysis with SALib methods
-\begin{description}
-\item[{\textbf{Arguments}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{n} = int : number of sobol iterations (default: 10)
-
-\end{itemize}
-
-\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{calc\_second\_order} = bool : second order stats (default: True)
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-\index{plot\_distances() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.plot_distances}\pysiglinewithargsret{\bfcode{plot\_distances}}{\emph{**kwds}}{}
-Create diagnostic plot of calculated distances
-\begin{description}
-\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{savefig} = bool : save figure to file (default: show)
-
-\item {} 
-\emph{fig\_filename} = string : figure filename (default: distances.png)
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-\index{plot\_sensitivity\_matrix() (pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis method)}
-
-\begin{fulllineitems}
-\phantomsection\label{pynoddy:pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis.plot_sensitivity_matrix}\pysiglinewithargsret{\bfcode{plot\_sensitivity\_matrix}}{\emph{**kwds}}{}
-Create a plot of the sensitivity matrix
-\begin{description}
-\item[{\textbf{Optional keywords}:}] \leavevmode\begin{itemize}
-\item {} 
-\emph{savefig} = bool : save figure to file (default: show)
-
-\item {} 
-\emph{fig\_filename} = string : figure filename (default: distances.png)
-
-\end{itemize}
-
-\end{description}
-
-\end{fulllineitems}
-
-
-\end{fulllineitems}
-
-
+\label{pynoddy:sensitivityanalysis-class}
 
 \renewcommand{\indexname}{Python Module Index}
 \begin{theindex}
@@ -5621,8 +5321,6 @@ Create a plot of the sensitivity matrix
 \item {\texttt{pynoddy}}, \pageref{pynoddy:module-pynoddy}
 \item {\texttt{pynoddy.events}}, \pageref{pynoddy:module-pynoddy.events}
 \item {\texttt{pynoddy.experiment}}, \pageref{pynoddy:module-pynoddy.experiment}
-\item {\texttt{pynoddy.experiment.MonteCarlo}}, \pageref{pynoddy:module-pynoddy.experiment.MonteCarlo}
-\item {\texttt{pynoddy.experiment.SensitivityAnalysis}}, \pageref{pynoddy:module-pynoddy.experiment.SensitivityAnalysis}
 \item {\texttt{pynoddy.history}}, \pageref{pynoddy:module-pynoddy.history}
 \item {\texttt{pynoddy.output}}, \pageref{pynoddy:module-pynoddy.output}
 \end{theindex}

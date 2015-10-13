@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Gippsland Basin Uncertainty Study &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="gippsland-basin-uncertainty-study">
+<h1>Gippsland Basin Uncertainty Study<a class="headerlink" href="#gippsland-basin-uncertainty-study" title="Permalink to this headline">¶</a></h1>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">css_file</span> <span class="o">=</span> <span class="s">&#39;pynoddy.css&#39;</span>
+<span class="n">HTML</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">css_file</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<style>
+
+@font-face {
+    font-family: "Computer Modern";
+    src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');
+}
+
+#notebook_panel { /* main background */
+    background: #888;
+    color: #f6f6f6;
+}
+
+div.cell { /* set cell width to about 80 chars */
+    width: 800px;
+}
+
+div #notebook { /* centre the content */
+    background: #fff; /* white background for content */
+    width: 1000px;
+    margin: auto;
+    padding-left: 1em;
+}
+
+#notebook li { /* More space between bullet points */
+margin-top:0.8em;
+}
+
+/* draw border around running cells */
+div.cell.border-box-sizing.code_cell.running {
+    border: 3px solid #111;
+}
+
+/* Put a solid color box around each cell and its output, visually linking them together */
+div.cell.code_cell {
+    background: #ddd;  /* rgba(230,230,230,1.0);  */
+    border-radius: 10px; /* rounded borders */
+    width: 900px;
+    padding: 1em;
+    margin-top: 1em;
+}
+
+div.text_cell_render{
+    font-family: 'Arvo' sans-serif;
+    line-height: 130%;
+    font-size: 115%;
+    width:700px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+
+/* Formatting for header cells */
+.text_cell_render h1 {
+    font-family: 'Alegreya Sans', sans-serif;
+    /* font-family: 'Tangerine', serif; */
+    /* font-family: 'Libre Baskerville', serif; */
+    /* font-family: 'Karla', sans-serif;
+    /* font-family: 'Lora', serif; */
+    font-size: 50px;
+    text-align: center;
+    /* font-style: italic; */
+    font-weight: 400;
+    /* font-size: 40pt; */
+    /* text-shadow: 4px 4px 4px #aaa; */
+    line-height: 120%;
+    color: rgb(12,85,97);
+    margin-bottom: .5em;
+    margin-top: 0.1em;
+    display: block;
+}
+.text_cell_render h2 {
+    /* font-family: 'Arial', serif; */
+    /* font-family: 'Lora', serif; */
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 700;
+    font-size: 24pt;
+    line-height: 100%;
+    /* color: rgb(171,165,131); */
+    color: rgb(12,85,97);
+    margin-bottom: 0.1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h3 {
+    font-family: 'Arial', serif;
+    margin-top:12px;
+    margin-bottom: 3px;
+    font-style: italic;
+    color: rgb(95,92,72);
+}
+
+.text_cell_render h4 {
+    font-family: 'Arial', serif;
+}
+
+.text_cell_render h5 {
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 300;
+    font-size: 16pt;
+    color: grey;
+    font-style: italic;
+    margin-bottom: .1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h6 {
+    font-family: 'PT Mono', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    color: grey;
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+.CodeMirror{
+        font-family: "PT Mono";
+        font-size: 100%;
+}
+
+</style><div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c">#import the ususal libraries + the pynoddy UncertaintyAnalysis class</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">pynoddy</span>
+<span class="c"># from pynoddy.experiment.UncertaintyAnalysis import UncertaintyAnalysis</span>
+
+<span class="c"># adjust some settings for matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="c"># print rcParams</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="c"># determine path of repository to set paths corretly below</span>
+<span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">&#39;../..&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pynoddy.history</span>
+<span class="kn">import</span> <span class="nn">pynoddy.experiment.uncertainty_analysis</span>
+<span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="section" id="the-gippsland-basin-model">
+<h2>The Gippsland Basin Model<a class="headerlink" href="#the-gippsland-basin-model" title="Permalink to this headline">¶</a></h2>
+<p>In this example we will apply the UncertaintyAnalysis class we have been
+playing with in the previous example to a &#8216;realistic&#8217; (though highly
+simplified) geological model of the Gippsland Basin, a petroleum field
+south of Victoria, Australia. The model has been included as part of the
+PyNoddy directory, and can be found at
+pynoddy/examples/GBasin_Ve1_V4.his</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">uncertainty_analysis</span><span class="p">)</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="p">)</span>
+
+<span class="c"># the model itself is now part of the repository, in the examples directory:</span>
+<span class="n">history_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s">&quot;examples/GBasin_Ve1_V4.his&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>While we could hard-code parameter variations here, it is much easier to
+store our statistical information in a csv file, so we load that
+instead. This file accompanies the GBasin_Ve1_V4 model in the pynoddy
+directory.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">params</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span><span class="s">&quot;examples/gipps_params.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-randomised-model-realisations">
+<h2>Generate randomised model realisations<a class="headerlink" href="#generate-randomised-model-realisations" title="Permalink to this headline">¶</a></h2>
+<p>Now we have all the information required to perform a Monte-Carlo based
+uncertainty analysis. In this example we will generate 100 model
+realisations and use them to estimate the information entropy of each
+voxel in the model, and hence visualise uncertainty. It is worth noting
+that in reality we would need to produce several thousand model
+realisations in order to adequately sample the model space, however for
+convinience we only generate a small number of models here.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># %%timeit   # Uncomment to test execution time</span>
+<span class="n">ua</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">uncertainty_analysis</span><span class="o">.</span><span class="n">UncertaintyAnalysis</span><span class="p">(</span><span class="n">history_file</span><span class="p">,</span><span class="n">params</span><span class="p">)</span>
+<span class="n">ua</span><span class="o">.</span><span class="n">estimate_uncertainty</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A few utility functions for visualising uncertainty have been included
+in the UncertaintyAnalysis class, and can be used to gain an
+understanding of the most uncertain parts of the Gippsland Basin. The
+probabability voxets for each lithology can also be accessed using
+<em>ua.p_block[lithology_id]</em>, and the information entropy voxset
+accessed using <em>ua.e_block</em>.</p>
+<p>Note that the Gippsland Basin model has been computed with a vertical
+exagguration of 3, in order to highlight vertical structure.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">ua</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;x&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">ua</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+<span class="n">ua</span><span class="o">.</span><span class="n">plot_entropy</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure" id="id1">
+<img alt="png" src="../_images/15-Gippsland-Basin-Uncertainty_11_0.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<div class="figure" id="id2">
+<img alt="png" src="../_images/15-Gippsland-Basin-Uncertainty_11_1.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<p>It is immediately apparent (and not particularly surprising) that
+uncertainty in the Gippsland Basin model is concentrated around the thin
+(but economically interesting) formations comprising the La Trobe and
+Strzelecki Groups. The faults in the model also contribute to this
+uncertainty, though not by a huge amount.</p>
+</div>
+<div class="section" id="exporting-results-to-vtk-for-visualisation">
+<h2>Exporting results to VTk for visualisation<a class="headerlink" href="#exporting-results-to-vtk-for-visualisation" title="Permalink to this headline">¶</a></h2>
+<p>It is also possible (and useful!) to export the uncertainty information
+to .vtk format for 3D analysis in software such as ParaView. This can be
+done as follows:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">ua</span><span class="o">.</span><span class="n">extent_x</span> <span class="o">=</span> <span class="mi">29000</span>
+<span class="n">ua</span><span class="o">.</span><span class="n">extent_y</span> <span class="o">=</span> <span class="mi">21600</span>
+<span class="n">ua</span><span class="o">.</span><span class="n">extent_z</span> <span class="o">=</span> <span class="mi">4500</span>
+
+<span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span><span class="s">&quot;sandbox/GBasin_Uncertainty&quot;</span><span class="p">)</span>
+<span class="n">ua</span><span class="o">.</span><span class="n">export_to_vtk</span><span class="p">(</span><span class="n">vtk_filename</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">ua</span><span class="o">.</span><span class="n">e_block</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The resulting vtr file can (in the sandbox directory) can now be loaded
+and properly analysed in a 3D visualisation package such as ParaView.</p>
+<div class="figure" id="id3">
+<img alt="3-D visualisation of cell information entropy" src="../_images/3D-render.png" />
+<p class="caption"><span class="caption-text">3-D visualisation of cell information entropy</span></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Gippsland Basin Uncertainty Study</a><ul>
+<li><a class="reference internal" href="#the-gippsland-basin-model">The Gippsland Basin Model</a></li>
+<li><a class="reference internal" href="#generate-randomised-model-realisations">Generate randomised model realisations</a></li>
+<li><a class="reference internal" href="#exporting-results-to-vtk-for-visualisation">Exporting results to VTk for visualisation</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/15-Gippsland-Basin-Uncertainty.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

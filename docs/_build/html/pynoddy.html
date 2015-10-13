@@ -1,0 +1,1781 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pynoddy modules, classes and functions &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="index.html" />
+    <link rel="prev" title="Simulation of a Noddy history and analysis of its voxel topology" href="notebooks/9-Topology.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="notebooks/9-Topology.html" title="Simulation of a Noddy history and analysis of its voxel topology"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pynoddy-modules-classes-and-functions">
+<h1>Pynoddy modules, classes and functions<a class="headerlink" href="#pynoddy-modules-classes-and-functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="basic-modules-low-level-access">
+<h2>Basic modules (low-level access)<a class="headerlink" href="#basic-modules-low-level-access" title="Permalink to this headline">¶</a></h2>
+<p>The modules in this section provide low-level access to the functionality
+in Noddy. Basically, these modules provide parsers for Noddy input and
+output files and class definitions for suitable Noddy elements.</p>
+<div class="section" id="module-pynoddy">
+<span id="main-module"></span><h3>Main module<a class="headerlink" href="#module-pynoddy" title="Permalink to this headline">¶</a></h3>
+<p>Package initialization file for pynoddy</p>
+<dl class="function">
+<dt id="pynoddy.compute_model">
+<code class="descclassname">pynoddy.</code><code class="descname">compute_model</code><span class="sig-paren">(</span><em>history</em>, <em>output_name</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy.html#compute_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.compute_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call Noddy and compute the history file</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>history</em> = string : filename of history file</li>
+<li><em>output_name</em> = string : basename for output files</li>
+</ul>
+</dd>
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first simple">
+<li><em>sim_type</em> = &#8216;BLOCK&#8217;, &#8216;GEOPHYSICS&#8217;, &#8216;SURFACES&#8217;, &#8216;BLOCK_GEOPHYS&#8217;,</li>
+</ul>
+<dl class="docutils">
+<dt>&#8216;TOPOLOGY&#8217;, &#8216;BLOCK_SURFACES&#8217;, &#8216;ALL&#8217;:</dt>
+<dd>type of Noddy simulation (default: &#8216;BLOCK&#8217;)</dd>
+</dl>
+<ul class="last">
+<li><dl class="first docutils">
+<dt><em>program_name</em> = string <span class="classifier-delimiter">:</span> <span class="classifier">name of program</span></dt>
+<dd><p class="first last">(default: noddy.exe or noddy, both checked)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><em>verbose</em> = bool: verbose mode, print out information for debugging (default = False)</p>
+</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>-Returns any text outputted by the noddy executable.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pynoddy.compute_topology">
+<code class="descclassname">pynoddy.</code><code class="descname">compute_topology</code><span class="sig-paren">(</span><em>rootname</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy.html#compute_topology"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.compute_topology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call the topology executable to compute a models topology.</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>rootname</em> = string : rootname of the noddy model to calculate topology for</li>
+</ul>
+</dd>
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><em>ensure_discrete_volumes</em> = True if topological units are broken down into</dt>
+<dd><p class="first last">separate, spatially continuous volumes. Otherwise
+some topological units may represent two separate
+rock volumes (eg. if a folded unit has been truncated
+by an unconformity). Default is True, though this is
+a global variable (pynoddy.ensure_discrete_volumes)
+so it can be changed during runtime.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>null_volume_threshold</em> = The smallest non-null volume. volumes smaller than this are</dt>
+<dd><p class="first last">ignored by the topology algorithm (as they represent pixelation artefacts).
+The default is 20 voxels, though this is a global variable and can be changed
+with pynoddy.null_volume_threshold.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong></dt>
+<dd>-Returns any text outputted by the topology executable, including errors.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pynoddy.history">
+<span id="history-file-parser-pynoddy-history"></span><h3>History file parser: pynoddy.history<a class="headerlink" href="#module-pynoddy.history" title="Permalink to this headline">¶</a></h3>
+<p>Noddy history file wrapper
+Created on 24/03/2014</p>
+<p>&#64;author: Florian Wellmann</p>
+<dl class="class">
+<dt id="pynoddy.history.NoddyHistory">
+<em class="property">class </em><code class="descclassname">pynoddy.history.</code><code class="descname">NoddyHistory</code><span class="sig-paren">(</span><em>history=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class container for Noddy history files</p>
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.add_event">
+<code class="descname">add_event</code><span class="sig-paren">(</span><em>event_type</em>, <em>event_options</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.add_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.add_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an event type to history</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first simple">
+<li><em>event_type</em> = string : type of event, legal options to date are:</li>
+</ul>
+<p class="last">&#8216;stratigraphy&#8217;, &#8216;fault&#8217;, &#8216;fold&#8217;, &#8216;unconformity&#8217;
+- <em>event_options</em> = list : required options to create event (event dependent)</p>
+</dd>
+<dt><strong>Optional keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>event_num</em> = int : event number (default: implicitly defined with increasing counter)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.change_cube_size">
+<code class="descname">change_cube_size</code><span class="sig-paren">(</span><em>cube_size</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.change_cube_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.change_cube_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the model cube size (isotropic)</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>cube_size</em> = float : new model cube size</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.change_event_params">
+<code class="descname">change_event_params</code><span class="sig-paren">(</span><em>changes_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.change_event_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.change_event_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change multiple event parameters according to settings in changes_dict</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>changes_dict</em> = dictionary : entries define relative changes for (multiple) parameters</li>
+</ul>
+</dd>
+</dl>
+<p>Per default, the values in the dictionary are added to the event parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.copy_events">
+<code class="descname">copy_events</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.copy_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.copy_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of the current event state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.create_footer_from_template">
+<code class="descname">create_footer_from_template</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.create_footer_from_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.create_footer_from_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create model footer (with all settings) from template</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.create_new_history">
+<code class="descname">create_new_history</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.create_new_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.create_new_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Methods to create a Noddy model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.determine_events">
+<code class="descname">determine_events</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.determine_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.determine_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine events and save line numbers</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<dl class="last docutils">
+<dt>Parsing of the history file is based on a fixed Noddy output order. </dt>
+<dd>If this is, for some reason (e.g. in a changed version of Noddy) not the case, then
+this parsing might fail!</dd>
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li>verbose = True if this function is should write to the print bufffer, otherwise False. Default is False.</li>
+</ul>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.determine_model_stratigraphy">
+<code class="descname">determine_model_stratigraphy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.determine_model_stratigraphy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.determine_model_stratigraphy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine stratigraphy of entire model from all events</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.get_cube_size">
+<code class="descname">get_cube_size</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.get_cube_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.get_cube_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine cube size for model export
+<strong>Optional Args</strong></p>
+<blockquote>
+<div>-type: choose geology or geophysics cube size to return. Should be either &#8216;Geology&#8217; (default) or &#8216;Geophysics&#8217;</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.get_date_saved">
+<code class="descname">get_date_saved</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.get_date_saved"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.get_date_saved" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the last savepoint of the file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.get_drillhole_data">
+<code class="descname">get_drillhole_data</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.get_drillhole_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.get_drillhole_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get geology values along 1-D profile at position x,y with a 1 m resolution</p>
+<p>The following steps are performed:
+1. creates a copy of the entire object,
+2. sets values of origin, extent and geology cube size, 
+3. saves model to a temporary file, 
+4. runs Noddy on that file
+5. opens and analyses output
+6. deletes temporary files</p>
+<p>Note: this method only works if write access to current directory
+is enabled and noddy can be executed!</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>x</em> = float: x-position of drillhole</li>
+<li><em>y</em> = float: y-position of drillhole</li>
+</ul>
+</dd>
+<dt><strong>Optional Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>z_min</em> = float : minimum depth of drillhole (default: model range)</li>
+<li><em>z_max</em> = float : maximum depth of drillhole (default: model range)</li>
+<li><em>resolution</em> = float : resolution along profile (default: 1 m)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.get_ev_counter">
+<code class="descname">get_ev_counter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.get_ev_counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.get_ev_counter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event counter for implicit and continuous definition of events</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.get_event_param">
+<code class="descname">get_event_param</code><span class="sig-paren">(</span><em>event_number</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.get_event_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.get_event_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value of a given parameter for a given event.</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first simple">
+<li><em>event_number</em> = the event to get a parameter for (integer)</li>
+<li><em>name</em> = the name of the parameter to retreive (string)</li>
+</ul>
+<dl class="last docutils">
+<dt><strong>Returns</strong></dt>
+<dd><ul class="first last simple">
+<li>Returns the value of the request parameter, or None if it does not 
+exists.</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.get_event_params">
+<code class="descname">get_event_params</code><span class="sig-paren">(</span><em>event_number</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.get_event_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.get_event_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the parameter dictionary for a given event.</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first simple">
+<li><em>event_number</em> = the event to get a parameter for (integer)</li>
+</ul>
+<dl class="last docutils">
+<dt><strong>Returns</strong></dt>
+<dd><ul class="first last simple">
+<li>Returns the parameter dictionary for the requested event</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.get_extent">
+<code class="descname">get_extent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.get_extent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.get_extent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get model extent and return and store in local variables</p>
+<p><strong>Returns</strong>: (extent_x, extent_y, extent_z)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.get_filename">
+<code class="descname">get_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.get_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.get_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine model filename from history file/ header</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.get_footer_lines">
+<code class="descname">get_footer_lines</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.get_footer_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.get_footer_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the footer lines from self.history_lines</p>
+<p>The footer contains everything below events (all settings, etc.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.get_info_string">
+<code class="descname">get_info_string</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.get_info_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.get_info_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get model information as string</p>
+<dl class="docutils">
+<dt><strong>Optional keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>events_only</em> = bool : only information on events</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.get_origin">
+<code class="descname">get_origin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.get_origin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.get_origin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get coordinates of model origin and return and store in local variables</p>
+<p><strong>Returns</strong>: (origin_x, origin_y, origin_z)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.info">
+<code class="descname">info</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out model information</p>
+<dl class="docutils">
+<dt><strong>Optional keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>events_only</em> = bool : only information on events</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.load_history">
+<code class="descname">load_history</code><span class="sig-paren">(</span><em>history</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.load_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.load_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load Noddy history</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>history</em> = string : Name of Noddy history file</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.load_history_from_url">
+<code class="descname">load_history_from_url</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.load_history_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.load_history_from_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Directly load a Noddy history from a URL</p>
+<p>This method is useful to load a model from the Structural Geophysics
+Atlas on the pages of the Virtual Explorer.
+See: <a class="reference external" href="http://tectonique.net/asg">http://tectonique.net/asg</a></p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>url</em> : url of history file</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.reorder_events">
+<code class="descname">reorder_events</code><span class="sig-paren">(</span><em>reorder_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.reorder_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.reorder_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorder events accoring to assignment in reorder_dict</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>reorder_dict</em> = dict : for example {1 : 2, 2 : 3, 3 : 1}</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.set_event_params">
+<code class="descname">set_event_params</code><span class="sig-paren">(</span><em>params_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.set_event_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.set_event_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>set multiple event parameters according to settings in params_dict</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>params_dict</em> = dictionary : entries to set (multiple) parameters</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.set_extent">
+<code class="descname">set_extent</code><span class="sig-paren">(</span><em>extent_x</em>, <em>extent_y</em>, <em>extent_z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.set_extent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.set_extent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set model extent and update local variables</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>extent_x</em> = float : extent in x-direction</li>
+<li><em>extent_y</em> = float : extent in y-direction</li>
+<li><em>extent_z</em> = float : extent in z-direction</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.set_origin">
+<code class="descname">set_origin</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em>, <em>origin_z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.set_origin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.set_origin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set coordinates of model origin and update local variables</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>origin_x</em> = float : x-location of model origin</li>
+<li><em>origin_y</em> = float : y-location of model origin</li>
+<li><em>origin_z</em> = float : z-location of model origin</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.swap_events">
+<code class="descname">swap_events</code><span class="sig-paren">(</span><em>event_num_1</em>, <em>event_num_2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.swap_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.swap_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Swap two geological events in the timeline</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>event_num_1/2</em> = int : number of events to be swapped (&#8220;order&#8221;)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.update_all_event_properties">
+<code class="descname">update_all_event_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.update_all_event_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.update_all_event_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update properties of all events - in case changes were made</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.update_event_numbers">
+<code class="descname">update_event_numbers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.update_event_numbers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.update_event_numbers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update event numbers in &#8216;Event #&#8217; line in noddy history file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.history.NoddyHistory.write_history">
+<code class="descname">write_history</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/history.html#NoddyHistory.write_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.history.NoddyHistory.write_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write history to new file</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>filename</em> = string : filename of new history file</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">Just love it how easy it is to &#8216;write history&#8217; with Noddy ;-)</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pynoddy.output">
+<span id="output-file-parser-pynoddy-output"></span><h3>Output file parser: pynoddy.output<a class="headerlink" href="#module-pynoddy.output" title="Permalink to this headline">¶</a></h3>
+<p>Noddy output file analysis
+Created on 24/03/2014</p>
+<p>&#64;author: Florian Wellmann, Sam Thiele</p>
+<dl class="class">
+<dt id="pynoddy.output.NoddyGeophysics">
+<em class="property">class </em><code class="descclassname">pynoddy.output.</code><code class="descname">NoddyGeophysics</code><span class="sig-paren">(</span><em>output_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyGeophysics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyGeophysics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Definition to read, analyse, and visualise calculated geophysical responses</p>
+<dl class="method">
+<dt id="pynoddy.output.NoddyGeophysics.read_gravity">
+<code class="descname">read_gravity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyGeophysics.read_gravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyGeophysics.read_gravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read calculated gravity response</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyGeophysics.read_magnetics">
+<code class="descname">read_magnetics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyGeophysics.read_magnetics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyGeophysics.read_magnetics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read caluclated magnetic field response</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pynoddy.output.NoddyOutput">
+<em class="property">class </em><code class="descclassname">pynoddy.output.</code><code class="descname">NoddyOutput</code><span class="sig-paren">(</span><em>output_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class definition for Noddy output analysis</p>
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.compare_dimensions_to">
+<code class="descname">compare_dimensions_to</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.compare_dimensions_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.compare_dimensions_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare model dimensions to another model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.determine_unit_volumes">
+<code class="descname">determine_unit_volumes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.determine_unit_volumes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.determine_unit_volumes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine volumes of geological units in the discretized block model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.export_to_vtk">
+<code class="descname">export_to_vtk</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.export_to_vtk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.export_to_vtk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export model to VTK</p>
+<p>Export the geology blocks to VTK for visualisation of the entire 3-D model in an
+external VTK viewer, e.g. Paraview.</p>
+<p>..Note:: Requires pyevtk, available for free on: <a class="reference external" href="https://github.com/firedrakeproject/firedrake/tree/master/python/evtk">https://github.com/firedrakeproject/firedrake/tree/master/python/evtk</a></p>
+<dl class="docutils">
+<dt><strong>Optional keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>vtk_filename</em> = string : filename of VTK file (default: output_name)</li>
+<li><em>data</em> = np.array : data array to export to VKT (default: entire block model)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.get_section_lines">
+<code class="descname">get_section_lines</code><span class="sig-paren">(</span><em>direction='y'</em>, <em>position='center'</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.get_section_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.get_section_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and returns a list of lines representing a section block through the model</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>direction</em> = &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217; : coordinate direction of section plot (default: &#8216;y&#8217;)</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>position</em> = int or &#8216;center&#8217; <span class="classifier-delimiter">:</span> <span class="classifier">cell position of section as integer value</span></dt>
+<dd><p class="first last">or identifier (default: &#8216;center&#8217;)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Returns</strong>:
+A tuple of lists of dictionaries.... ie:
+( [ dictionary of x coordinates, with lithology pairs as keys, separated by an underscore],</p>
+<blockquote>
+<div>[ dictionary of y coordinates, with lithology pairs as keys, separated by an underscore],
+[ dictionary of z coordinates, with lithology pairs as keys, separated by an underscore],
+[ dictionary of colours, with lithologies as keys])</div></blockquote>
+<p>For example: get_section_lines()[0][&#8220;1_2&#8221;] returns a list of all the x coordinates from the 
+contact between lithology 1 and lithology 2. Note that the smaller lithology index always
+comes first in the code.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.get_section_voxels">
+<code class="descname">get_section_voxels</code><span class="sig-paren">(</span><em>direction='y'</em>, <em>position='center'</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.get_section_voxels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.get_section_voxels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and returns section block through the model</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>direction</em> = &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217; : coordinate direction of section plot (default: &#8216;y&#8217;)</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>position</em> = int or &#8216;center&#8217; <span class="classifier-delimiter">:</span> <span class="classifier">cell position of section as integer value</span></dt>
+<dd><p class="first last">or identifier (default: &#8216;center&#8217;)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>data</em> = np.array : data to plot, if different to block data itself</li>
+<li><em>litho_filter</em> = a list of lithologies to draw. All others will be ignored.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.get_surface_grid">
+<code class="descname">get_surface_grid</code><span class="sig-paren">(</span><em>lithoID</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.get_surface_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.get_surface_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a grid of lines that define a grid on the specified surface. Note that this cannot
+handle layers that are repeated in the z direction...</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><em>lithoID</em> - the top surface of this lithology will be calculated. If a list is passed,</dt>
+<dd><p class="first last">the top surface of each lithology in the list is calculated.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><strong>Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>res</em> - the resolution to sample at. Default is 2 (ie. every second voxel is sampled).</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>a tuple containing lists of tuples of x, y and z coordinate dictionaries and colour dictionaries, 
+one containing the east-west lines and one the north-south lines: ((x,y,z,c),(x,y,z,c)). THe dictionary
+keys are the lithoID&#8217;s passed in the lithoID parameter.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.load_geology">
+<code class="descname">load_geology</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.load_geology"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.load_geology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load block geology ids from .g12 output file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.load_model_info">
+<code class="descname">load_model_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.load_model_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.load_model_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load information about model discretisation from .g00 file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.plot_section">
+<code class="descname">plot_section</code><span class="sig-paren">(</span><em>direction='y'</em>, <em>position='center'</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.plot_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.plot_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a section block through the model</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>direction</em> = &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217; : coordinate direction of section plot (default: &#8216;y&#8217;)</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>position</em> = int or &#8216;center&#8217; <span class="classifier-delimiter">:</span> <span class="classifier">cell position of section as integer value</span></dt>
+<dd><p class="first last">or identifier (default: &#8216;center&#8217;)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>ax</em> = matplotlib.axis : append plot to axis (default: create new plot)</p>
+</li>
+<li><p class="first"><em>figsize</em> = (x,y) : matplotlib figsize</p>
+</li>
+<li><p class="first"><em>colorbar</em> = bool : plot colorbar (default: True)</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>colorbar_orientation</em> = &#8216;horizontal&#8217; or &#8216;vertical&#8217; <span class="classifier-delimiter">:</span> <span class="classifier">orientation of colorbar</span></dt>
+<dd><p class="first last">(default: &#8216;vertical&#8217;)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><em>title</em> = string : plot title</p>
+</li>
+<li><p class="first"><em>savefig</em> = bool : save figure to file (default: show directly on screen)</p>
+</li>
+<li><p class="first"><em>cmap</em> = matplotlib.cmap : colormap (default: YlOrRd)</p>
+</li>
+<li><p class="first"><em>fig_filename</em> = string : figure filename</p>
+</li>
+<li><p class="first"><em>ve</em> = float : vertical exaggeration</p>
+</li>
+<li><p class="first"><em>layer_labels</em> = list of strings: labels for each unit in plot</p>
+</li>
+<li><p class="first"><em>layers_from</em> = noddy history file : get labels automatically from history file</p>
+</li>
+<li><p class="first"><em>data</em> = np.array : data to plot, if different to block data itself</p>
+</li>
+<li><p class="first"><em>litho_filter</em> = a list of lithologies to draw. All others will be ignored.</p>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyOutput.set_basename">
+<code class="descname">set_basename</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyOutput.set_basename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyOutput.set_basename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set model basename</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pynoddy.output.NoddyTopology">
+<em class="property">class </em><code class="descclassname">pynoddy.output.</code><code class="descname">NoddyTopology</code><span class="sig-paren">(</span><em>noddy_model</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Definition to read, analyse, and visualise calculated voxel topology</p>
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.calculate_difference">
+<code class="descname">calculate_difference</code><span class="sig-paren">(</span><em>G2</em>, <em>data=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.calculate_difference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.calculate_difference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the difference between this NoddyTopology and another NoddyTopology or networkX graph</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong></dt>
+<dd><ul class="first last simple">
+<li><em>G2</em> = a valid NoddyTopology object or NetworkX graph that this topology is to be compared with</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong></dt>
+<dd>A tuple containing:
+- The number of different edges 
+- a list of these edges</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.calculate_overlap">
+<code class="descname">calculate_overlap</code><span class="sig-paren">(</span><em>G2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.calculate_overlap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.calculate_overlap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the overlap between this NoddyTopology and another NoddyTopology or networkX graph</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong></dt>
+<dd><ul class="first last simple">
+<li><em>G2</em> = a valid NoddyTopology object or NetworkX graph that this topology is to be compared with</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong></dt>
+<dd><ul class="first last simple">
+<li>The number of overlapping edges</li>
+<li>A list of these edges</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pynoddy.output.NoddyTopology.calculate_unique_topologies">
+<em class="property">static </em><code class="descname">calculate_unique_topologies</code><span class="sig-paren">(</span><em>topology_list</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.calculate_unique_topologies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.calculate_unique_topologies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the number of unique topologies in a list of NoddyTopologies</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>topology_list</em> = The list of NoddyTopologies to search through.</li>
+</ul>
+</dd>
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>output</em> = A File or list to write cumulative observed topologies distribution. Default is None (nothing written).</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>ids</em> = A list to write the unique topology id&#8217;s for each topology in the provided topology_list (in that </dt>
+<dd><p class="first last">order). Default is None.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><em>frequency</em> = A list to write frequency counts to.</p>
+</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Returns a list of unique topologies.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.collapse_stratigraphy">
+<code class="descname">collapse_stratigraphy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.collapse_stratigraphy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.collapse_stratigraphy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collapses all stratigraphic edges in this network to produce a network that only contains
+structurally bound rock volumes. Essentially this is a network built only with Topology codes
+and ignoring lithology</p>
+<dl class="docutils">
+<dt><strong>Returns</strong></dt>
+<dd><ul class="first last simple">
+<li>a new NoddyTopology object containing the collapsed graph. The original object is not modified.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.collapse_structure">
+<code class="descname">collapse_structure</code><span class="sig-paren">(</span><em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.collapse_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.collapse_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collapses all topology codes down to the last (most recent) difference. Information regarding specific model topology is 
+generalised, eg. lithology A has a fault and stratigrappic contact with B (regardless of how many different faults are involved).</p>
+<dl class="docutils">
+<dt><strong>Optional Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>verbose</em> = True if this function should write to the print buffer. Default is False.</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong></dt>
+<dd><ul class="first last simple">
+<li>a new NoddyTopology object containing the collapsed graph. The original object is not modified.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pynoddy.output.NoddyTopology.combine_topologies">
+<em class="property">static </em><code class="descname">combine_topologies</code><span class="sig-paren">(</span><em>topology_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.combine_topologies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.combine_topologies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combines a list of topology networks into a weighted &#8216;super-network&#8217;. This is designed for
+estimating the likelyhood of a given edge occuring using a series of networks generated in
+a Monte-Carlo type analysis.</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong></dt>
+<dd><ul class="first last simple">
+<li><em>topology_list</em> = A list of networkX graphs or NoddyTopology objects to build supernetwork from.</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong></dt>
+<dd><ul class="first last simple">
+<li>A NetworkX graph object containing all edges from the input graphs and weighted (&#8216;weight&#8217; parameter)
+according to their observed frequency.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.draw_3d_network">
+<code class="descname">draw_3d_network</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.draw_3d_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.draw_3d_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a 3D network using matplotlib.</p>
+<dl class="docutils">
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><em>show</em> = If True, the 3D network is displayed immediatly on-screen in an</dt>
+<dd><p class="first last">interactive matplotlib viewer. Default is True.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><em>output</em> = If defined an image of the network is saved to this location.</p>
+</li>
+<li><p class="first"><em>node_size</em> = The size of the nodes. Default is 40.</p>
+</li>
+<li><p class="first"><em>geology</em> = a NoddyOutput object to draw with the network</p>
+</li>
+<li><p class="first"><em>res</em> = resolution to draw geology at. Default is 4 (ie 1/4 of all voxels are drawn)</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>horizons</em> = a list of geology surfaces to draw. Default is nothing (none drawn). Slow!</dt>
+<dd><p class="first last">See NoddyOutput.get_surface_grid for details.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><em>sections</em> = draw geology sections. Default is True.</p>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.draw_adjacency_matrix">
+<code class="descname">draw_adjacency_matrix</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.draw_adjacency_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.draw_adjacency_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws an adjacency matrix representing this topology object.</p>
+<dl class="docutils">
+<dt><strong>Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>path</em> = The path to save this image to. If not provided, the image is drawn to the screen</li>
+<li><em>dpi</em> = The resolution to save this image. Default is 300</li>
+<li><em>size</em> = The size of the image to save (in inches). This value will be used as the width and the height</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.draw_difference_matrix">
+<code class="descname">draw_difference_matrix</code><span class="sig-paren">(</span><em>G2</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.draw_difference_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.draw_difference_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws an adjacency matrix containing the difference between this topology and the provided topology</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>G2</em> = A different NoddyTopology or NetworkX Graph to compare to</li>
+</ul>
+</dd>
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>strat</em> = A dictionary linking node names to stratigraphic heights and names. Should be as follows { node_name : (height,name) }.</li>
+<li><em>path</em> = The path to save this image to. If not provided, the image is drawn to the screen</li>
+<li><em>dpi</em> = The resolution to save this image. Default is 300</li>
+<li><em>size</em> = The size of the image to save (in inches). This value will be used as the width and the height</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pynoddy.output.NoddyTopology.draw_graph_matrix">
+<em class="property">static </em><code class="descname">draw_graph_matrix</code><span class="sig-paren">(</span><em>G</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.draw_graph_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.draw_graph_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws an adjacency matrix representing the specified graph object. Equivalent to
+NoddyTopology.draw_matrix_image() but for a networkX graph object.</p>
+<dl class="docutils">
+<dt><strong>Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>strat</em> = A dictionary linking node names to stratigraphic heights and names. Should be as follows { node_name : (height,name) }.</li>
+<li><em>path</em> = The path to save this image to. If not provided, the image is drawn to the screen</li>
+<li><em>dpi</em> = The resolution to save this image. Default is 300</li>
+<li><em>size</em> = The size of the image to save (in inches). This value will be used as the width and the height</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.draw_mayavi">
+<code class="descname">draw_mayavi</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.draw_mayavi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.draw_mayavi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws this network with mayavi. This requires the Mayavi python library
+(mayavi.mlab)</p>
+<dl class="docutils">
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>node_size</em> = The size of the nodes. Default is 40.</li>
+<li><em>edge_thickness</em> = The thickness of the edges. Default is 4</li>
+<li><em>show</em> = If true, the model is displayed in the mayavi viewer after exporting. Default is True</li>
+<li><em>path</em> = A path to save the mayavi vtk file to after generating it.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pynoddy.output.NoddyTopology.draw_mayavi_graph">
+<em class="property">static </em><code class="descname">draw_mayavi_graph</code><span class="sig-paren">(</span><em>G</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.draw_mayavi_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.draw_mayavi_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the provided network with mayavi. This requires the Mayavi python library
+(mayavi.mlab)</p>
+<dl class="docutils">
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>node_size</em> = The size of the nodes. Default is 40.</li>
+<li><em>edge_thickness</em> = The thickness of the edges. Default is 4</li>
+<li><em>show</em> = If true, the model is displayed in the mayavi viewer after exporting. Default is True</li>
+<li><em>path</em> = A path to save the mayavi vtk file to after generating it.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.draw_network_hive">
+<code class="descname">draw_network_hive</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.draw_network_hive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.draw_network_hive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a network hive plot (see <a class="reference external" href="https://github.com/ericmjl/hiveplot">https://github.com/ericmjl/hiveplot</a>).
+The axes of the hive are: node lithology, edge age &amp; edge area.</p>
+<p>ie. the top axis lists the nodes in stratigraphic order. The second axis
+lists edges in structural age &amp; thrid axis lists edges by surface area.</p>
+<p>Nodes are joined to edge-nodes by lines on the graph if they are topologically linked
+(ie. if an edge has that node as an end point).</p>
+<blockquote>
+<div><strong>Optional Keywords</strong>
+- <em>path</em> = the path to save this figure
+- <em>dpi</em> = the resolution of the figure
+- <em>bg</em> = the background color. Default is black.
+- <em>axes</em> = The color of the axes and labels.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.draw_network_image">
+<code class="descname">draw_network_image</code><span class="sig-paren">(</span><em>outputname=''</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.draw_network_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.draw_network_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a network diagram of this NoddyTopology to the specified image</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong></dt>
+<dd><ul class="first last simple">
+<li><em>outputname</em> = the path of the image being written. If left as &#8216;&#8217; the image is written to the same directory as the basename.</li>
+</ul>
+</dd>
+<dt><strong>Optional Keywords</strong></dt>
+<dd><ul class="first last">
+<li><p class="first"><em>dimension</em> = &#8216;2D&#8217; for a 2D network diagram or &#8216;3D&#8217; for a 3D network diagram. Default is &#8216;2D&#8217;.</p>
+</li>
+<li><p class="first"><em>axis</em> = the axis to view on for 3D network diagrams</p>
+</li>
+<li><p class="first"><em>perspective</em> = True to use perspective projection, or False for orthographic projection. Default is False.</p>
+</li>
+<li><p class="first"><em>node_size</em> = The size that nodes are drawn. Default is 1500.</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>layout</em> = The layout algorithm used in 2D. Options are &#8216;spring_layout&#8217; (default), &#8216;shell_layout&#8217;, &#8216;circular_layout&#8217; </dt>
+<dd><p class="first last">and &#8216;spectral_layout&#8217;.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><em>verbose</em> = True if this function is allowed to write to the print buffer, otherwise false. Default is False.</p>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.filter_node_volumes">
+<code class="descname">filter_node_volumes</code><span class="sig-paren">(</span><em>min_volume=50</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.filter_node_volumes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.filter_node_volumes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all nodes with volumes less than the specified size</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>min_volume</em> = the threshold volume. Nodes with smaller volumes are deleted.</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong></dt>
+<dd><ul class="first last simple">
+<li>returns the number of deleted nodes</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.find_first_match">
+<code class="descname">find_first_match</code><span class="sig-paren">(</span><em>known</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.find_first_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.find_first_match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identical to is_unique, except that the index of the first match is returned if this matches, otherwise
+-1 is returned.
+<strong>Arguments</strong>:</p>
+<blockquote>
+<div>-<em>known</em> = a list of valid NoddyTopology objects or NetworkX graphs to compare with.</div></blockquote>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Returns the index of the first matching topology object, or -1</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.find_matching">
+<code class="descname">find_matching</code><span class="sig-paren">(</span><em>known</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.find_matching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.find_matching" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the first matching NoddyTopology (or NetworkX graph) in the specified list</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd>-<em>known</em> = a list of valid NoddyTopology objects or NetworkX graphs to compare with.</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Returns the first matching object (jaccard coefficient = 1), or otherwise None</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.is_unique">
+<code class="descname">is_unique</code><span class="sig-paren">(</span><em>known</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.is_unique"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.is_unique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the topology of this model is different (ie. forms a different network) to a list of models.</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd>-<em>known</em> = a list of valid NoddyTopology objects or NetworkX graphs to compare with.</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Returns true if this topology is unique, otherwise false</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.jaccard_coefficient">
+<code class="descname">jaccard_coefficient</code><span class="sig-paren">(</span><em>G2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.jaccard_coefficient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.jaccard_coefficient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the Jaccard Coefficient (ratio between the intersection &amp; union) of the graph representing this NOddyTopology and G2.</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong></dt>
+<dd><ul class="first last simple">
+<li><em>G2</em> = a valid NoddyTopology object or NetworkX graph that this topology is to be compared with</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong></dt>
+<dd><ul class="first last simple">
+<li>The jaccard_coefficient</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.loadNetwork">
+<code class="descname">loadNetwork</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.loadNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.loadNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the topology network into a NetworkX datastructure</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.read_adjacency_matrix">
+<code class="descname">read_adjacency_matrix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.read_adjacency_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.read_adjacency_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>DEPRECIATED</strong>
+Read max number of lithologies aross all models</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.read_properties">
+<code class="descname">read_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.read_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.read_properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.output.NoddyTopology.write_summary_file">
+<code class="descname">write_summary_file</code><span class="sig-paren">(</span><em>path</em>, <em>append=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.write_summary_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.write_summary_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes summary information about this network to a file</p>
+<dl class="docutils">
+<dt><strong>Optional Arguments</strong></dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><em>append</em> = True if summary information should be appended to the file. If so the file is written as a csv spreadsheet. </dt>
+<dd><p class="first last">Default is true. If False is passed, a single, detailed summary is written for this network.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="additional-useful-classes">
+<h3>Additional useful classes<a class="headerlink" href="#additional-useful-classes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-pynoddy.events">
+<span id="pynoddy-events"></span><h4>pynoddy.events<a class="headerlink" href="#module-pynoddy.events" title="Permalink to this headline">¶</a></h4>
+<p>Module for reading and manipulating geological events
+Created on Mar 26, 2014</p>
+<p>&#64;author: Florian Wellmann</p>
+<dl class="class">
+<dt id="pynoddy.events.Dyke">
+<em class="property">class </em><code class="descclassname">pynoddy.events.</code><code class="descname">Dyke</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Dyke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Dyke" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynoddy.events.Event" title="pynoddy.events.Event"><code class="xref py py-class docutils literal"><span class="pre">pynoddy.events.Event</span></code></a></p>
+<p>Dyke event</p>
+<dl class="method">
+<dt id="pynoddy.events.Dyke.parse_event_lines">
+<code class="descname">parse_event_lines</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Dyke.parse_event_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Dyke.parse_event_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read specific event lines from history file
+<strong>Arguments</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>lines</em> = list of lines : lines with event information (as stored in .his file)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pynoddy.events.Event">
+<em class="property">class </em><code class="descclassname">pynoddy.events.</code><code class="descname">Event</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Main class container for geological events</p>
+<p>Include here all elements that events have in common (position, etc. - 
+possibly even things like color and other aspects that are defined in the history...
+Parse for equal settings and include here!)</p>
+<dl class="method">
+<dt id="pynoddy.events.Event.set_event_lines">
+<code class="descname">set_event_lines</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Event.set_event_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Event.set_event_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Explicitly define event lines</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.events.Event.set_event_number">
+<code class="descname">set_event_number</code><span class="sig-paren">(</span><em>num</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Event.set_event_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Event.set_event_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set number in &#8216;Event #&#8217; line to num</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.events.Event.update_properties">
+<code class="descname">update_properties</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Event.update_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Event.update_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update properties (required if self.properties assignment changed!)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pynoddy.events.Fault">
+<em class="property">class </em><code class="descclassname">pynoddy.events.</code><code class="descname">Fault</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Fault"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Fault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynoddy.events.Event" title="pynoddy.events.Event"><code class="xref py py-class docutils literal"><span class="pre">pynoddy.events.Event</span></code></a></p>
+<p>Fault event</p>
+<dl class="method">
+<dt id="pynoddy.events.Fault.parse_event_lines">
+<code class="descname">parse_event_lines</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Fault.parse_event_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Fault.parse_event_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read specific event lines from history file</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>lines</em> = list of lines : lines with event information (as stored in .his file)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pynoddy.events.Fold">
+<em class="property">class </em><code class="descclassname">pynoddy.events.</code><code class="descname">Fold</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Fold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Fold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynoddy.events.Event" title="pynoddy.events.Event"><code class="xref py py-class docutils literal"><span class="pre">pynoddy.events.Event</span></code></a></p>
+<p>Folding event</p>
+<dl class="method">
+<dt id="pynoddy.events.Fold.parse_event_lines">
+<code class="descname">parse_event_lines</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Fold.parse_event_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Fold.parse_event_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read specific event lines from history file</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>lines</em> = list of lines : lines with event information (as stored in .his file)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pynoddy.events.Plug">
+<em class="property">class </em><code class="descclassname">pynoddy.events.</code><code class="descname">Plug</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Plug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Plug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynoddy.events.Event" title="pynoddy.events.Event"><code class="xref py py-class docutils literal"><span class="pre">pynoddy.events.Event</span></code></a></p>
+<p>Plug event</p>
+<dl class="method">
+<dt id="pynoddy.events.Plug.parse_event_lines">
+<code class="descname">parse_event_lines</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Plug.parse_event_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Plug.parse_event_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read specific event lines from history file
+<strong>Arguments</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>lines</em> = list of lines : lines with event information (as stored in .his file)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pynoddy.events.Shear">
+<em class="property">class </em><code class="descclassname">pynoddy.events.</code><code class="descname">Shear</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Shear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Shear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynoddy.events.Event" title="pynoddy.events.Event"><code class="xref py py-class docutils literal"><span class="pre">pynoddy.events.Event</span></code></a></p>
+<p>Shear zone event</p>
+<dl class="method">
+<dt id="pynoddy.events.Shear.parse_event_lines">
+<code class="descname">parse_event_lines</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Shear.parse_event_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Shear.parse_event_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read specific event lines from history file</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>lines</em> = list of lines : lines with event information (as stored in .his file)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pynoddy.events.Strain">
+<em class="property">class </em><code class="descclassname">pynoddy.events.</code><code class="descname">Strain</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Strain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynoddy.events.Event" title="pynoddy.events.Event"><code class="xref py py-class docutils literal"><span class="pre">pynoddy.events.Event</span></code></a></p>
+<p>Strain event</p>
+<dl class="method">
+<dt id="pynoddy.events.Strain.parse_event_lines">
+<code class="descname">parse_event_lines</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Strain.parse_event_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Strain.parse_event_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read specific event lines from history file
+<strong>Arguments</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>lines</em> = list of lines : lines with event information (as stored in .his file)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pynoddy.events.Stratigraphy">
+<em class="property">class </em><code class="descclassname">pynoddy.events.</code><code class="descname">Stratigraphy</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Stratigraphy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Stratigraphy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynoddy.events.Event" title="pynoddy.events.Event"><code class="xref py py-class docutils literal"><span class="pre">pynoddy.events.Event</span></code></a></p>
+<p>Sedimentary pile with defined stratigraphy</p>
+<dl class="method">
+<dt id="pynoddy.events.Stratigraphy.parse_event_lines">
+<code class="descname">parse_event_lines</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Stratigraphy.parse_event_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Stratigraphy.parse_event_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read specific event lines from history file</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>lines</em> = list of lines : lines with event information (as stored in .his file)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pynoddy.events.Tilt">
+<em class="property">class </em><code class="descclassname">pynoddy.events.</code><code class="descname">Tilt</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Tilt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Tilt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynoddy.events.Event" title="pynoddy.events.Event"><code class="xref py py-class docutils literal"><span class="pre">pynoddy.events.Event</span></code></a></p>
+<p>Tilt event</p>
+<dl class="method">
+<dt id="pynoddy.events.Tilt.parse_event_lines">
+<code class="descname">parse_event_lines</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Tilt.parse_event_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Tilt.parse_event_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read specific event lines from history file</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>lines</em> = list of lines : lines with event information (as stored in .his file)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pynoddy.events.Unconformity">
+<em class="property">class </em><code class="descclassname">pynoddy.events.</code><code class="descname">Unconformity</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Unconformity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Unconformity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynoddy.events.Event" title="pynoddy.events.Event"><code class="xref py py-class docutils literal"><span class="pre">pynoddy.events.Event</span></code></a></p>
+<p>Unconformity event</p>
+<dl class="method">
+<dt id="pynoddy.events.Unconformity.change_height">
+<code class="descname">change_height</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Unconformity.change_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Unconformity.change_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the vertical position (i.e. height) of the entire stratigraphic pile
+above the unconformity</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is not identical to changing only the &#8216;Z&#8217; property as
+the height of all layers has to be adjusted for (geological)
+consistency</p>
+</div>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>val</em> = float : value added to current z-values</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.events.Unconformity.parse_event_lines">
+<code class="descname">parse_event_lines</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/events.html#Unconformity.parse_event_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.events.Unconformity.parse_event_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read specific event lines from history file</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>lines</em> = list of lines : lines with event information (as stored in .his file)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="modules-for-kinematic-experiments">
+<h2>Modules for Kinematic experiments<a class="headerlink" href="#modules-for-kinematic-experiments" title="Permalink to this headline">¶</a></h2>
+<p>The modules described in this section are designed to provide a high-level
+access to the kinematic modelling functionality in Noddy. The modules encapsulate
+the required aspects of complete experiments, including input file generation,
+adaptation of parameters, random number generation, model computation, and
+postprocessing.</p>
+<div class="section" id="base-classes-for-pynoddy-experiments">
+<h3>Base classes for pynoddy experiments<a class="headerlink" href="#base-classes-for-pynoddy-experiments" title="Permalink to this headline">¶</a></h3>
+<p>The base class for any type of experiments is defined in the pynoddy.experiment module.</p>
+<span class="target" id="module-pynoddy.experiment"></span><p>Base class from which PyNoddy experiments should inherit.</p>
+<p>Much basic functionality (random perturbation, plotting etc. is defined here).</p>
+<p>Thought: perhaps drawing functions etc. should be moved into NoddyOutput class?</p>
+<p>&#64;author: flohorovicic, samthiele</p>
+<dl class="class">
+<dt id="pynoddy.experiment.Experiment">
+<em class="property">class </em><code class="descclassname">pynoddy.experiment.</code><code class="descname">Experiment</code><span class="sig-paren">(</span><em>history=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynoddy.history.NoddyHistory" title="pynoddy.history.NoddyHistory"><code class="xref py py-class docutils literal"><span class="pre">pynoddy.history.NoddyHistory</span></code></a>, <a class="reference internal" href="#pynoddy.output.NoddyOutput" title="pynoddy.output.NoddyOutput"><code class="xref py py-class docutils literal"><span class="pre">pynoddy.output.NoddyOutput</span></code></a></p>
+<p>Noddy experiment container, inheriting from both noddy history and output methods</p>
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.export_to_vtk">
+<code class="descname">export_to_vtk</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.export_to_vtk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.export_to_vtk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export model to VTK</p>
+<p>Export the geology blocks to VTK for visualisation of the entire 3-D model in an
+external VTK viewer, e.g. Paraview.</p>
+<p>..Note:: Requires pyevtk, available for free on: <a class="reference external" href="https://github.com/firedrakeproject/firedrake/tree/master/python/evtk">https://github.com/firedrakeproject/firedrake/tree/master/python/evtk</a></p>
+<dl class="docutils">
+<dt><strong>Optional keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>vtk_filename</em> = string : filename of VTK file (default: output_name)</li>
+<li><em>data</em> = np.array : data array to export to VKT (default: entire block model)</li>
+<li><em>recompute</em> = bool : recompute the block model (default: True)</li>
+<li><em>model_type</em> = &#8216;current&#8217;, &#8216;base&#8217; : model type (base &#8220;freezed&#8221; model can be plotted for comparison)</li>
+</ul>
+</dd>
+</dl>
+<p>..Note:: If data is defined, the model is not recomputed and the data from this array is plotted</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.freeze">
+<code class="descname">freeze</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.freeze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.freeze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Freeze the current model state: store the event settings for later comparison</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.get_sampling_line_data">
+<code class="descname">get_sampling_line_data</code><span class="sig-paren">(</span><em>xyz_from</em>, <em>xyz_to</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.get_sampling_line_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.get_sampling_line_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get computed model along a line, for example as a drillhole position</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>xyz_from</em> = [x, y, z] : list of float values for starting position</li>
+<li><em>xyz_to</em> = [x, y, z] : list of float values for starting position</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.get_section">
+<code class="descname">get_section</code><span class="sig-paren">(</span><em>direction='y'</em>, <em>position='center'</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.get_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.get_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get geological section of the model (re-computed at required resolution) as noddy object</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>direction</em> = &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217; : coordinate direction of section plot (default: &#8216;y&#8217;)</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>position</em> = int or &#8216;center&#8217; <span class="classifier-delimiter">:</span> <span class="classifier">cell position of section as integer value</span></dt>
+<dd><p class="first last">or identifier (default: &#8216;center&#8217;)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><strong>Optional arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>resolution</em> = float : set resolution for section (default: self.cube_size)</li>
+<li><em>model_type</em> = &#8216;current&#8217;, &#8216;base&#8217; : model type (base &#8220;freezed&#8221; model can be plotted for comparison)</li>
+<li><em>compute_output</em> = bool : provide output from command line call (default: True)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.get_up_to_date">
+<code class="descname">get_up_to_date</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.get_up_to_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.get_up_to_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get model state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pynoddy.experiment.Experiment.is_up_to_date">
+<code class="descname">is_up_to_date</code><a class="headerlink" href="#pynoddy.experiment.Experiment.is_up_to_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.load_parameter_file">
+<code class="descname">load_parameter_file</code><span class="sig-paren">(</span><em>filename</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.load_parameter_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.load_parameter_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load parameter statistics from external csv file</p>
+<p>The csv file should contain a header row with the relevant keywords identifying columns. 
+In order to be read in correctly, the header should contain the labels:</p>
+<ul class="simple">
+<li>&#8216;event&#8217; : event id</li>
+<li>&#8216;parameter&#8217; : Noddy parameter (&#8216;Dip&#8217;, &#8216;Dip Direction&#8217;, etc.)</li>
+<li>&#8216;mean&#8217; : mean parameter value</li>
+<li>&#8216;type&#8217; = &#8216;normal&#8217;, &#8216;vonmises&#8217; or &#8216;uniform&#8217;.</li>
+</ul>
+<p>In addition, it is necessary to define PDF type and parameters. For now, the following settings are supported:
+- &#8216;+-&#8216; = Defines the 2.5th and 97.5th percentiles of the distribution,</p>
+<blockquote>
+<div>similar to a 95% confidence interval.</div></blockquote>
+<ul class="simple">
+<li>&#8216;stdev&#8217; = standard deviation. Only works if type=&#8217;normal&#8217;.</li>
+<li>&#8216;min&#8217; = The minimum value of a uniform distribution (if type=&#8217;uniform&#8217;)</li>
+<li>&#8216;max&#8217; = The maximum value of a uniform distribution (if type=&#8217;uniform&#8217;)</li>
+</ul>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>filename</em> = string : filename</li>
+</ul>
+</dd>
+<dt><strong>Optional arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>delim</em> = string : delimiter (default: &#8216;,&#8217; or &#8216;;&#8217;, both checked)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.plot_section">
+<code class="descname">plot_section</code><span class="sig-paren">(</span><em>direction='y'</em>, <em>position='center'</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.plot_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.plot_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extended version of plot_section method from pynoddy.output class</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>direction</em> = &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217; : coordinate direction of section plot (default: &#8216;y&#8217;)</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>position</em> = int or &#8216;center&#8217; <span class="classifier-delimiter">:</span> <span class="classifier">cell position of section as integer value</span></dt>
+<dd><p class="first last">or identifier (default: &#8216;center&#8217;)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>ax</em> = matplotlib.axis : append plot to axis (default: create new plot)</p>
+</li>
+<li><p class="first"><em>figsize</em> = (x,y) : matplotlib figsize</p>
+</li>
+<li><p class="first"><em>colorbar</em> = bool : plot colorbar (default: True)</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>colorbar_orientation</em> = &#8216;horizontal&#8217; or &#8216;vertical&#8217; <span class="classifier-delimiter">:</span> <span class="classifier">orientation of colorbar</span></dt>
+<dd><p class="first last">(default: &#8216;vertical&#8217;)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><em>title</em> = string : plot title</p>
+</li>
+<li><p class="first"><em>savefig</em> = bool : save figure to file (default: show directly on screen)</p>
+</li>
+<li><p class="first"><em>cmap</em> = matplotlib.cmap : colormap (default: YlOrRd)</p>
+</li>
+<li><p class="first"><em>fig_filename</em> = string : figure filename</p>
+</li>
+<li><p class="first"><em>ve</em> = float : vertical exaggeration</p>
+</li>
+<li><p class="first"><em>layer_labels</em> = list of strings: labels for each unit in plot</p>
+</li>
+<li><p class="first"><em>layers_from</em> = noddy history file : get labels automatically from history file</p>
+</li>
+<li><p class="first"><em>resolution</em> = float : set resolution for section (default: self.cube_size)</p>
+</li>
+<li><p class="first"><em>model_type</em> = &#8216;current&#8217;, &#8216;base&#8217; : model type (base &#8220;freezed&#8221; model can be plotted for comparison)</p>
+</li>
+<li><p class="first"><em>data</em> = np.array : data to plot, if different to block data itself</p>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.random_draw">
+<code class="descname">random_draw</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.random_draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.random_draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a random draw for parameter distributions as defined, and calculate model</p>
+<p>This method is based on the model &#8220;base-state&#8221;, and not the current state (as opposed to
+the self.random_perturbation() method).</p>
+<dl class="docutils">
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>verbose</em> = bool: print out parameter changes as they happen (default: False)</li>
+<li><em>store_params</em> = bool : store random parameter set (default: True)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.random_perturbation">
+<code class="descname">random_perturbation</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.random_perturbation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.random_perturbation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a random perturbation of the model according to parameter statistics
+defined in self.param_stats.</p>
+<p>Note that by default, this function is identical to random_draw. If model_type is 
+set to &#8216;current&#8217;, then parameters are varied according using the <em>current values</em> 
+as distribution means - this allows &#8216;random walk&#8217; away from the initial model state, 
+which is usually not desired.</p>
+<dl class="docutils">
+<dt><strong>Optional arguments</strong>:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>store_params</em> = bool : store random parameter set (default: True)</p>
+</li>
+<li><p class="first"><em>verbose</em> = bool: print out parameter changes as they happen (default: False)</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>model_type</em> = &#8216;base&#8217;, &#8216;current&#8217; <span class="classifier-delimiter">:</span> <span class="classifier">perturb on basis of current model, </span></dt>
+<dd><p class="first last">or use base model (default: &#8216;base&#8217; model)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.reset_base">
+<code class="descname">reset_base</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.reset_base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.reset_base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set events back to base model (stored in self.base_events)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.reset_random_seed">
+<code class="descname">reset_random_seed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.reset_random_seed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.reset_random_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset random seed to defined value (stored in self.seed, set with self.set_random_seed)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.set_parameter_statistics">
+<code class="descname">set_parameter_statistics</code><span class="sig-paren">(</span><em>param_stats</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.set_parameter_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.set_parameter_statistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define parameter statistics for uncertainty simulation and sensitivity analysis</p>
+<p>param_stats = list : list with relevant statistics defined for event parameters
+list is organised as:
+param_stats[event_id][parameter_name][stats_type] = value</p>
+<p>Example:
+param_stats[2][&#8220;Dip&#8221;][&#8220;min&#8221;] = 200.</p>
+<dl class="docutils">
+<dt>Possible statistics are:</dt>
+<dd><ul class="first last simple">
+<li>min = float : minimum bound</li>
+<li>max = float : maximum bound</li>
+<li>type = &#8216;normal&#8217;, &#8216;uniform&#8217; : distribution type</li>
+<li>stdev = float : standard deviation (if normal distribution)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.set_random_seed">
+<code class="descname">set_random_seed</code><span class="sig-paren">(</span><em>random_seed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.set_random_seed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.set_random_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set random seed for reproducible experiments</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>random_seed</em> = int (or array-like) : define seed</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.set_up_to_date">
+<code class="descname">set_up_to_date</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.set_up_to_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.set_up_to_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set boolean variable for valid object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.shuffle_event_order">
+<code class="descname">shuffle_event_order</code><span class="sig-paren">(</span><em>event_ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.shuffle_event_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.shuffle_event_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly shuffle order of events</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>event_ids</em> = [list of event ids] : event ids to be randomly shuffeled</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update model computation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynoddy.experiment.Experiment.write_parameter_changes">
+<code class="descname">write_parameter_changes</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/experiment.html#Experiment.write_parameter_changes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.experiment.Experiment.write_parameter_changes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="montecarlo-class">
+<h3>MonteCarlo class<a class="headerlink" href="#montecarlo-class" title="Permalink to this headline">¶</a></h3>
+<p>This class provides the basic functionality to perform MonteCarlo error propagation
+experiments with Noddy.</p>
+</div>
+<div class="section" id="sensitivityanalysis-class">
+<h3>SensitivityAnalysis class<a class="headerlink" href="#sensitivityanalysis-class" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Pynoddy modules, classes and functions</a><ul>
+<li><a class="reference internal" href="#basic-modules-low-level-access">Basic modules (low-level access)</a><ul>
+<li><a class="reference internal" href="#module-pynoddy">Main module</a></li>
+<li><a class="reference internal" href="#module-pynoddy.history">History file parser: pynoddy.history</a></li>
+<li><a class="reference internal" href="#module-pynoddy.output">Output file parser: pynoddy.output</a></li>
+<li><a class="reference internal" href="#additional-useful-classes">Additional useful classes</a><ul>
+<li><a class="reference internal" href="#module-pynoddy.events">pynoddy.events</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#modules-for-kinematic-experiments">Modules for Kinematic experiments</a><ul>
+<li><a class="reference internal" href="#base-classes-for-pynoddy-experiments">Base classes for pynoddy experiments</a></li>
+<li><a class="reference internal" href="#montecarlo-class">MonteCarlo class</a></li>
+<li><a class="reference internal" href="#sensitivityanalysis-class">SensitivityAnalysis class</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="notebooks/9-Topology.html"
+                        title="previous chapter">Simulation of a Noddy history and analysis of its voxel topology</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pynoddy.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="notebooks/9-Topology.html" title="Simulation of a Noddy history and analysis of its voxel topology"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

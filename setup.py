@@ -11,7 +11,7 @@ def read(fname):
 
 
 setup(name='pynoddy',
-      version='1.0',
+      version='0.3r',
       description='Python wrappers for kinematic geological simulations with Noddy',
       long_description=read('README.md'),
       classifiers=[
@@ -32,5 +32,7 @@ setup(name='pynoddy',
       license='MIT',
       packages=['pynoddy'],
       # package_dir = {'output' : 'pynoddy', 'history' : 'pynoddy'},
-      py_modules = ['pynoddy.history', 'pynoddy.output', 'pynoddy.experiment'],
+      py_modules = ['pynoddy.history', 'pynoddy.output', 'pynoddy.experiment',
+      'pynoddy.experiment.monte_carlo', 'pynoddy.experiment.uncertainty_analysis',
+      'pynoddy.experiment.sensitivity_analysis', 'pynoddy.experiment.topology_analysis'],
       zip_safe=False)

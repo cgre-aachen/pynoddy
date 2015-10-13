@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Simulation of a Noddy history and visualisation of output &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../index.html" />
+    <link rel="next" title="Change Noddy input file and recompute model" href="2-Adjust-input.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="2-Adjust-input.html" title="Change Noddy input file and recompute model"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="simulation-of-a-noddy-history-and-visualisation-of-output">
+<h1>Simulation of a Noddy history and visualisation of output<a class="headerlink" href="#simulation-of-a-noddy-history-and-visualisation-of-output" title="Permalink to this headline">¶</a></h1>
+<p>This example shows how the module pynoddy.history can be used to compute
+the model, and how simple visualisations can be generated with
+pynoddy.output.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">css_file</span> <span class="o">=</span> <span class="s">&#39;pynoddy.css&#39;</span>
+<span class="n">HTML</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">css_file</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<style>
+
+@font-face {
+    font-family: "Computer Modern";
+    src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');
+}
+
+#notebook_panel { /* main background */
+    background: #888;
+    color: #f6f6f6;
+}
+
+div.cell { /* set cell width to about 80 chars */
+    width: 800px;
+}
+
+div #notebook { /* centre the content */
+    background: #fff; /* white background for content */
+    width: 1000px;
+    margin: auto;
+    padding-left: 1em;
+}
+
+#notebook li { /* More space between bullet points */
+margin-top:0.8em;
+}
+
+/* draw border around running cells */
+div.cell.border-box-sizing.code_cell.running {
+    border: 3px solid #111;
+}
+
+/* Put a solid color box around each cell and its output, visually linking them together */
+div.cell.code_cell {
+    background: #ddd;  /* rgba(230,230,230,1.0);  */
+    border-radius: 10px; /* rounded borders */
+    width: 900px;
+    padding: 1em;
+    margin-top: 1em;
+}
+
+div.text_cell_render{
+    font-family: 'Arvo' sans-serif;
+    line-height: 130%;
+    font-size: 115%;
+    width:700px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+
+/* Formatting for header cells */
+.text_cell_render h1 {
+    font-family: 'Alegreya Sans', sans-serif;
+    /* font-family: 'Tangerine', serif; */
+    /* font-family: 'Libre Baskerville', serif; */
+    /* font-family: 'Karla', sans-serif;
+    /* font-family: 'Lora', serif; */
+    font-size: 50px;
+    text-align: center;
+    /* font-style: italic; */
+    font-weight: 400;
+    /* font-size: 40pt; */
+    /* text-shadow: 4px 4px 4px #aaa; */
+    line-height: 120%;
+    color: rgb(12,85,97);
+    margin-bottom: .5em;
+    margin-top: 0.1em;
+    display: block;
+}
+.text_cell_render h2 {
+    /* font-family: 'Arial', serif; */
+    /* font-family: 'Lora', serif; */
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 700;
+    font-size: 24pt;
+    line-height: 100%;
+    /* color: rgb(171,165,131); */
+    color: rgb(12,85,97);
+    margin-bottom: 0.1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h3 {
+    font-family: 'Arial', serif;
+    margin-top:12px;
+    margin-bottom: 3px;
+    font-style: italic;
+    color: rgb(95,92,72);
+}
+
+.text_cell_render h4 {
+    font-family: 'Arial', serif;
+}
+
+.text_cell_render h5 {
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 300;
+    font-size: 16pt;
+    color: grey;
+    font-style: italic;
+    margin-bottom: .1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h6 {
+    font-family: 'PT Mono', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    color: grey;
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+.CodeMirror{
+        font-family: "PT Mono";
+        font-size: 100%;
+}
+
+</style><div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Basic settings</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="c"># Now import pynoddy</span>
+<span class="kn">import</span> <span class="nn">pynoddy</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pynoddy.output</span>
+<span class="kn">import</span> <span class="nn">pynoddy.history</span>
+
+<span class="c"># determine path of repository to set paths corretly below</span>
+<span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">&#39;../..&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="compute-the-model">
+<h2>Compute the model<a class="headerlink" href="#compute-the-model" title="Permalink to this headline">¶</a></h2>
+<p>The simplest way to perform the Noddy simulation through Python is
+simply to call the executable. One way that should be fairly platform
+independent is to use Python&#8217;s own subprocess module:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Change to sandbox directory to store results</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s">&#39;sandbox&#39;</span><span class="p">))</span>
+
+<span class="c"># Path to exmaple directory in this repository</span>
+<span class="n">example_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span><span class="s">&#39;examples&#39;</span><span class="p">)</span>
+<span class="c"># Compute noddy model for history file</span>
+<span class="n">history_file</span> <span class="o">=</span> <span class="s">&#39;simple_two_faults.his&#39;</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">example_directory</span><span class="p">,</span> <span class="n">history_file</span><span class="p">)</span>
+<span class="n">output_name</span> <span class="o">=</span> <span class="s">&#39;noddy_out&#39;</span>
+<span class="c"># call Noddy</span>
+
+<span class="c"># NOTE: Make sure that the noddy executable is accessible in the system!!</span>
+<span class="k">print</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s">&#39;noddy.exe&#39;</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="s">&#39;BLOCK&#39;</span><span class="p">],</span>
+                       <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                       <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="c">#</span>
+</pre></div>
+</div>
+<p>For convenience, the model computation is wrapped into a Python function
+in pynoddy:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&#39;&#39;</span>
+</pre></div>
+</div>
+<p>Note: The Noddy call from Python is, to date, calling Noddy through the
+subprocess function. In a future implementation, this call could be
+substituted with a full wrapper for the C-functions written in Python.
+Therefore, using the member function compute_model is not only easier,
+but also the more &#8220;future-proof&#8221; way to compute the Noddy model.</p>
+</div>
+<div class="section" id="loading-noddy-output-files">
+<h2>Loading Noddy output files<a class="headerlink" href="#loading-noddy-output-files" title="Permalink to this headline">¶</a></h2>
+<p>Noddy simulations produce a variety of different output files, depending
+on the type of simulation. The basic output is the geological model.
+Additional output files can contain geophysical responses, etc.</p>
+<p>Loading the output files is simplified with a class class container that
+reads all relevant information and provides simple methods for plotting,
+model analysis, and export. To load the output information into a Python
+object:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">N1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The object contains the calculated geology blocks and some additional
+information on grid spacing, model extent, etc. For example:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="s">&quot;The model has an extent of </span><span class="si">%.0f</span><span class="s"> m in x-direction, with </span><span class="si">%d</span><span class="s"> cells of width </span><span class="si">%.0f</span><span class="s"> m&quot;</span> <span class="o">%</span>
+      <span class="p">(</span><span class="n">N1</span><span class="o">.</span><span class="n">extent_x</span><span class="p">,</span> <span class="n">N1</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="n">N1</span><span class="o">.</span><span class="n">delx</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>The model has an extent of 12400 m in x-direction, with 124 cells of width 100 m
+</pre></div>
+</div>
+</div>
+<div class="section" id="plotting-sections-through-the-model">
+<h2>Plotting sections through the model<a class="headerlink" href="#plotting-sections-through-the-model" title="Permalink to this headline">¶</a></h2>
+<p>The NoddyOutput class has some basic methods for the visualisation of
+the generated models. To plot sections through the model:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">N1</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="figure" id="id1">
+<img alt="png" src="../_images/1-Simulation_14_0.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+</div>
+<div class="section" id="export-model-to-vtk">
+<h2>Export model to VTK<a class="headerlink" href="#export-model-to-vtk" title="Permalink to this headline">¶</a></h2>
+<p>A simple possibility to visualise the modeled results in 3-D is to
+export the model to a VTK file and then to visualise it with a VTK
+viewer, for example Paraview. To export the model, simply use:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">N1</span><span class="o">.</span><span class="n">export_to_vtk</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The exported VTK file can be visualised in any VTK viewer, for example
+in the (free) viewer Paraview (www.paraview.org). An example
+visualisation of the model in 3-D is presented in the figure below.</p>
+<div class="figure" id="id2">
+<img alt="3-D Visualisation generated with Paraview" src="../_images/3d_render_fault_model_2.png" />
+<p class="caption"><span class="caption-text">3-D Visualisation generated with Paraview (top layer transparent)</span></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Simulation of a Noddy history and visualisation of output</a><ul>
+<li><a class="reference internal" href="#compute-the-model">Compute the model</a></li>
+<li><a class="reference internal" href="#loading-noddy-output-files">Loading Noddy output files</a></li>
+<li><a class="reference internal" href="#plotting-sections-through-the-model">Plotting sections through the model</a></li>
+<li><a class="reference internal" href="#export-model-to-vtk">Export model to VTK</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="2-Adjust-input.html"
+                        title="next chapter">Change Noddy input file and recompute model</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/1-Simulation.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="2-Adjust-input.html" title="Change Noddy input file and recompute model"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

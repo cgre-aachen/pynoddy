@@ -269,7 +269,7 @@ class NoddyHistory(object):
         
         This method is useful to load a model from the Structural Geophysics
         Atlas on the pages of the Virtual Explorer.
-        See: http://virtualexplorer.com.au/special/noddyatlas/index.html
+        See: http://tectonique.net/asg
         
         **Arguments**:
             - *url* : url of history file

@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pynoddy.noddy module &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="index.html" />
+    <link rel="prev" title="pynoddy" href="readme.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="readme.html" title="pynoddy"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pynoddy-noddy-module">
+<h1>pynoddy.noddy module<a class="headerlink" href="#pynoddy-noddy-module" title="Permalink to this headline">¶</a></h1>
+<p>This module contains the Noddy code that is actually used to compute the kinematic models
+defined in .his files.</p>
+<p>Note that this code <em>must be compiled</em> before <code class="docutils literal"><span class="pre">pynoddy.compute_model</span></code>
+will function correctly. It should compile easily (plus or minus a few thousand
+warnings) using the <code class="docutils literal"><span class="pre">compile.sh</span></code> script. Windows users will first need to install the GCC
+library (e.g. through MinGW), but otherwise the code requires no non-standard libraries.</p>
+<p><strong>Usage</strong></p>
+<p>The compiled noddy code can be run directly from the command line to a realisation of a model
+defined in a .his file, or called through <code class="docutils literal"><span class="pre">pynoddy.compute_model</span></code>.</p>
+<p>If the binary is called from the command line it takes the following arguments:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">noddy</span> <span class="p">[</span><span class="n">history_file</span><span class="p">]</span> <span class="p">[</span><span class="n">output_name</span><span class="p">]</span> <span class="p">[</span><span class="n">calculation_mode</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Where:</dt>
+<dd><ul class="first last simple">
+<li><code class="docutils literal"><span class="pre">history_file</span></code> is the filepath (including the extension) of the .his file defining the model</li>
+<li><code class="docutils literal"><span class="pre">output_name</span></code> is the name that will be assigned to the noddy output files</li>
+</ul>
+</dd>
+<dt>The <code class="docutils literal"><span class="pre">mode</span></code> argument determines the type of output that noddy generates, and can be any one of:</dt>
+<dd><ul class="first last simple">
+<li>BLOCK - calculates the lithology block model</li>
+<li>GEOPHYSICS - calculates the geophysical expression (magnetics and gravity) of the model</li>
+<li>SURFACES - calculates surfaces representing the lithological contacts</li>
+<li>BLOCK_GEOPHYS - calculates the lithology block model and its geophysical expression</li>
+<li>BLOCK_SURFACES - calculates the lithology block model and lithological surfaces</li>
+<li>TOPOLOGY - calculates the lithology block model and associated topology information</li>
+<li>ANOM_FROM_BLOCK - calculates the geophysical expression of an existing lithology block (output_name.g12)</li>
+<li>ALL - calculates the block, geophysics, topology and surfaces</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Python Wrapper</strong></p>
+<p>As mentioned earlier, the executable can also be accessed from python via pynoddy.
+This is performed by calling the <code class="docutils literal"><span class="pre">pynoddy.compute_model</span></code> function, as defined below:</p>
+<dl class="function">
+<dt id="pynoddy.compute_model">
+<code class="descclassname">pynoddy.</code><code class="descname">compute_model</code><span class="sig-paren">(</span><em>history</em>, <em>output_name</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy.html#compute_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.compute_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call Noddy and compute the history file</p>
+<dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>history</em> = string : filename of history file</li>
+<li><em>output_name</em> = string : basename for output files</li>
+</ul>
+</dd>
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first simple">
+<li><em>sim_type</em> = &#8216;BLOCK&#8217;, &#8216;GEOPHYSICS&#8217;, &#8216;SURFACES&#8217;, &#8216;BLOCK_GEOPHYS&#8217;,</li>
+</ul>
+<dl class="docutils">
+<dt>&#8216;TOPOLOGY&#8217;, &#8216;BLOCK_SURFACES&#8217;, &#8216;ALL&#8217;:</dt>
+<dd>type of Noddy simulation (default: &#8216;BLOCK&#8217;)</dd>
+</dl>
+<ul class="last">
+<li><dl class="first docutils">
+<dt><em>program_name</em> = string <span class="classifier-delimiter">:</span> <span class="classifier">name of program</span></dt>
+<dd><p class="first last">(default: noddy.exe or noddy, both checked)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><em>verbose</em> = bool: verbose mode, print out information for debugging (default = False)</p>
+</li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>-Returns any text outputted by the noddy executable.</dd>
+</dl>
+</dd></dl>
+
+<p>It is worth noting here that by default pynoddy looks for the compiled Noddy executable in the pynoddy.noddy directory. However
+this can be changed by updating the <code class="docutils literal"><span class="pre">pynoddy.noddyPath</span></code> variable to point to a new executable file (without any extension, .exe
+is added automatically to the path on windows machines).</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="readme.html"
+                        title="previous chapter">pynoddy</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/noddy_module.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="readme.html" title="pynoddy"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

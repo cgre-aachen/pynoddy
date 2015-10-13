@@ -1,0 +1,606 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pynoddy.experiment &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../../index.html" />
+    <link rel="up" title="pynoddy" href="../pynoddy.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pynoddy  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../pynoddy.html" accesskey="U">pynoddy</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pynoddy.experiment</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Base class from which PyNoddy experiments should inherit.</span>
+
+<span class="sd">Much basic functionality (random perturbation, plotting etc. is defined here).</span>
+
+<span class="sd">Thought: perhaps drawing functions etc. should be moved into NoddyOutput class?</span>
+
+<span class="sd">@author: flohorovicic, samthiele</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="c"># from pynoddy.history import NoddyHistory</span>
+<span class="c"># from pynoddy.output import NoddyOutput</span>
+
+<span class="kn">import</span> <span class="nn">pynoddy.history</span>
+<span class="kn">import</span> <span class="nn">pynoddy.output</span>
+
+<span class="kn">import</span> <span class="nn">util.sampling</span> <span class="kn">as</span> <span class="nn">Sample</span>
+
+
+<div class="viewcode-block" id="Experiment"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment">[docs]</a><span class="k">class</span> <span class="nc">Experiment</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">,</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Noddy experiment container, inheriting from both noddy history and output methods</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">history</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Combination of input and output methods for complete kinematic experiments with NOddy</span>
+
+<span class="sd">        **Optional Keywords**:</span>
+<span class="sd">            - *his_file* = string : filename of Noddy history input file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Experiment</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+    <span class="c">#        super(Experiment, self).test()</span>
+    <span class="c">#        if kwds.has_key(&quot;history&quot;):</span>
+    <span class="c">#            self.load_history(kwds[&#39;history&#39;])</span>
+    <span class="c">#            print(&quot;Determine events&quot;)</span>
+    <span class="c">#            self.determine_events()</span>
+
+<div class="viewcode-block" id="Experiment.update"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update model computation&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_up_to_date</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Experiment.set_up_to_date"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.set_up_to_date">[docs]</a>    <span class="k">def</span> <span class="nf">set_up_to_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set boolean variable for valid object&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_up_to_date</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="Experiment.get_up_to_date"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.get_up_to_date">[docs]</a>    <span class="k">def</span> <span class="nf">get_up_to_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get model state&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_up_to_date</span>
+</div>
+    <span class="n">is_up_to_date</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_up_to_date</span><span class="p">,</span> <span class="n">set_up_to_date</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s">&quot;Model state&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Experiment.set_parameter_statistics"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.set_parameter_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">set_parameter_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_stats</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define parameter statistics for uncertainty simulation and sensitivity analysis</span>
+<span class="sd">        </span>
+<span class="sd">        param_stats = list : list with relevant statistics defined for event parameters</span>
+<span class="sd">        list is organised as:</span>
+<span class="sd">        param_stats[event_id][parameter_name][stats_type] = value</span>
+<span class="sd">        </span>
+<span class="sd">        Example:</span>
+<span class="sd">        param_stats[2][&quot;Dip&quot;][&quot;min&quot;] = 200.</span>
+<span class="sd">        </span>
+<span class="sd">        Possible statistics are:</span>
+<span class="sd">            - min = float : minimum bound</span>
+<span class="sd">            - max = float : maximum bound</span>
+<span class="sd">            - type = &#39;normal&#39;, &#39;uniform&#39; : distribution type</span>
+<span class="sd">            - stdev = float : standard deviation (if normal distribution)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_stats</span> <span class="o">=</span> <span class="n">param_stats</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;base_events&#39;</span><span class="p">):</span>  <span class="c"># if this model has not been frozen before</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Experiment.load_parameter_file"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.load_parameter_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_parameter_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load parameter statistics from external csv file</span>
+<span class="sd">        </span>
+<span class="sd">        The csv file should contain a header row with the relevant keywords identifying columns. </span>
+<span class="sd">        In order to be read in correctly, the header should contain the labels:</span>
+<span class="sd">        </span>
+<span class="sd">        - &#39;event&#39; : event id</span>
+<span class="sd">        - &#39;parameter&#39; : Noddy parameter (&#39;Dip&#39;, &#39;Dip Direction&#39;, etc.)</span>
+<span class="sd">        - &#39;mean&#39; : mean parameter value</span>
+<span class="sd">        - &#39;type&#39; = &#39;normal&#39;, &#39;vonmises&#39; or &#39;uniform&#39;.</span>
+<span class="sd">       </span>
+<span class="sd">        In addition, it is necessary to define PDF type and parameters. For now, the following settings are supported:</span>
+<span class="sd">        - &#39;+-&#39; = Defines the 2.5th and 97.5th percentiles of the distribution, </span>
+<span class="sd">                 similar to a 95% confidence interval.</span>
+<span class="sd">        - &#39;stdev&#39; = standard deviation. Only works if type=&#39;normal&#39;.</span>
+<span class="sd">        - &#39;min&#39; = The minimum value of a uniform distribution (if type=&#39;uniform&#39;)</span>
+<span class="sd">        - &#39;max&#39; = The maximum value of a uniform distribution (if type=&#39;uniform&#39;)</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *filename* = string : filename</span>
+<span class="sd">            </span>
+<span class="sd">        **Optional arguments**:</span>
+<span class="sd">            - *delim* = string : delimiter (default: &#39;,&#39; or &#39;;&#39;, both checked)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">delim</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;delim&quot;</span><span class="p">,</span> <span class="s">&quot;,&quot;</span><span class="p">)</span>
+
+        <span class="c"># test if &quot;,&quot; is actually the delimiter - if not, try &#39;;&#39; (stupid Excel standard...)</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delim</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">delim</span> <span class="o">=</span> <span class="s">&#39;;&#39;</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delim</span><span class="p">)</span>
+
+        <span class="c"># set up parameter list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_stats</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delim</span><span class="p">)</span>
+            <span class="c"># set up parameter dictionary</span>
+            <span class="n">param_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="k">break</span>  <span class="c"># end of entries</span>
+            <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ele</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="k">continue</span>  <span class="c"># empty column in header</span>
+                <span class="k">if</span> <span class="n">ele</span> <span class="o">==</span> <span class="s">&#39;event&#39;</span><span class="p">:</span>
+                    <span class="n">event_code</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">header</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ele</span><span class="p">)]</span>
+                    <span class="n">evts</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">event_code</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;|&#39;</span><span class="p">):</span>  <span class="c"># multiple events can be separated by |</span>
+                        <span class="n">evts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>  <span class="c"># append events</span>
+                    <span class="n">param_dict</span><span class="p">[</span><span class="n">ele</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">evts</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">param_dict</span><span class="p">[</span><span class="n">ele</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="n">header</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ele</span><span class="p">)])</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>  <span class="c"># not a number</span>
+                    <span class="n">param_dict</span><span class="p">[</span><span class="n">ele</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">header</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ele</span><span class="p">)]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">param_stats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;base_events&#39;</span><span class="p">):</span>  <span class="c"># if this model has not been frozen before</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Experiment.freeze"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.freeze">[docs]</a>    <span class="k">def</span> <span class="nf">freeze</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Freeze the current model state: store the event settings for later comparison&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_events</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_events</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Experiment.reset_base"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.reset_base">[docs]</a>    <span class="k">def</span> <span class="nf">reset_base</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set events back to base model (stored in self.base_events)&quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">copy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_events</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Experiment.set_random_seed"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.set_random_seed">[docs]</a>    <span class="k">def</span> <span class="nf">set_random_seed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">random_seed</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set random seed for reproducible experiments</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *random_seed* = int (or array-like) : define seed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">random_seed</span>
+
+        <span class="c"># apply random seed</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_seed</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Experiment.reset_random_seed"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.reset_random_seed">[docs]</a>    <span class="k">def</span> <span class="nf">reset_random_seed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset random seed to defined value (stored in self.seed, set with self.set_random_seed)&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;seed&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s">&quot;Random seed not defined! Set with self.set_random_seed()&quot;</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Experiment.random_draw"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.random_draw">[docs]</a>    <span class="k">def</span> <span class="nf">random_draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform a random draw for parameter distributions as defined, and calculate model</span>
+<span class="sd">        </span>
+<span class="sd">        This method is based on the model &quot;base-state&quot;, and not the current state (as opposed to</span>
+<span class="sd">        the self.random_perturbation() method).</span>
+<span class="sd">        </span>
+<span class="sd">        **Optional Keywords**:</span>
+<span class="sd">            - *verbose* = bool: print out parameter changes as they happen (default: False)  </span>
+<span class="sd">            - *store_params* = bool : store random parameter set (default: True)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_base</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_perturbation</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Experiment.random_perturbation"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.random_perturbation">[docs]</a>    <span class="k">def</span> <span class="nf">random_perturbation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform a random perturbation of the model according to parameter statistics</span>
+<span class="sd">        defined in self.param_stats. </span>
+<span class="sd">        </span>
+<span class="sd">        Note that by default, this function is identical to random_draw. If model_type is </span>
+<span class="sd">        set to &#39;current&#39;, then parameters are varied according using the *current values* </span>
+<span class="sd">        as distribution means - this allows &#39;random walk&#39; away from the initial model state, </span>
+<span class="sd">        which is usually not desired.</span>
+<span class="sd">        </span>
+<span class="sd">        **Optional arguments**:</span>
+<span class="sd">            - *store_params* = bool : store random parameter set (default: True)</span>
+<span class="sd">            - *verbose* = bool: print out parameter changes as they happen (default: False)</span>
+<span class="sd">            - *model_type* = &#39;base&#39;, &#39;current&#39; : perturb on basis of current model, </span>
+<span class="sd">                            or use base model (default: &#39;base&#39; model)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">store_params</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;store_params&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="n">verbose</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;verbose&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+
+        <span class="c"># create a dictionary for event parameter changes:</span>
+        <span class="n">param_changes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c"># relative parameter changes</span>
+        <span class="n">absolute_changes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c"># absolute parameter changes</span>
+
+        <span class="c"># calculate new values according to &#39;statistics&#39;</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_stats</span><span class="p">:</span>
+
+            <span class="c"># if param[&#39;event&#39;] is not a tuple, make it one</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">tuple</span><span class="p">:</span>
+                <span class="n">param</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">],)</span>  <span class="c"># cast to tuple</span>
+
+            <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">param</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">]:</span>  <span class="c"># intialise param changes dictionaries</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">param_changes</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+                    <span class="n">param_changes</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="n">absolute_changes</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="c"># get original value</span>
+            <span class="n">model_type</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;model_type&#39;</span><span class="p">,</span> <span class="s">&#39;base&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s">&#39;base&#39;</span><span class="p">:</span>
+                <span class="n">ori_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_events</span><span class="p">[</span><span class="n">param</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">param</span><span class="p">[</span><span class="s">&#39;parameter&#39;</span><span class="p">]]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ori_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">param</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">param</span><span class="p">[</span><span class="s">&#39;parameter&#39;</span><span class="p">]]</span>
+
+            <span class="c"># sample value from appropriate distribution</span>
+            <span class="n">random_val</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">param</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;normal&#39;</span><span class="p">:</span>
+                    <span class="c"># draw value of normal distribution:</span>
+                    <span class="n">mean</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;mean&quot;</span><span class="p">,</span> <span class="n">ori_val</span><span class="p">)</span>  <span class="c"># default mean is original value</span>
+
+                    <span class="c"># use assigned standard deviation</span>
+                    <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;stdev&#39;</span><span class="p">):</span>
+                        <span class="n">stdev</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;stdev&quot;</span><span class="p">)</span>
+                        <span class="n">random_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">stdev</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">param</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;+-&#39;</span><span class="p">):</span>
+                        <span class="n">ci</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;+-&#39;</span><span class="p">)</span>
+                        <span class="n">random_val</span> <span class="o">=</span> <span class="n">Sample</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">ci</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>  <span class="c"># not enough information to calculate standard deviation</span>
+                        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                            <span class="s">&quot;Error: Normal distribution is underdefined. Please assign either a &#39;stdev&#39; value or a &#39;+-&#39; value (defining the interval between the 2.5th and 97.25th quantile)&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">param</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;vonmises&#39;</span><span class="p">:</span>
+                    <span class="n">mean</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;mean&quot;</span><span class="p">,</span> <span class="n">ori_val</span><span class="p">)</span>
+
+                    <span class="c"># sample distribution</span>
+                    <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;+-&#39;</span><span class="p">):</span>
+                        <span class="n">ci</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;+-&#39;</span><span class="p">)</span>
+                        <span class="n">random_val</span> <span class="o">=</span> <span class="n">Sample</span><span class="o">.</span><span class="n">VonMises</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">ci</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>  <span class="c"># +- needs to be defined</span>
+                        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                            <span class="s">&quot;Error: Von-Mises distribution is underdefined. Please assign either a &#39;+-&#39; value (defining the interval between the 2.5th and 97.25th quantile)&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">param</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;uniform&#39;</span><span class="p">:</span>
+                    <span class="c"># retrieve specified min/max values</span>
+                    <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&quot;min&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">param</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&quot;max&quot;</span><span class="p">):</span>
+                        <span class="n">minimum</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;min&quot;</span><span class="p">)</span>
+                        <span class="n">maximum</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;max&quot;</span><span class="p">)</span>
+                        <span class="n">random_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">minimum</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">param</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&quot;+-&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">param</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&quot;mean&quot;</span><span class="p">):</span>
+                        <span class="c"># retrieve mean and confidence interval</span>
+                        <span class="n">mean</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;mean&quot;</span><span class="p">)</span>
+                        <span class="n">ci</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;+-&quot;</span><span class="p">)</span>
+                        <span class="n">random_val</span> <span class="o">=</span> <span class="n">Sample</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">ci</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                            <span class="s">&quot;Error: Sampling from a uniform distribution requires either a specified range (&#39;min&#39; and &#39;max&#39; values) or a mean and &#39;+-&#39; value (95</span><span class="si">% c</span><span class="s">onfidence interval)&quot;</span><span class="p">)</span>
+
+                <span class="c"># throw error for other types of distribution</span>
+                <span class="k">if</span> <span class="n">param</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&#39;normal&#39;</span> <span class="ow">and</span> <span class="n">param</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&#39;vonmises&#39;</span> <span class="ow">and</span> <span class="n">param</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&#39;uniform&#39;</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s">&quot;Sampling for type </span><span class="si">%s</span><span class="s"> not yet implemented, sorry.&quot;</span> <span class="o">%</span> <span class="n">param</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">])</span>
+
+                <span class="c"># store relative changes</span>
+                <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">param</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">]:</span>
+                    <span class="n">param_changes</span><span class="p">[</span><span class="n">e</span><span class="p">][</span><span class="n">param</span><span class="p">[</span><span class="s">&#39;parameter&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">random_val</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">param</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span>
+                        <span class="n">param</span><span class="p">[</span><span class="s">&#39;parameter&#39;</span><span class="p">]]</span>
+
+                    <span class="c"># store absolute changes</span>
+                    <span class="n">absolute_changes</span><span class="p">[</span><span class="n">e</span><span class="p">][</span><span class="n">param</span><span class="p">[</span><span class="s">&#39;parameter&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">random_val</span>
+
+                    <span class="c"># print changes</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Changing </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s">&#39;parameter&#39;</span><span class="p">],</span> <span class="n">random_val</span><span class="p">))</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s">&quot;Please define type of parameter statistics (&#39;type&#39; keyword in table)&quot;</span><span class="p">)</span>
+
+        <span class="c"># assign changes to model:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">change_event_params</span><span class="p">(</span><span class="n">param_changes</span><span class="p">)</span>
+
+        <span class="c"># store results for later analysis</span>
+        <span class="k">if</span> <span class="n">store_params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;random_parameter_changes&#39;</span><span class="p">):</span>  <span class="c"># initialise array</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">random_parameter_changes</span> <span class="o">=</span> <span class="p">[</span><span class="n">absolute_changes</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">random_parameter_changes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">absolute_changes</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Experiment.shuffle_event_order"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.shuffle_event_order">[docs]</a>    <span class="k">def</span> <span class="nf">shuffle_event_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_ids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Randomly shuffle order of events</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *event_ids* = [list of event ids] : event ids to be randomly shuffeled</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">event_ids</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">event_ids</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="c"># set up reorder-dictionary</span>
+        <span class="n">reorder_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ev_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">event_ids</span><span class="p">):</span>
+            <span class="n">reorder_dict</span><span class="p">[</span><span class="n">ev_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_order</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reorder_events</span><span class="p">(</span><span class="n">reorder_dict</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Experiment.get_sampling_line_data"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.get_sampling_line_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_sampling_line_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_from</span><span class="p">,</span> <span class="n">xyz_to</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get computed model along a line, for example as a drillhole position</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *xyz_from* = [x, y, z] : list of float values for starting position</span>
+<span class="sd">            - *xyz_to* = [x, y, z] : list of float values for starting position</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="Experiment.plot_section"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.plot_section">[docs]</a>    <span class="k">def</span> <span class="nf">plot_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extended version of plot_section method from pynoddy.output class</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *direction* = &#39;x&#39;, &#39;y&#39;, &#39;z&#39; : coordinate direction of section plot (default: &#39;y&#39;)</span>
+<span class="sd">            - *position* = int or &#39;center&#39; : cell position of section as integer value</span>
+<span class="sd">                or identifier (default: &#39;center&#39;)</span>
+<span class="sd">        </span>
+<span class="sd">        **Optional Keywords**:</span>
+<span class="sd">            - *ax* = matplotlib.axis : append plot to axis (default: create new plot)</span>
+<span class="sd">            - *figsize* = (x,y) : matplotlib figsize</span>
+<span class="sd">            - *colorbar* = bool : plot colorbar (default: True)</span>
+<span class="sd">            - *colorbar_orientation* = &#39;horizontal&#39; or &#39;vertical&#39; : orientation of colorbar</span>
+<span class="sd">                    (default: &#39;vertical&#39;)</span>
+<span class="sd">            - *title* = string : plot title</span>
+<span class="sd">            - *savefig* = bool : save figure to file (default: show directly on screen)</span>
+<span class="sd">            - *cmap* = matplotlib.cmap : colormap (default: YlOrRd)</span>
+<span class="sd">            - *fig_filename* = string : figure filename</span>
+<span class="sd">            - *ve* = float : vertical exaggeration</span>
+<span class="sd">            - *layer_labels* = list of strings: labels for each unit in plot</span>
+<span class="sd">            - *layers_from* = noddy history file : get labels automatically from history file</span>
+<span class="sd">            - *resolution* = float : set resolution for section (default: self.cube_size)</span>
+<span class="sd">            - *model_type* = &#39;current&#39;, &#39;base&#39; : model type (base &quot;freezed&quot; model can be plotted for comparison)</span>
+<span class="sd">            - *data* = np.array : data to plot, if different to block data itself</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">kwds</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&quot;data&quot;</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Experiment</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># get model as section</span>
+            <span class="n">tmp_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_section</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">determine_model_stratigraphy</span><span class="p">()</span>
+            <span class="c"># tmp_out.plot_section(direction = direction, layer_labels = self.model_stratigraphy, **kwds)</span>
+            <span class="n">tmp_out</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Experiment.export_to_vtk"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.export_to_vtk">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_vtk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Export model to VTK</span>
+<span class="sd">        </span>
+<span class="sd">        Export the geology blocks to VTK for visualisation of the entire 3-D model in an</span>
+<span class="sd">        external VTK viewer, e.g. Paraview.</span>
+<span class="sd">        </span>
+<span class="sd">        ..Note:: Requires pyevtk, available for free on: https://github.com/firedrakeproject/firedrake/tree/master/python/evtk</span>
+<span class="sd">        </span>
+<span class="sd">        **Optional keywords**:</span>
+<span class="sd">            - *vtk_filename* = string : filename of VTK file (default: output_name)</span>
+<span class="sd">            - *data* = np.array : data array to export to VKT (default: entire block model)</span>
+<span class="sd">            - *recompute* = bool : recompute the block model (default: True)</span>
+<span class="sd">            - *model_type* = &#39;current&#39;, &#39;base&#39; : model type (base &quot;freezed&quot; model can be plotted for comparison)</span>
+<span class="sd">            </span>
+<span class="sd">        ..Note:: If data is defined, the model is not recomputed and the data from this array is plotted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">kwds</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&quot;data&quot;</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Experiment</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">export_to_vtk</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">recompute</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;recompute&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>  <span class="c"># recompute by default</span>
+            <span class="k">if</span> <span class="n">recompute</span><span class="p">:</span>
+                <span class="kn">import</span> <span class="nn">pynoddy</span>
+                <span class="kn">import</span> <span class="nn">pynoddy.output</span>
+                <span class="c"># re-compute noddy model</span>
+                <span class="c">#  save temporary file</span>
+                <span class="n">tmp_his_file</span> <span class="o">=</span> <span class="s">&quot;tmp_section.his&quot;</span>
+                <span class="n">tmp_out_file</span> <span class="o">=</span> <span class="s">&quot;tmp_section_out&quot;</span>
+
+                <span class="c"># reset to base model?</span>
+                <span class="k">if</span> <span class="n">kwds</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&quot;model_type&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">kwds</span><span class="p">[</span><span class="s">&#39;model_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;base&#39;</span><span class="p">):</span>
+                    <span class="c"># 1. create copy</span>
+                    <span class="kn">import</span> <span class="nn">copy</span>
+                    <span class="n">tmp_his</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                    <span class="n">tmp_his</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_events</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="n">tmp_his</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">tmp_his_file</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">tmp_his_file</span><span class="p">)</span>
+
+                <span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">tmp_his_file</span><span class="p">,</span> <span class="n">tmp_out_file</span><span class="p">)</span>
+                <span class="c"># open output</span>
+                <span class="c"># tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)</span>
+                <span class="c"># tmp_out.export_to_vtk(**kwds)</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">Experiment</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">set_basename</span><span class="p">(</span><span class="n">tmp_out_file</span><span class="p">)</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">Experiment</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">load_model_info</span><span class="p">()</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">Experiment</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">load_geology</span><span class="p">()</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Experiment</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">export_to_vtk</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Experiment.get_section"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.get_section">[docs]</a>    <span class="k">def</span> <span class="nf">get_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get geological section of the model (re-computed at required resolution) as noddy object</span>
+
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *direction* = &#39;x&#39;, &#39;y&#39;, &#39;z&#39; : coordinate direction of section plot (default: &#39;y&#39;)</span>
+<span class="sd">            - *position* = int or &#39;center&#39; : cell position of section as integer value</span>
+<span class="sd">                or identifier (default: &#39;center&#39;)</span>
+<span class="sd">        </span>
+<span class="sd">        **Optional arguments**:</span>
+<span class="sd">            - *resolution* = float : set resolution for section (default: self.cube_size)</span>
+<span class="sd">            - *model_type* = &#39;current&#39;, &#39;base&#39; : model type (base &quot;freezed&quot; model can be plotted for comparison)</span>
+<span class="sd">            - *compute_output* = bool : provide output from command line call (default: True)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">compute_output</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;compute_output&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_cube_size</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_extent</span><span class="p">()</span>
+        <span class="n">resolution</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;resolution&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cube_size</span><span class="p">)</span>
+        <span class="n">model_type</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;model_type&quot;</span><span class="p">,</span> <span class="s">&#39;current&#39;</span><span class="p">)</span>
+
+        <span class="c">#         self.determine_model_stratigraphy()</span>
+
+        <span class="c"># code copied from noddy.history.HistoryFile.get_drillhole_data()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_origin</span><span class="p">()</span>
+        <span class="n">z_min</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;z_min&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_z</span><span class="p">)</span>
+        <span class="n">z_max</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;z_max&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_z</span><span class="p">)</span>
+
+        <span class="c"># 1. create copy</span>
+        <span class="kn">import</span> <span class="nn">copy</span>
+        <span class="n">tmp_his</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c"># 2. set values</span>
+
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s">&#39;y&#39;</span><span class="p">:</span>
+            <span class="n">x_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_x</span>
+            <span class="n">x_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_x</span>
+            <span class="k">if</span> <span class="n">position</span> <span class="o">==</span> <span class="s">&#39;center&#39;</span> <span class="ow">or</span> <span class="n">position</span> <span class="o">==</span> <span class="s">&#39;centre&#39;</span><span class="p">:</span>  <span class="c"># AE and BE friendly :-)</span>
+                <span class="n">y_pos</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent_y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_y</span> <span class="o">-</span> <span class="n">resolution</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c"># set position excplicity to cell</span>
+                <span class="n">y_pos</span> <span class="o">=</span> <span class="n">position</span>
+            <span class="n">tmp_his</span><span class="o">.</span><span class="n">set_origin</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">z_min</span><span class="p">)</span>  <span class="c"># z_min)</span>
+            <span class="n">tmp_his</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">x_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">,</span> <span class="n">z_max</span><span class="p">)</span>
+            <span class="n">tmp_his</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="n">resolution</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s">&#39;x&#39;</span><span class="p">:</span>
+            <span class="n">y_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_y</span>
+            <span class="n">y_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_y</span>
+            <span class="k">if</span> <span class="n">position</span> <span class="o">==</span> <span class="s">&#39;center&#39;</span> <span class="ow">or</span> <span class="n">position</span> <span class="o">==</span> <span class="s">&#39;centre&#39;</span><span class="p">:</span>
+                <span class="n">x_pos</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent_x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_x</span> <span class="o">-</span> <span class="n">resolution</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c"># set position excplicity to cell</span>
+                <span class="n">x_pos</span> <span class="o">=</span> <span class="n">position</span>
+            <span class="n">tmp_his</span><span class="o">.</span><span class="n">set_origin</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">z_min</span><span class="p">)</span>  <span class="c"># z_min)</span>
+            <span class="n">tmp_his</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">resolution</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">z_max</span><span class="p">)</span>
+            <span class="n">tmp_his</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="n">resolution</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s">&#39;base&#39;</span><span class="p">:</span>
+            <span class="n">tmp_his</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_events</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c"># 3. save temporary file</span>
+        <span class="n">tmp_his_file</span> <span class="o">=</span> <span class="s">&quot;tmp_section.his&quot;</span>
+        <span class="n">tmp_his</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">tmp_his_file</span><span class="p">)</span>
+        <span class="n">tmp_out_file</span> <span class="o">=</span> <span class="s">&quot;tmp_section_out&quot;</span>
+        <span class="c"># 4. run noddy</span>
+        <span class="kn">import</span> <span class="nn">pynoddy.output</span>
+
+        <span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">tmp_his_file</span><span class="p">,</span> <span class="n">tmp_out_file</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">compute_output</span><span class="p">)</span>
+        <span class="c"># 5. open output</span>
+        <span class="n">tmp_out</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">tmp_out_file</span><span class="p">)</span>
+        <span class="c"># 6. </span>
+        <span class="c">#         tmp_out.plot_section(direction = direction, player_labels = self.model_stratigraphy, **kwds)</span>
+        <span class="c"># return tmp_out.block</span>
+
+        <span class="c"># remove temorary file</span>
+        <span class="c"># find all files that match base name of output file (depends on Noddy compute type!)</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">tmp_out_file</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tmp_out</span>
+</div>
+<div class="viewcode-block" id="Experiment.write_parameter_changes"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.experiment.Experiment.write_parameter_changes">[docs]</a>    <span class="k">def</span> <span class="nf">write_parameter_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;random_parameter_changes&#39;</span><span class="p">):</span>  <span class="c"># if parameter changes have been stored</span>
+            <span class="c"># ensure directory exists</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filepath</span><span class="p">)))</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
+
+            <span class="c"># open</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+
+            <span class="c"># todo: write initial values</span>
+
+            <span class="c"># write header</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;ChangeNumber&quot;</span><span class="p">)</span>
+            <span class="n">change_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_parameter_changes</span><span class="p">[</span>
+                <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>  <span class="c"># NB: This only works if the same parameters have been changed at each step!</span>
+                <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;,Event_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>  <span class="c"># write parameter: eg. Event_1_Amplitude</span>
+
+            <span class="c"># retrieve values</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_parameter_changes</span><span class="p">:</span>
+                <span class="n">change_list</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>  <span class="c"># list of changes</span>
+                <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">change</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                        <span class="n">change_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c"># store value</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c"># write values</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">change_list</span><span class="p">)):</span>
+                <span class="c"># write ChangeNumber</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+                <span class="c"># write change values</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">change_list</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;,</span><span class="si">%f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">v</span><span class="p">)</span>
+
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span> <span class="p">(</span><span class="s">&quot;This experiment has no stored changes&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pynoddy  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../pynoddy.html" >pynoddy</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

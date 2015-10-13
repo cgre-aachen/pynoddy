@@ -1,0 +1,1614 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pynoddy.history &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../../index.html" />
+    <link rel="up" title="pynoddy" href="../pynoddy.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pynoddy  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../pynoddy.html" accesskey="U">pynoddy</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pynoddy.history</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;Noddy history file wrapper</span>
+<span class="sd">Created on 24/03/2014</span>
+
+<span class="sd">@author: Florian Wellmann</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">time</span> <span class="c"># for header in model generation</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="c"># import numpy as np</span>
+<span class="c"># import matplotlib.pyplot as plt</span>
+
+<span class="kn">import</span> <span class="nn">events</span>
+
+
+<div class="viewcode-block" id="NoddyHistory"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory">[docs]</a><span class="k">class</span> <span class="nc">NoddyHistory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class container for Noddy history files&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">history</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Methods to analyse and change Noddy history files</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *history* = string : Name of Noddy history file</span>
+<span class="sd">            </span>
+<span class="sd">        **Optional Keywords**:</span>
+<span class="sd">            - *url* = url : link to history file on web (e.g. to download </span>
+<span class="sd">            and open directly from Atlas of Structural Geophysics,</span>
+<span class="sd">            http://virtualexplorer.com.au/special/noddyatlas/index.html</span>
+<span class="sd">            </span>
+<span class="sd">            - *verbose* = True if this function should print output to the printstream. Default is False.</span>
+<span class="sd">            </span>
+<span class="sd">        Note: if both a (local) history is given and a URL, the local</span>
+<span class="sd">        file is opened!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">vb</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;verbose&#39;</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">history</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">kwds</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&quot;url&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">load_history_from_url</span><span class="p">(</span><span class="n">kwds</span><span class="p">[</span><span class="s">&#39;url&#39;</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">determine_events</span><span class="p">(</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">vb</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># generate a new history</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">create_new_history</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># load existing history</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">determine_events</span><span class="p">(</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">vb</span><span class="p">)</span>
+            
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print out model information&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_info_string</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="NoddyHistory.info"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print out model information</span>
+<span class="sd">        </span>
+<span class="sd">        **Optional keywords**:</span>
+<span class="sd">            - *events_only* = bool : only information on events</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_info_string</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        </div>
+<div class="viewcode-block" id="NoddyHistory.get_info_string"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.get_info_string">[docs]</a>    <span class="k">def</span> <span class="nf">get_info_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get model information as string</span>
+<span class="sd">        </span>
+<span class="sd">        **Optional keywords**:</span>
+<span class="sd">            - *events_only* = bool : only information on events</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">events_only</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;events_only&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        
+        <span class="n">local_os</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">events_only</span><span class="p">:</span>
+            <span class="c"># First: check if all information available</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;extent_x&#39;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_extent</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;origin_x&#39;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_origin</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;cube_size&#39;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cube_size</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;filename&#39;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;date_saved&#39;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_date_saved</span><span class="p">()</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="s">&quot;*&quot;</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n\t\t\t</span><span class="s">Model Information</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="mi">60</span> <span class="o">*</span> <span class="s">&quot;*&quot;</span><span class="p">)</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_events</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;The model does not yet contain any events</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;This model consists of </span><span class="si">%d</span><span class="s"> events:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_events</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">ev</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">(</span><span class="si">%d</span><span class="s">) - </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">ev</span><span class="o">.</span><span class="n">event_type</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">events_only</span><span class="p">:</span>        
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;The model extent is:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">x - </span><span class="si">%.1f</span><span class="s"> m</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_x</span><span class="p">)</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">y - </span><span class="si">%.1f</span><span class="s"> m</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_y</span><span class="p">)</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">z - </span><span class="si">%.1f</span><span class="s"> m</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_z</span><span class="p">)</span>
+            
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;Number of cells in each direction:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">nx = </span><span class="si">%d</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent_x</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cube_size</span><span class="p">))</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">ny = </span><span class="si">%d</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent_y</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cube_size</span><span class="p">))</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">nz = </span><span class="si">%d</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent_z</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cube_size</span><span class="p">))</span>
+            
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;The model origin is located at: </span><span class="se">\n\t</span><span class="s">(</span><span class="si">%.1f</span><span class="s">, </span><span class="si">%.1f</span><span class="s">, </span><span class="si">%.1f</span><span class="s">)</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin_x</span><span class="p">,</span>
+                                                                          <span class="bp">self</span><span class="o">.</span><span class="n">origin_y</span><span class="p">,</span>
+                                                                          <span class="bp">self</span><span class="o">.</span><span class="n">origin_z</span><span class="p">))</span>
+            
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;The cubesize for model export is: </span><span class="se">\n\t</span><span class="si">%d</span><span class="s"> m</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">cube_size</span><span class="p">)</span>
+            <span class="c"># and now some metadata</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="s">&quot;*&quot;</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n\t\t\t</span><span class="s">Meta Data</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="mi">60</span> <span class="o">*</span> <span class="s">&quot;*&quot;</span><span class="p">)</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;The filename of the model is:</span><span class="se">\n\t</span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">local_os</span> <span class="o">+=</span><span class="p">(</span><span class="s">&quot;It was last saved (if origin was a history file!) at:</span><span class="se">\n\t</span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">date_saved</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">local_os</span>
+        </div>
+<div class="viewcode-block" id="NoddyHistory.get_origin"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.get_origin">[docs]</a>    <span class="k">def</span> <span class="nf">get_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get coordinates of model origin and return and store in local variables</span>
+<span class="sd">        </span>
+<span class="sd">        **Returns**: (origin_x, origin_y, origin_z)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># check if footer_lines exist (e.g. read in from file)</span>
+        <span class="c"># if not: create from template</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;footer_lines&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_footer_from_template</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&quot;Origin X&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">origin_x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">origin_y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">origin_z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">break</span>
+                
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_z</span><span class="p">)</span>
+    </div>
+<div class="viewcode-block" id="NoddyHistory.set_origin"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.set_origin">[docs]</a>    <span class="k">def</span> <span class="nf">set_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin_x</span><span class="p">,</span> <span class="n">origin_y</span><span class="p">,</span> <span class="n">origin_z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set coordinates of model origin and update local variables</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *origin_x* = float : x-location of model origin</span>
+<span class="sd">            - *origin_y* = float : y-location of model origin</span>
+<span class="sd">            - *origin_z* = float : z-location of model origin</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># check if footer_lines exist (e.g. read in from file)</span>
+        <span class="c"># if not: create from template</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;footer_lines&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_footer_from_template</span><span class="p">()</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">origin_x</span> <span class="o">=</span> <span class="n">origin_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">origin_y</span> <span class="o">=</span> <span class="n">origin_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">origin_z</span> <span class="o">=</span> <span class="n">origin_z</span>
+        <span class="n">origin_x_line</span> <span class="o">=</span> <span class="s">&quot;    Origin X    =   </span><span class="si">%.2f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">origin_x</span>
+        <span class="n">origin_y_line</span> <span class="o">=</span> <span class="s">&quot;    Origin Y    =   </span><span class="si">%.2f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">origin_y</span>
+        <span class="n">origin_z_line</span> <span class="o">=</span> <span class="s">&quot;    Origin Z    =   </span><span class="si">%.2f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">origin_z</span>
+        
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&quot;Origin X&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin_x_line</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin_y_line</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin_z_line</span>
+                <span class="k">break</span>
+    </div>
+<div class="viewcode-block" id="NoddyHistory.get_extent"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.get_extent">[docs]</a>    <span class="k">def</span> <span class="nf">get_extent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get model extent and return and store in local variables</span>
+<span class="sd">        </span>
+<span class="sd">        **Returns**: (extent_x, extent_y, extent_z)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># check if footer_lines exist (e.g. read in from file)</span>
+        <span class="c"># if not: create from template</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;footer_lines&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_footer_from_template</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&quot;Length X&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">extent_x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">extent_y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">extent_z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">break</span>
+                
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_z</span><span class="p">)</span>
+    </div>
+<div class="viewcode-block" id="NoddyHistory.set_extent"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.set_extent">[docs]</a>    <span class="k">def</span> <span class="nf">set_extent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extent_x</span><span class="p">,</span> <span class="n">extent_y</span><span class="p">,</span> <span class="n">extent_z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set model extent and update local variables</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *extent_x* = float : extent in x-direction</span>
+<span class="sd">            - *extent_y* = float : extent in y-direction</span>
+<span class="sd">            - *extent_z* = float : extent in z-direction</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># check if footer_lines exist (e.g. read in from file)</span>
+        <span class="c"># if not: create from template</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;footer_lines&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_footer_from_template</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">extent_x</span> <span class="o">=</span> <span class="n">extent_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extent_y</span> <span class="o">=</span> <span class="n">extent_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extent_z</span> <span class="o">=</span> <span class="n">extent_z</span>
+        <span class="n">extent_x_line</span> <span class="o">=</span> <span class="s">&quot;    Length X    =   </span><span class="si">%.2f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">extent_x</span>
+        <span class="n">extent_y_line</span> <span class="o">=</span> <span class="s">&quot;    Length Y    =   </span><span class="si">%.2f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">extent_y</span>
+        <span class="n">extent_z_line</span> <span class="o">=</span> <span class="s">&quot;    Length Z    =   </span><span class="si">%.2f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">extent_z</span>
+        
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&quot;Length X&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">extent_x_line</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">extent_y_line</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">extent_z_line</span>
+                <span class="k">break</span>
+            </div>
+<div class="viewcode-block" id="NoddyHistory.get_drillhole_data"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.get_drillhole_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_drillhole_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get geology values along 1-D profile at position x,y with a 1 m resolution</span>
+<span class="sd">        </span>
+<span class="sd">        The following steps are performed:</span>
+<span class="sd">        1. creates a copy of the entire object,</span>
+<span class="sd">        2. sets values of origin, extent and geology cube size, </span>
+<span class="sd">        3. saves model to a temporary file, </span>
+<span class="sd">        4. runs Noddy on that file</span>
+<span class="sd">        5. opens and analyses output</span>
+<span class="sd">        6. deletes temporary files</span>
+<span class="sd">        </span>
+<span class="sd">        Note: this method only works if write access to current directory</span>
+<span class="sd">        is enabled and noddy can be executed!</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *x* = float: x-position of drillhole</span>
+<span class="sd">            - *y* = float: y-position of drillhole</span>
+<span class="sd">        </span>
+<span class="sd">        **Optional Arguments**:</span>
+<span class="sd">            - *z_min* = float : minimum depth of drillhole (default: model range)</span>
+<span class="sd">            - *z_max* = float : maximum depth of drillhole (default: model range)</span>
+<span class="sd">            - *resolution* = float : resolution along profile (default: 1 m)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># resolve keywords</span>
+        <span class="n">resolution</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;resolution&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_extent</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_origin</span><span class="p">()</span>
+        <span class="n">z_min</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;z_min&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_z</span><span class="p">)</span>
+        <span class="n">z_max</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;z_max&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent_z</span><span class="p">)</span>
+        <span class="c"># 1. create copy</span>
+        <span class="kn">import</span> <span class="nn">copy</span>
+        <span class="n">tmp_his</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">tmp_his</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="s">&quot;test.his&quot;</span><span class="p">)</span>
+        <span class="c"># 2. set values</span>
+        <span class="n">tmp_his</span><span class="o">.</span><span class="n">set_origin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z_min</span><span class="p">)</span>
+        <span class="n">tmp_his</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">resolution</span><span class="p">,</span> <span class="n">resolution</span><span class="p">,</span> <span class="n">z_max</span><span class="p">)</span>
+        <span class="n">tmp_his</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="n">resolution</span><span class="p">)</span>
+        <span class="c"># 3. save temporary file</span>
+        <span class="n">tmp_his_file</span> <span class="o">=</span> <span class="s">&quot;tmp_1D_drillhole.his&quot;</span>
+        <span class="n">tmp_his</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">tmp_his_file</span><span class="p">)</span>
+        <span class="n">tmp_out_file</span> <span class="o">=</span> <span class="s">&quot;tmp_1d_out&quot;</span>
+        <span class="c"># 4. run noddy</span>
+        <span class="kn">import</span> <span class="nn">pynoddy</span>
+        <span class="kn">import</span> <span class="nn">pynoddy.output</span>
+        
+        <span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">tmp_his_file</span><span class="p">,</span> <span class="n">tmp_out_file</span><span class="p">)</span>
+        <span class="c"># 5. open output</span>
+        <span class="n">tmp_out</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">tmp_out_file</span><span class="p">)</span>
+        <span class="c"># 6. </span>
+        <span class="k">return</span> <span class="n">tmp_out</span><span class="o">.</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:]</span>
+        
+        </div>
+<div class="viewcode-block" id="NoddyHistory.load_history"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.load_history">[docs]</a>    <span class="k">def</span> <span class="nf">load_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">history</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load Noddy history</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *history* = string : Name of Noddy history file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="c"># set flag for model loaded from file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_from_file</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="c"># get footer lines </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_footer_lines</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="NoddyHistory.load_history_from_url"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.load_history_from_url">[docs]</a>    <span class="k">def</span> <span class="nf">load_history_from_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Directly load a Noddy history from a URL</span>
+<span class="sd">        </span>
+<span class="sd">        This method is useful to load a model from the Structural Geophysics</span>
+<span class="sd">        Atlas on the pages of the Virtual Explorer.</span>
+<span class="sd">        See: http://tectonique.net/asg</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *url* : url of history file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">urllib2</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">tmp_lines</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">tmp_lines</span><span class="p">:</span>
+            <span class="c"># append EOL again for consistency</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="c"># set flag for model loaded from URL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_from_url</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="c"># get footer lines </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_footer_lines</span><span class="p">()</span>
+            </div>
+<div class="viewcode-block" id="NoddyHistory.determine_model_stratigraphy"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.determine_model_stratigraphy">[docs]</a>    <span class="k">def</span> <span class="nf">determine_model_stratigraphy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="sd">&quot;&quot;&quot;Determine stratigraphy of entire model from all events&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_stratigraphy</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">event_type</span> <span class="o">==</span> <span class="s">&#39;STRATIGRAPHY&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model_stratigraphy</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">layer_names</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">event_type</span> <span class="o">==</span> <span class="s">&#39;UNCONFORMITY&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model_stratigraphy</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">layer_names</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">event_type</span> <span class="o">==</span> <span class="s">&#39;DYKE&#39;</span><span class="p">:</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">model_stratigraphy</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">event_type</span> <span class="o">==</span> <span class="s">&#39;PLUG&#39;</span><span class="p">:</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">model_stratigraphy</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+            </div>
+<div class="viewcode-block" id="NoddyHistory.determine_events"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.determine_events">[docs]</a>    <span class="k">def</span> <span class="nf">determine_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine events and save line numbers</span>
+<span class="sd">        </span>
+<span class="sd">        .. note:: Parsing of the history file is based on a fixed Noddy output order. </span>
+<span class="sd">                  If this is, for some reason (e.g. in a changed version of Noddy) not the case, then</span>
+<span class="sd">                  this parsing might fail!</span>
+<span class="sd">        </span>
+<span class="sd">          **Optional Keywords**:</span>
+<span class="sd">           - verbose = True if this function is should write to the print bufffer, otherwise False. Default is False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">vb</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;verbose&#39;</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_raw_events</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&quot;No of Events&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_events</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="s">&quot;Event #&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">event</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span> <span class="s">&#39;num&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">7</span><span class="p">:</span><span class="mi">9</span><span class="p">]),</span> <span class="s">&#39;line_start&#39;</span><span class="p">:</span> <span class="n">i</span><span class="p">}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_raw_events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="c"># finally: if the definition for BlockOptions starts, the event definition is over</span>
+            <span class="k">elif</span> <span class="s">&quot;BlockOptions&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">last_event_stop</span> <span class="o">=</span> <span class="n">i</span><span class="o">-</span><span class="mi">2</span>
+        <span class="c"># now: find the line ends for the single event blocks</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_raw_events</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_raw_events</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&#39;line_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s">&#39;line_start&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+        <span class="c"># now adjust for last event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_raw_events</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;line_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_event_stop</span>
+        
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="p">{}</span> <span class="c"># idea: create events as dictionary so that it is easier</span>
+        <span class="c"># to swap order later!</span>
+        <span class="c"># now create proper event objects for these events</span>
+        <span class="k">if</span> <span class="n">vb</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;Loaded model with the following events:&quot;</span>
+        
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_events</span><span class="p">:</span>
+            <span class="n">event_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;line_start&#39;</span><span class="p">]:</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;line_end&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">vb</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="s">&#39;FAULT&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]:</span>
+                <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Fault</span><span class="p">(</span><span class="n">lines</span> <span class="o">=</span> <span class="n">event_lines</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s">&#39;SHEAR_ZONE&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]:</span>
+                <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Shear</span><span class="p">(</span><span class="n">lines</span> <span class="o">=</span> <span class="n">event_lines</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s">&#39;FOLD&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]:</span>
+                <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Fold</span><span class="p">(</span><span class="n">lines</span> <span class="o">=</span> <span class="n">event_lines</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s">&#39;UNCONFORMITY&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]:</span>
+                <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Unconformity</span><span class="p">(</span><span class="n">lines</span> <span class="o">=</span> <span class="n">event_lines</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s">&#39;STRATIGRAPHY&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]:</span>
+                <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Stratigraphy</span><span class="p">(</span><span class="n">lines</span> <span class="o">=</span> <span class="n">event_lines</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s">&#39;TILT&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]:</span> <span class="c"># AK</span>
+                <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Tilt</span><span class="p">(</span><span class="n">lines</span> <span class="o">=</span> <span class="n">event_lines</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s">&#39;DYKE&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]:</span>
+                <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Dyke</span><span class="p">(</span><span class="n">lines</span> <span class="o">=</span> <span class="n">event_lines</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s">&#39;PLUG&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]:</span>
+                <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Plug</span><span class="p">(</span><span class="n">lines</span> <span class="o">=</span> <span class="n">event_lines</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s">&#39;STRAIN&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]:</span>
+                <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Strain</span><span class="p">(</span><span class="n">lines</span> <span class="o">=</span> <span class="n">event_lines</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;Warning: event of type </span><span class="si">%s</span><span class="s"> has not been implemented in PyNoddy yet&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span>
+                <span class="k">continue</span>
+            <span class="c"># now set shared attributes (those defined in superclass Event)</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;num&#39;</span><span class="p">]</span> <span class="c">#retrieve event number</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="n">ev</span> <span class="c">#store events sequentially</span>
+        
+        <span class="c"># determine overall begin and end of the history events</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_events_begin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_events</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;line_start&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_events_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_events</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;line_end&#39;</span><span class="p">]</span>
+        </div>
+<div class="viewcode-block" id="NoddyHistory.copy_events"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.copy_events">[docs]</a>    <span class="k">def</span> <span class="nf">copy_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a copy of the current event state&quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">copy</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
+       </div>
+<div class="viewcode-block" id="NoddyHistory.get_cube_size"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.get_cube_size">[docs]</a>    <span class="k">def</span> <span class="nf">get_cube_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine cube size for model export</span>
+<span class="sd">           **Optional Args**</span>
+<span class="sd">            -type: choose geology or geophysics cube size to return. Should be either &#39;Geology&#39; (default) or &#39;Geophysics&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c">#get args</span>
+        <span class="n">sim_type</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&#39;Geophysics&#39;</span><span class="p">)</span> <span class="c">#everything seems to use this</span>
+        <span class="n">cube_string</span> <span class="o">=</span> <span class="s">&#39;Geophysics Cube Size&#39;</span> <span class="c">#get geology cube size by default</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s">&#39;Geology&#39;</span> <span class="ow">in</span> <span class="n">sim_type</span><span class="p">):</span>
+            <span class="n">cube_string</span> <span class="o">=</span> <span class="s">&#39;Geology Cube Size&#39;</span> <span class="c">#instead get geology cube size</span>
+            <span class="k">print</span> <span class="s">&quot;Warning: pynoddy uses the geophysics cube size for all calculations... changing the geology cube size will have no effect internally.&quot;</span>
+       
+       <span class="c"># check if footer exists, if not: create from template</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;footer_lines&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_footer_from_template</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cube_string</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">cube_size</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cube_size</span>
+         </div>
+<div class="viewcode-block" id="NoddyHistory.get_filename"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.get_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine model filename from history file/ header&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="NoddyHistory.get_date_saved"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.get_date_saved">[docs]</a>    <span class="k">def</span> <span class="nf">get_date_saved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine the last savepoint of the file&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date_saved</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>    
+    </div>
+<div class="viewcode-block" id="NoddyHistory.change_cube_size"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.change_cube_size">[docs]</a>    <span class="k">def</span> <span class="nf">change_cube_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cube_size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Change the model cube size (isotropic)</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *cube_size* = float : new model cube size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+               
+        <span class="c"># check if footer_lines exist (e.g. read in from file)</span>
+        <span class="c"># if not: create from template</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;footer_lines&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_footer_from_template</span><span class="p">()</span>
+            
+<span class="c">#        lines_new = self.history_lines[:]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&quot;Geophysics Cube Size&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>  <span class="c">#correct line, make change</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)</span>
+                <span class="n">l_new</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%7.2f</span><span class="se">\r\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">cube_size</span>
+                <span class="n">line_new</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;=&quot;</span> <span class="o">+</span> <span class="n">l_new</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">line_new</span>
+                
+            <span class="k">if</span> <span class="s">&quot;Geology Cube Size&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span> <span class="c">#change geology cube size also</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)</span>
+                <span class="n">l_new</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%7.2f</span><span class="se">\r\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">cube_size</span>
+                <span class="n">line_new</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;=&quot;</span> <span class="o">+</span> <span class="n">l_new</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">line_new</span>
+        <span class="c"># assign changed lines back to object</span>
+<span class="c">#        self.history_lines = lines_new[:]        </span>
+        </div>
+<div class="viewcode-block" id="NoddyHistory.get_footer_lines"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.get_footer_lines">[docs]</a>    <span class="k">def</span> <span class="nf">get_footer_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the footer lines from self.history_lines</span>
+<span class="sd">        </span>
+<span class="sd">        The footer contains everything below events (all settings, etc.)&quot;&quot;&quot;</span>
+        <span class="c"># get id of footer from history lines</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&quot;#BlockOptions&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span>
+    </div>
+<div class="viewcode-block" id="NoddyHistory.create_footer_from_template"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.create_footer_from_template">[docs]</a>    <span class="k">def</span> <span class="nf">create_footer_from_template</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create model footer (with all settings) from template&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">_Templates</span><span class="p">()</span><span class="o">.</span><span class="n">footer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">):</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;    &quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>    
+        </div>
+<div class="viewcode-block" id="NoddyHistory.swap_events"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.swap_events">[docs]</a>    <span class="k">def</span> <span class="nf">swap_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_num_1</span><span class="p">,</span> <span class="n">event_num_2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Swap two geological events in the timeline</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *event_num_1/2* = int : number of events to be swapped (&quot;order&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># events have to be copied, otherwise only a reference is passed!</span>
+        <span class="n">event_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">event_num_1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">event_num_1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">event_num_2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">event_num_2</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_tmp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_event_numbers</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="NoddyHistory.reorder_events"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.reorder_events">[docs]</a>    <span class="k">def</span> <span class="nf">reorder_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reorder_dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reorder events accoring to assignment in reorder_dict</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *reorder_dict* = dict : for example {1 : 2, 2 : 3, 3 : 1}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tmp_events</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">reorder_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">tmp_events</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;Event with id </span><span class="si">%d</span><span class="s"> is not defined, please check!&quot;</span> <span class="o">%</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">tmp_events</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_event_numbers</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="NoddyHistory.update_event_numbers"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.update_event_numbers">[docs]</a>    <span class="k">def</span> <span class="nf">update_event_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update event numbers in &#39;Event #&#39; line in noddy history file&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">set_event_number</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        </div>
+<div class="viewcode-block" id="NoddyHistory.update_all_event_properties"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.update_all_event_properties">[docs]</a>    <span class="k">def</span> <span class="nf">update_all_event_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update properties of all events - in case changes were made&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+        
+<span class="c">#</span>
+<span class="c">#class NewHistory():</span>
+<span class="c">#    &quot;&quot;&quot;Methods to create a Noddy model&quot;&quot;&quot;</span>
+<span class="c">#    </span></div>
+<div class="viewcode-block" id="NoddyHistory.create_new_history"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.create_new_history">[docs]</a>    <span class="k">def</span> <span class="nf">create_new_history</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Methods to create a Noddy model</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># set event counter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_events_begin</span> <span class="o">=</span> <span class="mi">7</span> <span class="c"># default after header</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_events_end</span> <span class="o">=</span> <span class="mi">7</span>
+        <span class="c"># initialise history lines</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="p">{}</span>
+        </div>
+<div class="viewcode-block" id="NoddyHistory.get_ev_counter"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.get_ev_counter">[docs]</a>    <span class="k">def</span> <span class="nf">get_ev_counter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Event counter for implicit and continuous definition of events&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_counter</span>
+        
+    </div>
+<div class="viewcode-block" id="NoddyHistory.add_event"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.add_event">[docs]</a>    <span class="k">def</span> <span class="nf">add_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_type</span><span class="p">,</span> <span class="n">event_options</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add an event type to history</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *event_type* = string : type of event, legal options to date are:</span>
+<span class="sd">            &#39;stratigraphy&#39;, &#39;fault&#39;, &#39;fold&#39;, &#39;unconformity&#39;</span>
+<span class="sd">            - *event_options* = list : required options to create event (event dependent)</span>
+<span class="sd">        **Optional keywords**:</span>
+<span class="sd">            - *event_num* = int : event number (default: implicitly defined with increasing counter)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">event_num</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;event_num&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ev_counter</span><span class="p">())</span>
+        
+        
+        <span class="k">if</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s">&#39;stratigraphy&#39;</span><span class="p">:</span>
+            <span class="n">ev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_stratigraphy</span><span class="p">(</span><span class="n">event_options</span><span class="p">)</span>
+            <span class="n">ev</span><span class="o">.</span><span class="n">event_type</span> <span class="o">=</span> <span class="s">&#39;STRATIGRAPHY&#39;</span>
+
+        <span class="k">elif</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s">&#39;fault&#39;</span><span class="p">:</span>
+            <span class="n">ev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_fault</span><span class="p">(</span><span class="n">event_options</span><span class="p">)</span>
+            <span class="n">ev</span><span class="o">.</span><span class="n">event_type</span> <span class="o">=</span> <span class="s">&#39;FAULT&#39;</span>
+
+        <span class="k">elif</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s">&#39;tilt&#39;</span><span class="p">:</span> <span class="c"># AK</span>
+            <span class="n">ev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_tilt</span><span class="p">(</span><span class="n">event_options</span><span class="p">)</span>
+            <span class="n">ev</span><span class="o">.</span><span class="n">event_type</span> <span class="o">=</span> <span class="s">&#39;TILT&#39;</span>
+        
+        <span class="k">elif</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s">&#39;unconformity&#39;</span><span class="p">:</span> <span class="c"># AK</span>
+            <span class="n">ev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_unconformity</span><span class="p">(</span><span class="n">event_options</span><span class="p">)</span>
+            <span class="n">ev</span><span class="o">.</span><span class="n">event_type</span> <span class="o">=</span> <span class="s">&#39;UNCONFORMITY&#39;</span>
+        
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s">&#39;Event type </span><span class="si">%s</span><span class="s"> not (yet) implemented&#39;</span> <span class="o">%</span> <span class="n">event_type</span><span class="p">)</span>
+        
+        <span class="n">ev</span><span class="o">.</span><span class="n">set_event_number</span><span class="p">(</span><span class="n">event_num</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">event_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">ev</span>
+            
+        <span class="c"># update beginning and ending of events in history</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_events_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_events_end</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">event_lines</span><span class="p">)</span>
+        
+        <span class="c"># add event to history lines, as well (for consistency with other methods)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">all_events_begin</span><span class="p">]</span> <span class="o">+</span> \
+        <span class="n">ev</span><span class="o">.</span><span class="n">event_lines</span> <span class="o">+</span> \
+        <span class="bp">self</span><span class="o">.</span><span class="n">history_lines</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">all_events_end</span><span class="p">:]</span>
+            </div>
+    <span class="k">def</span> <span class="nf">_create_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create model header, include actual date&quot;&quot;&quot;</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">()</span> <span class="c"># get current time</span>
+        <span class="n">time_string</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">/</span><span class="si">%d</span><span class="s">/</span><span class="si">%d</span><span class="s"> </span><span class="si">%d</span><span class="s">:</span><span class="si">%d</span><span class="s">:</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">tm_mday</span><span class="p">,</span> 
+                                             <span class="n">t</span><span class="o">.</span><span class="n">tm_mon</span><span class="p">,</span> 
+                                             <span class="n">t</span><span class="o">.</span><span class="n">tm_year</span><span class="p">,</span>
+                                             <span class="n">t</span><span class="o">.</span><span class="n">tm_hour</span><span class="p">,</span>
+                                             <span class="n">t</span><span class="o">.</span><span class="n">tm_min</span><span class="p">,</span>
+                                             <span class="n">t</span><span class="o">.</span><span class="n">tm_sec</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">header_lines</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;#Filename = &quot;&quot;&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">+</span> <span class="s">&quot;&quot;&quot; </span>
+<span class="s">#Date Saved = &quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">time_string</span> <span class="o">+</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">FileType = 111</span>
+<span class="s">Version = 7.11</span>
+
+<span class="s">&quot;&quot;&quot;</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_create_stratigraphy</span><span class="p">(</span><span class="n">event_options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a stratigraphy event</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *event_options* = list : list of required and optional settings for event</span>
+<span class="sd">            Options are:</span>
+<span class="sd">            &#39;num_layers&#39; = int : number of layers (required)</span>
+<span class="sd">            &#39;layer_names&#39; = list of strings : names for layers (default names otherwise)</span>
+<span class="sd">            &#39;layer_thickness&#39; = list of floats : thicknesses for all layers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Stratigraphy</span><span class="p">()</span>
+        <span class="n">tmp_lines</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;&quot;</span><span class="p">]</span>
+        <span class="n">tmp_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">Num Layers</span><span class="se">\t</span><span class="s">= </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;num_layers&#39;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">event_options</span><span class="p">[</span><span class="s">&#39;num_layers&#39;</span><span class="p">]):</span>
+            <span class="sd">&quot;&quot;&quot;Add stratigraphy layers&quot;&quot;&quot;</span>
+            <span class="n">layer_name</span> <span class="o">=</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;layer_names&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">cum_thickness</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">event_options</span><span class="p">[</span><span class="s">&#39;layer_thickness&#39;</span><span class="p">])</span>
+            <span class="n">layer_lines</span> <span class="o">=</span> <span class="n">_Templates</span><span class="p">()</span><span class="o">.</span><span class="n">strati_layer</span>
+            <span class="c"># now replace required variables</span>
+            <span class="n">layer_lines</span> <span class="o">=</span> <span class="n">layer_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$NAME$&quot;</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">)</span>
+            <span class="n">layer_lines</span> <span class="o">=</span> <span class="n">layer_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$HEIGHT$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">cum_thickness</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">layer_lines</span> <span class="o">=</span> <span class="n">layer_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;    &quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="c"># split lines and add to event lines list:</span>
+            <span class="k">for</span> <span class="n">layer_line</span> <span class="ow">in</span> <span class="n">layer_lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">):</span>
+                <span class="n">tmp_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer_line</span><span class="p">)</span>
+        
+        <span class="c"># append event name</span>
+        <span class="n">tmp_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span><span class="se">\t</span><span class="s">Name</span><span class="se">\t</span><span class="s">= Strat</span>
+<span class="s">&quot;&quot;&quot;</span><span class="p">)</span>
+        
+        <span class="c"># event lines are defined in list:</span>
+        <span class="n">tmp_lines_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">tmp_lines</span><span class="p">:</span>
+            <span class="n">tmp_lines_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">ev</span><span class="o">.</span><span class="n">set_event_lines</span><span class="p">(</span><span class="n">tmp_lines_list</span><span class="p">)</span>
+        <span class="n">ev</span><span class="o">.</span><span class="n">num_layers</span> <span class="o">=</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;num_layers&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">ev</span>
+    
+    <span class="k">def</span> <span class="nf">_create_fault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a fault event</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *event_options* = list : list of required and optional settings for event;</span>
+<span class="sd">            Options are:</span>
+<span class="sd">            &#39;name&#39; = string : name of fault event</span>
+<span class="sd">            &#39;pos&#39; = (x,y,z) : position of reference point (floats)</span>
+<span class="sd">                .. note::     for convenience, it is possible to assign &#39;top&#39; to z</span>
+<span class="sd">                              for position at &quot;surface&quot;</span>
+<span class="sd">            &#39;dip_dir&#39; = [0,360] : dip direction of fault</span>
+<span class="sd">            &#39;dip&#39; = [0,90] : dip angle of fault</span>
+<span class="sd">            &#39;slip&#39; = float : slip along fault</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Fault</span><span class="p">()</span>
+        <span class="n">tmp_lines</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;&quot;</span><span class="p">]</span>
+        <span class="n">fault_lines</span> <span class="o">=</span> <span class="n">_Templates</span><span class="o">.</span><span class="n">fault</span>
+        <span class="c"># substitute text with according values</span>
+        <span class="n">fault_lines</span> <span class="o">=</span> <span class="n">fault_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$NAME$&quot;</span><span class="p">,</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
+        <span class="n">fault_lines</span> <span class="o">=</span> <span class="n">fault_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_X$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">fault_lines</span> <span class="o">=</span> <span class="n">fault_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_Y$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;top&#39;</span><span class="p">:</span>
+            <span class="c"># recalculate z-value to be at top of model</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zmax</span>
+            <span class="n">fault_lines</span> <span class="o">=</span> <span class="n">fault_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_Z$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">z</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fault_lines</span> <span class="o">=</span> <span class="n">fault_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_Z$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">fault_lines</span> <span class="o">=</span> <span class="n">fault_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$DIP_DIR$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;dip_dir&#39;</span><span class="p">])</span>
+        <span class="n">fault_lines</span> <span class="o">=</span> <span class="n">fault_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$DIP$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;dip&#39;</span><span class="p">])</span>
+        <span class="n">fault_lines</span> <span class="o">=</span> <span class="n">fault_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$SLIP$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;slip&#39;</span><span class="p">])</span>
+        
+        <span class="c"># now split lines and add as list entries to event lines</span>
+        <span class="c"># event lines are defined in list:</span>
+
+        <span class="c"># split lines and add to event lines list:</span>
+        <span class="k">for</span> <span class="n">layer_line</span> <span class="ow">in</span> <span class="n">fault_lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">):</span>
+            <span class="n">tmp_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer_line</span><span class="p">)</span>
+
+        <span class="n">tmp_lines_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">tmp_lines</span><span class="p">:</span>
+            <span class="n">tmp_lines_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">ev</span><span class="o">.</span><span class="n">set_event_lines</span><span class="p">(</span><span class="n">tmp_lines_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ev</span>
+         
+    <span class="c"># AK 2014-10    </span>
+    <span class="k">def</span> <span class="nf">_create_tilt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a tilt event</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *event_options* = list : list of required and optional settings for event;</span>
+<span class="sd">            Options are:</span>
+<span class="sd">            &#39;name&#39; = string : name of fault event</span>
+<span class="sd">            &#39;pos&#39; = (x,y,z) : position of reference point (floats)</span>
+<span class="sd">                .. note::     for convenience, it is possible to assign &#39;top&#39; to z</span>
+<span class="sd">                              for position at &quot;surface&quot;</span>
+<span class="sd">            &#39;rotation&#39; = [0,360] : dip?</span>
+<span class="sd">            &#39;plunge_direction&#39; = [0,360] : strike of plunge, measured from x axis</span>
+<span class="sd">            &#39;plunge&#39; = float : ?</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Tilt</span><span class="p">()</span>
+        <span class="n">tmp_lines</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;&quot;</span><span class="p">]</span>
+        <span class="n">tilt_lines</span> <span class="o">=</span> <span class="n">_Templates</span><span class="o">.</span><span class="n">tilt</span>
+        <span class="c"># substitute text with according values</span>
+        <span class="n">tilt_lines</span> <span class="o">=</span> <span class="n">tilt_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$NAME$&quot;</span><span class="p">,</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
+        <span class="n">tilt_lines</span> <span class="o">=</span> <span class="n">tilt_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_X$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">tilt_lines</span> <span class="o">=</span> <span class="n">tilt_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_Y$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;top&#39;</span><span class="p">:</span>
+            <span class="c"># recalculate z-value to be at top of model</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zmax</span>
+            <span class="n">tilt_lines</span> <span class="o">=</span> <span class="n">tilt_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_Z$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">z</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tilt_lines</span> <span class="o">=</span> <span class="n">tilt_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_Z$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">tilt_lines</span> <span class="o">=</span> <span class="n">tilt_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$ROTATION$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;rotation&#39;</span><span class="p">])</span>
+        <span class="n">tilt_lines</span> <span class="o">=</span> <span class="n">tilt_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$PLUNGE_DIRECTION$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;plunge_direction&#39;</span><span class="p">])</span>
+        <span class="n">tilt_lines</span> <span class="o">=</span> <span class="n">tilt_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$PLUNGE$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;plunge&#39;</span><span class="p">])</span>
+        
+        <span class="c"># now split lines and add as list entries to event lines</span>
+        <span class="c"># event lines are defined in list:</span>
+
+        <span class="c"># split lines and add to event lines list:</span>
+        <span class="k">for</span> <span class="n">tilt_line</span> <span class="ow">in</span> <span class="n">tilt_lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">):</span>
+            <span class="n">tmp_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tilt_line</span><span class="p">)</span>
+
+        <span class="n">tmp_lines_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">tmp_lines</span><span class="p">:</span>
+            <span class="n">tmp_lines_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">ev</span><span class="o">.</span><span class="n">set_event_lines</span><span class="p">(</span><span class="n">tmp_lines_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ev</span>
+         
+        
+        
+    
+    <span class="c"># AK 2014-10    </span>
+    <span class="k">def</span> <span class="nf">_create_unconformity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a unconformity event</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *event_options* = list : list of required and optional settings for event;</span>
+<span class="sd">            Options are:</span>
+<span class="sd">            &#39;name&#39; = string : name of unconformity event</span>
+<span class="sd">            &#39;pos&#39; = (x,y,z) : position of reference point (floats)</span>
+<span class="sd">                .. note::     for convenience, it is possible to assign &#39;top&#39; to z</span>
+<span class="sd">                              for position at &quot;surface&quot;</span>
+<span class="sd">            &#39;rotation&#39; = [0,360] : dip?</span>
+<span class="sd">            &#39;plunge_direction&#39; = [0,360] : strike of plunge, measured from x axis</span>
+<span class="sd">            &#39;plunge&#39; = float : ?</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">Unconformity</span><span class="p">()</span>
+        <span class="n">tmp_lines</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;&quot;</span><span class="p">]</span>
+        <span class="n">unconformity_lines</span> <span class="o">=</span> <span class="n">_Templates</span><span class="o">.</span><span class="n">unconformity</span>
+        <span class="c"># substitute text with according values</span>
+        <span class="n">unconformity_lines</span> <span class="o">=</span> <span class="n">unconformity_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$NAME$&quot;</span><span class="p">,</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
+        <span class="n">unconformity_lines</span> <span class="o">=</span> <span class="n">unconformity_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_X$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">unconformity_lines</span> <span class="o">=</span> <span class="n">unconformity_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_Y$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;top&#39;</span><span class="p">:</span>
+            <span class="c"># recalculate z-value to be at top of model</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zmax</span>
+            <span class="n">unconformity_lines</span> <span class="o">=</span> <span class="n">unconformity_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_Z$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">z</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">unconformity_lines</span> <span class="o">=</span> <span class="n">unconformity_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$POS_Z$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">unconformity_lines</span> <span class="o">=</span> <span class="n">unconformity_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$DIP_DIRECTION$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;dip_direction&#39;</span><span class="p">])</span>
+        <span class="n">unconformity_lines</span> <span class="o">=</span> <span class="n">unconformity_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$DIP$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;dip&#39;</span><span class="p">])</span>
+
+        <span class="c"># split lines and add to event lines list:</span>
+        <span class="k">for</span> <span class="n">unconformity_line</span> <span class="ow">in</span> <span class="n">unconformity_lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">):</span>
+            <span class="n">tmp_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unconformity_line</span><span class="p">)</span>
+
+        <span class="c"># unconformity has a stratigraphy block</span>
+        <span class="n">tmp_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">Num Layers</span><span class="se">\t</span><span class="s">= </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;num_layers&#39;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">event_options</span><span class="p">[</span><span class="s">&#39;num_layers&#39;</span><span class="p">]):</span>
+            <span class="sd">&quot;&quot;&quot;Add stratigraphy layers&quot;&quot;&quot;</span>
+            <span class="n">layer_name</span> <span class="o">=</span> <span class="n">event_options</span><span class="p">[</span><span class="s">&#39;layer_names&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">cum_thickness</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">event_options</span><span class="p">[</span><span class="s">&#39;layer_thickness&#39;</span><span class="p">])</span>
+            <span class="n">layer_lines</span> <span class="o">=</span> <span class="n">_Templates</span><span class="p">()</span><span class="o">.</span><span class="n">strati_layer</span>
+            <span class="c"># now replace required variables</span>
+            <span class="n">layer_lines</span> <span class="o">=</span> <span class="n">layer_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$NAME$&quot;</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">)</span>
+            <span class="n">layer_lines</span> <span class="o">=</span> <span class="n">layer_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$HEIGHT$&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">cum_thickness</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">layer_lines</span> <span class="o">=</span> <span class="n">layer_lines</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;    &quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="c"># split lines and add to event lines list:</span>
+            <span class="k">for</span> <span class="n">layer_line</span> <span class="ow">in</span> <span class="n">layer_lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">):</span>
+                <span class="n">tmp_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer_line</span><span class="p">)</span>
+        
+        <span class="c"># append event name</span>
+        <span class="n">tmp_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span><span class="se">\t</span><span class="s">Name</span><span class="se">\t</span><span class="s">= </span><span class="si">%s</span><span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">event_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span><span class="s">&#39;Unconf&#39;</span><span class="p">))</span>        
+
+        <span class="n">tmp_lines_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">tmp_lines</span><span class="p">:</span>
+            <span class="n">tmp_lines_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">ev</span><span class="o">.</span><span class="n">set_event_lines</span><span class="p">(</span><span class="n">tmp_lines_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ev</span>
+         
+<div class="viewcode-block" id="NoddyHistory.set_event_params"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.set_event_params">[docs]</a>    <span class="k">def</span> <span class="nf">set_event_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params_dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;set multiple event parameters according to settings in params_dict</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *params_dict* = dictionary : entries to set (multiple) parameters</span>
+<span class="sd">            </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">sub_dict</span> <span class="ow">in</span> <span class="n">params_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">sub_key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">sub_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">sub_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+        </div>
+<div class="viewcode-block" id="NoddyHistory.change_event_params"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.change_event_params">[docs]</a>    <span class="k">def</span> <span class="nf">change_event_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">changes_dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Change multiple event parameters according to settings in changes_dict</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *changes_dict* = dictionary : entries define relative changes for (multiple) parameters</span>
+<span class="sd">            </span>
+<span class="sd">        Per default, the values in the dictionary are added to the event parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#print changes_dict </span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">sub_dict</span> <span class="ow">in</span> <span class="n">changes_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="c">#loop through events (key)</span>
+            <span class="k">for</span> <span class="n">sub_key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">sub_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="c">#loop through parameters being changed (sub_key)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">sub_key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span>
+    </div>
+<div class="viewcode-block" id="NoddyHistory.get_event_params"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.get_event_params">[docs]</a>    <span class="k">def</span> <span class="nf">get_event_params</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">event_number</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the parameter dictionary for a given event.</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">         - *event_number* = the event to get a parameter for (integer)</span>
+<span class="sd">         </span>
+<span class="sd">         **Returns**</span>
+<span class="sd">          - Returns the parameter dictionary for the requested event</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">event_number</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span>
+        </div>
+<div class="viewcode-block" id="NoddyHistory.get_event_param"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.get_event_param">[docs]</a>    <span class="k">def</span> <span class="nf">get_event_param</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">event_number</span><span class="p">,</span> <span class="n">name</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the value of a given parameter for a given event.</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">         - *event_number* = the event to get a parameter for (integer)</span>
+<span class="sd">         - *name* = the name of the parameter to retreive (string)</span>
+<span class="sd">         </span>
+<span class="sd">         **Returns**</span>
+<span class="sd">          - Returns the value of the request parameter, or None if it does not </span>
+<span class="sd">            exists.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">event_number</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span>
+            <span class="k">return</span> <span class="n">ev</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span> <span class="c">#property does not exist</span>
+             </div>
+<div class="viewcode-block" id="NoddyHistory.write_history"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.history.NoddyHistory.write_history">[docs]</a>    <span class="k">def</span> <span class="nf">write_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write history to new file</span>
+<span class="sd">        </span>
+<span class="sd">        **Arguments**:</span>
+<span class="sd">            - *filename* = string : filename of new history file</span>
+<span class="sd">            </span>
+<span class="sd">        .. hint:: Just love it how easy it is to &#39;write history&#39; with Noddy ;-)</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># before saving: update all event properties (in case changes were made)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_all_event_properties</span><span class="p">()</span>        
+        
+        <span class="c"># first: create header</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;filename&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_header</span><span class="p">()</span>
+        
+        <span class="c"># initialise history lines</span>
+        <span class="n">history_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c"># add header</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">header_lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">):</span>
+            <span class="n">history_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            
+        <span class="c"># add number of events</span>
+        <span class="n">history_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;No of Events</span><span class="se">\t</span><span class="s">= </span><span class="si">%d</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">))</span>
+        <span class="c"># add events</span>
+        <span class="k">for</span> <span class="n">event_id</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">event_id</span><span class="p">]</span><span class="o">.</span><span class="n">event_lines</span><span class="p">:</span>
+                <span class="n">history_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        
+        <span class="c"># add footer: from original footer or from template (if new file):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s">&quot;footer_lines&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_footer_from_template</span><span class="p">()</span>
+            
+        <span class="c"># add footer</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">footer_lines</span><span class="p">:</span>
+            <span class="n">history_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                            
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">history_lines</span><span class="p">):</span>
+            <span class="c"># add empty line before &quot;BlockOptions&quot;, if not there:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s">&#39;BlockOptions&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">history_lines</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">):</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            
+            <span class="c">#write line</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+ 
+ 
+<span class="c">#===============================================================================</span>
+<span class="c"># End of NoddyHistory</span>
+<span class="c">#===============================================================================</span>
+
+
+<span class="c">#===============================================================================</span>
+<span class="c"># Templates for Noddy history file</span>
+<span class="c">#===============================================================================</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_Templates</span><span class="p">():</span>
+    
+    <span class="n">header</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;#Filename = simple_two_faults.his</span>
+<span class="s">#Date Saved = 24/3/2014 14:21:0</span>
+<span class="s">FileType = 111</span>
+<span class="s">Version = 7.11&quot;&quot;&quot;</span>
+
+    <span class="n">strati_layer</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;    Unit Name    = $NAME$</span>
+<span class="s">    Height    = $HEIGHT$</span>
+<span class="s">    Apply Alterations    = ON</span>
+<span class="s">    Density    = 4.00e+000</span>
+<span class="s">    Anisotropic Field    = 0</span>
+<span class="s">    MagSusX    = 1.60e-003</span>
+<span class="s">    MagSusY    = 1.60e-003</span>
+<span class="s">    MagSusZ    = 1.60e-003</span>
+<span class="s">    MagSus Dip    = 9.00e+001</span>
+<span class="s">    MagSus DipDir    = 9.00e+001</span>
+<span class="s">    MagSus Pitch    = 0.00e+000</span>
+<span class="s">    Remanent Magnetization    = 0</span>
+<span class="s">    Inclination    =  30.00</span>
+<span class="s">    Angle with the Magn. North    =  30.00</span>
+<span class="s">    Strength    = 1.60e-003</span>
+<span class="s">    Color Name    = Color 92</span>
+<span class="s">    Red    = 0</span>
+<span class="s">    Green    = 153</span>
+<span class="s">    Blue    = 48 &quot;&quot;&quot;</span>
+    
+    <span class="n">fault</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;    Geometry    = Translation</span>
+<span class="s">    Movement    = Hanging Wall</span>
+<span class="s">    X    = $POS_X$</span>
+<span class="s">    Y    = $POS_Y$</span>
+<span class="s">    Z    =   $POS_Z$</span>
+<span class="s">    Dip Direction    =  $DIP_DIR$</span>
+<span class="s">    Dip    =  $DIP$</span>
+<span class="s">    Pitch    =  90.00</span>
+<span class="s">    Slip    = $SLIP$</span>
+<span class="s">    Rotation    =  30.00</span>
+<span class="s">    Amplitude    = 2000.00</span>
+<span class="s">    Radius    = 1000.00</span>
+<span class="s">    XAxis    = 2000.00</span>
+<span class="s">    YAxis    = 2000.00</span>
+<span class="s">    ZAxis    = 2000.00</span>
+<span class="s">    Cyl Index    =   0.00</span>
+<span class="s">    Profile Pitch    =  90.00</span>
+<span class="s">    Color Name    = Custom Colour 8</span>
+<span class="s">    Red    = 0</span>
+<span class="s">    Green    = 0</span>
+<span class="s">    Blue    = 254</span>
+<span class="s">    Fourier Series</span>
+<span class="s">        Term A 0    =   0.00</span>
+<span class="s">        Term B 0    =   0.00</span>
+<span class="s">        Term A 1    =   0.00</span>
+<span class="s">        Term B 1    =   1.00</span>
+<span class="s">        Term A 2    =   0.00</span>
+<span class="s">        Term B 2    =   0.00</span>
+<span class="s">        Term A 3    =   0.00</span>
+<span class="s">        Term B 3    =   0.00</span>
+<span class="s">        Term A 4    =   0.00</span>
+<span class="s">        Term B 4    =   0.00</span>
+<span class="s">        Term A 5    =   0.00</span>
+<span class="s">        Term B 5    =   0.00</span>
+<span class="s">        Term A 6    =   0.00</span>
+<span class="s">        Term B 6    =   0.00</span>
+<span class="s">        Term A 7    =   0.00</span>
+<span class="s">        Term B 7    =   0.00</span>
+<span class="s">        Term A 8    =   0.00</span>
+<span class="s">        Term B 8    =   0.00</span>
+<span class="s">        Term A 9    =   0.00</span>
+<span class="s">        Term B 9    =   0.00</span>
+<span class="s">        Term A 10    =   0.00</span>
+<span class="s">        Term B 10    =   0.00</span>
+<span class="s">    Name    = Fault Plane</span>
+<span class="s">    Type    = 1</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 6.280000</span>
+<span class="s">    Min Y Scale    = -1.000000</span>
+<span class="s">    Max Y Scale    = 1.000000</span>
+<span class="s">    Scale Origin    = 0.000000</span>
+<span class="s">    Min Y Replace    = -1.000000</span>
+<span class="s">    Max Y Replace    = 1.000000</span>
+<span class="s">    Num Points    = 21</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 31</span>
+<span class="s">        Point Y    = 30</span>
+<span class="s">        Point X    = 62</span>
+<span class="s">        Point Y    = 58</span>
+<span class="s">        Point X    = 94</span>
+<span class="s">        Point Y    = 80</span>
+<span class="s">        Point X    = 125</span>
+<span class="s">        Point Y    = 94</span>
+<span class="s">        Point X    = 157</span>
+<span class="s">        Point Y    = 99</span>
+<span class="s">        Point X    = 188</span>
+<span class="s">        Point Y    = 95</span>
+<span class="s">        Point X    = 219</span>
+<span class="s">        Point Y    = 81</span>
+<span class="s">        Point X    = 251</span>
+<span class="s">        Point Y    = 58</span>
+<span class="s">        Point X    = 282</span>
+<span class="s">        Point Y    = 31</span>
+<span class="s">        Point X    = 314</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 345</span>
+<span class="s">        Point Y    = -31</span>
+<span class="s">        Point X    = 376</span>
+<span class="s">        Point Y    = -59</span>
+<span class="s">        Point X    = 408</span>
+<span class="s">        Point Y    = -81</span>
+<span class="s">        Point X    = 439</span>
+<span class="s">        Point Y    = -95</span>
+<span class="s">        Point X    = 471</span>
+<span class="s">        Point Y    = -100</span>
+<span class="s">        Point X    = 502</span>
+<span class="s">        Point Y    = -96</span>
+<span class="s">        Point X    = 533</span>
+<span class="s">        Point Y    = -82</span>
+<span class="s">        Point X    = 565</span>
+<span class="s">        Point Y    = -59</span>
+<span class="s">        Point X    = 596</span>
+<span class="s">        Point Y    = -32</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = -1</span>
+<span class="s">    Alteration Type     = NONE</span>
+<span class="s">    Num Profiles    = 12</span>
+<span class="s">    Name    = Density</span>
+<span class="s">    Type    = 2</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = 0.000000</span>
+<span class="s">    Max Y Scale    = 4.000000</span>
+<span class="s">    Scale Origin    = 1.000000</span>
+<span class="s">    Min Y Replace    = 0.000000</span>
+<span class="s">    Max Y Replace    = 10.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = -50</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = -50</span>
+<span class="s">    Name    = Anisotropy</span>
+<span class="s">    Type    = 3</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = -10.000000</span>
+<span class="s">    Max Y Scale    = 10.000000</span>
+<span class="s">    Scale Origin    = 0.000000</span>
+<span class="s">    Min Y Replace    = -10.000000</span>
+<span class="s">    Max Y Replace    = 10.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">    Name    = - X Axis (Sus)</span>
+<span class="s">    Type    = 4</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = -5.000000</span>
+<span class="s">    Max Y Scale    = 5.000000</span>
+<span class="s">    Scale Origin    = 0.000000</span>
+<span class="s">    Min Y Replace    = 2.000000</span>
+<span class="s">    Max Y Replace    = 8.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">    Name    = - Y Axis (Sus)</span>
+<span class="s">    Type    = 5</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = -5.000000</span>
+<span class="s">    Max Y Scale    = 5.000000</span>
+<span class="s">    Scale Origin    = 0.000000</span>
+<span class="s">    Min Y Replace    = 2.000000</span>
+<span class="s">    Max Y Replace    = 8.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">    Name    = - Z Axis (Sus)</span>
+<span class="s">    Type    = 6</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = -5.000000</span>
+<span class="s">    Max Y Scale    = 5.000000</span>
+<span class="s">    Scale Origin    = 0.000000</span>
+<span class="s">    Min Y Replace    = 2.000000</span>
+<span class="s">    Max Y Replace    = 8.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">    Name    = - Dip (Sus)</span>
+<span class="s">    Type    = 7</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = -180.000000</span>
+<span class="s">    Max Y Scale    = 180.000000</span>
+<span class="s">    Scale Origin    = 1.000000</span>
+<span class="s">    Min Y Replace    = -180.000000</span>
+<span class="s">    Max Y Replace    = 180.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 1</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = 1</span>
+<span class="s">    Name    = - Dip Dir (Sus)</span>
+<span class="s">    Type    = 8</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = -360.000000</span>
+<span class="s">    Max Y Scale    = 360.000000</span>
+<span class="s">    Scale Origin    = 1.000000</span>
+<span class="s">    Min Y Replace    = -360.000000</span>
+<span class="s">    Max Y Replace    = 360.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">    Name    = - Pitch (Sus)</span>
+<span class="s">    Type    = 9</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = -360.000000</span>
+<span class="s">    Max Y Scale    = 360.000000</span>
+<span class="s">    Scale Origin    = 1.000000</span>
+<span class="s">    Min Y Replace    = -360.000000</span>
+<span class="s">    Max Y Replace    = 360.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">    Name    = Remanence</span>
+<span class="s">    Type    = 10</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = -10.000000</span>
+<span class="s">    Max Y Scale    = 10.000000</span>
+<span class="s">    Scale Origin    = 0.000000</span>
+<span class="s">    Min Y Replace    = -10.000000</span>
+<span class="s">    Max Y Replace    = 10.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">    Name    = - Declination (Rem)</span>
+<span class="s">    Type    = 11</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = -360.000000</span>
+<span class="s">    Max Y Scale    = 360.000000</span>
+<span class="s">    Scale Origin    = 1.000000</span>
+<span class="s">    Min Y Replace    = -360.000000</span>
+<span class="s">    Max Y Replace    = 360.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">    Name    = - Inclination (Rem)</span>
+<span class="s">    Type    = 12</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = -360.000000</span>
+<span class="s">    Max Y Scale    = 360.000000</span>
+<span class="s">    Scale Origin    = 1.000000</span>
+<span class="s">    Min Y Replace    = -360.000000</span>
+<span class="s">    Max Y Replace    = 360.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">    Name    = - Intensity (Rem)</span>
+<span class="s">    Type    = 13</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 200.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = -5.000000</span>
+<span class="s">    Max Y Scale    = 5.000000</span>
+<span class="s">    Scale Origin    = 0.000000</span>
+<span class="s">    Min Y Replace    = -5.000000</span>
+<span class="s">    Max Y Replace    = 5.000000</span>
+<span class="s">    Num Points    = 2</span>
+<span class="s">        Point X    = 0</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">        Point X    = 628</span>
+<span class="s">        Point Y    = 0</span>
+<span class="s">    Surface Type    = FLAT_SURFACE</span>
+<span class="s">    Surface Filename    =      </span>
+<span class="s">    Surface Directory    = </span><span class="se">\\</span><span class="s">psf\Home</span>
+<span class="s">    Surface XDim    = 0.000000</span>
+<span class="s">    Surface YDim    = 0.000000</span>
+<span class="s">    Surface ZDim    = 0.000000</span>
+<span class="s">    Name    = $NAME$&quot;&quot;&quot;</span>
+
+    <span class="c"># AK 2014-10</span>
+    <span class="n">tilt</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;X    =   $POS_X$</span>
+<span class="s">    Y    =   $POS_Y$</span>
+<span class="s">    Z    =   $POS_Z$</span>
+<span class="s">    Rotation     =  $ROTATION$</span>
+<span class="s">    Plunge Direction     = $PLUNGE_DIRECTION$</span>
+<span class="s">    Plunge     =   $PLUNGE$</span>
+<span class="s">    Name    = $NAME$&quot;&quot;&quot;</span>
+ 
+    <span class="n">unconformity</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;X    =   $POS_X$</span>
+<span class="s">    Y    =   $POS_Y$</span>
+<span class="s">    Z    = $POS_Z$</span>
+<span class="s">    Dip Direction    =  $DIP_DIRECTION$</span>
+<span class="s">    Dip    =   $DIP$</span>
+<span class="s">    Alteration Type     = NONE</span>
+<span class="s">    Num Profiles    = 1</span>
+<span class="s">    Name    =    </span>
+<span class="s">    Type    = 0</span>
+<span class="s">    Join Type     = LINES</span>
+<span class="s">    Graph Length    = 0.000000</span>
+<span class="s">    Min X    = 0.000000</span>
+<span class="s">    Max X    = 0.000000</span>
+<span class="s">    Min Y Scale    = 0.000000</span>
+<span class="s">    Max Y Scale    = 0.000000</span>
+<span class="s">    Scale Origin    = 0.000000</span>
+<span class="s">    Min Y Replace    = 0.000000</span>
+<span class="s">    Max Y Replace    = 0.000000</span>
+<span class="s">    Num Points    = 0</span>
+<span class="s">    Surface Type    = FLAT_SURFACE</span>
+<span class="s">    Surface Filename    =       </span>
+<span class="s">    Surface Directory    = /tmp_mnt/sci6/users/mark/Atlas/case</span>
+<span class="s">    Surface XDim    = 0.000000</span>
+<span class="s">    Surface YDim    = 0.000000</span>
+<span class="s">    Surface ZDim    = 0.000000&quot;&quot;&quot;</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    Num Layers    = 5</span>
+<span class="s">    Unit Name    = UC Base</span>
+<span class="s">    Height    = -32000</span>
+<span class="s">    Apply Alterations    = ON</span>
+<span class="s">    Density    = 3.50e+00</span>
+<span class="s">    Anisotropic Field    = 0</span>
+<span class="s">    MagSusX    = 1.50e-06</span>
+<span class="s">    MagSusY    = 1.60e-03</span>
+<span class="s">    MagSusZ    = 1.60e-03</span>
+<span class="s">    MagSus Dip    = 9.00e+01</span>
+<span class="s">    MagSus DipDir    = 9.00e+01</span>
+<span class="s">    MagSus Pitch    = 0.00e+00</span>
+<span class="s">    Remanent Magnetization    = 0</span>
+<span class="s">    Inclination    =  30.00</span>
+<span class="s">    Angle with the Magn. North    =  30.00</span>
+<span class="s">    Strength    = 1.60e-03</span>
+<span class="s">    Color Name    = Color 98</span>
+<span class="s">    Red    = 84</span>
+<span class="s">    Green    = 153</span>
+<span class="s">    Blue    = 0</span>
+<span class="s">    Unit Name    = UC Layer 1</span>
+<span class="s">    Height    = 5650</span>
+<span class="s">    Apply Alterations    = ON</span>
+<span class="s">    Density    = 3.50e+00</span>
+<span class="s">    Anisotropic Field    = 0</span>
+<span class="s">    MagSusX    = 1.50e-06</span>
+<span class="s">    MagSusY    = 1.60e-03</span>
+<span class="s">    MagSusZ    = 1.60e-03</span>
+<span class="s">    MagSus Dip    = 9.00e+01</span>
+<span class="s">    MagSus DipDir    = 9.00e+01</span>
+<span class="s">    MagSus Pitch    = 0.00e+00</span>
+<span class="s">    Remanent Magnetization    = 0</span>
+<span class="s">    Inclination    =  30.00</span>
+<span class="s">    Angle with the Magn. North    =  30.00</span>
+<span class="s">    Strength    = 1.60e-03</span>
+<span class="s">    Color Name    = Color 68</span>
+<span class="s">    Red    = 204</span>
+<span class="s">    Green    = 117</span>
+<span class="s">    Blue    = 0</span>
+<span class="s">    Name    = $NAME$&quot;&quot;&quot;</span>
+       
+    <span class="c"># everything below events</span>
+    <span class="n">footer</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">#BlockOptions</span>
+<span class="s">    Number of Views    = 1</span>
+<span class="s">    Current View    = 0</span>
+<span class="s">    NAME    = Default</span>
+<span class="s">    Origin X    =   0.00</span>
+<span class="s">    Origin Y    =   0.00</span>
+<span class="s">    Origin Z    = 5000.00</span>
+<span class="s">    Length X    = 10000.00</span>
+<span class="s">    Length Y    = 7000.00</span>
+<span class="s">    Length Z    = 5000.00</span>
+<span class="s">    Geology Cube Size    =  50.00</span>
+<span class="s">    Geophysics Cube Size    = 50.00</span>
+
+<span class="s">#GeologyOptions</span>
+<span class="s">    Scale    =  10.00</span>
+<span class="s">    SectionDec    =  90.00</span>
+<span class="s">    WellDepth    = 5000.00</span>
+<span class="s">    WellAngleZ    =   0.00</span>
+<span class="s">    BoreholeX    =   0.00</span>
+<span class="s">    BoreholeX    =   0.00</span>
+<span class="s">    BoreholeX    = 5000.00</span>
+<span class="s">    BoreholeDecl    =  90.00</span>
+<span class="s">    BoreholeDip    =   0.00</span>
+<span class="s">    BoreholeLength    = 5000.00</span>
+<span class="s">    SectionX    =   0.00</span>
+<span class="s">    SectionY    =   0.00</span>
+<span class="s">    SectionZ    = 5000.00</span>
+<span class="s">    SectionDecl    =  90.00</span>
+<span class="s">    SectionLength    = 10000.00</span>
+<span class="s">    SectionHeight    = 5000.00</span>
+<span class="s">    topofile    = FALSE</span>
+<span class="s">    Topo Filename    =    </span>
+<span class="s">    Topo Directory    = .</span>
+<span class="s">    Topo Scale    =   1.00</span>
+<span class="s">    Topo Offset    =   0.00</span>
+<span class="s">    Topo First Contour    = 100.00</span>
+<span class="s">    Topo Contour Interval    = 100.00</span>
+<span class="s">    Chair Diagram    = FALSE</span>
+<span class="s">    Chair_X    = 5000.00</span>
+<span class="s">    Chair_Y    = 3500.00</span>
+<span class="s">    Chair_Z    = 2500.00</span>
+
+<span class="s">#GeophysicsOptions</span>
+<span class="s">    GPSRange     = 0</span>
+<span class="s">    Declination    =   0.00</span>
+<span class="s">    Inclination    = -67.00</span>
+<span class="s">    Intensity    = 63000.00</span>
+<span class="s">    Field Type    = FIXED</span>
+<span class="s">    Field xPos    =   0.00</span>
+<span class="s">    Field yPos    =   0.00</span>
+<span class="s">    Field zPos    = 5000.00</span>
+<span class="s">    Inclination Ori    =   0.00</span>
+<span class="s">    Inclination Change    =   0.00</span>
+<span class="s">    Intensity Ori    =  90.00</span>
+<span class="s">    Intensity Change    =   0.00</span>
+<span class="s">    Declination Ori    =   0.00</span>
+<span class="s">    Declination Change    =   0.00</span>
+<span class="s">    Altitude    =  80.00</span>
+<span class="s">    Airborne=     FALSE</span>
+<span class="s">    Calculation Method    = SPATIAL</span>
+<span class="s">    Spectral Padding Type    = RECLECTION_PADDING</span>
+<span class="s">    Spectral Fence    = 100</span>
+<span class="s">    Spectral Percent    = 100</span>
+<span class="s">    Constant Boxing Depth    =   0.00</span>
+<span class="s">    Clever Boxing Ratio    =   1.00</span>
+<span class="s">    Deformable Remanence=     FALSE</span>
+<span class="s">    Deformable Anisotropy=     TRUE</span>
+<span class="s">    Vector Components=     FALSE</span>
+<span class="s">    Project Vectors=     TRUE</span>
+<span class="s">    Pad With Real Geology=     FALSE</span>
+<span class="s">    Draped Survey=     FALSE</span>
+
+<span class="s">#3DOptions</span>
+<span class="s">    Declination    = 150.000000</span>
+<span class="s">    Elevation    = 30.000000</span>
+<span class="s">    Scale    = 1.000000</span>
+<span class="s">    Offset X    = 1.000000</span>
+<span class="s">    Offset Y    = 1.000000</span>
+<span class="s">    Offset Z    = 1.000000</span>
+<span class="s">    Fill Type    = 2</span>
+
+<span class="s">#ProjectOptions</span>
+<span class="s">    Susceptibility Units    = CGS</span>
+<span class="s">    Geophysical Calculation    = 2</span>
+<span class="s">    Calculation Type    = LOCAL_JOB</span>
+<span class="s">    Length Scale    = 0</span>
+<span class="s">    Printing Scale    = 1.000000</span>
+<span class="s">    Image Scale    = 10.000000</span>
+<span class="s">    New Windows    = FALSE</span>
+<span class="s">    Background Red Component    = 254</span>
+<span class="s">    Background Green Component    = 254</span>
+<span class="s">    Background Blue Component    = 254</span>
+<span class="s">    Internet Address    = 255.255.255.255</span>
+<span class="s">    Account Name    =       </span>
+<span class="s">    Noddy Path    = ./noddy</span>
+<span class="s">    Help Path    = iexplore %h</span>
+<span class="s">    Movie Frames Per Event    = 3</span>
+<span class="s">    Movie Play Speed    =  10.00</span>
+<span class="s">    Movie Type    = 0</span>
+<span class="s">    Gravity Clipping Type    = RELATIVE_CLIPPING</span>
+<span class="s">    Gravity Image Display Clip Min    = 0.000000</span>
+<span class="s">    Gravity Image Display Clip Max    = 100.000000</span>
+<span class="s">    Gravity Image Display Type    = GREY</span>
+<span class="s">    Gravity Image Display Num Contour    = 25</span>
+<span class="s">    Magnetics Clipping Type    = RELATIVE_CLIPPING</span>
+<span class="s">    Magnetics Image Display Clip Min    = 0.000000</span>
+<span class="s">    Magnetics Image Display Clip Max    = 100.000000</span>
+<span class="s">    Magnetics Image Display Type    = GREY</span>
+<span class="s">    Magnetics Image Display Num Contour    = 25</span>
+<span class="s">    False Easting    = 0.000000</span>
+<span class="s">    False Northing    = 0.000000</span>
+
+<span class="s">#Window Positions</span>
+<span class="s">    Num Windows    = 16</span>
+<span class="s">    Name    = Block Diagram</span>
+<span class="s">    X    = 60</span>
+<span class="s">    Y    = 60</span>
+<span class="s">    Width    = 500</span>
+<span class="s">    Height    = 300</span>
+<span class="s">    Name    = Movie</span>
+<span class="s">    X    = 60</span>
+<span class="s">    Y    = 60</span>
+<span class="s">    Width    = -1</span>
+<span class="s">    Height    = -1</span>
+<span class="s">    Name    = Well Log</span>
+<span class="s">    X    = 60</span>
+<span class="s">    Y    = 60</span>
+<span class="s">    Width    = 400</span>
+<span class="s">    Height    = 430</span>
+<span class="s">    Name    = Section</span>
+<span class="s">    X    = 14</span>
+<span class="s">    Y    = 16</span>
+<span class="s">    Width    = 490</span>
+<span class="s">    Height    = -1</span>
+<span class="s">    Name    = Topography Map</span>
+<span class="s">    X    = 60</span>
+<span class="s">    Y    = 60</span>
+<span class="s">    Width    = 490</span>
+<span class="s">    Height    = 375</span>
+<span class="s">    Name    = 3D Topography Map</span>
+<span class="s">    X    = 60</span>
+<span class="s">    Y    = 60</span>
+<span class="s">    Width    = 490</span>
+<span class="s">    Height    = 375</span>
+<span class="s">    Name    = 3D Stratigraphy</span>
+<span class="s">    X    = 60</span>
+<span class="s">    Y    = 60</span>
+<span class="s">    Width    = 490</span>
+<span class="s">    Height    = 375</span>
+<span class="s">    Name    = Line Map</span>
+<span class="s">    X    = 60</span>
+<span class="s">    Y    = 60</span>
+<span class="s">    Width    = 490</span>
+<span class="s">    Height    = -1</span>
+<span class="s">    Name    = Profile - From Image</span>
+<span class="s">    X    = 60</span>
+<span class="s">    Y    = 60</span>
+<span class="s">    Width    = 490</span>
+<span class="s">    Height    = 600</span>
+<span class="s">    Name    = Sterographic Projections</span>
+<span class="s">    X    = 60</span>
+<span class="s">    Y    = 60</span>
+<span class="s">    Width    = 430</span>
+<span class="s">    Height    = 430</span>
+<span class="s">    Name    = Stratigraphic Column</span>
+<span class="s">    X    = 60</span>
+<span class="s">    Y    = 60</span>
+<span class="s">    Width    = 230</span>
+<span class="s">    Height    = 400</span>
+<span class="s">    Name    = Image</span>
+<span class="s">    X    = 30</span>
+<span class="s">    Y    = 30</span>
+<span class="s">    Width    = -1</span>
+<span class="s">    Height    = -1</span>
+<span class="s">    Name    = Contour</span>
+<span class="s">    X    = 30</span>
+<span class="s">    Y    = 30</span>
+<span class="s">    Width    = -1</span>
+<span class="s">    Height    = -1</span>
+<span class="s">    Name    = Toolbar</span>
+<span class="s">    X    = 10</span>
+<span class="s">    Y    = 0</span>
+<span class="s">    Width    = -1</span>
+<span class="s">    Height    = -1</span>
+<span class="s">    Name    = History</span>
+<span class="s">    X    = 229</span>
+<span class="s">    Y    = 160</span>
+<span class="s">    Width    = 762</span>
+<span class="s">    Height    = 898</span>
+<span class="s">    Name    = History</span>
+<span class="s">    X    = 229</span>
+<span class="s">    Y    = 160</span>
+<span class="s">    Width    = 762</span>
+<span class="s">    Height    = 898</span>
+
+<span class="s">#Icon Positions</span>
+<span class="s">    Num Icons    = 3</span>
+<span class="s">    Row    = 1</span>
+<span class="s">    Column    = 1</span>
+<span class="s">    X Position    = 1</span>
+<span class="s">    Y Position    = 1</span>
+<span class="s">    Row    = 1</span>
+<span class="s">    Column    = 2</span>
+<span class="s">    X Position    = 4</span>
+<span class="s">    Y Position    = 1</span>
+<span class="s">    Row    = 1</span>
+<span class="s">    Column    = 3</span>
+<span class="s">    X Position    = 7</span>
+<span class="s">    Y Position    = 1</span>
+<span class="s">    Floating Menu Rows    = 1</span>
+<span class="s">    Floating Menu Cols    = 24</span>
+<span class="s">End of Status Report&quot;&quot;&quot;</span>
+
+
+        
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c"># some testing and debugging:</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">r&#39;C:\Users\Sam\OneDrive\Documents\Masters\Models\Mt Painter&#39;</span><span class="p">)</span>
+    <span class="n">H1</span> <span class="o">=</span> <span class="n">NoddyHistory</span><span class="p">(</span><span class="s">&quot;mt_pa_simplified.his&quot;</span><span class="p">)</span>
+    <span class="n">H1</span><span class="o">.</span><span class="n">swap_events</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">H1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">)</span>
+    <span class="n">H2</span> <span class="o">=</span> <span class="n">NoddyHistory</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">)</span>
+    <span class="n">H2</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;Radius&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2000</span>
+    <span class="n">H2</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="s">&quot;test2&quot;</span><span class="p">)</span>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pynoddy  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../pynoddy.html" >pynoddy</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

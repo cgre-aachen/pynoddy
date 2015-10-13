@@ -1,0 +1,355 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Simulation of a Noddy history and analysis of its voxel topology &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../index.html" />
+    <link rel="next" title="Pynoddy modules, classes and functions" href="../pynoddy.html" />
+    <link rel="prev" title="Sensitivity Analysis" href="8-Sensitivity-Analysis.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../pynoddy.html" title="Pynoddy modules, classes and functions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="8-Sensitivity-Analysis.html" title="Sensitivity Analysis"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="simulation-of-a-noddy-history-and-analysis-of-its-voxel-topology">
+<h1>Simulation of a Noddy history and analysis of its voxel topology<a class="headerlink" href="#simulation-of-a-noddy-history-and-analysis-of-its-voxel-topology" title="Permalink to this headline">¶</a></h1>
+<p>Example of how the module can be used to run Noddy simulations and
+analyse the output.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">css_file</span> <span class="o">=</span> <span class="s">&#39;pynoddy.css&#39;</span>
+<span class="n">HTML</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">css_file</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<style>
+
+@font-face {
+    font-family: "Computer Modern";
+    src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');
+}
+
+#notebook_panel { /* main background */
+    background: #888;
+    color: #f6f6f6;
+}
+
+div.cell { /* set cell width to about 80 chars */
+    width: 800px;
+}
+
+div #notebook { /* centre the content */
+    background: #fff; /* white background for content */
+    width: 1000px;
+    margin: auto;
+    padding-left: 1em;
+}
+
+#notebook li { /* More space between bullet points */
+margin-top:0.8em;
+}
+
+/* draw border around running cells */
+div.cell.border-box-sizing.code_cell.running {
+    border: 3px solid #111;
+}
+
+/* Put a solid color box around each cell and its output, visually linking them together */
+div.cell.code_cell {
+    background: #ddd;  /* rgba(230,230,230,1.0);  */
+    border-radius: 10px; /* rounded borders */
+    width: 900px;
+    padding: 1em;
+    margin-top: 1em;
+}
+
+div.text_cell_render{
+    font-family: 'Arvo' sans-serif;
+    line-height: 130%;
+    font-size: 115%;
+    width:700px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+
+/* Formatting for header cells */
+.text_cell_render h1 {
+    font-family: 'Alegreya Sans', sans-serif;
+    /* font-family: 'Tangerine', serif; */
+    /* font-family: 'Libre Baskerville', serif; */
+    /* font-family: 'Karla', sans-serif;
+    /* font-family: 'Lora', serif; */
+    font-size: 50px;
+    text-align: center;
+    /* font-style: italic; */
+    font-weight: 400;
+    /* font-size: 40pt; */
+    /* text-shadow: 4px 4px 4px #aaa; */
+    line-height: 120%;
+    color: rgb(12,85,97);
+    margin-bottom: .5em;
+    margin-top: 0.1em;
+    display: block;
+}
+.text_cell_render h2 {
+    /* font-family: 'Arial', serif; */
+    /* font-family: 'Lora', serif; */
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 700;
+    font-size: 24pt;
+    line-height: 100%;
+    /* color: rgb(171,165,131); */
+    color: rgb(12,85,97);
+    margin-bottom: 0.1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h3 {
+    font-family: 'Arial', serif;
+    margin-top:12px;
+    margin-bottom: 3px;
+    font-style: italic;
+    color: rgb(95,92,72);
+}
+
+.text_cell_render h4 {
+    font-family: 'Arial', serif;
+}
+
+.text_cell_render h5 {
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 300;
+    font-size: 16pt;
+    color: grey;
+    font-style: italic;
+    margin-bottom: .1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h6 {
+    font-family: 'PT Mono', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    color: grey;
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+.CodeMirror{
+        font-family: "PT Mono";
+        font-size: 100%;
+}
+
+</style><div class="code python highlight-python"><div class="highlight"><pre># Basic settings
+import sys, os
+import subprocess
+
+# Now import pynoddy
+import pynoddy
+%matplotlib inline
+
+# determine path of repository to set paths corretly below
+
+repo_path = os.path.realpath(&#39;../..&#39;)
+</pre></div>
+</div>
+<div class="section" id="compute-the-model">
+<h2>Compute the model<a class="headerlink" href="#compute-the-model" title="Permalink to this headline">¶</a></h2>
+<p>The simplest way to perform the Noddy simulation through Python is
+simply to call the executable. One way that should be fairly platform
+independent is to use Python&#8217;s own subprocess module:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Change to sandbox directory to store results</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s">&#39;sandbox&#39;</span><span class="p">))</span>
+
+<span class="c"># Path to exmaple directory in this repository</span>
+<span class="n">example_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span><span class="s">&#39;examples&#39;</span><span class="p">)</span>
+<span class="c"># Compute noddy model for history file</span>
+<span class="n">history_file</span> <span class="o">=</span> <span class="s">&#39;strike_slip.his&#39;</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">example_directory</span><span class="p">,</span> <span class="n">history_file</span><span class="p">)</span>
+<span class="n">nfiles</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">files</span> <span class="o">=</span> <span class="s">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">nfiles</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;files&quot;</span><span class="p">,</span> <span class="n">files</span>
+<span class="n">root_name</span> <span class="o">=</span> <span class="s">&#39;noddy_out&#39;</span>
+<span class="n">output_name</span> <span class="o">=</span> <span class="n">root_name</span> <span class="o">+</span> <span class="n">files</span>
+<span class="k">print</span> <span class="n">root_name</span>
+<span class="k">print</span> <span class="n">output_name</span>
+<span class="c"># call Noddy</span>
+
+<span class="c"># NOTE: Make sure that the noddy executable is accessible in the system!!</span>
+<span class="n">sys</span>
+<span class="k">print</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s">&#39;noddy.exe&#39;</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="s">&#39;TOPOLOGY&#39;</span><span class="p">],</span>
+                       <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                       <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="c">#</span>
+<span class="n">sys</span>
+<span class="k">print</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s">&#39;topology.exe&#39;</span><span class="p">,</span> <span class="n">root_name</span><span class="p">,</span> <span class="n">files</span><span class="p">],</span>
+                       <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                       <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>files _0001
+noddy_out
+noddy_out_0001
+</pre></div>
+</div>
+<p>For convenience, the model computations are wrapped into a Python
+function in pynoddy:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_topology</span><span class="p">(</span><span class="n">root_name</span><span class="p">,</span> <span class="n">files</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note: The Noddy call from Python is, to date, calling Noddy through the
+subprocess function. In a future implementation, this call could be
+subsituted with a full wrapper for the C-functions written in Python.
+Therefore, using the member function compute_model is not only easier,
+but also the more &#8220;future-proof&#8221; way to compute the Noddy model.</p>
+</div>
+<div class="section" id="loading-topology-output-files">
+<h2>Loading Topology output files<a class="headerlink" href="#loading-topology-output-files" title="Permalink to this headline">¶</a></h2>
+<p>Here we load the binary adjacency matrix for one topology calculation
+and display it as an image</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="kn">as</span> <span class="nn">mpimg</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">N1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">AM</span><span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">NoddyTopology</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+
+<span class="n">am_name</span><span class="o">=</span><span class="n">root_name</span> <span class="o">+</span><span class="s">&#39;_uam.bin&#39;</span>
+<span class="k">print</span> <span class="n">am_name</span>
+<span class="k">print</span> <span class="n">AM</span><span class="o">.</span><span class="n">maxlitho</span>
+
+<span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">AM</span><span class="o">.</span><span class="n">maxlitho</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">AM</span><span class="o">.</span><span class="n">maxlitho</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+<span class="n">image</span><span class="o">.</span><span class="n">data</span><span class="p">[:]</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">am_name</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s">&#39;Paired&#39;</span><span class="p">)</span>
+<span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s">&#39;white&#39;</span><span class="p">)</span>  <span class="c"># Color for values less than vmin</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">maxlitho</span> <span class="o">=</span> <span class="mi">7</span>
+
+<span class="n">noddy_out_uam</span><span class="o">.</span><span class="n">bin</span>
+<span class="mi">7</span>
+</pre></div>
+</div>
+<div class="figure" id="id1">
+<img alt="png" src="../_images/9-Topology_9_1.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Simulation of a Noddy history and analysis of its voxel topology</a><ul>
+<li><a class="reference internal" href="#compute-the-model">Compute the model</a></li>
+<li><a class="reference internal" href="#loading-topology-output-files">Loading Topology output files</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="8-Sensitivity-Analysis.html"
+                        title="previous chapter">Sensitivity Analysis</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../pynoddy.html"
+                        title="next chapter">Pynoddy modules, classes and functions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/9-Topology.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../pynoddy.html" title="Pynoddy modules, classes and functions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="8-Sensitivity-Analysis.html" title="Sensitivity Analysis"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

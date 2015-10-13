@@ -181,7 +181,7 @@ Many Noddy models are available on the site of the Virtual Explorer in the Struc
 
 We start with the history file of a "Fold and Thrust Belt" setting stored on:
 
-`http://virtualexplorer.com.au/special/noddyatlas/ch3/ch3_5/his/nfold_thrust.his`
+`http://tectonique.net/asg/ch3/ch3_5/his/fold_thrust.his`
 
 The file can directly be downloaded and opened with pynoddy:
 

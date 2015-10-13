@@ -1,0 +1,483 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Creating a model from scratch &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../index.html" />
+    <link rel="next" title="Read and Visualise Geophysical Potential-Fields" href="5-Geophysical-Potential-Fields.html" />
+    <link rel="prev" title="Geological events in pynoddy: organisation and adpatiation" href="3-Events.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="5-Geophysical-Potential-Fields.html" title="Read and Visualise Geophysical Potential-Fields"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="3-Events.html" title="Geological events in pynoddy: organisation and adpatiation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="creating-a-model-from-scratch">
+<h1>Creating a model from scratch<a class="headerlink" href="#creating-a-model-from-scratch" title="Permalink to this headline">¶</a></h1>
+<p>We describe here how to generate a simple history file for computation
+with Noddy using the functionality of pynoddy. If possible, it is
+advisable to generate the history files with the Windows GUI for Noddy
+as this method provides, to date, a simpler and more complete interface
+to the entire functionality.</p>
+<p>For completeness, pynoddy contains the functionality to generate simple
+models, for example to automate the model construction process, or to
+enable the model construction for users who are not running Windows.
+Some simple examlpes are shown in the following.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rc_params</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">css_file</span> <span class="o">=</span> <span class="s">&#39;pynoddy.css&#39;</span>
+<span class="n">HTML</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">css_file</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<style>
+
+@font-face {
+    font-family: "Computer Modern";
+    src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');
+}
+
+#notebook_panel { /* main background */
+    background: #888;
+    color: #f6f6f6;
+}
+
+div.cell { /* set cell width to about 80 chars */
+    width: 800px;
+}
+
+div #notebook { /* centre the content */
+    background: #fff; /* white background for content */
+    width: 1000px;
+    margin: auto;
+    padding-left: 1em;
+}
+
+#notebook li { /* More space between bullet points */
+margin-top:0.8em;
+}
+
+/* draw border around running cells */
+div.cell.border-box-sizing.code_cell.running {
+    border: 3px solid #111;
+}
+
+/* Put a solid color box around each cell and its output, visually linking them together */
+div.cell.code_cell {
+    background: #ddd;  /* rgba(230,230,230,1.0);  */
+    border-radius: 10px; /* rounded borders */
+    width: 900px;
+    padding: 1em;
+    margin-top: 1em;
+}
+
+div.text_cell_render{
+    font-family: 'Arvo' sans-serif;
+    line-height: 130%;
+    font-size: 115%;
+    width:700px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+
+/* Formatting for header cells */
+.text_cell_render h1 {
+    font-family: 'Alegreya Sans', sans-serif;
+    /* font-family: 'Tangerine', serif; */
+    /* font-family: 'Libre Baskerville', serif; */
+    /* font-family: 'Karla', sans-serif;
+    /* font-family: 'Lora', serif; */
+    font-size: 50px;
+    text-align: center;
+    /* font-style: italic; */
+    font-weight: 400;
+    /* font-size: 40pt; */
+    /* text-shadow: 4px 4px 4px #aaa; */
+    line-height: 120%;
+    color: rgb(12,85,97);
+    margin-bottom: .5em;
+    margin-top: 0.1em;
+    display: block;
+}
+.text_cell_render h2 {
+    /* font-family: 'Arial', serif; */
+    /* font-family: 'Lora', serif; */
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 700;
+    font-size: 24pt;
+    line-height: 100%;
+    /* color: rgb(171,165,131); */
+    color: rgb(12,85,97);
+    margin-bottom: 0.1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h3 {
+    font-family: 'Arial', serif;
+    margin-top:12px;
+    margin-bottom: 3px;
+    font-style: italic;
+    color: rgb(95,92,72);
+}
+
+.text_cell_render h4 {
+    font-family: 'Arial', serif;
+}
+
+.text_cell_render h5 {
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 300;
+    font-size: 16pt;
+    color: grey;
+    font-style: italic;
+    margin-bottom: .1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h6 {
+    font-family: 'PT Mono', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    color: grey;
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+.CodeMirror{
+        font-family: "PT Mono";
+        font-size: 100%;
+}
+
+</style><div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="c"># adjust some settings for matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="c"># print rcParams</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="c"># determine path of repository to set paths corretly below</span>
+<span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">&#39;../..&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pynoddy.history</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="section" id="defining-a-stratigraphy">
+<h2>Defining a stratigraphy<a class="headerlink" href="#defining-a-stratigraphy" title="Permalink to this headline">¶</a></h2>
+<p>We start with the definition of a (base) stratigraphy for the model.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Combined: model generation and output vis to test:</span>
+<span class="n">history</span> <span class="o">=</span> <span class="s">&quot;simple_model.his&quot;</span>
+<span class="n">output_name</span> <span class="o">=</span> <span class="s">&quot;simple_out&quot;</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
+
+<span class="c"># create pynoddy object</span>
+<span class="n">nm</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">()</span>
+<span class="c"># add stratigraphy</span>
+<span class="n">strati_options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;num_layers&#39;</span> <span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                  <span class="s">&#39;layer_names&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&#39;layer 1&#39;</span><span class="p">,</span> <span class="s">&#39;layer 2&#39;</span><span class="p">,</span> <span class="s">&#39;layer 3&#39;</span><span class="p">,</span>
+                                   <span class="s">&#39;layer 4&#39;</span><span class="p">,</span> <span class="s">&#39;layer 5&#39;</span><span class="p">,</span> <span class="s">&#39;layer 6&#39;</span><span class="p">,</span>
+                                   <span class="s">&#39;layer 7&#39;</span><span class="p">,</span> <span class="s">&#39;layer 8&#39;</span><span class="p">],</span>
+                  <span class="s">&#39;layer_thickness&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">]}</span>
+<span class="n">nm</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="s">&#39;stratigraphy&#39;</span><span class="p">,</span> <span class="n">strati_options</span> <span class="p">)</span>
+
+<span class="n">nm</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Compute the model</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&#39;&#39;</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Plot output</span>
+<span class="kn">import</span> <span class="nn">pynoddy.output</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="n">nout</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">nout</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">layer_labels</span> <span class="o">=</span> <span class="n">strati_options</span><span class="p">[</span><span class="s">&#39;layer_names&#39;</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                  <span class="n">colorbar</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                  <span class="n">savefig</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">fig_filename</span> <span class="o">=</span> <span class="s">&quot;ex01_strati.eps&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure" id="id1">
+<img alt="png" src="../_images/4-Create-model_9_0.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+</div>
+<div class="section" id="add-a-fault-event">
+<h2>Add a fault event<a class="headerlink" href="#add-a-fault-event" title="Permalink to this headline">¶</a></h2>
+<p>As a next step, let&#8217;s now add the faults to the model.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
+<span class="n">nm</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">()</span>
+<span class="c"># add stratigraphy</span>
+<span class="n">strati_options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;num_layers&#39;</span> <span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                  <span class="s">&#39;layer_names&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&#39;layer 1&#39;</span><span class="p">,</span> <span class="s">&#39;layer 2&#39;</span><span class="p">,</span> <span class="s">&#39;layer 3&#39;</span><span class="p">,</span> <span class="s">&#39;layer 4&#39;</span><span class="p">,</span> <span class="s">&#39;layer 5&#39;</span><span class="p">,</span> <span class="s">&#39;layer 6&#39;</span><span class="p">,</span> <span class="s">&#39;layer 7&#39;</span><span class="p">,</span> <span class="s">&#39;layer 8&#39;</span><span class="p">],</span>
+                  <span class="s">&#39;layer_thickness&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">]}</span>
+<span class="n">nm</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="s">&#39;stratigraphy&#39;</span><span class="p">,</span> <span class="n">strati_options</span> <span class="p">)</span>
+
+
+
+
+<span class="c"># The following options define the fault geometry:</span>
+<span class="n">fault_options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span> <span class="p">:</span> <span class="s">&#39;Fault_E&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;pos&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">6000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span>
+                 <span class="s">&#39;dip_dir&#39;</span> <span class="p">:</span> <span class="mi">270</span><span class="p">,</span>
+                 <span class="s">&#39;dip&#39;</span> <span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+                 <span class="s">&#39;slip&#39;</span> <span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+
+<span class="n">nm</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="s">&#39;fault&#39;</span><span class="p">,</span> <span class="n">fault_options</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">nm</span><span class="o">.</span><span class="n">events</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>{1: &lt;pynoddy.events.Stratigraphy at 0x1073fc590&gt;,
+ 2: &lt;pynoddy.events.Fault at 0x107565fd0&gt;}
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">nm</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Compute the model</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&#39;&#39;</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Plot output</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="n">nout</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">nout</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">layer_labels</span> <span class="o">=</span> <span class="n">strati_options</span><span class="p">[</span><span class="s">&#39;layer_names&#39;</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                  <span class="n">colorbar</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+                  <span class="n">savefig</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">fig_filename</span> <span class="o">=</span> <span class="s">&quot;ex01_fault_E.eps&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure" id="id2">
+<img alt="png" src="../_images/4-Create-model_15_0.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># The following options define the fault geometry:</span>
+<span class="n">fault_options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span> <span class="p">:</span> <span class="s">&#39;Fault_1&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;pos&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">5500</span><span class="p">,</span> <span class="mi">3500</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                 <span class="s">&#39;dip_dir&#39;</span> <span class="p">:</span> <span class="mi">270</span><span class="p">,</span>
+                 <span class="s">&#39;dip&#39;</span> <span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+                 <span class="s">&#39;slip&#39;</span> <span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+
+<span class="n">nm</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="s">&#39;fault&#39;</span><span class="p">,</span> <span class="n">fault_options</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">nm</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Compute the model</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&#39;&#39;</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Plot output</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="n">nout</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">nout</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">layer_labels</span> <span class="o">=</span> <span class="n">strati_options</span><span class="p">[</span><span class="s">&#39;layer_names&#39;</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">colorbar</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure" id="id3">
+<img alt="png" src="../_images/4-Create-model_19_0.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">nm1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">nm1</span><span class="o">.</span><span class="n">get_extent</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mf">10000.0</span><span class="p">,</span> <span class="mf">7000.0</span><span class="p">,</span> <span class="mf">5000.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="complete-model-set-up">
+<h2>Complete Model Set-up<a class="headerlink" href="#complete-model-set-up" title="Permalink to this headline">¶</a></h2>
+<p>And here now, combining all the previous steps, the entire model set-up
+with base stratigraphy and two faults:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
+<span class="n">nm</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">()</span>
+<span class="c"># add stratigraphy</span>
+<span class="n">strati_options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;num_layers&#39;</span> <span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                  <span class="s">&#39;layer_names&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&#39;layer 1&#39;</span><span class="p">,</span> <span class="s">&#39;layer 2&#39;</span><span class="p">,</span> <span class="s">&#39;layer 3&#39;</span><span class="p">,</span>
+                                   <span class="s">&#39;layer 4&#39;</span><span class="p">,</span> <span class="s">&#39;layer 5&#39;</span><span class="p">,</span> <span class="s">&#39;layer 6&#39;</span><span class="p">,</span>
+                                   <span class="s">&#39;layer 7&#39;</span><span class="p">,</span> <span class="s">&#39;layer 8&#39;</span><span class="p">],</span>
+                  <span class="s">&#39;layer_thickness&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span>
+                                       <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">]}</span>
+<span class="n">nm</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="s">&#39;stratigraphy&#39;</span><span class="p">,</span> <span class="n">strati_options</span> <span class="p">)</span>
+
+<span class="c"># The following options define the fault geometry:</span>
+<span class="n">fault_options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span> <span class="p">:</span> <span class="s">&#39;Fault_W&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;pos&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">4000</span><span class="p">,</span> <span class="mi">3500</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span>
+                 <span class="s">&#39;dip_dir&#39;</span> <span class="p">:</span> <span class="mi">90</span><span class="p">,</span>
+                 <span class="s">&#39;dip&#39;</span> <span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+                 <span class="s">&#39;slip&#39;</span> <span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+
+<span class="n">nm</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="s">&#39;fault&#39;</span><span class="p">,</span> <span class="n">fault_options</span><span class="p">)</span>
+<span class="c"># The following options define the fault geometry:</span>
+<span class="n">fault_options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span> <span class="p">:</span> <span class="s">&#39;Fault_E&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;pos&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">6000</span><span class="p">,</span> <span class="mi">3500</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span>
+                 <span class="s">&#39;dip_dir&#39;</span> <span class="p">:</span> <span class="mi">270</span><span class="p">,</span>
+                 <span class="s">&#39;dip&#39;</span> <span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+                 <span class="s">&#39;slip&#39;</span> <span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+
+<span class="n">nm</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="s">&#39;fault&#39;</span><span class="p">,</span> <span class="n">fault_options</span><span class="p">)</span>
+<span class="n">nm</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Change cube size</span>
+<span class="n">nm1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">nm1</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">nm1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Compute the model</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&#39;&#39;</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Plot output</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="n">nout</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">nout</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">layer_labels</span> <span class="o">=</span> <span class="n">strati_options</span><span class="p">[</span><span class="s">&#39;layer_names&#39;</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                  <span class="n">colorbar</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                  <span class="n">savefig</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">fig_filename</span> <span class="o">=</span> <span class="s">&quot;ex01_faults_combined.eps&quot;</span><span class="p">,</span>
+                  <span class="n">cmap</span> <span class="o">=</span> <span class="s">&#39;YlOrRd&#39;</span><span class="p">)</span> <span class="c"># note: YlOrRd colourmap should be suitable for colorblindness!</span>
+</pre></div>
+</div>
+<div class="figure" id="id4">
+<img alt="png" src="../_images/4-Create-model_26_0.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Creating a model from scratch</a><ul>
+<li><a class="reference internal" href="#defining-a-stratigraphy">Defining a stratigraphy</a></li>
+<li><a class="reference internal" href="#add-a-fault-event">Add a fault event</a></li>
+<li><a class="reference internal" href="#complete-model-set-up">Complete Model Set-up</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="3-Events.html"
+                        title="previous chapter">Geological events in pynoddy: organisation and adpatiation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="5-Geophysical-Potential-Fields.html"
+                        title="next chapter">Read and Visualise Geophysical Potential-Fields</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/4-Create-model.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="5-Geophysical-Potential-Fields.html" title="Read and Visualise Geophysical Potential-Fields"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="3-Events.html" title="Geological events in pynoddy: organisation and adpatiation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

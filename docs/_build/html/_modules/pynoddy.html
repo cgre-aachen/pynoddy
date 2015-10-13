@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pynoddy &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pynoddy</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Package initialization file for pynoddy&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="c"># save this module path for relative paths</span>
+<span class="n">package_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+
+<span class="c"># paths to noddy &amp; topology executables</span>
+<span class="c"># noddyPath = os.path.join(package_directory,&#39;../noddy/noddy&#39;)</span>
+<span class="c"># topologyPath = os.path.join(package_directory,&#39;../topology/topology&#39;)</span>
+<span class="n">noddyPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package_directory</span><span class="p">,</span> <span class="s">&#39;noddy/noddy&#39;</span><span class="p">)</span>
+<span class="n">topologyPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package_directory</span><span class="p">,</span> <span class="s">&#39;topology/topology&#39;</span><span class="p">)</span>
+
+<span class="c"># global variables</span>
+<span class="n">ensure_discrete_volumes</span> <span class="o">=</span> <span class="bp">True</span>  <span class="c"># if True, spatially separated but otherwise</span>
+<span class="c"># identical volumes are given separate codes.</span>
+<span class="n">null_volume_threshold</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c"># volumes smaller than this are ignored</span>
+<span class="c"># completely (as they represent pixelation artefacts).</span>
+
+<span class="c"># ensure correct noddy &amp; topology builds are present</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">noddyPath</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">noddyPath</span> <span class="o">+</span> <span class="s">&quot;.exe&quot;</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Error: could not find a compiled version of noddy at </span><span class="si">%s</span><span class="s">. </span><span class="se">\</span>
+<span class="s">    Please ensure the source has been compiled (using GCC and compile.bat </span><span class="se">\</span>
+<span class="s">    (windows) or compile.sh (unix)).&quot;</span> <span class="o">%</span> <span class="n">noddyPath</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">topologyPath</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">topologyPath</span> <span class="o">+</span> <span class="s">&quot;.exe&quot;</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Warning: could not find a compiled version of topology at </span><span class="si">%s</span><span class="s">. </span><span class="se">\</span>
+<span class="s">    Please ensure the source has been compiled (using GCC and compile.bat</span><span class="se">\</span>
+<span class="s">     (windows) or compile.sh (unix)).&quot;</span> <span class="o">%</span> <span class="n">topologyPath</span><span class="p">)</span>
+
+
+<span class="c"># Some helper functions are defined directly here:</span>
+
+
+<div class="viewcode-block" id="compute_model"><a class="viewcode-back" href="../pynoddy.html#pynoddy.compute_model">[docs]</a><span class="k">def</span> <span class="nf">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Call Noddy and compute the history file</span>
+<span class="sd">    </span>
+<span class="sd">    **Arguments**:</span>
+<span class="sd">        - *history* = string : filename of history file</span>
+<span class="sd">        - *output_name* = string : basename for output files</span>
+<span class="sd">    </span>
+<span class="sd">    **Optional Keywords**:</span>
+<span class="sd">        - *sim_type* = &#39;BLOCK&#39;, &#39;GEOPHYSICS&#39;, &#39;SURFACES&#39;, &#39;BLOCK_GEOPHYS&#39;,</span>
+<span class="sd">        &#39;TOPOLOGY&#39;, &#39;BLOCK_SURFACES&#39;, &#39;ALL&#39;:</span>
+<span class="sd">            type of Noddy simulation (default: &#39;BLOCK&#39;)</span>
+<span class="sd">        - *program_name* = string : name of program</span>
+<span class="sd">            (default: noddy.exe or noddy, both checked)</span>
+<span class="sd">        - *verbose* = bool: verbose mode, print out information for debugging (default = False)</span>
+<span class="sd">    **Returns**:</span>
+<span class="sd">        -Returns any text outputted by the noddy executable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sim_type</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;sim_type&quot;</span><span class="p">,</span> <span class="s">&#39;BLOCK&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">kwds</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&quot;verbose&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">kwds</span><span class="p">[</span><span class="s">&#39;verbose&#39;</span><span class="p">]:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="s">&quot;Running noddy exectuable at </span><span class="si">%s</span><span class="s">(.exe)</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">noddyPath</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>  <span class="c"># try running .exe file (windows only)</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">noddyPath</span> <span class="o">+</span> <span class="s">&quot;.exe&quot;</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">sim_type</span><span class="p">],</span>
+                                <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                                <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>  <span class="c"># obviously not running windows - try just the binary</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">noddyPath</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">sim_type</span><span class="p">],</span>
+                                <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                                <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="c"># Thought: Is there any reason compute_topology should not be called here if sim_type == &quot;TOPOLOGY&quot;???</span>
+    <span class="c"># It could simplify things a lot....</span>
+
+    <span class="k">return</span> <span class="n">out</span>
+
+</div>
+<div class="viewcode-block" id="compute_topology"><a class="viewcode-back" href="../pynoddy.html#pynoddy.compute_topology">[docs]</a><span class="k">def</span> <span class="nf">compute_topology</span><span class="p">(</span><span class="n">rootname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Call the topology executable to compute a models topology.</span>
+<span class="sd">    </span>
+<span class="sd">    **Arguments**:</span>
+<span class="sd">        - *rootname* = string : rootname of the noddy model to calculate topology for</span>
+<span class="sd">    **Optional Keywords**:</span>
+<span class="sd">        - *ensure_discrete_volumes* = True if topological units are broken down into</span>
+<span class="sd">                                      separate, spatially continuous volumes. Otherwise</span>
+<span class="sd">                                      some topological units may represent two separate</span>
+<span class="sd">                                      rock volumes (eg. if a folded unit has been truncated</span>
+<span class="sd">                                      by an unconformity). Default is True, though this is</span>
+<span class="sd">                                      a global variable (pynoddy.ensure_discrete_volumes)</span>
+<span class="sd">                                      so it can be changed during runtime.</span>
+<span class="sd">        - *null_volume_threshold* = The smallest non-null volume. volumes smaller than this are</span>
+<span class="sd">                                    ignored by the topology algorithm (as they represent pixelation artefacts).</span>
+<span class="sd">                                    The default is 20 voxels, though this is a global variable and can be changed</span>
+<span class="sd">                                    with pynoddy.null_volume_threshold.</span>
+<span class="sd">    **Returns**</span>
+<span class="sd">        -Returns any text outputted by the topology executable, including errors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dvol</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ensure_discrete_volumes&#39;</span><span class="p">,</span> <span class="n">ensure_discrete_volumes</span><span class="p">)</span>
+    <span class="n">nvt</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;null_volume_threshold&#39;</span><span class="p">,</span> <span class="n">null_volume_threshold</span><span class="p">)</span>
+
+    <span class="c"># convert to string</span>
+    <span class="k">if</span> <span class="n">dvol</span><span class="p">:</span>
+        <span class="n">dvol</span> <span class="o">=</span> <span class="s">&quot;1&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dvol</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="s">&quot;Running topology exectuable at </span><span class="si">%s</span><span class="s">(.exe)</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">topologyPath</span>
+    <span class="k">try</span><span class="p">:</span>  <span class="c"># try running .exe file (windows only)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">topologyPath</span> <span class="o">+</span> <span class="s">&quot;.exe&quot;</span><span class="p">,</span> <span class="n">rootname</span><span class="p">,</span> <span class="n">dvol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nvt</span><span class="p">)],</span>
+                               <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                               <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>  <span class="c"># obviously not running windows - try just the binary</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">topologyPath</span><span class="p">,</span> <span class="n">rootname</span><span class="p">,</span> <span class="n">dvol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nvt</span><span class="p">)],</span>
+                               <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                               <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

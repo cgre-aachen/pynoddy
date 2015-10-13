@@ -1,0 +1,601 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sensitivity Analysis &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../index.html" />
+    <link rel="next" title="Simulation of a Noddy history and analysis of its voxel topology" href="9-Topology.html" />
+    <link rel="prev" title="Gippsland Basin Uncertainty Study" href="7-Gippsland-Basin-Uncertainty.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="9-Topology.html" title="Simulation of a Noddy history and analysis of its voxel topology"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="7-Gippsland-Basin-Uncertainty.html" title="Gippsland Basin Uncertainty Study"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sensitivity-analysis">
+<h1>Sensitivity Analysis<a class="headerlink" href="#sensitivity-analysis" title="Permalink to this headline">¶</a></h1>
+<p>Test here: (local) sensitivity analysis of kinematic parameters with
+respect to a defined objective function. Aim: test how sensitivity the
+resulting model is to uncertainties in kinematic parameters to:</p>
+<ol class="arabic simple">
+<li>Evaluate which the most important parameters are, and to</li>
+<li>Determine which parameters could, in principle, be inverted with
+suitable information.</li>
+</ol>
+<div class="section" id="theory-local-sensitivity-analysis">
+<h2>Theory: local sensitivity analysis<a class="headerlink" href="#theory-local-sensitivity-analysis" title="Permalink to this headline">¶</a></h2>
+<p>Basic considerations:</p>
+<ul class="simple">
+<li>parameter vector <img class="math" src="../_images/math/46bc9db8fc244ad2bbb5de57bfd7e8a595298471.png" alt="\vec{p}"/></li>
+<li>residual vector <img class="math" src="../_images/math/7c345e599060f3e52c048d5c559a7f851bba7605.png" alt="\vec{r}"/></li>
+<li>calculated values at observation points <img class="math" src="../_images/math/3e847b193063ea68bbbb97edc878ea46e0cea45a.png" alt="\vec{z}"/></li>
+<li>Jacobian matrix
+<img class="math" src="../_images/math/5a079a4ea292094bdab6984e394932b27edbf637.png" alt="J_{ij} = \frac{\partial \vec{z}}{\partial \vec{p}}"/></li>
+</ul>
+<p>Numerical estimation of Jacobian matrix with central difference scheme
+(see Finsterle):</p>
+<div class="math">
+<p><img src="../_images/math/9a256b6c14a9bd2e9c1a9767bb355c82ea5f15d1.png" alt="J_{ij} = \frac{\partial z_i}{\partial p_j} \approx \frac{z_i(\vec{p}; p_j + \delta p_j) - z_i(\vec{p};p_j - \delta p_j)}{2 \delta p_j}"/></p>
+</div><p>where <img class="math" src="../_images/math/6e8a16e4c17d30998098a387e1931bf84cb9c6fb.png" alt="\delta p_j"/> is a small perturbation of parameter <img class="math" src="../_images/math/d32c78b759903e3f4bd4fd2ce0b86358f7500c5d.png" alt="j"/>,
+often as a fraction of the value.</p>
+</div>
+<div class="section" id="defining-the-responses">
+<h2>Defining the responses<a class="headerlink" href="#defining-the-responses" title="Permalink to this headline">¶</a></h2>
+<p>A meaningful sensitivity analysis obviously depends on the definition of
+a suitable response vector <img class="math" src="../_images/math/3e847b193063ea68bbbb97edc878ea46e0cea45a.png" alt="\vec{z}"/>. Ideally, these responses are
+related to actual observations. In our case, we first want to determine
+how sensitive a kinematic structural geological model is with respect to
+uncertainties in the kinematic parameters. We therefore need
+calculatable measures that describe variations of the model.</p>
+<p>As a first-order assumption, we will use a notation of a stratigraphic
+distance for discrete subsections of the model, for example in single
+voxets for the calculated model. We define distance <img class="math" src="../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/> of a
+subset <img class="math" src="../_images/math/c7415c6919c2eb17b1ea36f0243079b59825ee89.png" alt="\omega"/> as the (discrete) difference between the
+(discrete) stratigraphic value of an ideal model, <img class="math" src="../_images/math/6ef319f3209bd1c5a7a095665f8fd525ffbaaa0b.png" alt="\hat{s}"/>, to
+the value of a model realisation <img class="math" src="../_images/math/7a4c1cd57a0f7dc6d01ef365e2ba68a499bb3851.png" alt="s_i"/>:</p>
+<div class="math">
+<p><img src="../_images/math/295dfa0ae54a8831bc11f86fa5bcf4c40651aa20.png" alt="d(\omega) = \hat{s} - s_i"/></p>
+</div><p>In the first example, we will consider only one response: the overall
+sum of stratigraphic distances for a model realisation <img class="math" src="../_images/math/2ede365ad144ab396916ec60458da03860803078.png" alt="r"/> of all
+subsets (= voxets, in the practical sense), scaled by the number of
+subsets (for a subsequent comparison of model discretisations):</p>
+<div class="math">
+<p><img src="../_images/math/cb050ecb00ab9c7fec4980f7821eeb1bf33ab35f.png" alt="D_r = \frac{1}{n} \sum_{i=1}^n d(\omega_i)"/></p>
+</div><p>Note: mistake before: not considering distances at single nodes but only
+the sum - this lead to &#8220;zero-difference&#8221; for simple translation! Now:
+consider more realistic objective function, squared distance:</p>
+<div class="math">
+<p><img src="../_images/math/33a2139c33b674a9011c4be807c607b11df2bbd4.png" alt="r = \sqrt{\sum_i (z_{i calc} - z_{i ref})^2}"/></p>
+</div><div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">css_file</span> <span class="o">=</span> <span class="s">&#39;pynoddy.css&#39;</span>
+<span class="n">HTML</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">css_file</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<style>
+
+@font-face {
+    font-family: "Computer Modern";
+    src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');
+}
+
+#notebook_panel { /* main background */
+    background: #888;
+    color: #f6f6f6;
+}
+
+div.cell { /* set cell width to about 80 chars */
+    width: 800px;
+}
+
+div #notebook { /* centre the content */
+    background: #fff; /* white background for content */
+    width: 1000px;
+    margin: auto;
+    padding-left: 1em;
+}
+
+#notebook li { /* More space between bullet points */
+margin-top:0.8em;
+}
+
+/* draw border around running cells */
+div.cell.border-box-sizing.code_cell.running {
+    border: 3px solid #111;
+}
+
+/* Put a solid color box around each cell and its output, visually linking them together */
+div.cell.code_cell {
+    background: #ddd;  /* rgba(230,230,230,1.0);  */
+    border-radius: 10px; /* rounded borders */
+    width: 900px;
+    padding: 1em;
+    margin-top: 1em;
+}
+
+div.text_cell_render{
+    font-family: 'Arvo' sans-serif;
+    line-height: 130%;
+    font-size: 115%;
+    width:700px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+
+/* Formatting for header cells */
+.text_cell_render h1 {
+    font-family: 'Alegreya Sans', sans-serif;
+    /* font-family: 'Tangerine', serif; */
+    /* font-family: 'Libre Baskerville', serif; */
+    /* font-family: 'Karla', sans-serif;
+    /* font-family: 'Lora', serif; */
+    font-size: 50px;
+    text-align: center;
+    /* font-style: italic; */
+    font-weight: 400;
+    /* font-size: 40pt; */
+    /* text-shadow: 4px 4px 4px #aaa; */
+    line-height: 120%;
+    color: rgb(12,85,97);
+    margin-bottom: .5em;
+    margin-top: 0.1em;
+    display: block;
+}
+.text_cell_render h2 {
+    /* font-family: 'Arial', serif; */
+    /* font-family: 'Lora', serif; */
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 700;
+    font-size: 24pt;
+    line-height: 100%;
+    /* color: rgb(171,165,131); */
+    color: rgb(12,85,97);
+    margin-bottom: 0.1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h3 {
+    font-family: 'Arial', serif;
+    margin-top:12px;
+    margin-bottom: 3px;
+    font-style: italic;
+    color: rgb(95,92,72);
+}
+
+.text_cell_render h4 {
+    font-family: 'Arial', serif;
+}
+
+.text_cell_render h5 {
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 300;
+    font-size: 16pt;
+    color: grey;
+    font-style: italic;
+    margin-bottom: .1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h6 {
+    font-family: 'PT Mono', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    color: grey;
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+.CodeMirror{
+        font-family: "PT Mono";
+        font-size: 100%;
+}
+
+</style><div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-up-the-base-model">
+<h2>Setting up the base model<a class="headerlink" href="#setting-up-the-base-model" title="Permalink to this headline">¶</a></h2>
+<p>For a first test: use simple two-fault model from paper</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="c"># adjust some settings for matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="c"># print rcParams</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="c"># determine path of repository to set paths corretly below</span>
+<span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">&#39;../..&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pynoddy.history</span>
+<span class="kn">import</span> <span class="nn">pynoddy.events</span>
+<span class="kn">import</span> <span class="nn">pynoddy.output</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
+<span class="n">nm</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">()</span>
+<span class="c"># add stratigraphy</span>
+<span class="n">strati_options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;num_layers&#39;</span> <span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                  <span class="s">&#39;layer_names&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&#39;layer 1&#39;</span><span class="p">,</span> <span class="s">&#39;layer 2&#39;</span><span class="p">,</span> <span class="s">&#39;layer 3&#39;</span><span class="p">,</span> <span class="s">&#39;layer 4&#39;</span><span class="p">,</span> <span class="s">&#39;layer 5&#39;</span><span class="p">,</span> <span class="s">&#39;layer 6&#39;</span><span class="p">,</span> <span class="s">&#39;layer 7&#39;</span><span class="p">,</span> <span class="s">&#39;layer 8&#39;</span><span class="p">],</span>
+                  <span class="s">&#39;layer_thickness&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">]}</span>
+<span class="n">nm</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="s">&#39;stratigraphy&#39;</span><span class="p">,</span> <span class="n">strati_options</span> <span class="p">)</span>
+
+<span class="c"># The following options define the fault geometry:</span>
+<span class="n">fault_options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span> <span class="p">:</span> <span class="s">&#39;Fault_W&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;pos&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">4000</span><span class="p">,</span> <span class="mi">3500</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span>
+                 <span class="s">&#39;dip_dir&#39;</span> <span class="p">:</span> <span class="mi">90</span><span class="p">,</span>
+                 <span class="s">&#39;dip&#39;</span> <span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+                 <span class="s">&#39;slip&#39;</span> <span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+
+<span class="n">nm</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="s">&#39;fault&#39;</span><span class="p">,</span> <span class="n">fault_options</span><span class="p">)</span>
+<span class="c"># The following options define the fault geometry:</span>
+<span class="n">fault_options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span> <span class="p">:</span> <span class="s">&#39;Fault_E&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;pos&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">6000</span><span class="p">,</span> <span class="mi">3500</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span>
+                 <span class="s">&#39;dip_dir&#39;</span> <span class="p">:</span> <span class="mi">270</span><span class="p">,</span>
+                 <span class="s">&#39;dip&#39;</span> <span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+                 <span class="s">&#39;slip&#39;</span> <span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+
+<span class="n">nm</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="s">&#39;fault&#39;</span><span class="p">,</span> <span class="n">fault_options</span><span class="p">)</span>
+<span class="n">history</span> <span class="o">=</span> <span class="s">&quot;two_faults_sensi.his&quot;</span>
+<span class="n">nm</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">output_name</span> <span class="o">=</span> <span class="s">&quot;two_faults_sensi_out&quot;</span>
+<span class="c"># Compute the model</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&#39;&#39;</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Plot output</span>
+<span class="n">nout</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">nout</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">layer_labels</span> <span class="o">=</span> <span class="n">strati_options</span><span class="p">[</span><span class="s">&#39;layer_names&#39;</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                  <span class="n">colorbar</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                  <span class="n">savefig</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure" id="id1">
+<img alt="png" src="../_images/8-Sensitivity-Analysis_7_0.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+</div>
+<div class="section" id="define-parameter-uncertainties">
+<h2>Define parameter uncertainties<a class="headerlink" href="#define-parameter-uncertainties" title="Permalink to this headline">¶</a></h2>
+<p>We will start with a sensitivity analysis for the parameters of the
+fault events.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">H1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="c"># get the original dip of the fault</span>
+<span class="n">dip_ori</span> <span class="o">=</span> <span class="n">H1</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;Dip&#39;</span><span class="p">]</span>
+<span class="c"># dip_ori1 = H1.events[2].properties[&#39;Dip&#39;]</span>
+<span class="c"># add 10 degrees to dip</span>
+<span class="n">add_dip</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span>
+<span class="n">dip_new</span> <span class="o">=</span> <span class="n">dip_ori</span> <span class="o">+</span> <span class="n">add_dip</span>
+<span class="c"># dip_new1 = dip_ori1 + add_dip</span>
+
+<span class="c"># and assign back to properties dictionary:</span>
+<span class="n">H1</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;Dip&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dip_new</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="n">new_history</span> <span class="o">=</span> <span class="s">&quot;sensi_test_dip_changed.his&quot;</span>
+<span class="n">new_output</span> <span class="o">=</span> <span class="s">&quot;sensi_test_dip_changed_out&quot;</span>
+<span class="n">H1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">new_history</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">new_history</span><span class="p">,</span> <span class="n">new_output</span><span class="p">)</span>
+<span class="c"># load output from both models</span>
+<span class="n">NO1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">NO2</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">new_output</span><span class="p">)</span>
+
+<span class="c"># create basic figure layout</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">NO1</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax1</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Dip = </span><span class="si">%.0f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">dip_ori</span><span class="p">)</span>
+<span class="n">NO2</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Dip = </span><span class="si">%.0f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">dip_new</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="figure" id="id2">
+<img alt="png" src="../_images/8-Sensitivity-Analysis_10_0.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+</div>
+<div class="section" id="calculate-total-stratigraphic-distance">
+<h2>Calculate total stratigraphic distance<a class="headerlink" href="#calculate-total-stratigraphic-distance" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># def determine_strati_diff(NO1, NO2):</span>
+<span class="c">#     &quot;&quot;&quot;calculate total stratigraphic distance between two models&quot;&quot;&quot;</span>
+<span class="c">#     return np.sum(NO1.block - NO2.block) / float(len(NO1.block))</span>
+
+<span class="k">def</span> <span class="nf">determine_strati_diff</span><span class="p">(</span><span class="n">NO1</span><span class="p">,</span> <span class="n">NO2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;calculate total stratigraphic distance between two models&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">NO1</span><span class="o">.</span><span class="n">block</span> <span class="o">-</span> <span class="n">NO2</span><span class="o">.</span><span class="n">block</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">NO1</span><span class="o">.</span><span class="n">block</span><span class="p">))</span>
+
+
+
+<span class="n">diff</span> <span class="o">=</span> <span class="n">determine_strati_diff</span><span class="p">(</span><span class="n">NO1</span><span class="p">,</span> <span class="n">NO2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="mf">5.56205897128</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="function-to-modify-parameters">
+<h2>Function to modify parameters<a class="headerlink" href="#function-to-modify-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Multiple event parameters can be changed directly with the function
+<code class="docutils literal"><span class="pre">change_event_params</span></code>, which takes a dictionarly of events and
+parameters with according changes relative to the defined parameters.
+Here a brief example:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># set parameter changes in dictionary</span>
+
+<span class="n">changes_fault_1</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Dip&#39;</span> <span class="p">:</span> <span class="o">-</span><span class="mi">20</span><span class="p">}</span>
+<span class="n">changes_fault_2</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Dip&#39;</span> <span class="p">:</span> <span class="o">-</span><span class="mi">20</span><span class="p">}</span>
+<span class="n">param_changes</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span> <span class="p">:</span> <span class="n">changes_fault_1</span><span class="p">,</span>
+                 <span class="mi">3</span> <span class="p">:</span> <span class="n">changes_fault_2</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="n">H2</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">H2</span><span class="o">.</span><span class="n">change_event_params</span><span class="p">(</span><span class="n">param_changes</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">new_history</span> <span class="o">=</span> <span class="s">&quot;param_dict_changes.his&quot;</span>
+<span class="n">new_output</span> <span class="o">=</span> <span class="s">&quot;param_dict_changes_out&quot;</span>
+<span class="n">H2</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">new_history</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">new_history</span><span class="p">,</span> <span class="n">new_output</span><span class="p">)</span>
+<span class="c"># load output from both models</span>
+<span class="n">NO1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+<span class="n">NO2</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">new_output</span><span class="p">)</span>
+
+<span class="c"># create basic figure layout</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">NO1</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax1</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Original Model&quot;</span><span class="p">)</span>
+<span class="n">NO2</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Changed Model&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="figure" id="id3">
+<img alt="png" src="../_images/8-Sensitivity-Analysis_16_0.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+</div>
+<div class="section" id="full-sensitivity-analysis">
+<h2>Full sensitivity analysis<a class="headerlink" href="#full-sensitivity-analysis" title="Permalink to this headline">¶</a></h2>
+<p>Perform now a full sensitivity analysis for all defined parameters and
+analyse the output matrix. For a better overview, we first create a
+function to perform the sensitivity analysis:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">copy</span>
+<span class="n">new_history</span> <span class="o">=</span> <span class="s">&quot;sensi_tmp.his&quot;</span>
+<span class="n">new_output</span> <span class="o">=</span> <span class="s">&quot;sensi_out&quot;</span>
+<span class="k">def</span> <span class="nf">noddy_sensitivity</span><span class="p">(</span><span class="n">history_filename</span><span class="p">,</span> <span class="n">param_change_vals</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform noddy sensitivity analysis for a model&quot;&quot;&quot;</span>
+    <span class="n">param_list</span> <span class="o">=</span> <span class="p">[]</span> <span class="c"># list to store parameters for later analysis</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="p">[]</span> <span class="c"># list to store calcualted distances</span>
+    <span class="c"># Step 1:</span>
+    <span class="c"># create new parameter list to change model</span>
+    <span class="k">for</span> <span class="n">event_id</span><span class="p">,</span> <span class="n">event_dict</span> <span class="ow">in</span> <span class="n">param_change_vals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="c"># iterate over events</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">event_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="c"># iterate over all properties separately</span>
+            <span class="n">changes_list</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">changes_list</span><span class="p">[</span><span class="n">event_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">param_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;event_</span><span class="si">%d</span><span class="s">_property_</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">event_id</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+                <span class="c"># calculate positive and negative values</span>
+                <span class="n">his</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history_filename</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">changes_list</span><span class="p">[</span><span class="n">event_id</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                    <span class="c"># set changes</span>
+                    <span class="n">his</span><span class="o">.</span><span class="n">change_event_params</span><span class="p">(</span><span class="n">changes_list</span><span class="p">)</span>
+                    <span class="c"># save and calculate model</span>
+                    <span class="n">his</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">new_history</span><span class="p">)</span>
+                    <span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">new_history</span><span class="p">,</span> <span class="n">new_output</span><span class="p">)</span>
+                    <span class="c"># open output and calculate distance</span>
+                    <span class="n">NO_tmp</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">new_output</span><span class="p">)</span>
+                    <span class="n">dist_pos</span> <span class="o">=</span> <span class="n">determine_strati_diff</span><span class="p">(</span><span class="n">NO1</span><span class="p">,</span> <span class="n">NO_tmp</span><span class="p">)</span>
+                    <span class="n">NO_tmp</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">colorbar</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+                                        <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Dist: </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">dist_pos</span><span class="p">,</span>
+                                        <span class="n">savefig</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+                                        <span class="n">fig_filename</span> <span class="o">=</span> <span class="s">&quot;event_</span><span class="si">%d</span><span class="s">_property_</span><span class="si">%s</span><span class="s">_val_</span><span class="si">%d</span><span class="s">.png&quot;</span> \
+                                        <span class="o">%</span> <span class="p">(</span><span class="n">event_id</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">changes_list</span><span class="p">[</span><span class="n">event_id</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">val</span>
+                    <span class="n">his</span><span class="o">.</span><span class="n">change_event_params</span><span class="p">(</span><span class="n">changes_list</span><span class="p">)</span>
+                    <span class="c"># save and calculate model</span>
+                    <span class="n">his</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">new_history</span><span class="p">)</span>
+                    <span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">new_history</span><span class="p">,</span> <span class="n">new_output</span><span class="p">)</span>
+                    <span class="c"># open output and calculate distance</span>
+                    <span class="n">NO_tmp</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">new_output</span><span class="p">)</span>
+                    <span class="n">dist_neg</span> <span class="o">=</span> <span class="n">determine_strati_diff</span><span class="p">(</span><span class="n">NO1</span><span class="p">,</span> <span class="n">NO_tmp</span><span class="p">)</span>
+                    <span class="n">NO_tmp</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                                        <span class="n">title</span><span class="o">=</span><span class="s">&quot;Dist: </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">dist_neg</span><span class="p">,</span>
+                                        <span class="n">savefig</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                        <span class="n">fig_filename</span><span class="o">=</span><span class="s">&quot;event_</span><span class="si">%d</span><span class="s">_property_</span><span class="si">%s</span><span class="s">_val_</span><span class="si">%d</span><span class="s">.png&quot;</span> \
+                                        <span class="o">%</span> <span class="p">(</span><span class="n">event_id</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span><span class="p">))</span>
+            <span class="c"># calculate central difference</span>
+            <span class="n">central_diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">dist_pos</span> <span class="o">+</span> <span class="n">dist_neg</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.</span><span class="p">)</span>
+            <span class="n">distances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">central_diff</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">param_list</span><span class="p">,</span> <span class="n">distances</span>
+</pre></div>
+</div>
+<p>As a next step, we define the parameter ranges for the local sensitivity
+analysis (i.e. the <img class="math" src="../_images/math/6e8a16e4c17d30998098a387e1931bf84cb9c6fb.png" alt="\delta p_j"/> from the theoretical description
+above):</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">changes_fault_1</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Dip&#39;</span> <span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>
+                   <span class="s">&#39;Dip Direction&#39;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+                   <span class="s">&#39;Slip&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+                   <span class="s">&#39;X&#39;</span><span class="p">:</span> <span class="mf">500.0</span><span class="p">}</span>
+<span class="n">changes_fault_2</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Dip&#39;</span> <span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>
+                   <span class="s">&#39;Dip Direction&#39;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+                   <span class="s">&#39;Slip&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+                   <span class="s">&#39;X&#39;</span><span class="p">:</span> <span class="mf">500.0</span><span class="p">}</span>
+<span class="n">param_changes</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span> <span class="p">:</span> <span class="n">changes_fault_1</span><span class="p">,</span>
+                 <span class="mi">3</span> <span class="p">:</span> <span class="n">changes_fault_2</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>And now, we perform the local sensitivity analysis:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">param_list_1</span><span class="p">,</span> <span class="n">distances</span> <span class="o">=</span> <span class="n">noddy_sensitivity</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">param_changes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The function passes back a list of the changed parameters and the
+calculated distances according to this change. Let&#8217;s have a look at the
+results:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">p</span><span class="p">,</span><span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">param_list_1</span><span class="p">,</span> <span class="n">distances</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> </span><span class="se">\t\t</span><span class="s"> </span><span class="si">%f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>event_2_property_X       2.716228
+event_2_property_Dip         1.410039
+event_2_property_Dip Direction       2.133553
+event_2_property_Slip        1.824993
+event_3_property_X       3.323528
+event_3_property_Dip         1.644589
+event_3_property_Dip Direction       2.606573
+event_3_property_Slip        1.930455
+</pre></div>
+</div>
+<p>Results of this local sensitivity analysis suggest that the model is
+most sensitive to the X-position of the fault, when we evaluate
+distances as simple stratigraphic id differences. Here just a bar plot
+for better visualisation (feel free to add proper labels):</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">distances</span><span class="p">])</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">distances</span><span class="p">),</span><span class="mf">1.</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">distances</span><span class="p">[:]))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>&lt;Container object of 8 artists&gt;
+</pre></div>
+</div>
+<div class="figure" id="id4">
+<img alt="png" src="../_images/8-Sensitivity-Analysis_26_1.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<p>The previous experiment showed how <code class="docutils literal"><span class="pre">pynoddy</span></code> can be used for simple
+scientific experiments. The sensitivity analysis itself is purely local.
+A better way would be to use (more) global sensitivity analysis, for
+example using the Morris or Sobol methods. These methods are implemented
+in the Python package <code class="docutils literal"><span class="pre">SALib</span></code>, and an experimental implementation of
+this method into <code class="docutils literal"><span class="pre">pynoddy</span></code> exists, as well (see further notebooks on
+repository, note: no guaranteed working, so far!).</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Sensitivity Analysis</a><ul>
+<li><a class="reference internal" href="#theory-local-sensitivity-analysis">Theory: local sensitivity analysis</a></li>
+<li><a class="reference internal" href="#defining-the-responses">Defining the responses</a></li>
+<li><a class="reference internal" href="#setting-up-the-base-model">Setting up the base model</a></li>
+<li><a class="reference internal" href="#define-parameter-uncertainties">Define parameter uncertainties</a></li>
+<li><a class="reference internal" href="#calculate-total-stratigraphic-distance">Calculate total stratigraphic distance</a></li>
+<li><a class="reference internal" href="#function-to-modify-parameters">Function to modify parameters</a></li>
+<li><a class="reference internal" href="#full-sensitivity-analysis">Full sensitivity analysis</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="7-Gippsland-Basin-Uncertainty.html"
+                        title="previous chapter">Gippsland Basin Uncertainty Study</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="9-Topology.html"
+                        title="next chapter">Simulation of a Noddy history and analysis of its voxel topology</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/8-Sensitivity-Analysis.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="9-Topology.html" title="Simulation of a Noddy history and analysis of its voxel topology"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="7-Gippsland-Basin-Uncertainty.html" title="Gippsland Basin Uncertainty Study"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

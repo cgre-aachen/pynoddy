@@ -1,0 +1,668 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Change Noddy input file and recompute model &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../index.html" />
+    <link rel="next" title="Geological events in pynoddy: organisation and adpatiation" href="3-Events.html" />
+    <link rel="prev" title="Simulation of a Noddy history and visualisation of output" href="1-Simulation.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="3-Events.html" title="Geological events in pynoddy: organisation and adpatiation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="1-Simulation.html" title="Simulation of a Noddy history and visualisation of output"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="change-noddy-input-file-and-recompute-model">
+<h1>Change Noddy input file and recompute model<a class="headerlink" href="#change-noddy-input-file-and-recompute-model" title="Permalink to this headline">¶</a></h1>
+<p>In this section, we will briefly present possibilities to access the
+properties defined in the Noddy history input file and show how simple
+adjustments can be performed, for example changing the cube size to
+obtain a model with a higher resolution.</p>
+<p>Also outlined here is the way that events are stored in the history file
+as single objects. For more information on accessing and changing the
+events themselves, please be patient until we get to the next section.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">css_file</span> <span class="o">=</span> <span class="s">&#39;pynoddy.css&#39;</span>
+<span class="n">HTML</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">css_file</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<style>
+
+@font-face {
+    font-family: "Computer Modern";
+    src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');
+}
+
+#notebook_panel { /* main background */
+    background: #888;
+    color: #f6f6f6;
+}
+
+div.cell { /* set cell width to about 80 chars */
+    width: 800px;
+}
+
+div #notebook { /* centre the content */
+    background: #fff; /* white background for content */
+    width: 1000px;
+    margin: auto;
+    padding-left: 1em;
+}
+
+#notebook li { /* More space between bullet points */
+margin-top:0.8em;
+}
+
+/* draw border around running cells */
+div.cell.border-box-sizing.code_cell.running {
+    border: 3px solid #111;
+}
+
+/* Put a solid color box around each cell and its output, visually linking them together */
+div.cell.code_cell {
+    background: #ddd;  /* rgba(230,230,230,1.0);  */
+    border-radius: 10px; /* rounded borders */
+    width: 900px;
+    padding: 1em;
+    margin-top: 1em;
+}
+
+div.text_cell_render{
+    font-family: 'Arvo' sans-serif;
+    line-height: 130%;
+    font-size: 115%;
+    width:700px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+
+/* Formatting for header cells */
+.text_cell_render h1 {
+    font-family: 'Alegreya Sans', sans-serif;
+    /* font-family: 'Tangerine', serif; */
+    /* font-family: 'Libre Baskerville', serif; */
+    /* font-family: 'Karla', sans-serif;
+    /* font-family: 'Lora', serif; */
+    font-size: 50px;
+    text-align: center;
+    /* font-style: italic; */
+    font-weight: 400;
+    /* font-size: 40pt; */
+    /* text-shadow: 4px 4px 4px #aaa; */
+    line-height: 120%;
+    color: rgb(12,85,97);
+    margin-bottom: .5em;
+    margin-top: 0.1em;
+    display: block;
+}
+.text_cell_render h2 {
+    /* font-family: 'Arial', serif; */
+    /* font-family: 'Lora', serif; */
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 700;
+    font-size: 24pt;
+    line-height: 100%;
+    /* color: rgb(171,165,131); */
+    color: rgb(12,85,97);
+    margin-bottom: 0.1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h3 {
+    font-family: 'Arial', serif;
+    margin-top:12px;
+    margin-bottom: 3px;
+    font-style: italic;
+    color: rgb(95,92,72);
+}
+
+.text_cell_render h4 {
+    font-family: 'Arial', serif;
+}
+
+.text_cell_render h5 {
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 300;
+    font-size: 16pt;
+    color: grey;
+    font-style: italic;
+    margin-bottom: .1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h6 {
+    font-family: 'PT Mono', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    color: grey;
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+.CodeMirror{
+        font-family: "PT Mono";
+        font-size: 100%;
+}
+
+</style><div class="code python highlight-python"><div class="highlight"><pre>cd ../docs/notebooks/
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>/Users/flow/git/pynoddy/docs/notebooks
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="c"># adjust some settings for matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="c"># print rcParams</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="c"># determine path of repository to set paths corretly below</span>
+<span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">&#39;../..&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pynoddy</span>
+<span class="kn">import</span> <span class="nn">pynoddy.history</span>
+<span class="kn">import</span> <span class="nn">pynoddy.output</span>
+</pre></div>
+</div>
+<p>First step: load the history file into a Python object:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Change to sandbox directory to store results</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s">&#39;sandbox&#39;</span><span class="p">))</span>
+<span class="c"># Path to exmaple directory in this repository</span>
+<span class="n">example_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span><span class="s">&#39;examples&#39;</span><span class="p">)</span>
+<span class="c"># Compute noddy model for history file</span>
+<span class="n">history_file</span> <span class="o">=</span> <span class="s">&#39;simple_two_faults.his&#39;</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">example_directory</span><span class="p">,</span> <span class="n">history_file</span><span class="p">)</span>
+<span class="n">output_name</span> <span class="o">=</span> <span class="s">&#39;noddy_out&#39;</span>
+<span class="n">H1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Technical note</strong>: the <code class="docutils literal"><span class="pre">NoddyHistory</span></code> class can be accessed on the
+level of pynoddy (as it is imported in the <code class="docutils literal"><span class="pre">__init__.py</span></code> module) with
+the shortcut:</p>
+<p><code class="docutils literal"><span class="pre">H1</span> <span class="pre">=</span> <span class="pre">pynoddy.NoddyHistory(history)</span></code></p>
+<p>I am using the long version <code class="docutils literal"><span class="pre">pynoddy.history.NoddyHistory</span></code> here to
+ensure that the correct package is loaded with the <code class="docutils literal"><span class="pre">reload()</span></code>
+function. If you don&#8217;t make changes to any of the pynoddy files, this is
+not required. So for any practical cases, the shortcuts are absolutely
+fine!</p>
+<div class="section" id="get-basic-information-on-the-model">
+<h2>Get basic information on the model<a class="headerlink" href="#get-basic-information-on-the-model" title="Permalink to this headline">¶</a></h2>
+<p>The history file contains the entire information on the Noddy model.
+Some information can be accessed through the NoddyHistory object (and
+more will be added soon!), for example the total number of events:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="s">&quot;The history contains </span><span class="si">%d</span><span class="s"> events&quot;</span> <span class="o">%</span> <span class="n">H1</span><span class="o">.</span><span class="n">n_events</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>The history contains 3 events
+</pre></div>
+</div>
+<p>Events are implemented as objects, the classes are defined in
+<code class="docutils literal"><span class="pre">H1.events</span></code>. All events are accessible in a list on the level of the
+history object:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">H1</span><span class="o">.</span><span class="n">events</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>{1: &lt;pynoddy.events.Stratigraphy at 0x103ac2a50&gt;,
+ 2: &lt;pynoddy.events.Fault at 0x103ac2a90&gt;,
+ 3: &lt;pynoddy.events.Fault at 0x103ac2ad0&gt;}
+</pre></div>
+</div>
+<p>The properties of an event are stored in the event objects themselves.
+To date, only a subset of the properties (deemed as relevant for the
+purpose of pynoddy so far) are parsed. The .his file contains a lot more
+information! If access to this information is required, adjustments in
+pynoddy.events have to be made.</p>
+<p>For example, the properties of a fault object are:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">H1</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span>
+<span class="c"># print H1.events[5].properties.keys()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&#39;Amplitude&#39;</span><span class="p">:</span> <span class="mf">2000.0</span><span class="p">,</span>
+ <span class="s">&#39;Blue&#39;</span><span class="p">:</span> <span class="mf">254.0</span><span class="p">,</span>
+ <span class="s">&#39;Color Name&#39;</span><span class="p">:</span> <span class="s">&#39;Custom Colour 8&#39;</span><span class="p">,</span>
+ <span class="s">&#39;Cyl Index&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+ <span class="s">&#39;Dip&#39;</span><span class="p">:</span> <span class="mf">60.0</span><span class="p">,</span>
+ <span class="s">&#39;Dip Direction&#39;</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">,</span>
+ <span class="s">&#39;Geometry&#39;</span><span class="p">:</span> <span class="s">&#39;Translation&#39;</span><span class="p">,</span>
+ <span class="s">&#39;Green&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+ <span class="s">&#39;Movement&#39;</span><span class="p">:</span> <span class="s">&#39;Hanging Wall&#39;</span><span class="p">,</span>
+ <span class="s">&#39;Pitch&#39;</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">,</span>
+ <span class="s">&#39;Profile Pitch&#39;</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">,</span>
+ <span class="s">&#39;Radius&#39;</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">,</span>
+ <span class="s">&#39;Red&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+ <span class="s">&#39;Rotation&#39;</span><span class="p">:</span> <span class="mf">30.0</span><span class="p">,</span>
+ <span class="s">&#39;Slip&#39;</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">,</span>
+ <span class="s">&#39;X&#39;</span><span class="p">:</span> <span class="mf">5500.0</span><span class="p">,</span>
+ <span class="s">&#39;XAxis&#39;</span><span class="p">:</span> <span class="mf">2000.0</span><span class="p">,</span>
+ <span class="s">&#39;Y&#39;</span><span class="p">:</span> <span class="mf">3968.0</span><span class="p">,</span>
+ <span class="s">&#39;YAxis&#39;</span><span class="p">:</span> <span class="mf">2000.0</span><span class="p">,</span>
+ <span class="s">&#39;Z&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+ <span class="s">&#39;ZAxis&#39;</span><span class="p">:</span> <span class="mf">2000.0</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="change-model-cube-size-and-recompute-model">
+<h2>Change model cube size and recompute model<a class="headerlink" href="#change-model-cube-size-and-recompute-model" title="Permalink to this headline">¶</a></h2>
+<p>The Noddy model itself is, once computed, a continuous model in 3-D
+space. However, for most visualisations and further calculations (e.g.
+geophysics), a discretised version is suitable. The discretisation (or
+block size) can be adapted in the history file. The according pynoddy
+function is change_cube_size.</p>
+<p>A simple example to change the cube size and write a new history file:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># We will first recompute the model and store results in an output file for comparison</span>
+<span class="n">NH1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+<span class="n">NO1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Now: change cubsize, write to new file and recompute</span>
+<span class="n">NH1</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="c"># Save model to a new history file and recompute (Note: may take a while to compute now)</span>
+<span class="n">new_history</span> <span class="o">=</span> <span class="s">&quot;fault_model_changed_cubesize.his&quot;</span>
+<span class="n">new_output_name</span> <span class="o">=</span> <span class="s">&quot;noddy_out_changed_cube&quot;</span>
+<span class="n">NH1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">new_history</span><span class="p">)</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">new_history</span><span class="p">,</span> <span class="n">new_output_name</span><span class="p">)</span>
+<span class="n">NO2</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">new_output_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The different cell sizes are also represented in the output files:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="s">&quot;Model 1 contains a total of </span><span class="si">%7d</span><span class="s"> cells with a blocksize </span><span class="si">%.0f</span><span class="s"> m&quot;</span> <span class="o">%</span>
+      <span class="p">(</span><span class="n">NO1</span><span class="o">.</span><span class="n">n_total</span><span class="p">,</span> <span class="n">NO1</span><span class="o">.</span><span class="n">delx</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Model 2 contains a total of </span><span class="si">%7d</span><span class="s"> cells with a blocksize </span><span class="si">%.0f</span><span class="s"> m&quot;</span> <span class="o">%</span>
+      <span class="p">(</span><span class="n">NO2</span><span class="o">.</span><span class="n">n_total</span><span class="p">,</span> <span class="n">NO2</span><span class="o">.</span><span class="n">delx</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Model 1 contains a total of  582800 cells with a blocksize 100 m
+Model 2 contains a total of 4662400 cells with a blocksize 50 m
+</pre></div>
+</div>
+<p>We can compare the effect of the different model discretisations in
+section plots, created with the plot_section method described before.
+Let&#8217;s get a bit more fancy here and use the functionality to pass axes
+to the plot_section method, and to create one figure as direct
+comparison:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># create basic figure layout</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">NO1</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax1</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Low resolution&quot;</span><span class="p">)</span>
+<span class="n">NO2</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;High resolution&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="figure" id="id1">
+<img alt="png" src="../_images/2-Adjust-input_20_0.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<p>Note: the following two subsections contain some slighly advanced
+examples on how to use the possibility to adjust cell sizes through
+scripts directly to autmote processes that are infeasible using the GUI
+version of Noddy - as a &#8216;peek preview&#8217; of the automation for uncertainty
+estimation that follows in a later section. Feel free to skip those two
+sections if you are only interested in the basic features so far.</p>
+</div>
+<div class="section" id="estimating-computation-time-for-a-high-resolution-model">
+<h2>Estimating computation time for a high-resolution model<a class="headerlink" href="#estimating-computation-time-for-a-high-resolution-model" title="Permalink to this headline">¶</a></h2>
+<p>You surely realised (if you ran these examples in an actual interactive
+ipython notebook) that the computation of the high-resolution model
+takes siginificantly longer than the low-resolution model. In a
+practical case, this can be very important.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># We use here simply the time() function to evaulate the simualtion time.</span>
+<span class="c"># This is not the best possible way to do it, but probably the simplest.</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Simulation time for low-resolution model: </span><span class="si">%5.2f</span><span class="s"> seconds&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
+
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">new_history</span><span class="p">,</span> <span class="n">new_output_name</span><span class="p">)</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Simulation time for high-resolution model: </span><span class="si">%5.2f</span><span class="s"> seconds&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Simulation time for low-resolution model:  0.73 seconds
+Simulation time for high-resolution model:  5.78 seconds
+</pre></div>
+</div>
+<p>For an estimation of required computing time for a given discretisation,
+let&#8217;s evaulate the time for a couple of steps, plot, and extrapolate:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># perform computation for a range of cube sizes</span>
+<span class="n">cube_sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">49</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">NH1</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">tmp_history</span> <span class="o">=</span> <span class="s">&quot;tmp_history&quot;</span>
+<span class="n">tmp_output</span> <span class="o">=</span> <span class="s">&quot;tmp_output&quot;</span>
+<span class="k">for</span> <span class="n">cube_size</span> <span class="ow">in</span> <span class="n">cube_sizes</span><span class="p">:</span>
+    <span class="n">NH1</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="n">cube_size</span><span class="p">)</span>
+    <span class="n">NH1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">tmp_history</span><span class="p">)</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">tmp_history</span><span class="p">,</span> <span class="n">tmp_output</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># create plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cube_sizes</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="s">&#39;ro-&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&#39;cubesize [m]&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&#39;time [s]&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;Computation time&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">ax1</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cube_sizes</span><span class="p">,</span> <span class="n">times</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">3.</span><span class="p">),</span> <span class="s">&#39;bo-&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&#39;cubesize [m]&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&#39;(time [s])**(1/3)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;Computation time (cuberoot)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">ax2</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">ax3</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">cube_sizes</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="s">&#39;go-&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&#39;cubesize [m]&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&#39;time [s]&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;Computation time (y-log)&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">ax3</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mf">200.0</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure" id="id2">
+<img alt="png" src="../_images/2-Adjust-input_26_1.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<p>It is actually quite interesting that the computation time does not
+scale with cubesize to the power of three (as could be expected, given
+that we have a mesh in three dimensions). Or am I missing something?</p>
+<p>Anyway, just because we can: let&#8217;s assume that the scaling is somehow
+exponential and try to fit a model for a time prediction. Given the last
+plot, it looks like we could fit a logarithmic model with probably an
+additional exponent (as the line is obviously not straight), so
+something like:</p>
+<div class="math">
+<p><img src="../_images/math/ebd0697e5532a631bc3efd03e21084b496424718.png" alt="f(x) = a + \left( b \log_{10}(x) \right)^{-c}"/></p>
+</div><p>Let&#8217;s try to fit the curve with <code class="docutils literal"><span class="pre">scipy.optimize.curve_fit</span></code>:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># perform curve fitting with scipy.optimize</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span>
+<span class="c"># define function to be fit</span>
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">)</span>
+
+<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">curve_fit</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">cube_sizes</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="n">p0</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">popt</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">array</span><span class="p">([</span> <span class="o">-</span><span class="mf">0.05618538</span><span class="p">,</span>   <span class="mf">0.50990774</span><span class="p">,</span>  <span class="mf">12.45183398</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Interesting, it looks like Noody scales with something like:</p>
+<div class="math">
+<p><img src="../_images/math/814d1efb07cb57f8b5d66fb22687cfde14a0c75c.png" alt="f(x) = \left( 0.5 \log_{10}(x) \right)^{-12}"/></p>
+</div><p><strong>Note</strong>: if you understand more about computational complexity than me,
+it might not be that interesting to you at all - if this is the case,
+please contact me and tell me why this result could be expected...</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="n">popt</span>
+<span class="n">cube_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">times_eval</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">cube_range</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">cube_range</span><span class="p">,</span> <span class="n">times_eval</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">cube_sizes</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="s">&#39;ko&#39;</span><span class="p">)</span>
+<span class="c"># reverse x-axis</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mf">200.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure" id="id3">
+<img alt="png" src="../_images/2-Adjust-input_30_1.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<p>Not too bad... let&#8217;s evaluate the time for a cube size of 40 m:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">cube_size</span> <span class="o">=</span> <span class="mi">40</span> <span class="c"># m</span>
+<span class="n">time_est</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">cube_size</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Estimated time for a cube size of </span><span class="si">%d</span><span class="s"> m: </span><span class="si">%.1f</span><span class="s"> seconds&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cube_size</span><span class="p">,</span> <span class="n">time_est</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Estimated time for a cube size of 40 m: 12.4 seconds
+</pre></div>
+</div>
+<p>Now let&#8217;s check the actual simulation time:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">NH1</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="n">cube_size</span><span class="p">)</span>
+<span class="n">NH1</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">tmp_history</span><span class="p">)</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">tmp_history</span><span class="p">,</span> <span class="n">tmp_output</span><span class="p">)</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">time_comp</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Actual computation time for a cube size of </span><span class="si">%d</span><span class="s"> m: </span><span class="si">%.1f</span><span class="s"> seconds&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cube_size</span><span class="p">,</span> <span class="n">time_comp</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Actual computation time for a cube size of 40 m: 11.6 seconds
+</pre></div>
+</div>
+<p>Not too bad, probably in the range of the inherent variability... and if
+we check it in the plot:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">cube_range</span><span class="p">,</span> <span class="n">times_eval</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">cube_sizes</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="s">&#39;ko&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">cube_size</span><span class="p">,</span> <span class="n">time_comp</span><span class="p">,</span> <span class="s">&#39;ro&#39;</span><span class="p">)</span>
+<span class="c"># reverse x-axis</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mf">200.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure" id="id4">
+<img alt="png" src="../_images/2-Adjust-input_36_1.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<p>Anyway, the point of this excercise was not a precise evaluation of
+Noddy&#8217;s computational complexity, but to provide a simple means of
+evaluating computation time for a high resolution model, using the
+flexibility of writing simple scripts using pynoddy, and a couple of
+additional python modules.</p>
+<p>For a realistic case, it should, of course, be sufficient to determine
+the time based on a lot less computed points. If you like, test it with
+your favourite model and tell me if it proved useful (or not)!</p>
+</div>
+<div class="section" id="simple-convergence-study">
+<h2>Simple convergence study<a class="headerlink" href="#simple-convergence-study" title="Permalink to this headline">¶</a></h2>
+<p>So: why would we want to run a high-resolution model, anyway? Well, of
+course, it produces nicer pictures - but on a scientific level, that&#8217;s
+completely irrelevant (haha, not true - so nice if it would be...).</p>
+<p>Anyway, if we want to use the model in a scientific study, for example
+to evaluate volume of specific units, or to estimate the geological
+topology (Mark is working on this topic with some cool ideas - example
+to be implemented here, &#8220;soon&#8221;), we want to know if the resolution of
+the model is actually high enough to produce meaningful results.</p>
+<p>As a simple example of the evaluation of model resolution, we will here
+inlcude a volume convergence study, i.e. we will estimate at which level
+of increasing model resolution the estimated block volumes do not change
+anymore.</p>
+<p>The entire procedure is very similar to the computational time
+evaluation above, only that we now also analyse the output and determine
+the rock volumes of each defined geological unit:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># perform computation for a range of cube sizes</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="n">cube_sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">49</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">all_volumes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">N_tmp</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">NoddyHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">tmp_history</span> <span class="o">=</span> <span class="s">&quot;tmp_history&quot;</span>
+<span class="n">tmp_output</span> <span class="o">=</span> <span class="s">&quot;tmp_output&quot;</span>
+<span class="k">for</span> <span class="n">cube_size</span> <span class="ow">in</span> <span class="n">cube_sizes</span><span class="p">:</span>
+    <span class="c"># adjust cube size</span>
+    <span class="n">N_tmp</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="n">cube_size</span><span class="p">)</span>
+    <span class="n">N_tmp</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="n">tmp_history</span><span class="p">)</span>
+    <span class="n">pynoddy</span><span class="o">.</span><span class="n">compute_model</span><span class="p">(</span><span class="n">tmp_history</span><span class="p">,</span> <span class="n">tmp_output</span><span class="p">)</span>
+    <span class="c"># open simulated model and determine volumes</span>
+    <span class="n">O_tmp</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">NoddyOutput</span><span class="p">(</span><span class="n">tmp_output</span><span class="p">)</span>
+    <span class="n">O_tmp</span><span class="o">.</span><span class="n">determine_unit_volumes</span><span class="p">()</span>
+    <span class="n">all_volumes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">O_tmp</span><span class="o">.</span><span class="n">unit_volumes</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">all_volumes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_volumes</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+
+<span class="c"># separate into two plots for better visibility:</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">all_volumes</span><span class="p">)[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cube_sizes</span><span class="p">,</span> <span class="n">all_volumes</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="s">&#39;o-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;unit </span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cube_sizes</span><span class="p">,</span> <span class="n">all_volumes</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="s">&#39;o-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;unit </span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span><span class="n">i</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="c"># reverse axes</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">ax1</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">ax2</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&quot;Block size [m]&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&quot;Total unit volume [m**3]&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&quot;Block size [m]&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&quot;Total unit volume [m**3]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>&lt;matplotlib.text.Text at 0x107eb7250&gt;
+</pre></div>
+</div>
+<div class="figure" id="id5">
+<img alt="png" src="../_images/2-Adjust-input_40_1.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<p>It looks like the volumes would start to converge from about a block
+size of 100 m. The example model is pretty small and simple, probably
+not the best example for this study. Try it out with your own, highly
+complex, favourite pet model :-)</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Change Noddy input file and recompute model</a><ul>
+<li><a class="reference internal" href="#get-basic-information-on-the-model">Get basic information on the model</a></li>
+<li><a class="reference internal" href="#change-model-cube-size-and-recompute-model">Change model cube size and recompute model</a></li>
+<li><a class="reference internal" href="#estimating-computation-time-for-a-high-resolution-model">Estimating computation time for a high-resolution model</a></li>
+<li><a class="reference internal" href="#simple-convergence-study">Simple convergence study</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="1-Simulation.html"
+                        title="previous chapter">Simulation of a Noddy history and visualisation of output</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="3-Events.html"
+                        title="next chapter">Geological events in pynoddy: organisation and adpatiation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/2-Adjust-input.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="3-Events.html" title="Geological events in pynoddy: organisation and adpatiation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="1-Simulation.html" title="Simulation of a Noddy history and visualisation of output"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

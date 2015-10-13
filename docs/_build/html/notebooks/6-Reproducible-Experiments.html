@@ -1,0 +1,455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Reproducible Experiments with pynoddy &mdash; pynoddy  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pynoddy  documentation" href="../index.html" />
+    <link rel="next" title="Gippsland Basin Uncertainty Study" href="7-Gippsland-Basin-Uncertainty.html" />
+    <link rel="prev" title="Read and Visualise Geophysical Potential-Fields" href="5-Geophysical-Potential-Fields.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="7-Gippsland-Basin-Uncertainty.html" title="Gippsland Basin Uncertainty Study"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="5-Geophysical-Potential-Fields.html" title="Read and Visualise Geophysical Potential-Fields"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="reproducible-experiments-with-pynoddy">
+<h1>Reproducible Experiments with pynoddy<a class="headerlink" href="#reproducible-experiments-with-pynoddy" title="Permalink to this headline">¶</a></h1>
+<p>All <code class="docutils literal"><span class="pre">pynoddy</span></code> experiments can be defined in a Python script, and if
+all settings are appropriate, then this script can be re-run to obtain a
+reproduction of the results. However, it is often more convenient to
+encapsulate all elements of an experiment within one class. We show here
+how this is done in the <code class="docutils literal"><span class="pre">pynoddy.experiment.Experiment</span></code> class and how
+this class can be used to define simple reproducible experiments with
+kinematic models.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">css_file</span> <span class="o">=</span> <span class="s">&#39;pynoddy.css&#39;</span>
+<span class="n">HTML</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">css_file</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<style>
+
+@font-face {
+    font-family: "Computer Modern";
+    src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');
+}
+
+#notebook_panel { /* main background */
+    background: #888;
+    color: #f6f6f6;
+}
+
+div.cell { /* set cell width to about 80 chars */
+    width: 800px;
+}
+
+div #notebook { /* centre the content */
+    background: #fff; /* white background for content */
+    width: 1000px;
+    margin: auto;
+    padding-left: 1em;
+}
+
+#notebook li { /* More space between bullet points */
+margin-top:0.8em;
+}
+
+/* draw border around running cells */
+div.cell.border-box-sizing.code_cell.running {
+    border: 3px solid #111;
+}
+
+/* Put a solid color box around each cell and its output, visually linking them together */
+div.cell.code_cell {
+    background: #ddd;  /* rgba(230,230,230,1.0);  */
+    border-radius: 10px; /* rounded borders */
+    width: 900px;
+    padding: 1em;
+    margin-top: 1em;
+}
+
+div.text_cell_render{
+    font-family: 'Arvo' sans-serif;
+    line-height: 130%;
+    font-size: 115%;
+    width:700px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+
+/* Formatting for header cells */
+.text_cell_render h1 {
+    font-family: 'Alegreya Sans', sans-serif;
+    /* font-family: 'Tangerine', serif; */
+    /* font-family: 'Libre Baskerville', serif; */
+    /* font-family: 'Karla', sans-serif;
+    /* font-family: 'Lora', serif; */
+    font-size: 50px;
+    text-align: center;
+    /* font-style: italic; */
+    font-weight: 400;
+    /* font-size: 40pt; */
+    /* text-shadow: 4px 4px 4px #aaa; */
+    line-height: 120%;
+    color: rgb(12,85,97);
+    margin-bottom: .5em;
+    margin-top: 0.1em;
+    display: block;
+}
+.text_cell_render h2 {
+    /* font-family: 'Arial', serif; */
+    /* font-family: 'Lora', serif; */
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 700;
+    font-size: 24pt;
+    line-height: 100%;
+    /* color: rgb(171,165,131); */
+    color: rgb(12,85,97);
+    margin-bottom: 0.1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h3 {
+    font-family: 'Arial', serif;
+    margin-top:12px;
+    margin-bottom: 3px;
+    font-style: italic;
+    color: rgb(95,92,72);
+}
+
+.text_cell_render h4 {
+    font-family: 'Arial', serif;
+}
+
+.text_cell_render h5 {
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 300;
+    font-size: 16pt;
+    color: grey;
+    font-style: italic;
+    margin-bottom: .1em;
+    margin-top: 0.1em;
+    display: block;
+}
+
+.text_cell_render h6 {
+    font-family: 'PT Mono', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    color: grey;
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+.CodeMirror{
+        font-family: "PT Mono";
+        font-size: 100%;
+}
+
+</style><div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># here the usual imports. If any of the imports fails,</span>
+<span class="c"># make sure that pynoddy is installed</span>
+<span class="c"># properly, ideally with &#39;python setup.py develop&#39;</span>
+<span class="c"># or &#39;python setup.py install&#39;</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="c"># adjust some settings for matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="c"># print rcParams</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="c"># determine path of repository to set paths corretly below</span>
+<span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="s">&#39;../..&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pynoddy.history</span>
+<span class="kn">import</span> <span class="nn">pynoddy.experiment</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">experiment</span><span class="p">)</span>
+<span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="section" id="defining-an-experiment">
+<h2>Defining an experiment<a class="headerlink" href="#defining-an-experiment" title="Permalink to this headline">¶</a></h2>
+<p>We are considering the following scenario: we defined a kinematic model
+of a prospective geological unit at depth. As we know that the estimates
+of the (kinematic) model parameters contain a high degree of
+uncertainty, we would like to represent this uncertainty with the model.</p>
+<p>Our approach is here to perform a randomised uncertainty propagation
+analysis with a Monte Carlo sampling method. Results should be presented
+in several figures (2-D slice plots and a VTK representation in 3-D).</p>
+<p>To perform this analysis, we need to perform the following steps (see
+main paper for more details):</p>
+<ol class="arabic simple">
+<li>Define kinematic model parameters and construct the initial (base)
+model;</li>
+<li>Assign probability distributions (and possible parameter
+correlations) to relevant uncertain input parameters;</li>
+<li>Generate a set of n random realisations, repeating the following
+steps:<ol class="arabic">
+<li>Draw a randomised input parameter set from the parameter distribu-
+tion;</li>
+<li>Generate a model with this parameter set;</li>
+<li>Analyse the generated model and store results;</li>
+</ol>
+</li>
+<li>Finally: perform postprocessing, generate figures of results</li>
+</ol>
+<p>It would be possible to write a Python script to perform all of these
+steps in one go. However, we will here take another path and use the
+implementation in a Pynoddy Experiment class. Initially, this requires
+more work and a careful definition of the experiment - but, finally, it
+will enable a higher level of flexibility, extensibility, and
+reproducibility.</p>
+</div>
+<div class="section" id="loading-an-example-model-from-the-atlas-of-structural-geophysics">
+<h2>Loading an example model from the Atlas of Structural Geophysics<a class="headerlink" href="#loading-an-example-model-from-the-atlas-of-structural-geophysics" title="Permalink to this headline">¶</a></h2>
+<p>As in the example for geophysical potential-field simulation, we will
+use a model from the Atlas of Structural Geophysics as an examlpe model
+for this simulation. We use a model for a fold interference structure. A
+discretised 3-D version of this model is presented in the figure below.
+The model represents a fold interference pattern of &#8220;Type 1&#8221; according
+to the definition of Ramsey (1967).</p>
+<div class="figure" id="id1">
+<img alt="Fold interference pattern" src="../_images/typeb.jpg" />
+<p class="caption"><span class="caption-text">Fold interference pattern</span></p>
+</div>
+<p>Instead of loading the model into a history object, we are now directly
+creating an experiment object:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">pynoddy</span><span class="o">.</span><span class="n">experiment</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">pynoddy.experiment</span> <span class="kn">import</span> <span class="n">monte_carlo</span>
+<span class="n">model_url</span> <span class="o">=</span> <span class="s">&#39;http://tectonique.net/asg/ch3/ch3_7/his/typeb.his&#39;</span>
+<span class="n">ue</span> <span class="o">=</span> <span class="n">pynoddy</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">Experiment</span><span class="p">(</span><span class="n">url</span> <span class="o">=</span> <span class="n">model_url</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For simpler visualisation in this notebook, we will analyse the
+following steps in a section view of the model.</p>
+<p>We consider a section in y-direction through the model:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">ue</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="s">&quot;typeb_tmp3.his&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">ue</span><span class="o">.</span><span class="n">write_history</span><span class="p">(</span><span class="s">&quot;typeb_tmp2.his&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">ue</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">ue</span><span class="o">.</span><span class="n">plot_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure" id="id2">
+<img alt="png" src="../_images/6-Reproducible-Experiments_10_0.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<p>Before we start to draw random realisations of the model, we should
+first store the base state of the model for later reference. This is
+simply possibel with the freeze() method which stores the current state
+of the model as the &#8220;base-state&#8221;:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">ue</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We now intialise the random generator. We can directly assign a random
+seed to simplify reproducibility (note that this is not <em>essential</em>, as
+it would be for the definition in a script function: the random state is
+preserved within the model and could be retrieved at a later stage, as
+well!):</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">ue</span><span class="o">.</span><span class="n">set_random_seed</span><span class="p">(</span><span class="mi">12345</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The next step is to define probability distributions to the relevant
+event parameters. Let&#8217;s first look at the different events:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">ue</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">events_only</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>This model consists of 3 events:
+    (1) - STRATIGRAPHY
+    (2) - FOLD
+    (3) - FOLD
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">ev2</span> <span class="o">=</span> <span class="n">ue</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">ev2</span><span class="o">.</span><span class="n">properties</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&#39;Amplitude&#39;</span><span class="p">:</span> <span class="mf">1250.0</span><span class="p">,</span>
+ <span class="s">&#39;Cylindricity&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+ <span class="s">&#39;Dip&#39;</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">,</span>
+ <span class="s">&#39;Dip Direction&#39;</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">,</span>
+ <span class="s">&#39;Pitch&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+ <span class="s">&#39;Single Fold&#39;</span><span class="p">:</span> <span class="s">&#39;FALSE&#39;</span><span class="p">,</span>
+ <span class="s">&#39;Type&#39;</span><span class="p">:</span> <span class="s">&#39;Sine&#39;</span><span class="p">,</span>
+ <span class="s">&#39;Wavelength&#39;</span><span class="p">:</span> <span class="mf">5000.0</span><span class="p">,</span>
+ <span class="s">&#39;X&#39;</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">,</span>
+ <span class="s">&#39;Y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+ <span class="s">&#39;Z&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Next, we define the probability distributions for the uncertain input
+parameters:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">param_stats</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;event&#39;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+              <span class="s">&#39;parameter&#39;</span><span class="p">:</span> <span class="s">&#39;Amplitude&#39;</span><span class="p">,</span>
+              <span class="s">&#39;stdev&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+              <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;normal&#39;</span><span class="p">},</span>
+              <span class="p">{</span><span class="s">&#39;event&#39;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+              <span class="s">&#39;parameter&#39;</span><span class="p">:</span> <span class="s">&#39;Wavelength&#39;</span><span class="p">,</span>
+              <span class="s">&#39;stdev&#39;</span><span class="p">:</span> <span class="mf">500.0</span><span class="p">,</span>
+              <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;normal&#39;</span><span class="p">},</span>
+              <span class="p">{</span><span class="s">&#39;event&#39;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+              <span class="s">&#39;parameter&#39;</span><span class="p">:</span> <span class="s">&#39;X&#39;</span><span class="p">,</span>
+              <span class="s">&#39;stdev&#39;</span><span class="p">:</span> <span class="mf">500.0</span><span class="p">,</span>
+              <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;normal&#39;</span><span class="p">}]</span>
+
+<span class="n">ue</span><span class="o">.</span><span class="n">set_parameter_statistics</span><span class="p">(</span><span class="n">param_stats</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">resolution</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">ue</span><span class="o">.</span><span class="n">change_cube_size</span><span class="p">(</span><span class="n">resolution</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">ue</span><span class="o">.</span><span class="n">get_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">prob_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">block</span><span class="p">[:,:,:])</span>
+<span class="n">n_draws</span> <span class="o">=</span> <span class="mi">100</span>
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_draws</span><span class="p">):</span>
+    <span class="n">ue</span><span class="o">.</span><span class="n">random_draw</span><span class="p">()</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">ue</span><span class="o">.</span><span class="n">get_section</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">=</span> <span class="n">resolution</span><span class="p">)</span>
+    <span class="n">prob_4</span> <span class="o">+=</span> <span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">block</span><span class="p">[:,:,:]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="c"># Normalise</span>
+<span class="n">prob_4</span> <span class="o">=</span> <span class="n">prob_4</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_draws</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">prob_4</span><span class="o">.</span><span class="n">transpose</span><span class="p">()[:,</span><span class="mi">0</span><span class="p">,:],</span>
+           <span class="n">origin</span> <span class="o">=</span> <span class="s">&#39;lower left&#39;</span><span class="p">,</span>
+           <span class="n">interpolation</span> <span class="o">=</span> <span class="s">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;Estimated probability of unit 4&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&quot;x (E-W)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&quot;z&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>&lt;matplotlib.text.Text at 0x10ba80250&gt;
+</pre></div>
+</div>
+<div class="figure" id="id3">
+<img alt="png" src="../_images/6-Reproducible-Experiments_22_1.png" />
+<p class="caption"><span class="caption-text">png</span></p>
+</div>
+<p>This example shows how the base module for reproducible experiments with
+kinematics can be used. For further specification, child classes of
+<code class="docutils literal"><span class="pre">Experiment</span></code> can be defined, and we show examples of this type of
+extension in the next sections.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Reproducible Experiments with pynoddy</a><ul>
+<li><a class="reference internal" href="#defining-an-experiment">Defining an experiment</a></li>
+<li><a class="reference internal" href="#loading-an-example-model-from-the-atlas-of-structural-geophysics">Loading an example model from the Atlas of Structural Geophysics</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="5-Geophysical-Potential-Fields.html"
+                        title="previous chapter">Read and Visualise Geophysical Potential-Fields</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="7-Gippsland-Basin-Uncertainty.html"
+                        title="next chapter">Gippsland Basin Uncertainty Study</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/6-Reproducible-Experiments.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="7-Gippsland-Basin-Uncertainty.html" title="Gippsland Basin Uncertainty Study"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="5-Geophysical-Potential-Fields.html" title="Read and Visualise Geophysical Potential-Fields"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pynoddy  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Florian Wellmann, Sam Thiele.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>
