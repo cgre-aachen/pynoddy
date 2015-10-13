@@ -45,22 +45,24 @@ def compute_model(history, output_name, **kwds):
         - *program_name* = string : name of program
             (default: noddy.exe or noddy, both checked)
         - *verbose* = bool: verbose mode, print out information for debugging (default = False)
+        - *noddy_path* = path: location of Noddy executable
     **Returns**:
         -Returns any text outputted by the noddy executable.
     """
 
     sim_type = kwds.get("sim_type", 'BLOCK')
+    noddy_path = kwds.get("noddy_path", noddyPath)
 
     if kwds.has_key("verbose") and kwds['verbose']:
         out = "Running noddy exectuable at %s(.exe)\n" % noddyPath
     else:
         out = ""
     try:  # try running .exe file (windows only)
-        out += subprocess.Popen([noddyPath + ".exe", history, output_name, sim_type],
+        out += subprocess.Popen([noddy_path + ".exe", history, output_name, sim_type],
                                 shell=False, stderr=subprocess.PIPE,
                                 stdout=subprocess.PIPE).stdout.read()
     except OSError:  # obviously not running windows - try just the binary
-        out += subprocess.Popen([noddyPath, history, output_name, sim_type],
+        out += subprocess.Popen([noddy_path, history, output_name, sim_type],
                                 shell=False, stderr=subprocess.PIPE,
                                 stdout=subprocess.PIPE).stdout.read()
 
@@ -87,12 +89,14 @@ def compute_topology(rootname, **kwds):
                                     ignored by the topology algorithm (as they represent pixelation artefacts).
                                     The default is 20 voxels, though this is a global variable and can be changed
                                     with pynoddy.null_volume_threshold.
+        - *topology_path* = path: location of executable for topology calculation
     **Returns**
         -Returns any text outputted by the topology executable, including errors.
     """
 
     dvol = kwds.get('ensure_discrete_volumes', ensure_discrete_volumes)
     nvt = kwds.get('null_volume_threshold', null_volume_threshold)
+    topology_path = kwds.get('topology_path', topologyPath)
 
     # convert to string
     if dvol:
@@ -102,11 +106,11 @@ def compute_topology(rootname, **kwds):
 
     out = "Running topology exectuable at %s(.exe)\n" % topologyPath
     try:  # try running .exe file (windows only)
-        out = subprocess.Popen([topologyPath + ".exe", rootname, dvol, str(nvt)],
+        out = subprocess.Popen([topology_path + ".exe", rootname, dvol, str(nvt)],
                                shell=False, stderr=subprocess.PIPE,
                                stdout=subprocess.PIPE).stdout.read()
     except OSError:  # obviously not running windows - try just the binary
-        out = subprocess.Popen([topologyPath, rootname, dvol, str(nvt)],
+        out = subprocess.Popen([topology_path, rootname, dvol, str(nvt)],
                                shell=False, stderr=subprocess.PIPE,
                                stdout=subprocess.PIPE).stdout.read()
     return out
