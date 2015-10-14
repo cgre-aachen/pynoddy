@@ -1074,6 +1074,8 @@ class NoddyTopology(object):
                                 data[key] = [ e[2][key] ] #make list
                     except KeyError: #key not found, add new key
                         data[key] = e[2][key]
+                #maintain that weight = 1
+                data['weight'] = 1.0
             else:
                 #create new edge
                 topo.graph.add_edge(u,v,attr_dict=e[2])
