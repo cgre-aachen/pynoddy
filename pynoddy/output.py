@@ -946,29 +946,61 @@ class NoddyTopology(object):
         topo = copy.deepcopy(self)
         topo.type = "structural"
         
-        #retrieve list of edges, ignoring lithology
-        edges = []
-        nodes = []
-        for e in topo.graph.edges(data=True):
-            code1 = e[0].split("_")[1] #topology code of node 1
-            code2 = e[1].split("_")[1] #topology code of node 2
-            
-            #change code1 & code2 endings 2 a (discrete volumes don't mean anything anymore)
-            code1 = code1[:-1] + 'A' #retain last letter for compatability/concistency...
-            code2 = code2[:-1] + 'A'
-            
-            
-            #add edge tuple to edges array
-            edges.append( (code1,code2,e[2]) )
-            
-                    
-        #remake graph
+        #clear graph
         topo.graph.clear()
         
-        topo.graph.add_edges_from(edges)
-        
+        #rebuild network, but ignoring lithology
+        for e in self.graph.edges(data=True):
+            u = e[0].split("_")[1] #topology code of node 1
+            v = e[1].split("_")[1] #topology code of node 2
+            
+            #change code1 & code2 endings 2 a (discrete volumes don't mean anything anymore)
+            u = u[:-1] + 'A' #retain last letter for compatability/concistency...
+            v = v[:-1] + 'A'
+            
+            #update the attributes of the nodes
+            for i,n in enumerate([u,v]):
+                if not topo.graph.has_node(n):
+                    topo.graph.add_node(n,age_list=[self.graph.node[e[i]]['age']],
+                                          colour_list=[self.graph.node[e[i]]['colour']],
+                                          name_list=[self.graph.node[e[i]]['name']],
+                                          name=n,
+                                          volume=self.graph.node[e[i]]['volume'],
+                                          lithology_list=[self.graph.node[e[i]]['lithology']],
+                                          centroid_list=[self.graph.node[e[i]]['centroid']])
+                
+                else:
+                    topo.graph.node[n]['age_list'].append(self.graph.node[e[i]]['age']) #append age
+                    topo.graph.node[n]['colour_list'].append(self.graph.node[e[i]]['colour']) #append colour
+                    topo.graph.node[n]['name_list'].append(self.graph.node[e[i]]['name']) #append name
+                    topo.graph.node[n]['lithology_list'].append(self.graph.node[e[i]]['lithology']) #append lithology
+                    topo.graph.node[n]['centroid_list'].append(self.graph.node[e[i]]['centroid']) #append centroid
+                    topo.graph.node[n]['volume'] = topo.graph.node[u]['volume'] + self.graph.node[e[i]]['volume'] #increment volume
+            
+            #add edge
+            if topo.graph.has_edge(u,v): #edge already exists
+                #merge attributes
+                data = topo.graph.get_edge_data(u,v)
+                data['area'] = data['area'] + e[2]['area']
+            else:
+                #create new edge
+                topo.graph.add_edge(u,v,attr_dict=e[2]) #copy all edge attributes across
+            
+                    
         #remove self loops
         topo.graph.remove_edges_from( topo.graph.selfloop_edges() )
+        
+        #calculate node centroids
+        for n in topo.graph.nodes(data=True):
+            n[1]['centroid'] = ( np.mean( [c[0] for c in n[1]['centroid_list']] ),
+                                          np.mean( [c[1] for c in n[1]['centroid_list']] ),
+                                          np.mean( [c[2] for c in n[1]['centroid_list']] ))
+            
+            n[1]['lithology'] = n[1]['lithology_list'][0] #defined by bottom lithology
+            n[1]['colour'] = n[1]['colour_list'][0]
+            n[1]['age'] = np.mean(n[1]['age_list'])
+            
+            
         return topo
        
     def collapse_structure(self, verbose=False):

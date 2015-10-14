@@ -1092,9 +1092,9 @@ class TopologyAnalysis(object):
         for t in topols:
             for e in t.graph.edges():
                 e2 = (e[1], e[0])  # flip
-                if not (edges.has_key(e) or edges.has_key(e2)):
-                    edges[e] = True  # append key
-            cumulative_count.append(len(edges.keys()))
+                if not (obs.has_key(e) or obs.has_key(e2)):
+                    obs[e] = True  # append key
+            cumulative_count.append(len(obs.keys()))
 
         # plot
         ax.plot(cumulative_count)
