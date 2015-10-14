@@ -140,7 +140,7 @@ class LDA(object):
         
         **Arguments**:
          - *n* = the number of dimensions to use in the returned data space
-         
+        
         **Returns**:
          - a pandas dataframe with columns for each n'th principal component and a column
            for type.
@@ -161,7 +161,7 @@ class LDA(object):
         
         **Arguments**:
          - *vector* =  a list containing a row vector with the same number of dimensions
-                     as the original dataspace (but without the group variable)
+           as the original dataspace (but without the group variable)
          - *n* = the dimension of the space to return.
         '''
         

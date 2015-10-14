@@ -59,8 +59,8 @@ class ModelRealisation(object):
         Sets the parameters used to locate this model in parameter space.
         
         **Arguments**:
-         - *parameters* = A list of tuples containing event number and variable names (strings).
-                         These need to match noddy parameters Eg [ (2,'dip'),(2,'slip'),(3,'x') ].
+         - *parameters* = A list of tuples containing event number and variable names (strings). These need to match noddy parameters Eg [ (2,'dip'),(2,'slip'),(3,'x') ].
+        
         '''
         self.headings = []
         self.params = []  # array containing values
@@ -83,8 +83,9 @@ class ModelRealisation(object):
         '''
         Returns a NoddyOut object containing the voxel volume representing the geology
         of this model. Note that these can be large objects, so try not loading too
-        many at once...
-        **Returns**
+        many at once.
+        
+        **Returns**:
          - a NoddyOut object containing this geological model.
         '''
 
@@ -99,9 +100,9 @@ class ModelRealisation(object):
         **Arguments**:
          - *models* = a list of models to include in the parameter space
          - *parameters* = A list of tuples containig the parameters which make-up the desired
-                          parameter space. Each parameter is defined by a tuple containing an 
-                          event number and parameter name, eg. (2, dip) represents the dip of
-                          the second noddy event.
+           parameter space. Each parameter is defined by a tuple containing an 
+           event number and parameter name, eg. (2, dip) represents the dip of
+           the second noddy event.
         '''
         # retreive data
         data = []
@@ -121,8 +122,8 @@ class ModelRealisation(object):
         Loads all noddy models realisations and returns them as an array of ModelRealisation objects
         
         **Arguments**:
-         - *path* = The root directory that models should be loaded from. All models with the same base_name
-                    as this class will be loaded (including subdirectoriess)
+         - *path* = The root directory that models should be loaded from. All models with the same base_name as this class will be loaded (including subdirectoriess)
+        
         **Optional Keywords**:
          - *verbose* = True if this function should write debug information to the print buffer. Default is False.
          
@@ -396,8 +397,8 @@ class TopologyAnalysis(object):
         
         **Arguments**:
          - *threshold* = the percentage of all models to retain. The chance of observing an observed
-                         model in a single random sample is equal to (100-threshold)/100. If threshold
-                         is left as 95%, the bottom 5% of the model frequency distribution is removed.
+           model in a single random sample is equal to (100-threshold)/100. If threshold
+           is left as 95%, the bottom 5% of the model frequency distribution is removed.
         '''
         p = (100 - threshold) / 100.0  # 0.05 if threshold is 95%, 0.1 for 90% etc.
         n = p * len(self.models)
@@ -446,7 +447,7 @@ class TopologyAnalysis(object):
         **Arguments**
          - *typeID* = the ID of the defining unique topology (from one of the self.unique_topology lists)
          - *topology_type* = The type of topology you are interested in. This should be either '' (full topology), 'litho'
-                      or 'struct'
+           or 'struct'
         **Returns**
          - a TopologyAnalysis.ModelRealisation object from which geology, history or topology info can be retrieved.
         '''
@@ -477,12 +478,13 @@ class TopologyAnalysis(object):
         
         **Optional Arguments**:
          - *params* = Either a path to a .csv file containing information on the parameters that define
-                     this model space or a list containing tuples (eventID,parameter_name) defining the
-                     axes of the model space. If left as None the params file used to generate model
-                     variations is used (at self.params_file). If this does not exist/has not been defined
-                     an error is thrown.
+           this model space or a list containing tuples (eventID,parameter_name) defining the
+           axes of the model space. If left as None the params file used to generate model
+           variations is used (at self.params_file). If this does not exist/has not been defined
+           an error is thrown.
          - *recalculate* = If True, the function is forced to recalculate the model space. Default is False,
-                         hence this will return the last calculated model space.
+           hence this will return the last calculated model space.
+        
         **Returns**:
          - a scipy.pandas data matrix containing model locations in parameter space, and their membership
            of the various classes of topology that have been identified
@@ -556,8 +558,8 @@ class TopologyAnalysis(object):
         experiment.
         
         **Arguments**
-         - *topology_type* = The type of topology you are interested in. This should be either '' (full topology), 'litho'
-                             or 'struct'
+         - *topology_type* = The type of topology you are interested in. This should be either '' (full topology), 'litho' or 'struct'
+        
         **Returns**
          - The average number of nodes
         '''
@@ -582,8 +584,8 @@ class TopologyAnalysis(object):
         experiment.
         
         **Arguments**
-         - *topology_type* = The type of topology you are interested in. This should be either '' (full topology), 'litho'
-                             or 'struct'
+         - *topology_type* = The type of topology you are interested in. This should be either '' (full topology), 'litho' or 'struct'
+        
         **Returns**
          - The average number of nodes
         '''
@@ -613,8 +615,7 @@ class TopologyAnalysis(object):
         number of edges.
         
         **Arguments**
-         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
-                             or 'struct'
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho' or 'struct'
         '''
 
         try:
@@ -682,8 +683,8 @@ class TopologyAnalysis(object):
         coefficient of topologies x and y.
         
         **Arguments**
-         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
-                             or 'struct'
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho' or 'struct'
+        
         **Returns**
          - A difference matrix
         '''
@@ -743,8 +744,7 @@ class TopologyAnalysis(object):
         experiment.
         
         **Arguments**
-         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
-                             or 'struct'
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho' or 'struct'
          - *path* = A path to save the image to. If left as "" the image is drawn to the screen.
          - *dpi* =  The resolution of the saved figure
         '''
@@ -814,18 +814,17 @@ class TopologyAnalysis(object):
         different topology types.
         
         **Optional Arguments**:
-         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
-                     or 'struct'
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho' or 'struct'
          - *params* = a list of parameters. A boxplot will be generated for each parameter
-                      in this list. The default is all the parameters in the params_file
-                      argument. If this is not defined (ie. this class has not purturbed
-                      the history files) then an error is thrown. 
+           in this list. The default is all the parameters in the params_file
+           argument. If this is not defined (ie. this class has not purturbed
+           the history files) then an error is thrown. 
                       
-                      Params can be passed either as a path to a .csv file containing information on the parameters that define
-                      this model space or a list containing tuples (eventID,parameter_name) defining the
-                      axes of the model space. If left as None the params file used to generate model
-                      variations is used (at self.params_file). If this does not exist/has not been defined
-                      an error is thrown.
+           Params can be passed either as a path to a .csv file containing information on the parameters that define
+           this model space or a list containing tuples (eventID,parameter_name) defining the
+           axes of the model space. If left as None the params file used to generate model
+           variations is used (at self.params_file). If this does not exist/has not been defined
+           an error is thrown.
          - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
          - *dpi* =  The resolution of the saved figure
         **Optional Kewords**:
@@ -944,22 +943,21 @@ class TopologyAnalysis(object):
     def histogram(self, params=None, path="", **kwds):
         '''
         Plots a histogram matrix showing all the distribution of parameters in model space.
-         **Optional Arguments**:
-         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
-                     or 'struct'
+        
+        **Optional Arguments**:
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho' or 'struct'.
          - *params* = a list of parameters. A boxplot will be generated for each parameter
-                      in this list. The default is all the parameters in the params_file
-                      argument. If this is not defined (ie. this class has not purturbed
-                      the history files) then an error is thrown. 
-                      
-                      Params can be passed either as a path to a .csv file containing information on the parameters that define
-                      this model space or a list containing tuples (eventID,parameter_name) defining the
-                      axes of the model space. If left as None the params file used to generate model
-                      variations is used (at self.params_file). If this does not exist/has not been defined
-                      an error is thrown.
+           in this list. The default is all the parameters in the params_file
+           argument. If this is not defined (ie. this class has not purturbed
+           the history files) then an error is thrown. 
+           Params can be passed either as a path to a .csv file containing information on the parameters that define
+           this model space or a list containing tuples (eventID,parameter_name) defining the
+           axes of the model space. If left as None the params file used to generate model
+           variations is used (at self.params_file). If this does not exist/has not been defined
+           an error is thrown.
          - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
          
-         **Optional Keywords**:
+        **Optional Keywords**:
           - *width* = The width of each histogram in inches. Default is 3.
           - *height* = The height of each histogram in inches. Default is 2.5.
           - *dpi* =  The resolution of the saved figure. Default is 300
@@ -1027,8 +1025,7 @@ class TopologyAnalysis(object):
         Plots the specified cumulative topology count.
         
         **Optional Arguments**:
-         - *topology_type* = The type of topology you are interested in. This should be either '' (all topologies),
-                             'litho' or 'struct'.
+         - *topology_type* = The type of topology you are interested in. This should be either '' (all topologies), 'litho' or 'struct'.
          - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
          - *dpi* =  The resolution of the saved figure
         '''
@@ -1064,8 +1061,7 @@ class TopologyAnalysis(object):
         Plots the cumulative observed relationships of the specfied topology type.
         
         **Optional Arguments**:
-         - *topology_type* = The type of topology you are interested in. This should be either '' (all topologies),
-                             'litho' or 'struct'.
+         - *topology_type* = The type of topology you are interested in. This should be either '' (all topologies), 'litho' or 'struct'.
          - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
          - *dpi* =  The resolution of the saved figure
         '''
@@ -1106,20 +1102,20 @@ class TopologyAnalysis(object):
         
         **Arguments**:
          - *topology_id*: A list of topology id's to plot. The id's correspond
-                  to the location of the topologies in the unique_topologies lists.
-         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
-                             or 'struct'
+           to the location of the topologies in the unique_topologies lists.
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho' or 'struct'
          - *params* = a list of parameters. A boxplot will be generated for each parameter
-              in this list. The default is all the parameters in the params_file
-              argument. If this is not defined (ie. this class has not purturbed
-              the history files) then an error is thrown. 
+           in this list. The default is all the parameters in the params_file
+           argument. If this is not defined (ie. this class has not purturbed
+           the history files) then an error is thrown. 
               
-              Params can be passed either as a path to a .csv file containing information on the parameters that define
-              this model space or a list containing tuples (eventID,parameter_name) defining the
-              axes of the model space. If left as None the params file used to generate model
-              variations is used (at self.params_file). If this does not exist/has not been defined
-              an error is thrown.
+           Params can be passed either as a path to a .csv file containing information on the parameters that define
+           this model space or a list containing tuples (eventID,parameter_name) defining the
+           axes of the model space. If left as None the params file used to generate model
+           variations is used (at self.params_file). If this does not exist/has not been defined
+           an error is thrown.
          - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
+        
         **Optional Keywords**:
          - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
          - *dpi* =  The resolution of the saved figure
@@ -1177,8 +1173,7 @@ class TopologyAnalysis(object):
         Plots a cumulative frequency distribution.
         
         **Arguments**
-         - *topology_type* = The type of topology you are interested in. This should be either '' (full topology),
-                             'litho' or 'struct'
+         - *topology_type* = The type of topology you are interested in. This should be either '' (full topology), 'litho' or 'struct'
         **Optional Keywords**'
          - *logx* - plot x axis on a log scale. Default is False.
          - *logy* - plot y axis on a log scale. Default is False.
@@ -1352,19 +1347,18 @@ class TopologyAnalysis(object):
         
         **Arguments**:
          - *param_pairs*: A list of parameter pairs (tuples) to display. If left as none then
-                          all parameters are drawn (though if there are greater than 5 parameters an
-                          error is thrown.)
-         - *topology_type* = The type of topology you are interested in. This should be either 'litho'
-                             or 'struct'
+           all parameters are drawn (though if there are greater than 5 parameters an
+           error is thrown.)
+         - *topology_type* = The type of topology you are interested in. This should be either 'litho' or 'struct'
          - *params* = a list of parameters defining parameter space. The default is all the parameters in the params_file
-                      argument. If this is not defined (ie. this class has not purturbed
-                      the history files) then an error is thrown. 
+           argument. If this is not defined (ie. this class has not purturbed
+           the history files) then an error is thrown. 
               
-                      Params can be passed either as a path to a .csv file containing information on the parameters that define
-                      this model space or a list containing tuples (eventID,parameter_name) defining the
-                      axes of the model space. If left as None the params file used to generate model
-                      variations is used (at self.params_file). If this does not exist/has not been defined
-                      an error is thrown.
+           Params can be passed either as a path to a .csv file containing information on the parameters that define
+           this model space or a list containing tuples (eventID,parameter_name) defining the
+           axes of the model space. If left as None the params file used to generate model
+           variations is used (at self.params_file). If this does not exist/has not been defined an error is thrown.
+        
         **Optional Keywords**:
          - *path* = a file path to write the image to. If left as '', the image is displayed on the screen.
          - *dpi* =  The resolution of the saved figure
@@ -1498,9 +1492,10 @@ class TopologyAnalysis(object):
          - *topology_type* = the type of topology used to identify unique models ('','struct' or 'litho')
          
         **Returns**:
-         - a tuple containing: 1) a list of models
-                               2) a list of model ID's
-                               3) a list of topology UIDs
+         - a tuple containing: 
+            1) a list of models
+            2) a list of model ID's
+            3) a list of topology UIDs
         '''
         # get data
         if topology_type == '':
@@ -1542,15 +1537,15 @@ class TopologyAnalysis(object):
         **Arguments**:
          - *topology_type* = the type of topology used to identify unique models ('','struct' or 'litho')
          - *n* = the number of unique models to plot. These will be chosen such that they
-                 are maximally representative by building a dendrogram of model space,
-                 cutting it such that it contians n clusters and identifying models closest to
-                 the center of each cluster.
-                 
-        **Returns**:
-         - a tuple (models,uids,ids), ie: a tuple containing:
-           references to a list of ModelRealisation objects,
-           a list of the unique id's for each of the model realisation objects, and 
-           a list containing the (global) id's of these objects  (in the self.models list)
+           are maximally representative by building a dendrogram of model space,
+           cutting it such that it contians n clusters and identifying models closest to
+           the center of each cluster.
+        
+        **Returns**
+        A tuple (models,uids,ids), i.e. a tuple containing:
+         - references to a list of ModelRealisation objects,
+         - a list of the unique id's for each of the model realisation objects, and 
+         - a list containing the (global) id's of these objects  (in the self.models list)
         '''
 
         import scipy.cluster.hierarchy as clust
@@ -1618,30 +1613,31 @@ class TopologyAnalysis(object):
          - *topology_type* = the type of topology used to identify unique models ('','struct' or 'litho')
          - *n* = the number of unique models to plot. 
          - *criterion* = the criterion used to select the models. This should either be 'probability' or
-                 'clustering'. If 'probability' is selected, get_n_most_frequent_models() is used to retrieve
-                 models. If 'clustering' is selected, get_n_from_clusters() is used. Please see the definitions
-                 of these methods for specific details.
+           'clustering'. If 'probability' is selected, get_n_most_frequent_models() is used to retrieve
+           models. If 'clustering' is selected, get_n_from_clusters() is used. Please see the definitions
+           of these methods for specific details.
+        
         **Optional Keywords**:
-            - *path* = the path to the resulting image as. Default is '' (no image saved)
-            - *dpi* = the resoltuion of the resulting image
-            - *width* = the width of each tile in the grid. Default is 2 inches.
-            - *cols* = the number of tiles to fit accross the image. Default is 4.
-            - *uid* = label the tiles with topology id rather than model id. Default is False.         
-            - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
-            - *position* = int or 'center' : cell position of section as integer value
-                or identifier (default: 'center')
-            - *ax* = matplotlib.axis : append plot to axis (default: create new plot)
-            - *figsize* = (x,y) : matplotlib figsize
-            - *colorbar* = bool : plot colorbar (default: True)
-            - *colorbar_orientation* = 'horizontal' or 'vertical' : orientation of colorbar
-                    (default: 'vertical')
-            - *title* = string : plot title
-            - *cmap* = matplotlib.cmap : colormap (default: YlOrRd)
-            - *ve* = float : vertical exaggeration
-            - *layer_labels* = list of strings: labels for each unit in plot
-            - *layers_from* = noddy history file : get labels automatically from history file
-            - *data* = np.array : data to plot, if different to block data itself
-            - *litho_filter* = a list of lithologies to draw. All others will be ignored.
+          - *path* = the path to the resulting image as. Default is '' (no image saved)
+          - *dpi* = the resoltuion of the resulting image
+          - *width* = the width of each tile in the grid. Default is 2 inches.
+          - *cols* = the number of tiles to fit accross the image. Default is 4.
+          - *uid* = label the tiles with topology id rather than model id. Default is False.         
+          - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
+          - *position* = int or 'center' : cell position of section as integer value
+            or identifier (default: 'center')
+          - *ax* = matplotlib.axis : append plot to axis (default: create new plot)
+          - *figsize* = (x,y) : matplotlib figsize
+          - *colorbar* = bool : plot colorbar (default: True)
+          - *colorbar_orientation* = 'horizontal' or 'vertical' : orientation of colorbar
+            (default: 'vertical')
+          - *title* = string : plot title
+          - *cmap* = matplotlib.cmap : colormap (default: YlOrRd)
+          - *ve* = float : vertical exaggeration
+          - *layer_labels* = list of strings: labels for each unit in plot
+          - *layers_from* = noddy history file : get labels automatically from history file
+          - *data* = np.array : data to plot, if different to block data itself
+          - *litho_filter* = a list of lithologies to draw. All others will be ignored.
         '''
 
         # get kwds
@@ -1726,23 +1722,24 @@ class TopologyAnalysis(object):
         **Arguments**:
          - *directory* = the directory to save the images to
          - *topology_type* = the type of topology used to identify unique models
+        
         **Optional Keywords**:
-            - *max_t* = the maximum number of topologies to draw. If the number of topologies excedes
-                      this number then all later topologies (the less likely ones) are ignored.
-            - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
-            - *position* = int or 'center' : cell position of section as integer value
-                or identifier (default: 'center')
-            - *figsize* = (x,y) : matplotlib figsize
-            - *colorbar* = bool : plot colorbar (default: True)
-            - *colorbar_orientation* = 'horizontal' or 'vertical' : orientation of colorbar
-                    (default: 'vertical')
-            - *title* = string : plot title
-            - *cmap* = matplotlib.cmap : colormap (default: YlOrRd)
-            - *ve* = float : vertical exaggeration
-            - *layer_labels* = list of strings: labels for each unit in plot
-            - *layers_from* = noddy history file : get labels automatically from history file
-            - *data* = np.array : data to plot, if different to block data itself
-            - *litho_filter* = a list of lithologies to draw. All others will be ignored.
+         - *max_t* = the maximum number of topologies to draw. If the number of topologies excedes
+           this number then all later topologies (the less likely ones) are ignored.
+         - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
+         - *position* = int or 'center' : cell position of section as integer value
+           or identifier (default: 'center')
+         - *figsize* = (x,y) : matplotlib figsize
+         - *colorbar* = bool : plot colorbar (default: True)
+         - *colorbar_orientation* = 'horizontal' or 'vertical' : orientation of colorbar
+           (default: 'vertical')
+         - *title* = string : plot title
+         - *cmap* = matplotlib.cmap : colormap (default: YlOrRd)
+         - *ve* = float : vertical exaggeration
+         - *layer_labels* = list of strings: labels for each unit in plot
+         - *layers_from* = noddy history file : get labels automatically from history file
+         - *data* = np.array : data to plot, if different to block data itself
+         - *litho_filter* = a list of lithologies to draw. All others will be ignored.
         '''
 
         # get collumn
@@ -2129,8 +2126,8 @@ class TopologyAnalysis(object):
          
         **Returns**:
          - the loaded TopologyAnalysis class. Note that paths to noddy realisations will be broken
-         if this file has been moved/noddy models have been deleted. The general network analysis
-         functions should work however.
+           if this file has been moved/noddy models have been deleted. The general network analysis
+           functions should work however.
         '''
         import pickle
 

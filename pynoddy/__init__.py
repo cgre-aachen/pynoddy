@@ -79,16 +79,16 @@ def compute_topology(rootname, **kwds):
         - *rootname* = string : rootname of the noddy model to calculate topology for
     **Optional Keywords**:
         - *ensure_discrete_volumes* = True if topological units are broken down into
-                                      separate, spatially continuous volumes. Otherwise
-                                      some topological units may represent two separate
-                                      rock volumes (eg. if a folded unit has been truncated
-                                      by an unconformity). Default is True, though this is
-                                      a global variable (pynoddy.ensure_discrete_volumes)
-                                      so it can be changed during runtime.
+          separate, spatially continuous volumes. Otherwise
+          some topological units may represent two separate
+          rock volumes (eg. if a folded unit has been truncated
+          by an unconformity). Default is True, though this is
+          a global variable (pynoddy.ensure_discrete_volumes)
+          so it can be changed during runtime.
         - *null_volume_threshold* = The smallest non-null volume. volumes smaller than this are
-                                    ignored by the topology algorithm (as they represent pixelation artefacts).
-                                    The default is 20 voxels, though this is a global variable and can be changed
-                                    with pynoddy.null_volume_threshold.
+          ignored by the topology algorithm (as they represent pixelation artefacts).
+          The default is 20 voxels, though this is a global variable and can be changed
+          with pynoddy.null_volume_threshold.
         - *topology_path* = path: location of executable for topology calculation
     **Returns**
         -Returns any text outputted by the topology executable, including errors.

@@ -897,8 +897,9 @@ class NoddyTopology(object):
             f.close()
         
     def read_adjacency_matrix(self):
-        """**DEPRECIATED**
-        Read max number of lithologies aross all models"""
+        """
+        *Depreciated*
+        Reads max number of lithologies aross all models"""
         ml_lines = open(self.basename + ".g22", 'r').readlines()
         # read in data
         
@@ -1136,8 +1137,9 @@ class NoddyTopology(object):
         '''
         Identical to is_unique, except that the index of the first match is returned if this matches, otherwise
         -1 is returned.
+        
         **Arguments**:
-            -*known* = a list of valid NoddyTopology objects or NetworkX graphs to compare with.
+         -*known* = a list of valid NoddyTopology objects or NetworkX graphs to compare with.
         
         **Returns**:
          - Returns the index of the first matching topology object, or -1
@@ -1275,7 +1277,7 @@ class NoddyTopology(object):
         **Optional Keywords**:
          - *output* = A File or list to write cumulative observed topologies distribution. Default is None (nothing written).
          - *ids* = A list to write the unique topology id's for each topology in the provided topology_list (in that 
-                     order). Default is None.
+           order). Default is None.
          - *frequency* = A list to write frequency counts to. 
         **Returns**:
          - Returns a list of unique topologies.
@@ -1420,7 +1422,7 @@ class NoddyTopology(object):
         
         **Optional Arguments**
          - *append* = True if summary information should be appended to the file. If so the file is written as a csv spreadsheet. 
-                      Default is true. If False is passed, a single, detailed summary is written for this network.
+           Default is true. If False is passed, a single, detailed summary is written for this network.
         '''
         if append: #write summary information in spreadsheet formant
             exists = os.path.exists(path)
@@ -1757,15 +1759,15 @@ class NoddyTopology(object):
         '''
         Draws a network diagram of this NoddyTopology to the specified image
         
-        **Arguments**
+        **Arguments**:
          - *outputname* = the path of the image being written. If left as '' the image is written to the same directory as the basename.
-        **Optional Keywords**
+        
+        **Optional Keywords**:
          - *dimension* = '2D' for a 2D network diagram or '3D' for a 3D network diagram. Default is '2D'.
          - *axis* = the axis to view on for 3D network diagrams
          - *perspective* = True to use perspective projection, or False for orthographic projection. Default is False.
          - *node_size* = The size that nodes are drawn. Default is 1500.
-         - *layout* = The layout algorithm used in 2D. Options are 'spring_layout' (default), 'shell_layout', 'circular_layout' 
-                      and 'spectral_layout'.
+         - *layout* = The layout algorithm used in 2D. Options are 'spring_layout' (default), 'shell_layout', 'circular_layout' and 'spectral_layout'.
          - *verbose* = True if this function is allowed to write to the print buffer, otherwise false. Default is False.
         '''
         
@@ -1868,7 +1870,7 @@ class NoddyTopology(object):
         Nodes are joined to edge-nodes by lines on the graph if they are topologically linked
         (ie. if an edge has that node as an end point).
         
-         **Optional Keywords**
+        **Optional Keywords**:
          - *path* = the path to save this figure
          - *dpi* = the resolution of the figure
          - *bg* = the background color. Default is black.
@@ -2081,14 +2083,13 @@ class NoddyTopology(object):
         Draws a 3D network using matplotlib.
         
         **Optional Keywords**:
-         - *show* = If True, the 3D network is displayed immediatly on-screen in an
-                    interactive matplotlib viewer. Default is True.
+         - *show* = If True, the 3D network is displayed immediatly on-screen in an interactive matplotlib viewer. Default is True.
          - *output* = If defined an image of the network is saved to this location.
          - *node_size* = The size of the nodes. Default is 40.
          - *geology* = a NoddyOutput object to draw with the network
          - *res* = resolution to draw geology at. Default is 4 (ie 1/4 of all voxels are drawn)
          - *horizons* = a list of geology surfaces to draw. Default is nothing (none drawn). Slow!
-                        See NoddyOutput.get_surface_grid for details.
+           See NoddyOutput.get_surface_grid for details.
          - *sections* = draw geology sections. Default is True.
         '''
         

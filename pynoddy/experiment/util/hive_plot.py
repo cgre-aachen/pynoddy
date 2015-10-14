@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Jul 30 18:43:54 2015
-
-@author: Sam Thiele. Modified from https://github.com/ericmjl/hiveplot.
-"""
+#
+#Created on Thu Jul 30 18:43:54 2015
+#
+#@author: Sam Thiele. Modified from https://github.com/ericmjl/hiveplot.
+#
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -18,43 +18,46 @@ class HivePlot(object):
     """
     The HivePlot class will take in the following and return
     a hive plot:
-    - nodes:    A tuple containing 3 lists of nodes. Each list of nodes defines
-                one of the 3 major axes of this hive plot.
-    - node_positions: A tuple containing 3 dictionaries (one for each axis). The dictionaries
-             must have a key for each node on their associated axis, which gives the 
-             value (float) of that node on that axis. 
-    - node_colormap: A tuple containing 3 dictionaries (one for each axis). These dictionaries 
-             must either have a 'cm' key, specifying the colour map to use to draw the 
-             nodes (using the nodeP value (default), or any float values specified in this 
-             dictionary), or a matplotlib color value for each node.    
-    - edges:    a dictionary of {group:edgelist}, where each edgelist is a 
-                list of (u,v,d) tuples (in NetworkX style), where u and v are 
-                the nodes to join, and d are the node attributes.
-    - edge_colormap: A tuple containing dictionaries for each group of edges. Each dictionary
-             must have a key for each dictionary in that group. These values will be 
-             used to define edge colours. If the value's are matplotlib colours (eg.
-             'r'), that colour will be applied for the associated edge. If values are
-             passed the edges will be coloured using a matplotlib color ramp (default 
-             is YlOrR). If a dictionary includes a 'cm' key, then that colour map
-             will be used instead.
-      
+     - *nodes*
+       A tuple containing 3 lists of nodes. Each list of nodes defines
+       one of the 3 major axes of this hive plot.
+     - *node_positions* 
+       A tuple containing 3 dictionaries (one for each axis). The dictionaries
+       must have a key for each node on their associated axis, which gives the 
+       value (float) of that node on that axis. 
+     - *node_colormap* 
+       A tuple containing 3 dictionaries (one for each axis). These dictionaries 
+       must either have a 'cm' key, specifying the colour map to use to draw the 
+       nodes (using the nodeP value (default), or any float values specified in this 
+       dictionary), or a matplotlib color value for each node.    
+     - *edges* a dictionary of {group:edgelist}, where each edgelist is a 
+       list of (u,v,d) tuples (in NetworkX style), where u and v are 
+       the nodes to join, and d are the node attributes.
+     - *edge_colormap* A tuple containing dictionaries for each group of edges. Each dictionary
+       must have a key for each dictionary in that group. These values will be 
+       used to define edge colours. If the value's are matplotlib colours (eg.
+       'r'), that colour will be applied for the associated edge. If values are
+       passed the edges will be coloured using a matplotlib color ramp (default 
+       is YlOrR). If a dictionary includes a 'cm' key, then that colour map
+       will be used instead.
+    
     If nodeC is left as None, nodes will simply be listed in the order they
     were provided in on each axis (at a fixed distance).
-       
+    
     The user will have to pre-sort and pre-group the nodes, and pre-map
     the edge color groupings. This code will determine the positioning
     and exact drawing of the edges.
+    
     Hive plots are non-trivial to construct. These are the most important 
     features one has to consider:
-    -    Grouping of nodes: if 3 natural groups occur this is good. Otherwise 
-                            this can be a challenge.
-    -    Ordering of nodes: 
-        -    must have an ordinal or continuous node attribute
-    -    Cross-group edges:
-        -    Undirected is easier to draw than directed.
-        -    Directed is possible.
-    -    Within-group edges:
-        -    Within group edges can be messy and should be minimized.
+     - *Grouping of nodes*. if 3 natural groups occur this is good. Otherwise 
+       this can be a challenge.
+     - *Ordering of nodes*. must have an ordinal or continuous node attribute
+     - *Cross-group edges*:
+        * Undirected is easier to draw than directed.
+        * Directed is possible.
+       
+     - *Within-group edges*. Within group edges can be messy and should be minimized.
     """
 
     def __init__(self, nodes, edges, node_positions=None,node_colormap=None, edge_colormap=None, **kwds):
@@ -62,47 +65,48 @@ class HivePlot(object):
         Initialises a hive plot.
         
         **Arguments**:
-         - *nodes*:  A tuple containing 3 lists of nodes. Each list of nodes defines
-                    one of the 3 major axes of this hive plot.
-        - edges:    a dictionary of {group:edgelist}, where each edgelist is a 
+         -*nodes* = A tuple containing 3 lists of nodes. Each list of nodes defines
+            one of the 3 major axes of this hive plot.
+         -*edges* = a dictionary of {group:edgelist}, where each edgelist is a 
             list of (u,v,) tuples (in NetworkX style), where u and v are 
             the nodes to join.
-        - *node_positions*: A tuple containing 3 dictionaries (one for each axis). The dictionaries
-             must have a key for each node on their associated axis, which gives the 
-             value (float) of that node on that axis. If None is passed (default) then
-             nodes are plotted in the order they were passed in.
-        - *node_colormap*: A tuple containing 3 dictionaries (one for each axis). These dictionaries 
-                 must either have a 'cm' key, specifying the colour map to use to draw the 
-                 nodes (using the nodeP value (default), or any float values specified in this 
-                 dictionary), or a matplotlib color value for each node. If None is passed (default)
-                 then nodes are drawn using the YlOrR color map and their position.
-        - edge_colormap: A tuple containing dictionaries for each group of edges. Each dictionary
-                 must have a key for each dictionary in that group. These values will be 
-                 used to define edge colours. If the value's are matplotlib colours (eg.
-                 'r'), that colour will be applied for the associated edge. If values are
-                 passed the edges will be coloured using a matplotlib color ramp (default 
-                 is YlOrR). If a dictionary includes a 'cm' key, then that colour map
-                 will be used instead. If None is passed then the edges will be plotted as
-                 as plain black lines with an alpha of 0.5.
+         -*node_positions* = A tuple containing 3 dictionaries (one for each axis). The dictionaries
+            must have a key for each node on their associated axis, which gives the 
+            value (float) of that node on that axis. If None is passed (default) then
+            nodes are plotted in the order they were passed in.
+         -*node_colormap* = A tuple containing 3 dictionaries (one for each axis). These dictionaries 
+           must either have a 'cm' key, specifying the colour map to use to draw the 
+           nodes (using the nodeP value (default), or any float values specified in this 
+           dictionary), or a matplotlib color value for each node. If None is passed (default)
+           then nodes are drawn using the YlOrR color map and their position.
+         -*edge_colormap* = A tuple containing dictionaries for each group of edges. Each dictionary
+            must have a key for each dictionary in that group. These values will be 
+            used to define edge colours. If the value's are matplotlib colours (eg.
+            'r'), that colour will be applied for the associated edge. If values are
+            passed the edges will be coloured using a matplotlib color ramp (default 
+            is YlOrR). If a dictionary includes a 'cm' key, then that colour map
+            will be used instead. If None is passed then the edges will be plotted as
+            as plain black lines with an alpha of 0.5.
+        
         **Optional Keywords**
-         -*linewidth* = The width of edge lines. Default is 1.0
-         -*node_size* = The size of the nodes. This can be either a single value or a 
+         - *linewidth* = The width of edge lines. Default is 1.0
+         - *node_size* = The size of the nodes. This can be either a single value or a 
                     tuple containing thee dictionaries (one per axis). Each dictionary
                     should contain each node on that axis as a key, and the desired 
                     node size as the value. Default value is 0.4.
-         -*radius* = The internal radius of this plot (the central circle)
-         -*lengths* = The length of each axis. If a tuple is passed, the values in the tuple
+         - *radius* = The internal radius of this plot (the central circle)
+         - *lengths* = The length of each axis. If a tuple is passed, the values in the tuple
                     are used for each axis. If a float is passed, this value is used for all
                     the axes. Default is 10.
-         -*directed* = True if this is a directed graph. Default is False.
+         - *directed* = True if this is a directed graph. Default is False.
          
-         -*ax* = An axis to draw this plot on. Otherwise a new axes object is created.
-         -*fig* = A figure to draw this plot on. Otherwise a new figure is created.
+         - *ax* = An axis to draw this plot on. Otherwise a new axes object is created.
+         - *fig* = A figure to draw this plot on. Otherwise a new figure is created.
          
-         -*lb_axes* = A list or tuple containing a string name for each axis.
-         -*lbl_node* = A list or tuple containing list of string names for each node on each axis,
+         - *lb_axes* = A list or tuple containing a string name for each axis.
+         - *lbl_node* = A list or tuple containing list of string names for each node on each axis,
                        in the order they appear in nodes
-         -*axis_cols* = A list or tuple containing the color of each axis.
+         - *axis_cols* = A list or tuple containing the color of each axis.
         '''        
         
         super(HivePlot, self).__init__()
@@ -581,8 +585,8 @@ class HivePlot(object):
          - *ax1* = the first axis
          - *ax2* = the second axis
         
-        **Returns**
-         -a dictionary (with the same keys as the input) containing the inter-group edges
+        **Returns**:
+         - a dictionary (with the same keys as the input) containing the inter-group edges
         '''
         assert ax1 < len(self.nodes), "This plot has only %d axes (starting from 0)" % len(self.nodes)
         assert ax2 < len(self.nodes), "This plot has only %d axes (starting from 0)" % len(self.nodes)
@@ -608,8 +612,7 @@ class HivePlot(object):
         '''
         Draws this hive plot.
         
-        Optional keywords:
-        **Optional Keywords**
+        **Optional Keywords**:
          - *path* = the path to save this figure
          - *dpi* = the resolution of the figure
          - *bg* = the background color. Default is black.
