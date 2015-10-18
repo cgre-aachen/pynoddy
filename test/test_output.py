@@ -13,7 +13,7 @@ print package_directory
 class TestOutput(TestCase):
 
     def test_load_output(self):
-        output_name = os.path.join(package_directory, "../examples/simple_two_faults_out")
+        output_name = os.path.join(package_directory, "../test/simple_two_faults_out")
         noddy_out = pynoddy.output.NoddyOutput(output_name)
         out_shape = np.shape(noddy_out.block)
         assert_equals(out_shape, (124, 94, 50))
