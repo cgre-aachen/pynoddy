@@ -6,14 +6,14 @@ from setuptools import setup
 # Used for the long_description.  It's nice, because now 1) we have a top level
 # README file and 2) it's easier to type in the README file than to put a raw
 # string in below ...
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+#def read(fname):
+#    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
 setup(name='pynoddy',
-      version='0.3r',
+      version='0.3r2',
       description='Python wrappers for kinematic geological simulations with Noddy',
-      long_description=read('README.md'),
+#      long_description=read('README.md'),
       classifiers=[
           "Development Status :: 4 - Beta",
           "Intended Audience :: Science/Research",
