@@ -11,7 +11,7 @@ from setuptools import setup
 
 
 setup(name='pynoddy',
-      version='0.4r2',
+      version='0.4r3',
       description='Python wrappers for kinematic geological simulations with Noddy',
 #      long_description=open('README.md').read(),
       classifiers=[
