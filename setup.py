@@ -6,14 +6,14 @@ from setuptools import setup
 # Used for the long_description.  It's nice, because now 1) we have a top level
 # README file and 2) it's easier to type in the README file than to put a raw
 # string in below ...
-#def read(fname):
+# def read(fname):
 #    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
 setup(name='pynoddy',
-      version='0.3r2',
+      version='0.4r2',
       description='Python wrappers for kinematic geological simulations with Noddy',
-#      long_description=read('README.md'),
+#      long_description=open('README.md').read(),
       classifiers=[
           "Development Status :: 4 - Beta",
           "Intended Audience :: Science/Research",
@@ -29,10 +29,15 @@ setup(name='pynoddy',
       author='Florian Wellmann, Mark Jessell, Sam Thiele',
       author_email='flohorovicic@gmail.com',
       install_requires = ['SALib', 'pyevtk'],
-      license='MIT',
+      test_suite='nose.collector',
+      tests_require=['nose'],
+      include_package_data=True,
+      license='GPL',
       packages=['pynoddy'],
       # package_dir = {'output' : 'pynoddy', 'history' : 'pynoddy'},
       py_modules = ['pynoddy.history', 'pynoddy.output', 'pynoddy.experiment',
       'pynoddy.experiment.monte_carlo', 'pynoddy.experiment.uncertainty_analysis',
-      'pynoddy.experiment.sensitivity_analysis', 'pynoddy.experiment.topology_analysis'],
+      'pynoddy.experiment.sensitivity_analysis', 'pynoddy.experiment.topology_analysis',
+      'pynoddy.experiment.util', 'pynoddy.experiment.util.sampling',
+      'pynoddy.experiment.util.hive_plot'],
       zip_safe=False)

@@ -17,15 +17,19 @@ ensure_discrete_volumes = True  # if True, spatially separated but otherwise
 null_volume_threshold = 20  # volumes smaller than this are ignored
 # completely (as they represent pixelation artefacts).
 
-# ensure correct noddy & topology builds are present
-if not os.path.exists(noddyPath) and not os.path.exists(noddyPath + ".exe"):
-    print("Error: could not find a compiled version of noddy at %s. \
-    Please ensure the source has been compiled (using GCC and compile.bat \
-    (windows) or compile.sh (unix))." % noddyPath)
-if not os.path.exists(topologyPath) and not os.path.exists(topologyPath + ".exe"):
-    print("Warning: could not find a compiled version of topology at %s. \
-    Please ensure the source has been compiled (using GCC and compile.bat\
-     (windows) or compile.sh (unix))." % topologyPath)
+#
+# NOTE: check for noddy installation should be performed with unittests!
+#
+#
+# # ensure correct noddy & topology builds are present
+# if not os.path.exists(noddyPath) and not os.path.exists(noddyPath + ".exe"):
+#     print("Error: could not find a compiled version of noddy at %s. \
+#     Please ensure the source has been compiled (using GCC and compile.bat \
+#     (windows) or compile.sh (unix))." % noddyPath)
+# if not os.path.exists(topologyPath) and not os.path.exists(topologyPath + ".exe"):
+#     print("Warning: could not find a compiled version of topology at %s. \
+#     Please ensure the source has been compiled (using GCC and compile.bat\
+#      (windows) or compile.sh (unix))." % topologyPath)
 
 
 # Some helper functions are defined directly here:

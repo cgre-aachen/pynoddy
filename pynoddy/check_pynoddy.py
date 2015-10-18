@@ -55,7 +55,7 @@ except Exception as e: #other errors
 try:
     from pynoddy.experiment.monte_carlo import MonteCarlo
 except Exception as e:
-    sys.stderr.write("An error occured loading the MonteCarlo class\n" % e )
+    sys.stderr.write("An error occured loading the MonteCarlo class: %s\n" % e )
     err = True
 try:
     from pynoddy.experiment.topology_analysis import TopologyAnalysis
