@@ -1,4 +1,4 @@
 include LICENSE
 include MANIFEST.in
 include README.md
-recursive-include examples *.his *.g??
+recursive-include examples *.his *.g?? *.his

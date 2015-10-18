@@ -9,7 +9,7 @@ __author__ = 'flow'
 class TestOutput(TestCase):
 
     def test_load_output(self):
-        noddy_out = pynoddy.output.NoddyOutput("../examples/simple_two_faults_out")
+        noddy_out = pynoddy.output.NoddyOutput("simple_two_faults_out")
         out_shape = np.shape(noddy_out.block)
         assert_equals(out_shape, (124, 94, 50))
         out_id = noddy_out.block[10,10,10]
