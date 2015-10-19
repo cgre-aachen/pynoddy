@@ -129,10 +129,10 @@ char **argv;
            printf("Error - Could not retrieve stack information. Stack size not increased.\n");
          }
 	 #endif
-     
-     if(argc < 1)
+	 
+     if(argc <= 1)
      	{
-     		printf("arguments: filename, [use_discrete_volumes]\n");
+     		printf("Pynoddy topology calculator.\n  arguments: filename [use_discrete_volumes (0=false,1=true)] [volume threshold]\n");
      		return(0);
      	}
      
