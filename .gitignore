@@ -60,7 +60,6 @@ nosetests.xml
 .project
 .pydevproject
 GBasin_uncertainty.zip
-*.zip
 noddy.exe
 *.swp
 *.vtr
