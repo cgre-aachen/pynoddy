@@ -8,8 +8,8 @@ package_directory = os.path.dirname(os.path.abspath(__file__))
 # paths to noddy & topology executables
 # noddyPath = os.path.join(package_directory,'../noddy/noddy')
 # topologyPath = os.path.join(package_directory,'../topology/topology')
-noddyPath = os.path.join(package_directory, 'noddy/noddy')
-topologyPath = os.path.join(package_directory, 'topology/topology')
+# noddyPath = os.path.join(package_directory, 'noddy/noddy')
+# topologyPath = os.path.join(package_directory, 'topology/topology')
 
 # global variables
 ensure_discrete_volumes = True  # if True, spatially separated but otherwise
@@ -34,6 +34,26 @@ null_volume_threshold = 20  # volumes smaller than this are ignored
 
 # Some helper functions are defined directly here:
 
+# Idea to check for program path,
+# taken from: http://stackoverflow.com/questions/377017/test-if-executable-exists-in-python
+def which(program):
+    import os
+
+    def is_exe(fpath):
+        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+    fpath, fname = os.path.split(program)
+    if fpath:
+        if is_exe(program):
+            return program
+    else:
+        for path in os.environ["PATH"].split(os.pathsep):
+            path = path.strip('"')
+            exe_file = os.path.join(path, program)
+            if is_exe(exe_file):
+                return exe_file
+
+    return None
 
 def compute_model(history, output_name, **kwds):
     """Call Noddy and compute the history file
@@ -49,16 +69,34 @@ def compute_model(history, output_name, **kwds):
         - *program_name* = string : name of program
             (default: noddy.exe or noddy, both checked)
         - *verbose* = bool: verbose mode, print out information for debugging (default = False)
-        - *noddy_path* = path: location of Noddy executable
+        - *noddy_path* = path: location of Noddy executable (default: checks environment variable)
     **Returns**:
         -Returns any text outputted by the noddy executable.
     """
 
     sim_type = kwds.get("sim_type", 'BLOCK')
-    noddy_path = kwds.get("noddy_path", noddyPath)
+
+    # actively select noddy executable
+    if kwds.has_key("noddy_path"):
+        noddy_path = kwds['noddy_path']
+    else:
+        np1 = which("noddy")
+        np2 = which("noddy.exe")
+        if np1 is not None:
+            noddy_path = np1
+        elif np2 is not None:
+            noddy_path = np2
+        else:
+            raise OSError
+
+
+
+    # noddy_path = kwds.get("noddy_path", )
+
+
 
     if kwds.has_key("verbose") and kwds['verbose']:
-        out = "Running noddy exectuable at %s(.exe)\n" % noddyPath
+        out = "Running noddy exectuable at %s(.exe)\n" % noddy_path
     else:
         out = ""
     try:  # try running .exe file (windows only)
