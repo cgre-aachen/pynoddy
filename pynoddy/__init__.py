@@ -77,7 +77,7 @@ def compute_model(history, output_name, **kwds):
     sim_type = kwds.get("sim_type", 'BLOCK')
 
     # actively select noddy executable
-    if kwds.has_key("noddy_path"):
+    if "noddy_path" in kwds:
         noddy_path = kwds['noddy_path']
     else:
         np1 = which("noddy")
@@ -89,14 +89,8 @@ def compute_model(history, output_name, **kwds):
         else:
             raise OSError
 
-
-
-    # noddy_path = kwds.get("noddy_path", )
-
-
-
     if kwds.has_key("verbose") and kwds['verbose']:
-        out = "Running noddy exectuable at %s(.exe)\n" % noddy_path
+        out = "Running noddy executable at %s(.exe)\n" % noddy_path
     else:
         out = ""
     try:  # try running .exe file (windows only)
@@ -138,7 +132,19 @@ def compute_topology(rootname, **kwds):
 
     dvol = kwds.get('ensure_discrete_volumes', ensure_discrete_volumes)
     nvt = kwds.get('null_volume_threshold', null_volume_threshold)
-    topology_path = kwds.get('topology_path', topologyPath)
+
+    # actively select noddy executable
+    if "topology_path" in kwds:
+        topology_path = kwds['topology_path']
+    else:
+        tp1 = which("topology")
+        tp2 = which("topology.exe")
+        if tp1 is not None:
+            topology_path = tp1
+        elif tp2 is not None:
+            topology_path = tp2
+        else:
+            raise OSError
 
     # convert to string
     if dvol:
@@ -146,7 +152,7 @@ def compute_topology(rootname, **kwds):
     else:
         dvol = "0"
 
-    out = "Running topology exectuable at %s(.exe)\n" % topologyPath
+    out = "Running topology executable at %s(.exe)\n" % topology_path
     try:  # try running .exe file (windows only)
         out = subprocess.Popen([topology_path + ".exe", rootname, dvol, str(nvt)],
                                shell=False, stderr=subprocess.PIPE,
