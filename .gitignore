@@ -4,6 +4,8 @@
 sandbox/*
 !sandbox/README.txt
 
+noddy_bak/*
+
 examples/tmp
 examples/*vtr
 examples/*pkl
