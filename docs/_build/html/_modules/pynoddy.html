@@ -57,8 +57,8 @@
 <span class="c"># paths to noddy &amp; topology executables</span>
 <span class="c"># noddyPath = os.path.join(package_directory,&#39;../noddy/noddy&#39;)</span>
 <span class="c"># topologyPath = os.path.join(package_directory,&#39;../topology/topology&#39;)</span>
-<span class="n">noddyPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package_directory</span><span class="p">,</span> <span class="s">&#39;noddy/noddy&#39;</span><span class="p">)</span>
-<span class="n">topologyPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package_directory</span><span class="p">,</span> <span class="s">&#39;topology/topology&#39;</span><span class="p">)</span>
+<span class="c"># noddyPath = os.path.join(package_directory, &#39;noddy/noddy&#39;)</span>
+<span class="c"># topologyPath = os.path.join(package_directory, &#39;topology/topology&#39;)</span>
 
 <span class="c"># global variables</span>
 <span class="n">ensure_discrete_volumes</span> <span class="o">=</span> <span class="bp">True</span>  <span class="c"># if True, spatially separated but otherwise</span>
@@ -66,20 +66,44 @@
 <span class="n">null_volume_threshold</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c"># volumes smaller than this are ignored</span>
 <span class="c"># completely (as they represent pixelation artefacts).</span>
 
-<span class="c"># ensure correct noddy &amp; topology builds are present</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">noddyPath</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">noddyPath</span> <span class="o">+</span> <span class="s">&quot;.exe&quot;</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Error: could not find a compiled version of noddy at </span><span class="si">%s</span><span class="s">. </span><span class="se">\</span>
-<span class="s">    Please ensure the source has been compiled (using GCC and compile.bat </span><span class="se">\</span>
-<span class="s">    (windows) or compile.sh (unix)).&quot;</span> <span class="o">%</span> <span class="n">noddyPath</span><span class="p">)</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">topologyPath</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">topologyPath</span> <span class="o">+</span> <span class="s">&quot;.exe&quot;</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Warning: could not find a compiled version of topology at </span><span class="si">%s</span><span class="s">. </span><span class="se">\</span>
-<span class="s">    Please ensure the source has been compiled (using GCC and compile.bat</span><span class="se">\</span>
-<span class="s">     (windows) or compile.sh (unix)).&quot;</span> <span class="o">%</span> <span class="n">topologyPath</span><span class="p">)</span>
+<span class="c">#</span>
+<span class="c"># NOTE: check for noddy installation should be performed with unittests!</span>
+<span class="c">#</span>
+<span class="c">#</span>
+<span class="c"># # ensure correct noddy &amp; topology builds are present</span>
+<span class="c"># if not os.path.exists(noddyPath) and not os.path.exists(noddyPath + &quot;.exe&quot;):</span>
+<span class="c">#     print(&quot;Error: could not find a compiled version of noddy at %s. \</span>
+<span class="c">#     Please ensure the source has been compiled (using GCC and compile.bat \</span>
+<span class="c">#     (windows) or compile.sh (unix)).&quot; % noddyPath)</span>
+<span class="c"># if not os.path.exists(topologyPath) and not os.path.exists(topologyPath + &quot;.exe&quot;):</span>
+<span class="c">#     print(&quot;Warning: could not find a compiled version of topology at %s. \</span>
+<span class="c">#     Please ensure the source has been compiled (using GCC and compile.bat\</span>
+<span class="c">#      (windows) or compile.sh (unix)).&quot; % topologyPath)</span>
 
 
 <span class="c"># Some helper functions are defined directly here:</span>
 
+<span class="c"># Idea to check for program path,</span>
+<span class="c"># taken from: http://stackoverflow.com/questions/377017/test-if-executable-exists-in-python</span>
+<div class="viewcode-block" id="which"><a class="viewcode-back" href="../pynoddy.html#pynoddy.which">[docs]</a><span class="k">def</span> <span class="nf">which</span><span class="p">(</span><span class="n">program</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">os</span>
 
+    <span class="k">def</span> <span class="nf">is_exe</span><span class="p">(</span><span class="n">fpath</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">X_OK</span><span class="p">)</span>
+
+    <span class="n">fpath</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">program</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fpath</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_exe</span><span class="p">(</span><span class="n">program</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">program</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&quot;PATH&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">)</span>
+            <span class="n">exe_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">program</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_exe</span><span class="p">(</span><span class="n">exe_file</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">exe_file</span>
+
+    <span class="k">return</span> <span class="bp">None</span>
+</div>
 <div class="viewcode-block" id="compute_model"><a class="viewcode-back" href="../pynoddy.html#pynoddy.compute_model">[docs]</a><span class="k">def</span> <span class="nf">compute_model</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Call Noddy and compute the history file</span>
 <span class="sd">    </span>
@@ -94,22 +118,36 @@
 <span class="sd">        - *program_name* = string : name of program</span>
 <span class="sd">            (default: noddy.exe or noddy, both checked)</span>
 <span class="sd">        - *verbose* = bool: verbose mode, print out information for debugging (default = False)</span>
+<span class="sd">        - *noddy_path* = path: location of Noddy executable (default: checks environment variable)</span>
 <span class="sd">    **Returns**:</span>
 <span class="sd">        -Returns any text outputted by the noddy executable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">sim_type</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;sim_type&quot;</span><span class="p">,</span> <span class="s">&#39;BLOCK&#39;</span><span class="p">)</span>
 
+    <span class="c"># actively select noddy executable</span>
+    <span class="k">if</span> <span class="s">&quot;noddy_path&quot;</span> <span class="ow">in</span> <span class="n">kwds</span><span class="p">:</span>
+        <span class="n">noddy_path</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s">&#39;noddy_path&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">np1</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="s">&quot;noddy&quot;</span><span class="p">)</span>
+        <span class="n">np2</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="s">&quot;noddy.exe&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">noddy_path</span> <span class="o">=</span> <span class="n">np1</span>
+        <span class="k">elif</span> <span class="n">np2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">noddy_path</span> <span class="o">=</span> <span class="n">np2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">OSError</span>
+
     <span class="k">if</span> <span class="n">kwds</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&quot;verbose&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">kwds</span><span class="p">[</span><span class="s">&#39;verbose&#39;</span><span class="p">]:</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="s">&quot;Running noddy exectuable at </span><span class="si">%s</span><span class="s">(.exe)</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">noddyPath</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="s">&quot;Running noddy executable at </span><span class="si">%s</span><span class="s">(.exe)</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">noddy_path</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">out</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>  <span class="c"># try running .exe file (windows only)</span>
-        <span class="n">out</span> <span class="o">+=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">noddyPath</span> <span class="o">+</span> <span class="s">&quot;.exe&quot;</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">sim_type</span><span class="p">],</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">noddy_path</span> <span class="o">+</span> <span class="s">&quot;.exe&quot;</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">sim_type</span><span class="p">],</span>
                                 <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
                                 <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>  <span class="c"># obviously not running windows - try just the binary</span>
-        <span class="n">out</span> <span class="o">+=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">noddyPath</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">sim_type</span><span class="p">],</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">noddy_path</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">sim_type</span><span class="p">],</span>
                                 <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
                                 <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
@@ -126,16 +164,17 @@
 <span class="sd">        - *rootname* = string : rootname of the noddy model to calculate topology for</span>
 <span class="sd">    **Optional Keywords**:</span>
 <span class="sd">        - *ensure_discrete_volumes* = True if topological units are broken down into</span>
-<span class="sd">                                      separate, spatially continuous volumes. Otherwise</span>
-<span class="sd">                                      some topological units may represent two separate</span>
-<span class="sd">                                      rock volumes (eg. if a folded unit has been truncated</span>
-<span class="sd">                                      by an unconformity). Default is True, though this is</span>
-<span class="sd">                                      a global variable (pynoddy.ensure_discrete_volumes)</span>
-<span class="sd">                                      so it can be changed during runtime.</span>
+<span class="sd">          separate, spatially continuous volumes. Otherwise</span>
+<span class="sd">          some topological units may represent two separate</span>
+<span class="sd">          rock volumes (eg. if a folded unit has been truncated</span>
+<span class="sd">          by an unconformity). Default is True, though this is</span>
+<span class="sd">          a global variable (pynoddy.ensure_discrete_volumes)</span>
+<span class="sd">          so it can be changed during runtime.</span>
 <span class="sd">        - *null_volume_threshold* = The smallest non-null volume. volumes smaller than this are</span>
-<span class="sd">                                    ignored by the topology algorithm (as they represent pixelation artefacts).</span>
-<span class="sd">                                    The default is 20 voxels, though this is a global variable and can be changed</span>
-<span class="sd">                                    with pynoddy.null_volume_threshold.</span>
+<span class="sd">          ignored by the topology algorithm (as they represent pixelation artefacts).</span>
+<span class="sd">          The default is 20 voxels, though this is a global variable and can be changed</span>
+<span class="sd">          with pynoddy.null_volume_threshold.</span>
+<span class="sd">        - *topology_path* = path: location of executable for topology calculation</span>
 <span class="sd">    **Returns**</span>
 <span class="sd">        -Returns any text outputted by the topology executable, including errors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -143,19 +182,32 @@
     <span class="n">dvol</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ensure_discrete_volumes&#39;</span><span class="p">,</span> <span class="n">ensure_discrete_volumes</span><span class="p">)</span>
     <span class="n">nvt</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;null_volume_threshold&#39;</span><span class="p">,</span> <span class="n">null_volume_threshold</span><span class="p">)</span>
 
+    <span class="c"># actively select noddy executable</span>
+    <span class="k">if</span> <span class="s">&quot;topology_path&quot;</span> <span class="ow">in</span> <span class="n">kwds</span><span class="p">:</span>
+        <span class="n">topology_path</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s">&#39;topology_path&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tp1</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="s">&quot;topology&quot;</span><span class="p">)</span>
+        <span class="n">tp2</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="s">&quot;topology.exe&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tp1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">topology_path</span> <span class="o">=</span> <span class="n">tp1</span>
+        <span class="k">elif</span> <span class="n">tp2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">topology_path</span> <span class="o">=</span> <span class="n">tp2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">OSError</span>
+
     <span class="c"># convert to string</span>
     <span class="k">if</span> <span class="n">dvol</span><span class="p">:</span>
         <span class="n">dvol</span> <span class="o">=</span> <span class="s">&quot;1&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">dvol</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
 
-    <span class="n">out</span> <span class="o">=</span> <span class="s">&quot;Running topology exectuable at </span><span class="si">%s</span><span class="s">(.exe)</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">topologyPath</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="s">&quot;Running topology executable at </span><span class="si">%s</span><span class="s">(.exe)</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">topology_path</span>
     <span class="k">try</span><span class="p">:</span>  <span class="c"># try running .exe file (windows only)</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">topologyPath</span> <span class="o">+</span> <span class="s">&quot;.exe&quot;</span><span class="p">,</span> <span class="n">rootname</span><span class="p">,</span> <span class="n">dvol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nvt</span><span class="p">)],</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">topology_path</span> <span class="o">+</span> <span class="s">&quot;.exe&quot;</span><span class="p">,</span> <span class="n">rootname</span><span class="p">,</span> <span class="n">dvol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nvt</span><span class="p">)],</span>
                                <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
                                <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>  <span class="c"># obviously not running windows - try just the binary</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">topologyPath</span><span class="p">,</span> <span class="n">rootname</span><span class="p">,</span> <span class="n">dvol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nvt</span><span class="p">)],</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">topology_path</span><span class="p">,</span> <span class="n">rootname</span><span class="p">,</span> <span class="n">dvol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nvt</span><span class="p">)],</span>
                                <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
                                <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">out</span></div>

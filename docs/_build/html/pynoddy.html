@@ -86,6 +86,8 @@ output files and class definitions for suitable Noddy elements.</p>
 </li>
 <li><p class="first"><em>verbose</em> = bool: verbose mode, print out information for debugging (default = False)</p>
 </li>
+<li><p class="first"><em>noddy_path</em> = path: location of Noddy executable (default: checks environment variable)</p>
+</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong>:</dt>
@@ -104,32 +106,30 @@ output files and class definitions for suitable Noddy elements.</p>
 </ul>
 </dd>
 <dt><strong>Optional Keywords</strong>:</dt>
-<dd><ul class="first last">
-<li><dl class="first docutils">
-<dt><em>ensure_discrete_volumes</em> = True if topological units are broken down into</dt>
-<dd><p class="first last">separate, spatially continuous volumes. Otherwise
+<dd><ul class="first last simple">
+<li><em>ensure_discrete_volumes</em> = True if topological units are broken down into
+separate, spatially continuous volumes. Otherwise
 some topological units may represent two separate
 rock volumes (eg. if a folded unit has been truncated
 by an unconformity). Default is True, though this is
 a global variable (pynoddy.ensure_discrete_volumes)
-so it can be changed during runtime.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt><em>null_volume_threshold</em> = The smallest non-null volume. volumes smaller than this are</dt>
-<dd><p class="first last">ignored by the topology algorithm (as they represent pixelation artefacts).
+so it can be changed during runtime.</li>
+<li><em>null_volume_threshold</em> = The smallest non-null volume. volumes smaller than this are
+ignored by the topology algorithm (as they represent pixelation artefacts).
 The default is 20 voxels, though this is a global variable and can be changed
-with pynoddy.null_volume_threshold.</p>
-</dd>
-</dl>
-</li>
+with pynoddy.null_volume_threshold.</li>
+<li><em>topology_path</em> = path: location of executable for topology calculation</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong></dt>
 <dd>-Returns any text outputted by the topology executable, including errors.</dd>
 </dl>
 </dd></dl>
+
+<dl class="function">
+<dt id="pynoddy.which">
+<code class="descclassname">pynoddy.</code><code class="descname">which</code><span class="sig-paren">(</span><em>program</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy.html#which"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.which" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-pynoddy.history">
@@ -776,17 +776,11 @@ keys are the lithoID&#8217;s passed in the lithoID parameter.</dd>
 </ul>
 </dd>
 <dt><strong>Optional Keywords</strong>:</dt>
-<dd><ul class="first last">
-<li><p class="first"><em>output</em> = A File or list to write cumulative observed topologies distribution. Default is None (nothing written).</p>
-</li>
-<li><dl class="first docutils">
-<dt><em>ids</em> = A list to write the unique topology id&#8217;s for each topology in the provided topology_list (in that </dt>
-<dd><p class="first last">order). Default is None.</p>
-</dd>
-</dl>
-</li>
-<li><p class="first"><em>frequency</em> = A list to write frequency counts to.</p>
-</li>
+<dd><ul class="first last simple">
+<li><em>output</em> = A File or list to write cumulative observed topologies distribution. Default is None (nothing written).</li>
+<li><em>ids</em> = A list to write the unique topology id&#8217;s for each topology in the provided topology_list (in that 
+order). Default is None.</li>
+<li><em>frequency</em> = A list to write frequency counts to.</li>
 </ul>
 </dd>
 <dt><strong>Returns</strong>:</dt>
@@ -858,29 +852,15 @@ according to their observed frequency.</li>
 <dd><p>Draws a 3D network using matplotlib.</p>
 <dl class="docutils">
 <dt><strong>Optional Keywords</strong>:</dt>
-<dd><ul class="first last">
-<li><dl class="first docutils">
-<dt><em>show</em> = If True, the 3D network is displayed immediatly on-screen in an</dt>
-<dd><p class="first last">interactive matplotlib viewer. Default is True.</p>
-</dd>
-</dl>
-</li>
-<li><p class="first"><em>output</em> = If defined an image of the network is saved to this location.</p>
-</li>
-<li><p class="first"><em>node_size</em> = The size of the nodes. Default is 40.</p>
-</li>
-<li><p class="first"><em>geology</em> = a NoddyOutput object to draw with the network</p>
-</li>
-<li><p class="first"><em>res</em> = resolution to draw geology at. Default is 4 (ie 1/4 of all voxels are drawn)</p>
-</li>
-<li><dl class="first docutils">
-<dt><em>horizons</em> = a list of geology surfaces to draw. Default is nothing (none drawn). Slow!</dt>
-<dd><p class="first last">See NoddyOutput.get_surface_grid for details.</p>
-</dd>
-</dl>
-</li>
-<li><p class="first"><em>sections</em> = draw geology sections. Default is True.</p>
-</li>
+<dd><ul class="first last simple">
+<li><em>show</em> = If True, the 3D network is displayed immediatly on-screen in an interactive matplotlib viewer. Default is True.</li>
+<li><em>output</em> = If defined an image of the network is saved to this location.</li>
+<li><em>node_size</em> = The size of the nodes. Default is 40.</li>
+<li><em>geology</em> = a NoddyOutput object to draw with the network</li>
+<li><em>res</em> = resolution to draw geology at. Default is 4 (ie 1/4 of all voxels are drawn)</li>
+<li><em>horizons</em> = a list of geology surfaces to draw. Default is nothing (none drawn). Slow!
+See NoddyOutput.get_surface_grid for details.</li>
+<li><em>sections</em> = draw geology sections. Default is True.</li>
 </ul>
 </dd>
 </dl>
@@ -982,12 +962,16 @@ The axes of the hive are: node lithology, edge age &amp; edge area.</p>
 lists edges in structural age &amp; thrid axis lists edges by surface area.</p>
 <p>Nodes are joined to edge-nodes by lines on the graph if they are topologically linked
 (ie. if an edge has that node as an end point).</p>
-<blockquote>
-<div><strong>Optional Keywords</strong>
-- <em>path</em> = the path to save this figure
-- <em>dpi</em> = the resolution of the figure
-- <em>bg</em> = the background color. Default is black.
-- <em>axes</em> = The color of the axes and labels.</div></blockquote>
+<dl class="docutils">
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>path</em> = the path to save this figure</li>
+<li><em>dpi</em> = the resolution of the figure</li>
+<li><em>bg</em> = the background color. Default is black.</li>
+<li><em>axes</em> = The color of the axes and labels.</li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -995,29 +979,19 @@ lists edges in structural age &amp; thrid axis lists edges by surface area.</p>
 <code class="descname">draw_network_image</code><span class="sig-paren">(</span><em>outputname=''</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.draw_network_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.draw_network_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws a network diagram of this NoddyTopology to the specified image</p>
 <dl class="docutils">
-<dt><strong>Arguments</strong></dt>
+<dt><strong>Arguments</strong>:</dt>
 <dd><ul class="first last simple">
 <li><em>outputname</em> = the path of the image being written. If left as &#8216;&#8217; the image is written to the same directory as the basename.</li>
 </ul>
 </dd>
-<dt><strong>Optional Keywords</strong></dt>
-<dd><ul class="first last">
-<li><p class="first"><em>dimension</em> = &#8216;2D&#8217; for a 2D network diagram or &#8216;3D&#8217; for a 3D network diagram. Default is &#8216;2D&#8217;.</p>
-</li>
-<li><p class="first"><em>axis</em> = the axis to view on for 3D network diagrams</p>
-</li>
-<li><p class="first"><em>perspective</em> = True to use perspective projection, or False for orthographic projection. Default is False.</p>
-</li>
-<li><p class="first"><em>node_size</em> = The size that nodes are drawn. Default is 1500.</p>
-</li>
-<li><dl class="first docutils">
-<dt><em>layout</em> = The layout algorithm used in 2D. Options are &#8216;spring_layout&#8217; (default), &#8216;shell_layout&#8217;, &#8216;circular_layout&#8217; </dt>
-<dd><p class="first last">and &#8216;spectral_layout&#8217;.</p>
-</dd>
-</dl>
-</li>
-<li><p class="first"><em>verbose</em> = True if this function is allowed to write to the print buffer, otherwise false. Default is False.</p>
-</li>
+<dt><strong>Optional Keywords</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>dimension</em> = &#8216;2D&#8217; for a 2D network diagram or &#8216;3D&#8217; for a 3D network diagram. Default is &#8216;2D&#8217;.</li>
+<li><em>axis</em> = the axis to view on for 3D network diagrams</li>
+<li><em>perspective</em> = True to use perspective projection, or False for orthographic projection. Default is False.</li>
+<li><em>node_size</em> = The size that nodes are drawn. Default is 1500.</li>
+<li><em>layout</em> = The layout algorithm used in 2D. Options are &#8216;spring_layout&#8217; (default), &#8216;shell_layout&#8217;, &#8216;circular_layout&#8217; and &#8216;spectral_layout&#8217;.</li>
+<li><em>verbose</em> = True if this function is allowed to write to the print buffer, otherwise false. Default is False.</li>
 </ul>
 </dd>
 </dl>
@@ -1045,11 +1019,10 @@ lists edges in structural age &amp; thrid axis lists edges by surface area.</p>
 <dt id="pynoddy.output.NoddyTopology.find_first_match">
 <code class="descname">find_first_match</code><span class="sig-paren">(</span><em>known</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.find_first_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.find_first_match" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identical to is_unique, except that the index of the first match is returned if this matches, otherwise
--1 is returned.
-<strong>Arguments</strong>:</p>
-<blockquote>
-<div>-<em>known</em> = a list of valid NoddyTopology objects or NetworkX graphs to compare with.</div></blockquote>
+-1 is returned.</p>
 <dl class="docutils">
+<dt><strong>Arguments</strong>:</dt>
+<dd>-<em>known</em> = a list of valid NoddyTopology objects or NetworkX graphs to compare with.</dd>
 <dt><strong>Returns</strong>:</dt>
 <dd><ul class="first last simple">
 <li>Returns the index of the first matching topology object, or -1</li>
@@ -1115,8 +1088,8 @@ lists edges in structural age &amp; thrid axis lists edges by surface area.</p>
 <dl class="method">
 <dt id="pynoddy.output.NoddyTopology.read_adjacency_matrix">
 <code class="descname">read_adjacency_matrix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynoddy/output.html#NoddyTopology.read_adjacency_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynoddy.output.NoddyTopology.read_adjacency_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>DEPRECIATED</strong>
-Read max number of lithologies aross all models</p>
+<dd><p><em>Depreciated</em>
+Reads max number of lithologies aross all models</p>
 </dd></dl>
 
 <dl class="method">
@@ -1130,13 +1103,9 @@ Read max number of lithologies aross all models</p>
 <dd><p>Writes summary information about this network to a file</p>
 <dl class="docutils">
 <dt><strong>Optional Arguments</strong></dt>
-<dd><ul class="first last">
-<li><dl class="first docutils">
-<dt><em>append</em> = True if summary information should be appended to the file. If so the file is written as a csv spreadsheet. </dt>
-<dd><p class="first last">Default is true. If False is passed, a single, detailed summary is written for this network.</p>
-</dd>
-</dl>
-</li>
+<dd><ul class="first last simple">
+<li><em>append</em> = True if summary information should be appended to the file. If so the file is written as a csv spreadsheet. 
+Default is true. If False is passed, a single, detailed summary is written for this network.</li>
 </ul>
 </dd>
 </dl>

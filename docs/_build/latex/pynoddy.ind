@@ -12,13 +12,13 @@
 		\hyperpage{73}
   \item change\_cube\_size() (pynoddy.history.NoddyHistory method), \hyperpage{68}
   \item change\_event\_params() (pynoddy.history.NoddyHistory method), \hyperpage{68}
-  \item change\_height() (pynoddy.events.Unconformity method), \hyperpage{78}
-  \item collapse\_stratigraphy() (pynoddy.output.NoddyTopology method), \hyperpage{73}
+  \item change\_height() (pynoddy.events.Unconformity method), \hyperpage{79}
+  \item collapse\_stratigraphy() (pynoddy.output.NoddyTopology method), \hyperpage{74}
   \item collapse\_structure() (pynoddy.output.NoddyTopology method), \hyperpage{74}
   \item combine\_topologies() (pynoddy.output.NoddyTopology static method), \hyperpage{74}
   \item compare\_dimensions\_to() (pynoddy.output.NoddyOutput method), \hyperpage{71}
-  \item compute\_model() (in module pynoddy), \hyperpage{7}, \hyperpage{67}
-  \item compute\_topology() (in module pynoddy), \hyperpage{9}, \hyperpage{67}
+  \item compute\_model() (in module pynoddy), \hyperpage{9}, \hyperpage{67}
+  \item compute\_topology() (in module pynoddy), \hyperpage{67}
   \item copy\_events() (pynoddy.history.NoddyHistory method), \hyperpage{68}
   \item create\_footer\_from\_template() (pynoddy.history.NoddyHistory method), \hyperpage{68}
   \item create\_new\_history() (pynoddy.history.NoddyHistory method), \hyperpage{68}
@@ -51,8 +51,8 @@
   \item filter\_node\_volumes() (pynoddy.output.NoddyTopology method), \hyperpage{76}
   \item find\_first\_match() (pynoddy.output.NoddyTopology method), \hyperpage{76}
   \item find\_matching() (pynoddy.output.NoddyTopology method), \hyperpage{76}
-  \item Fold (class in pynoddy.events), \hyperpage{77}
-  \item freeze() (pynoddy.experiment.Experiment method), \hyperpage{79}
+  \item Fold (class in pynoddy.events), \hyperpage{78}
+  \item freeze() (pynoddy.experiment.Experiment method), \hyperpage{80}
 
   \indexspace
   \bigletter G
@@ -65,9 +65,9 @@
   \item get\_extent() (pynoddy.history.NoddyHistory method), \hyperpage{69}
   \item get\_filename() (pynoddy.history.NoddyHistory method), \hyperpage{69}
   \item get\_footer\_lines() (pynoddy.history.NoddyHistory method), \hyperpage{69}
-  \item get\_info\_string() (pynoddy.history.NoddyHistory method), \hyperpage{69}
+  \item get\_info\_string() (pynoddy.history.NoddyHistory method), \hyperpage{70}
   \item get\_origin() (pynoddy.history.NoddyHistory method), \hyperpage{70}
-  \item get\_sampling\_line\_data() (pynoddy.experiment.Experiment method), \hyperpage{79}
+  \item get\_sampling\_line\_data() (pynoddy.experiment.Experiment method), \hyperpage{80}
   \item get\_section() (pynoddy.experiment.Experiment method), \hyperpage{80}
   \item get\_section\_lines() (pynoddy.output.NoddyOutput method), \hyperpage{71}
   \item get\_section\_voxels() (pynoddy.output.NoddyOutput method), \hyperpage{72}
@@ -140,7 +140,7 @@
   \item set\_event\_params() (pynoddy.history.NoddyHistory method), \hyperpage{70}
   \item set\_extent() (pynoddy.history.NoddyHistory method), \hyperpage{70}
   \item set\_origin() (pynoddy.history.NoddyHistory method), \hyperpage{70}
-  \item set\_parameter\_statistics() (pynoddy.experiment.Experiment method), \hyperpage{81}
+  \item set\_parameter\_statistics() (pynoddy.experiment.Experiment method), \hyperpage{82}
   \item set\_random\_seed() (pynoddy.experiment.Experiment method), \hyperpage{82}
   \item set\_up\_to\_date() (pynoddy.experiment.Experiment method), \hyperpage{82}
   \item Shear (class in pynoddy.events), \hyperpage{78}
@@ -155,7 +155,7 @@
 
   \indexspace
   \bigletter U
-  \item Unconformity (class in pynoddy.events), \hyperpage{78}
+  \item Unconformity (class in pynoddy.events), \hyperpage{79}
   \item update() (pynoddy.experiment.Experiment method), \hyperpage{82}
   \item update\_all\_event\_properties() (pynoddy.history.NoddyHistory method), \hyperpage{71}
   \item update\_event\_numbers() (pynoddy.history.NoddyHistory method), \hyperpage{71}
@@ -163,6 +163,7 @@
 
   \indexspace
   \bigletter W
+  \item which() (in module pynoddy), \hyperpage{68}
   \item write\_history() (pynoddy.history.NoddyHistory method), \hyperpage{71}
   \item write\_parameter\_changes() (pynoddy.experiment.Experiment method), \hyperpage{82}
   \item write\_summary\_file() (pynoddy.output.NoddyTopology method), \hyperpage{77}

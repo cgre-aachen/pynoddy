@@ -1,8 +1,8 @@
-\indexentry{compute\_model() (in module pynoddy)|hyperpage}{7}
-\indexentry{compute\_topology() (in module pynoddy)|hyperpage}{9}
+\indexentry{compute\_model() (in module pynoddy)|hyperpage}{9}
 \indexentry{pynoddy (module)|hyperpage}{67}
 \indexentry{compute\_model() (in module pynoddy)|hyperpage}{67}
 \indexentry{compute\_topology() (in module pynoddy)|hyperpage}{67}
+\indexentry{which() (in module pynoddy)|hyperpage}{68}
 \indexentry{pynoddy.history (module)|hyperpage}{68}
 \indexentry{NoddyHistory (class in pynoddy.history)|hyperpage}{68}
 \indexentry{add\_event() (pynoddy.history.NoddyHistory method)|hyperpage}{68}
@@ -22,7 +22,7 @@
 \indexentry{get\_extent() (pynoddy.history.NoddyHistory method)|hyperpage}{69}
 \indexentry{get\_filename() (pynoddy.history.NoddyHistory method)|hyperpage}{69}
 \indexentry{get\_footer\_lines() (pynoddy.history.NoddyHistory method)|hyperpage}{69}
-\indexentry{get\_info\_string() (pynoddy.history.NoddyHistory method)|hyperpage}{69}
+\indexentry{get\_info\_string() (pynoddy.history.NoddyHistory method)|hyperpage}{70}
 \indexentry{get\_origin() (pynoddy.history.NoddyHistory method)|hyperpage}{70}
 \indexentry{info() (pynoddy.history.NoddyHistory method)|hyperpage}{70}
 \indexentry{load\_history() (pynoddy.history.NoddyHistory method)|hyperpage}{70}
@@ -54,7 +54,7 @@
 \indexentry{calculate\_difference() (pynoddy.output.NoddyTopology method)|hyperpage}{73}
 \indexentry{calculate\_overlap() (pynoddy.output.NoddyTopology method)|hyperpage}{73}
 \indexentry{calculate\_unique\_topologies() (pynoddy.output.NoddyTopology static method)|hyperpage}{73}
-\indexentry{collapse\_stratigraphy() (pynoddy.output.NoddyTopology method)|hyperpage}{73}
+\indexentry{collapse\_stratigraphy() (pynoddy.output.NoddyTopology method)|hyperpage}{74}
 \indexentry{collapse\_structure() (pynoddy.output.NoddyTopology method)|hyperpage}{74}
 \indexentry{combine\_topologies() (pynoddy.output.NoddyTopology static method)|hyperpage}{74}
 \indexentry{draw\_3d\_network() (pynoddy.output.NoddyTopology method)|hyperpage}{74}
@@ -83,7 +83,7 @@
 \indexentry{update\_properties() (pynoddy.events.Event method)|hyperpage}{77}
 \indexentry{Fault (class in pynoddy.events)|hyperpage}{77}
 \indexentry{parse\_event\_lines() (pynoddy.events.Fault method)|hyperpage}{77}
-\indexentry{Fold (class in pynoddy.events)|hyperpage}{77}
+\indexentry{Fold (class in pynoddy.events)|hyperpage}{78}
 \indexentry{parse\_event\_lines() (pynoddy.events.Fold method)|hyperpage}{78}
 \indexentry{Plug (class in pynoddy.events)|hyperpage}{78}
 \indexentry{parse\_event\_lines() (pynoddy.events.Plug method)|hyperpage}{78}
@@ -95,14 +95,14 @@
 \indexentry{parse\_event\_lines() (pynoddy.events.Stratigraphy method)|hyperpage}{78}
 \indexentry{Tilt (class in pynoddy.events)|hyperpage}{78}
 \indexentry{parse\_event\_lines() (pynoddy.events.Tilt method)|hyperpage}{78}
-\indexentry{Unconformity (class in pynoddy.events)|hyperpage}{78}
-\indexentry{change\_height() (pynoddy.events.Unconformity method)|hyperpage}{78}
+\indexentry{Unconformity (class in pynoddy.events)|hyperpage}{79}
+\indexentry{change\_height() (pynoddy.events.Unconformity method)|hyperpage}{79}
 \indexentry{parse\_event\_lines() (pynoddy.events.Unconformity method)|hyperpage}{79}
 \indexentry{pynoddy.experiment (module)|hyperpage}{79}
 \indexentry{Experiment (class in pynoddy.experiment)|hyperpage}{79}
 \indexentry{export\_to\_vtk() (pynoddy.experiment.Experiment method)|hyperpage}{79}
-\indexentry{freeze() (pynoddy.experiment.Experiment method)|hyperpage}{79}
-\indexentry{get\_sampling\_line\_data() (pynoddy.experiment.Experiment method)|hyperpage}{79}
+\indexentry{freeze() (pynoddy.experiment.Experiment method)|hyperpage}{80}
+\indexentry{get\_sampling\_line\_data() (pynoddy.experiment.Experiment method)|hyperpage}{80}
 \indexentry{get\_section() (pynoddy.experiment.Experiment method)|hyperpage}{80}
 \indexentry{get\_up\_to\_date() (pynoddy.experiment.Experiment method)|hyperpage}{80}
 \indexentry{is\_up\_to\_date (pynoddy.experiment.Experiment attribute)|hyperpage}{80}
@@ -112,7 +112,7 @@
 \indexentry{random\_perturbation() (pynoddy.experiment.Experiment method)|hyperpage}{81}
 \indexentry{reset\_base() (pynoddy.experiment.Experiment method)|hyperpage}{81}
 \indexentry{reset\_random\_seed() (pynoddy.experiment.Experiment method)|hyperpage}{81}
-\indexentry{set\_parameter\_statistics() (pynoddy.experiment.Experiment method)|hyperpage}{81}
+\indexentry{set\_parameter\_statistics() (pynoddy.experiment.Experiment method)|hyperpage}{82}
 \indexentry{set\_random\_seed() (pynoddy.experiment.Experiment method)|hyperpage}{82}
 \indexentry{set\_up\_to\_date() (pynoddy.experiment.Experiment method)|hyperpage}{82}
 \indexentry{shuffle\_event\_order() (pynoddy.experiment.Experiment method)|hyperpage}{82}

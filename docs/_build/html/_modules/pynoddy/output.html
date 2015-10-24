@@ -947,8 +947,9 @@
             <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         </div>
 <div class="viewcode-block" id="NoddyTopology.read_adjacency_matrix"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.output.NoddyTopology.read_adjacency_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">read_adjacency_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;**DEPRECIATED**</span>
-<span class="sd">        Read max number of lithologies aross all models&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        *Depreciated*</span>
+<span class="sd">        Reads max number of lithologies aross all models&quot;&quot;&quot;</span>
         <span class="n">ml_lines</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basename</span> <span class="o">+</span> <span class="s">&quot;.g22&quot;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         <span class="c"># read in data</span>
         
@@ -996,29 +997,61 @@
         <span class="n">topo</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">topo</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s">&quot;structural&quot;</span>
         
-        <span class="c">#retrieve list of edges, ignoring lithology</span>
-        <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-            <span class="n">code1</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="c">#topology code of node 1</span>
-            <span class="n">code2</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="c">#topology code of node 2</span>
-            
-            <span class="c">#change code1 &amp; code2 endings 2 a (discrete volumes don&#39;t mean anything anymore)</span>
-            <span class="n">code1</span> <span class="o">=</span> <span class="n">code1</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;A&#39;</span> <span class="c">#retain last letter for compatability/concistency...</span>
-            <span class="n">code2</span> <span class="o">=</span> <span class="n">code2</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;A&#39;</span>
-            
-            
-            <span class="c">#add edge tuple to edges array</span>
-            <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">code1</span><span class="p">,</span><span class="n">code2</span><span class="p">,</span><span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
-            
-                    
-        <span class="c">#remake graph</span>
+        <span class="c">#clear graph</span>
         <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         
-        <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
-        
+        <span class="c">#rebuild network, but ignoring lithology</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="c">#topology code of node 1</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="c">#topology code of node 2</span>
+            
+            <span class="c">#change code1 &amp; code2 endings 2 a (discrete volumes don&#39;t mean anything anymore)</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;A&#39;</span> <span class="c">#retain last letter for compatability/concistency...</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;A&#39;</span>
+            
+            <span class="c">#update the attributes of the nodes</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                    <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">age_list</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;age&#39;</span><span class="p">]],</span>
+                                          <span class="n">colour_list</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;colour&#39;</span><span class="p">]],</span>
+                                          <span class="n">name_list</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;name&#39;</span><span class="p">]],</span>
+                                          <span class="n">name</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                                          <span class="n">volume</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;volume&#39;</span><span class="p">],</span>
+                                          <span class="n">lithology_list</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;lithology&#39;</span><span class="p">]],</span>
+                                          <span class="n">centroid_list</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;centroid&#39;</span><span class="p">]])</span>
+                
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s">&#39;age_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;age&#39;</span><span class="p">])</span> <span class="c">#append age</span>
+                    <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s">&#39;colour_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;colour&#39;</span><span class="p">])</span> <span class="c">#append colour</span>
+                    <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s">&#39;name_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;name&#39;</span><span class="p">])</span> <span class="c">#append name</span>
+                    <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s">&#39;lithology_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;lithology&#39;</span><span class="p">])</span> <span class="c">#append lithology</span>
+                    <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s">&#39;centroid_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;centroid&#39;</span><span class="p">])</span> <span class="c">#append centroid</span>
+                    <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s">&#39;volume&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="s">&#39;volume&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s">&#39;volume&#39;</span><span class="p">]</span> <span class="c">#increment volume</span>
+            
+            <span class="c">#add edge</span>
+            <span class="k">if</span> <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">):</span> <span class="c">#edge already exists</span>
+                <span class="c">#merge attributes</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;area&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s">&#39;area&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c">#create new edge</span>
+                <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">attr_dict</span><span class="o">=</span><span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="c">#copy all edge attributes across</span>
+            
+                    
         <span class="c">#remove self loops</span>
         <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">remove_edges_from</span><span class="p">(</span> <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">selfloop_edges</span><span class="p">()</span> <span class="p">)</span>
+        
+        <span class="c">#calculate node centroids</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+            <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;centroid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;centroid_list&#39;</span><span class="p">]]</span> <span class="p">),</span>
+                                          <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;centroid_list&#39;</span><span class="p">]]</span> <span class="p">),</span>
+                                          <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;centroid_list&#39;</span><span class="p">]]</span> <span class="p">))</span>
+            
+            <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;lithology&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;lithology_list&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c">#defined by bottom lithology</span>
+            <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;colour&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;colour_list&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;age_list&#39;</span><span class="p">])</span>
+            
+            
         <span class="k">return</span> <span class="n">topo</span>
        </div>
 <div class="viewcode-block" id="NoddyTopology.collapse_structure"><a class="viewcode-back" href="../../pynoddy.html#pynoddy.output.NoddyTopology.collapse_structure">[docs]</a>    <span class="k">def</span> <span class="nf">collapse_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -1092,6 +1125,8 @@
                                 <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span> <span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="p">]</span> <span class="c">#make list</span>
                     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span> <span class="c">#key not found, add new key</span>
                         <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+                <span class="c">#maintain that weight = 1</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;weight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c">#create new edge</span>
                 <span class="n">topo</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">attr_dict</span><span class="o">=</span><span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -1152,8 +1187,9 @@
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Identical to is_unique, except that the index of the first match is returned if this matches, otherwise</span>
 <span class="sd">        -1 is returned.</span>
+<span class="sd">        </span>
 <span class="sd">        **Arguments**:</span>
-<span class="sd">            -*known* = a list of valid NoddyTopology objects or NetworkX graphs to compare with.</span>
+<span class="sd">         -*known* = a list of valid NoddyTopology objects or NetworkX graphs to compare with.</span>
 <span class="sd">        </span>
 <span class="sd">        **Returns**:</span>
 <span class="sd">         - Returns the index of the first matching topology object, or -1</span>
@@ -1291,7 +1327,7 @@
 <span class="sd">        **Optional Keywords**:</span>
 <span class="sd">         - *output* = A File or list to write cumulative observed topologies distribution. Default is None (nothing written).</span>
 <span class="sd">         - *ids* = A list to write the unique topology id&#39;s for each topology in the provided topology_list (in that </span>
-<span class="sd">                     order). Default is None.</span>
+<span class="sd">           order). Default is None.</span>
 <span class="sd">         - *frequency* = A list to write frequency counts to. </span>
 <span class="sd">        **Returns**:</span>
 <span class="sd">         - Returns a list of unique topologies.</span>
@@ -1436,7 +1472,7 @@
 <span class="sd">        </span>
 <span class="sd">        **Optional Arguments**</span>
 <span class="sd">         - *append* = True if summary information should be appended to the file. If so the file is written as a csv spreadsheet. </span>
-<span class="sd">                      Default is true. If False is passed, a single, detailed summary is written for this network.</span>
+<span class="sd">           Default is true. If False is passed, a single, detailed summary is written for this network.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">append</span><span class="p">:</span> <span class="c">#write summary information in spreadsheet formant</span>
             <span class="n">exists</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -1773,15 +1809,15 @@
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Draws a network diagram of this NoddyTopology to the specified image</span>
 <span class="sd">        </span>
-<span class="sd">        **Arguments**</span>
+<span class="sd">        **Arguments**:</span>
 <span class="sd">         - *outputname* = the path of the image being written. If left as &#39;&#39; the image is written to the same directory as the basename.</span>
-<span class="sd">        **Optional Keywords**</span>
+<span class="sd">        </span>
+<span class="sd">        **Optional Keywords**:</span>
 <span class="sd">         - *dimension* = &#39;2D&#39; for a 2D network diagram or &#39;3D&#39; for a 3D network diagram. Default is &#39;2D&#39;.</span>
 <span class="sd">         - *axis* = the axis to view on for 3D network diagrams</span>
 <span class="sd">         - *perspective* = True to use perspective projection, or False for orthographic projection. Default is False.</span>
 <span class="sd">         - *node_size* = The size that nodes are drawn. Default is 1500.</span>
-<span class="sd">         - *layout* = The layout algorithm used in 2D. Options are &#39;spring_layout&#39; (default), &#39;shell_layout&#39;, &#39;circular_layout&#39; </span>
-<span class="sd">                      and &#39;spectral_layout&#39;.</span>
+<span class="sd">         - *layout* = The layout algorithm used in 2D. Options are &#39;spring_layout&#39; (default), &#39;shell_layout&#39;, &#39;circular_layout&#39; and &#39;spectral_layout&#39;.</span>
 <span class="sd">         - *verbose* = True if this function is allowed to write to the print buffer, otherwise false. Default is False.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         
@@ -1884,7 +1920,7 @@
 <span class="sd">        Nodes are joined to edge-nodes by lines on the graph if they are topologically linked</span>
 <span class="sd">        (ie. if an edge has that node as an end point).</span>
 <span class="sd">        </span>
-<span class="sd">         **Optional Keywords**</span>
+<span class="sd">        **Optional Keywords**:</span>
 <span class="sd">         - *path* = the path to save this figure</span>
 <span class="sd">         - *dpi* = the resolution of the figure</span>
 <span class="sd">         - *bg* = the background color. Default is black.</span>
@@ -2097,14 +2133,13 @@
 <span class="sd">        Draws a 3D network using matplotlib.</span>
 <span class="sd">        </span>
 <span class="sd">        **Optional Keywords**:</span>
-<span class="sd">         - *show* = If True, the 3D network is displayed immediatly on-screen in an</span>
-<span class="sd">                    interactive matplotlib viewer. Default is True.</span>
+<span class="sd">         - *show* = If True, the 3D network is displayed immediatly on-screen in an interactive matplotlib viewer. Default is True.</span>
 <span class="sd">         - *output* = If defined an image of the network is saved to this location.</span>
 <span class="sd">         - *node_size* = The size of the nodes. Default is 40.</span>
 <span class="sd">         - *geology* = a NoddyOutput object to draw with the network</span>
 <span class="sd">         - *res* = resolution to draw geology at. Default is 4 (ie 1/4 of all voxels are drawn)</span>
 <span class="sd">         - *horizons* = a list of geology surfaces to draw. Default is nothing (none drawn). Slow!</span>
-<span class="sd">                        See NoddyOutput.get_surface_grid for details.</span>
+<span class="sd">           See NoddyOutput.get_surface_grid for details.</span>
 <span class="sd">         - *sections* = draw geology sections. Default is True.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         
