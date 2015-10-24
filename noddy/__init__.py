@@ -1,1 +1,0 @@
-"""Package containing executable Noddy code."""
