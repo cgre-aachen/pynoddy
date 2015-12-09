@@ -538,7 +538,11 @@ class NoddyHistory(object):
         elif event_type == 'unconformity': # AK
             ev = self._create_unconformity(event_options)
             ev.event_type = 'UNCONFORMITY'
-        
+
+        elif event_type == 'fold':
+            ev = self._create_fold(event_options)
+            ev.event_type = 'FOLD'
+
         
         else:
             raise NameError('Event type %s not (yet) implemented' % event_type)
@@ -652,7 +656,54 @@ Version = 7.11
             tmp_lines_list.append(line + "\n")
         ev.set_event_lines(tmp_lines_list)
         return ev
-         
+
+    def _create_fold(self, event_options):
+        """Create a fold event
+
+        **Arguments**:
+            - *event_options* = list : list of required and optional settings for event;
+            Options are:
+            'name' = string : name of fault event
+            'pos' = (x,y,z) : position of reference point (floats)
+                .. note::     for convenience, it is possible to assign 'top' to z
+                              for position at "surface"
+            'amplitude' = float : amplitude of fold
+            'wavelength' = float : wavelength of fold
+            'dip_dir' = float : dip (plane) direction (default: 90)
+            'dip' = float : fault (plane) dip (default: 90)
+        """
+        ev = events.Fault()
+        tmp_lines = [""]
+        fault_lines = _Templates.fold
+        # substitute text with according values
+        fault_lines = fault_lines.replace("$NAME$", event_options['name'])
+        fault_lines = fault_lines.replace("$POS_X$", "%.1f" % event_options['pos'][0])
+        fault_lines = fault_lines.replace("$POS_Y$", "%.1f" % event_options['pos'][1])
+        if event_options['pos'] == 'top':
+            # recalculate z-value to be at top of model
+            z = self.zmax
+            fault_lines = fault_lines.replace("$POS_Z$", "%.1f" % z)
+        else:
+            fault_lines = fault_lines.replace("$POS_Z$", "%.1f" % event_options['pos'][2])
+        fault_lines = fault_lines.replace("$WAVELENGTH$", "%.1f" % event_options['wavelength'])
+        fault_lines = fault_lines.replace("$AMPLITUDE$", "%.1f" % event_options['amplitude'])
+        # fault_lines = fault_lines.replace("$SLIP$", "%.1f" % event_options['slip'])
+        fault_lines = fault_lines.replace("$DIP_DIR$", "%.1f" % event_options.get('dip_dir', 90.0))
+        fault_lines = fault_lines.replace("$DIP$", "%.1f" % event_options.get('dip', 90.0))
+
+        # now split lines and add as list entries to event lines
+        # event lines are defined in list:
+
+        # split lines and add to event lines list:
+        for layer_line in fault_lines.split("\n"):
+            tmp_lines.append(layer_line)
+
+        tmp_lines_list = []
+        for line in tmp_lines:
+            tmp_lines_list.append(line + "\n")
+        ev.set_event_lines(tmp_lines_list)
+        return ev
+
     # AK 2014-10    
     def _create_tilt(self, event_options):
         """Create a tilt event
@@ -1201,6 +1252,97 @@ Version = 7.11"""
     Surface YDim    = 0.000000
     Surface ZDim    = 0.000000
     Name    = $NAME$"""
+
+    fold = """	Type	= Sine
+	Single Fold	= FALSE
+	X	=   $POS_X$
+	Y	=   $POS_Y$
+	Z	=   $POS_Z$
+	Dip Direction	=  $DIP_DIR$
+	Dip	=  $DIP$
+	Pitch	=   0.00
+	Wavelength	= $WAVELENGTH$
+	Amplitude	= $AMPLITUDE$
+	Cylindricity	=   0.00
+	Fourier Series
+		Term A 0	=   0.00
+		Term B 0	=   0.00
+		Term A 1	=   0.00
+		Term B 1	=   1.00
+		Term A 2	=   0.00
+		Term B 2	=   0.00
+		Term A 3	=   0.00
+		Term B 3	=   0.00
+		Term A 4	=   0.00
+		Term B 4	=   0.00
+		Term A 5	=   0.00
+		Term B 5	=   0.00
+		Term A 6	=   0.00
+		Term B 6	=   0.00
+		Term A 7	=   0.00
+		Term B 7	=   0.00
+		Term A 8	=   0.00
+		Term B 8	=   0.00
+		Term A 9	=   0.00
+		Term B 9	=   0.00
+		Term A 10	=   0.00
+		Term B 10	=   0.00
+	Name	= Fold Profile
+	Type	= 1
+	Join Type 	= LINES
+	Graph Length	= 200.000000
+	Min X	= 0.000000
+	Max X	= 6.280000
+	Min Y Scale	= -1.000000
+	Max Y Scale	= 1.000000
+	Scale Origin	= 0.000000
+	Min Y Replace	= -1.000000
+	Max Y Replace	= 1.000000
+	Num Points	= 21
+		Point X	= 0
+		Point Y	= 0
+		Point X	= 31
+		Point Y	= 30
+		Point X	= 62
+		Point Y	= 58
+		Point X	= 94
+		Point Y	= 80
+		Point X	= 125
+		Point Y	= 94
+		Point X	= 157
+		Point Y	= 99
+		Point X	= 188
+		Point Y	= 95
+		Point X	= 219
+		Point Y	= 81
+		Point X	= 251
+		Point Y	= 58
+		Point X	= 282
+		Point Y	= 31
+		Point X	= 314
+		Point Y	= 0
+		Point X	= 345
+		Point Y	= -31
+		Point X	= 376
+		Point Y	= -59
+		Point X	= 408
+		Point Y	= -81
+		Point X	= 439
+		Point Y	= -95
+		Point X	= 471
+		Point Y	= -100
+		Point X	= 502
+		Point Y	= -96
+		Point X	= 533
+		Point Y	= -82
+		Point X	= 565
+		Point Y	= -59
+		Point X	= 596
+		Point Y	= -32
+		Point X	= 628
+		Point Y	= -1
+	Name	= $NAME$"""
+
 
     # AK 2014-10
     tilt = """X    =   $POS_X$
