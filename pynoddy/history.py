@@ -626,6 +626,14 @@ Version = 7.11
             'dip_dir' = [0,360] : dip direction of fault
             'dip' = [0,90] : dip angle of fault
             'slip' = float : slip along fault
+            'geometry' = 'Translation', 'Curved' : geometry of fault plane (default: 'Translation')
+            'movement' = 'Hanging Wall', 'Foot Wall' : relative block movement (default: 'Hanging Wall')
+            'rotation' = float: fault rotation (default: 30.0)
+            'amplitude' = float: (default: 2000.0)
+            'radius' = float: (default: 1000.0)
+            'xaxis' = float: (default: 2000.0)
+            'yaxis' = float: (default: 2000.0)
+            'zaxis' = float: (default: 2000.0)
         """
         ev = events.Fault()
         tmp_lines = [""]
@@ -643,6 +651,17 @@ Version = 7.11
         fault_lines = fault_lines.replace("$DIP_DIR$", "%.1f" % event_options['dip_dir'])
         fault_lines = fault_lines.replace("$DIP$", "%.1f" % event_options['dip'])
         fault_lines = fault_lines.replace("$SLIP$", "%.1f" % event_options['slip'])
+
+        fault_lines = fault_lines.replace("$MOVEMENT$", "%s" % event_options.get('movement', 'Hanging Wall'))
+        fault_lines = fault_lines.replace("$GEOMETRY$", "%s" % event_options.get('geometry', 'Translation'))
+        fault_lines = fault_lines.replace("$ROTATION$", "%.1f" % event_options.get('rotation', 30.0))
+        fault_lines = fault_lines.replace("$AMPLITUDE$", "%.1f" % event_options.get('amplitude', 2000.0))
+        fault_lines = fault_lines.replace("$RADIUS$", "%.1f" % event_options.get('radius', 1000.0))
+        fault_lines = fault_lines.replace("$XAXIS$", "%.1f" % event_options.get('xaxis', 2000.0))
+        fault_lines = fault_lines.replace("$YAXIS$", "%.1f" % event_options.get('yaxis', 2000.0))
+        fault_lines = fault_lines.replace("$ZAXIS$", "%.1f" % event_options.get('zaxis', 2000.0))
+        # $GEOMETRY$ Translation
+
         
         # now split lines and add as list entries to event lines
         # event lines are defined in list:
@@ -953,8 +972,8 @@ Version = 7.11"""
     Green    = 153
     Blue    = 48 """
     
-    fault = """    Geometry    = Translation
-    Movement    = Hanging Wall
+    fault = """    Geometry    = $GEOMETRY$
+    Movement    = $MOVEMENT$
     X    = $POS_X$
     Y    = $POS_Y$
     Z    =   $POS_Z$
@@ -962,12 +981,12 @@ Version = 7.11"""
     Dip    =  $DIP$
     Pitch    =  90.00
     Slip    = $SLIP$
-    Rotation    =  30.00
-    Amplitude    = 2000.00
-    Radius    = 1000.00
-    XAxis    = 2000.00
-    YAxis    = 2000.00
-    ZAxis    = 2000.00
+    Rotation    = $ROTATION$
+    Amplitude    = $AMPLITUDE$
+    Radius    = $RADIUS$
+    XAxis    = $XAXIS$
+    YAxis    = $YAXIS$
+    ZAxis    = $ZAXIS$
     Cyl Index    =   0.00
     Profile Pitch    =  90.00
     Color Name    = Custom Colour 8

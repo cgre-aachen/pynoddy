@@ -24,39 +24,44 @@
     <favorites_list name="pynoddy" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/experiment/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="37" column="40" selection-start-line="37" selection-start-column="40" selection-end-line="37" selection-end-column="40" />
-              <folding>
-                <element signature="e#261#270#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="history.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="history.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/history.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.55772114">
-              <caret line="691" column="89" selection-start-line="691" selection-start-column="89" selection-end-line="691" selection-end-column="89" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="947" column="6" selection-start-line="947" selection-start-column="6" selection-end-line="947" selection-end-column="6" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GBasin_Ve1_V5.his" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../examples/GBasin_Ve1_V5.his">
+      <file leaf-file-name="listric_rollover.his" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../docs/notebooks/listric_rollover.his">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+              <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
               <folding />
             </state>
           </provider>
-          <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
-            <state />
+        </entry>
+      </file>
+      <file leaf-file-name="listric_example.his" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../docs/notebooks/listric_example.his">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.42570952">
+              <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+              <folding />
+            </state>
           </provider>
         </entry>
       </file>
@@ -72,35 +77,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="monte_carlo.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/experiment/monte_carlo.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="21" column="45" selection-start-line="21" selection-start-column="45" selection-end-line="21" selection-end-column="45" />
-              <folding>
-                <element signature="e#93#103#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sampling.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/experiment/util/sampling.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
-              <folding>
-                <element signature="e#274#292#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="events.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/events.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="119" column="30" selection-start-line="119" selection-start-column="30" selection-end-line="119" selection-end-column="30" />
+              <caret line="418" column="33" selection-start-line="418" selection-start-column="33" selection-end-line="418" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -111,16 +92,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LDA.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/experiment/util/LDA.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -140,29 +111,28 @@
       <list>
         <option value="$PROJECT_DIR$/experiment/TopologyAnalysis.py" />
         <option value="$PROJECT_DIR$/experiment/util/sampling.py" />
-        <option value="$PROJECT_DIR$/events.py" />
         <option value="$PROJECT_DIR$/experiment/uncertainty_analysis.py" />
         <option value="$PROJECT_DIR$/experiment/MonteCarlo.py" />
         <option value="$PROJECT_DIR$/experiment/UncertaintyAnalysis.py" />
         <option value="$PROJECT_DIR$/experiment/__init__.py" />
         <option value="$PROJECT_DIR$/test/test_history.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$PROJECT_DIR$/events.py" />
         <option value="$PROJECT_DIR$/history.py" />
+        <option value="$PROJECT_DIR$/../docs/notebooks/listric_example.his" />
       </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" />
+  <component name="JsBuildToolPackageJson" detection-done="true" />
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
   </component>
-  <component name="NamedScopeManager">
-    <order />
-  </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="22" />
-    <option name="y" value="32" />
-    <option name="width" value="1400" />
-    <option name="height" value="790" />
+    <option name="x" value="257" />
+    <option name="y" value="67" />
+    <option name="width" value="1144" />
+    <option name="height" value="745" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -185,6 +155,8 @@
       <autoscrollToSource />
       <autoscrollFromSource />
       <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
       <pane id="ProjectPane">
@@ -245,18 +217,46 @@
               <option name="myItemType" value="com.jetbrains.python.projectView.PyFileNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pynoddy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pynoddy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="events.py" />
+              <option name="myItemType" value="com.jetbrains.python.projectView.PyFileNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pynoddy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pynoddy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="experiment" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../test" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../docs/notebooks/listric_rollover.his" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="FullScreen" value="false" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../docs/notebooks/listric_rollover.his" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
@@ -334,6 +334,12 @@
       <tasks />
       <arguments />
       <pass-parent-envs>true</pass-parent-envs>
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run-script" />
+      <scripts />
       <envs />
       <method />
     </configuration>
@@ -462,28 +468,28 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="22" y="32" width="1400" height="790" extended-state="0" />
+    <frame x="257" y="67" width="1144" height="745" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32871014" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39856115" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26225045" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32871014" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39856115" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -502,24 +508,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/experiment/util/LDA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/util/sampling.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
-          <folding>
-            <element signature="e#274#292#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/events.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -548,9 +536,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-          <folding>
-            <element signature="e#261#270#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -576,7 +562,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#93#103#0" expanded="true" />
+            <element signature="e#93#103#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -586,7 +572,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
           <folding>
-            <element signature="e#274#292#0" expanded="true" />
+            <element signature="e#274#292#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -619,9 +605,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-          <folding>
-            <element signature="e#261#270#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -640,7 +624,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
           <folding>
-            <element signature="e#274#292#0" expanded="true" />
+            <element signature="e#274#292#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -673,9 +657,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-          <folding>
-            <element signature="e#261#270#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -684,7 +666,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
           <folding>
-            <element signature="e#274#292#0" expanded="true" />
+            <element signature="e#274#292#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -727,17 +709,17 @@
               <point x="193.75" y="133.0" />
               <point x="17.75" y="14.5" />
             </edge>
-            <edge source="experiment.Experiment" target="history.NoddyHistory">
-              <point x="-44.5" y="-14.5" />
-              <point x="131.5" y="212.0" />
-              <point x="83.5" y="212.0" />
-              <point x="0.0" y="14.5" />
-            </edge>
             <edge source="history.NoddyHistory" target="object">
               <point x="0.0" y="-14.5" />
               <point x="83.5" y="133.0" />
               <point x="158.25" y="133.0" />
               <point x="-17.75" y="14.5" />
+            </edge>
+            <edge source="experiment.Experiment" target="history.NoddyHistory">
+              <point x="-44.5" y="-14.5" />
+              <point x="131.5" y="212.0" />
+              <point x="83.5" y="212.0" />
+              <point x="0.0" y="14.5" />
             </edge>
           </edges>
           <settings layout="Hierarchic Group" zoom="1.0" x="-110.0" y="53.0" />
@@ -793,6 +775,154 @@
               <point x="988.8058831499945" y="265.59363872545407" />
               <point x="0.0" y="14.5" />
             </edge>
+            <edge source="object" target="_abcoll.Hashable">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="pynoddy.experiment.UncertaintyAnalysis.UncertaintyAnalysis" target="pynoddy.experiment.MonteCarlo.MonteCarlo">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="experiment.util.hive_plot.HivePlot" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="1464.6723809523812" y="-159.2695238095239" />
+              <point x="887.6009523809528" y="-159.2695238095239" />
+              <point x="30.42857142857156" y="14.5" />
+            </edge>
+            <edge source="events.Stratigraphy" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="768.1723809523812" y="-30.26952380952389" />
+              <point x="851.622380952381" y="-30.26952380952389" />
+              <point x="-5.550000000000182" y="14.5" />
+            </edge>
+            <edge source="output.NoddyOutput" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="989.5330769026668" y="145.1132861260695" />
+              <point x="836.886666666667" y="-149.2695238095239" />
+              <point x="-20.28571428571422" y="14.5" />
+            </edge>
+            <edge source="events.Dyke" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1226.1723809523812" y="-50.26952380952389" />
+              <point x="884.9223809523812" y="-50.26952380952389" />
+              <point x="27.75" y="14.5" />
+            </edge>
+            <edge source="output.NoddyTopology" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="1021.6723809523812" y="-139.2695238095239" />
+              <point x="867.3152380952386" y="-139.2695238095239" />
+              <point x="10.142857142857338" y="14.5" />
+            </edge>
+            <edge source="pynoddy.experiment.ResolutionTest.ResolutionTest" target="experiment.Experiment">
+              <point x="0.0" y="-14.5" />
+              <point x="1246.754930769042" y="353.38697205878736" />
+              <point x="1148.0558831499945" y="334.59363872545407" />
+              <point x="66.75" y="14.5" />
+            </edge>
+            <edge source="events.Tilt" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1473.6723809523812" y="-70.26952380952389" />
+              <point x="907.122380952381" y="-70.26952380952389" />
+              <point x="49.94999999999982" y="14.5" />
+            </edge>
+            <edge source="history.NoddyHistory" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="1142.8003510949345" y="124.26202492410766" />
+              <point x="847.0295238095239" y="-139.2695238095239" />
+              <point x="-10.142857142857338" y="14.5" />
+            </edge>
+            <edge source="experiment.Experiment" target="history.NoddyHistory">
+              <point x="44.5" y="-14.5" />
+              <point x="1125.8058831499945" y="265.59363872545407" />
+              <point x="1173.8058831499948" y="265.59363872545407" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="events.Unconformity" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="946.1723809523812" y="-30.26952380952389" />
+              <point x="862.7223809523814" y="-30.26952380952389" />
+              <point x="5.550000000000182" y="14.5" />
+            </edge>
+            <edge source="stochastic_events.StochasticFault" target="stochastic_events.StochasticEvent">
+              <point x="61.25" y="-14.5" />
+              <point x="245.92238095238122" y="48.73047619047611" />
+              <point x="283.6723809523812" y="48.73047619047611" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="experiment.util.LDA.LDA" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="690.3223809523813" y="82.3590476190476" />
+              <point x="826.7438095238099" y="-159.2695238095239" />
+              <point x="-30.42857142857133" y="14.5" />
+            </edge>
+            <edge source="stochastic_events.StochasticEvent" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="283.6723809523812" y="-60.26952380952389" />
+              <point x="818.3223809523813" y="-60.26952380952389" />
+              <point x="-38.84999999999991" y="14.5" />
+            </edge>
+            <edge source="pynoddy.experiment.TopologyAnalysis.ModelRealisation" target="object">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="pynoddy.experiment.MonteCarlo.MonteCarlo" target="experiment.Experiment">
+              <point x="0.0" y="-14.5" />
+              <point x="430.87809523809517" y="307.2066666666667" />
+              <point x="1014.5558831499945" y="334.59363872545407" />
+              <point x="-66.75" y="14.5" />
+            </edge>
+            <edge source="output.NoddyGeophysics" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="1226.1723809523812" y="-149.2695238095239" />
+              <point x="877.4580952380954" y="-149.2695238095239" />
+              <point x="20.28571428571422" y="14.5" />
+            </edge>
+            <edge source="events.Fault" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="85.67238095238122" y="-70.26952380952389" />
+              <point x="807.2223809523812" y="-70.26952380952389" />
+              <point x="-49.950000000000045" y="14.5" />
+            </edge>
+            <edge source="events.Event" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="events.Plug" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1099.6723809523812" y="-40.26952380952389" />
+              <point x="873.8223809523813" y="-40.26952380952389" />
+              <point x="16.65000000000009" y="14.5" />
+            </edge>
+            <edge source="pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis" target="experiment.Experiment">
+              <point x="0.0" y="-14.5" />
+              <point x="895.133026007137" y="344.59363872545407" />
+              <point x="1059.0558831499945" y="344.59363872545407" />
+              <point x="-22.25" y="14.5" />
+            </edge>
+            <edge source="events.Shear" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="616.1723809523812" y="-40.26952380952389" />
+              <point x="840.5223809523811" y="-40.26952380952389" />
+              <point x="-16.65000000000009" y="14.5" />
+            </edge>
+            <edge source="events.Fold" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1352.6723809523812" y="-60.26952380952389" />
+              <point x="896.0223809523811" y="-60.26952380952389" />
+              <point x="38.84999999999991" y="14.5" />
+            </edge>
+            <edge source="stochastic_events.StochasticFault" target="events.Fault">
+              <point x="-61.25" y="-14.5" />
+              <point x="123.42238095238122" y="48.73047619047611" />
+              <point x="85.67238095238122" y="48.73047619047611" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="events.Strain" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="484.1723809523812" y="-50.26952380952389" />
+              <point x="829.4223809523812" y="-50.26952380952389" />
+              <point x="-27.75" y="14.5" />
+            </edge>
             <edge source="pynoddy.experiment.TopologyAnalysis.TopologyAnalysis" target="object">
               <point x="0.0" y="0.0" />
               <point x="0.0" y="0.0" />
@@ -802,154 +932,6 @@
               <point x="1234.6330260071372" y="344.59363872545407" />
               <point x="1103.5558831499945" y="344.59363872545407" />
               <point x="22.25" y="14.5" />
-            </edge>
-            <edge source="stochastic_events.StochasticFault" target="events.Fault">
-              <point x="-61.25" y="-14.5" />
-              <point x="123.42238095238122" y="48.73047619047611" />
-              <point x="85.67238095238122" y="48.73047619047611" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="output.NoddyOutput" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="989.5330769026668" y="145.1132861260695" />
-              <point x="836.886666666667" y="-149.2695238095239" />
-              <point x="-20.28571428571422" y="14.5" />
-            </edge>
-            <edge source="events.Fault" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="85.67238095238122" y="-70.26952380952389" />
-              <point x="807.2223809523812" y="-70.26952380952389" />
-              <point x="-49.950000000000045" y="14.5" />
-            </edge>
-            <edge source="stochastic_events.StochasticEvent" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="283.6723809523812" y="-60.26952380952389" />
-              <point x="818.3223809523813" y="-60.26952380952389" />
-              <point x="-38.84999999999991" y="14.5" />
-            </edge>
-            <edge source="events.Dyke" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="1226.1723809523812" y="-50.26952380952389" />
-              <point x="884.9223809523812" y="-50.26952380952389" />
-              <point x="27.75" y="14.5" />
-            </edge>
-            <edge source="events.Event" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="pynoddy.experiment.ResolutionTest.ResolutionTest" target="experiment.Experiment">
-              <point x="0.0" y="-14.5" />
-              <point x="1246.754930769042" y="353.38697205878736" />
-              <point x="1148.0558831499945" y="334.59363872545407" />
-              <point x="66.75" y="14.5" />
-            </edge>
-            <edge source="experiment.util.hive_plot.HivePlot" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="1464.6723809523812" y="-159.2695238095239" />
-              <point x="887.6009523809528" y="-159.2695238095239" />
-              <point x="30.42857142857156" y="14.5" />
-            </edge>
-            <edge source="events.Shear" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="616.1723809523812" y="-40.26952380952389" />
-              <point x="840.5223809523811" y="-40.26952380952389" />
-              <point x="-16.65000000000009" y="14.5" />
-            </edge>
-            <edge source="events.Stratigraphy" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="768.1723809523812" y="-30.26952380952389" />
-              <point x="851.622380952381" y="-30.26952380952389" />
-              <point x="-5.550000000000182" y="14.5" />
-            </edge>
-            <edge source="events.Strain" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="484.1723809523812" y="-50.26952380952389" />
-              <point x="829.4223809523812" y="-50.26952380952389" />
-              <point x="-27.75" y="14.5" />
-            </edge>
-            <edge source="events.Plug" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="1099.6723809523812" y="-40.26952380952389" />
-              <point x="873.8223809523813" y="-40.26952380952389" />
-              <point x="16.65000000000009" y="14.5" />
-            </edge>
-            <edge source="output.NoddyGeophysics" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="1226.1723809523812" y="-149.2695238095239" />
-              <point x="877.4580952380954" y="-149.2695238095239" />
-              <point x="20.28571428571422" y="14.5" />
-            </edge>
-            <edge source="experiment.Experiment" target="history.NoddyHistory">
-              <point x="44.5" y="-14.5" />
-              <point x="1125.8058831499945" y="265.59363872545407" />
-              <point x="1173.8058831499948" y="265.59363872545407" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="pynoddy.experiment.MonteCarlo.MonteCarlo" target="experiment.Experiment">
-              <point x="0.0" y="-14.5" />
-              <point x="430.87809523809517" y="307.2066666666667" />
-              <point x="1014.5558831499945" y="334.59363872545407" />
-              <point x="-66.75" y="14.5" />
-            </edge>
-            <edge source="history.NoddyHistory" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="1142.8003510949345" y="124.26202492410766" />
-              <point x="847.0295238095239" y="-139.2695238095239" />
-              <point x="-10.142857142857338" y="14.5" />
-            </edge>
-            <edge source="events.Fold" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="1352.6723809523812" y="-60.26952380952389" />
-              <point x="896.0223809523811" y="-60.26952380952389" />
-              <point x="38.84999999999991" y="14.5" />
-            </edge>
-            <edge source="experiment.util.LDA.LDA" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="690.3223809523813" y="82.3590476190476" />
-              <point x="826.7438095238099" y="-159.2695238095239" />
-              <point x="-30.42857142857133" y="14.5" />
-            </edge>
-            <edge source="output.NoddyTopology" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="1021.6723809523812" y="-139.2695238095239" />
-              <point x="867.3152380952386" y="-139.2695238095239" />
-              <point x="10.142857142857338" y="14.5" />
-            </edge>
-            <edge source="events.Unconformity" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="946.1723809523812" y="-30.26952380952389" />
-              <point x="862.7223809523814" y="-30.26952380952389" />
-              <point x="5.550000000000182" y="14.5" />
-            </edge>
-            <edge source="pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis" target="experiment.Experiment">
-              <point x="0.0" y="-14.5" />
-              <point x="895.133026007137" y="344.59363872545407" />
-              <point x="1059.0558831499945" y="344.59363872545407" />
-              <point x="-22.25" y="14.5" />
-            </edge>
-            <edge source="object" target="_abcoll.Hashable">
-              <point x="0.0" y="-14.5" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="stochastic_events.StochasticFault" target="stochastic_events.StochasticEvent">
-              <point x="61.25" y="-14.5" />
-              <point x="245.92238095238122" y="48.73047619047611" />
-              <point x="283.6723809523812" y="48.73047619047611" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="pynoddy.experiment.UncertaintyAnalysis.UncertaintyAnalysis" target="pynoddy.experiment.MonteCarlo.MonteCarlo">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="events.Tilt" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="1473.6723809523812" y="-70.26952380952389" />
-              <point x="907.122380952381" y="-70.26952380952389" />
-              <point x="49.94999999999982" y="14.5" />
-            </edge>
-            <edge source="pynoddy.experiment.TopologyAnalysis.ModelRealisation" target="object">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
             </edge>
           </edges>
           <settings layout="Hierarchic Group" zoom="0.4746782511076754" x="356.0" y="-280.0" />
@@ -1025,8 +1007,8 @@
           <SelectedNodes />
           <Categories>
             <Category>Fields</Category>
-            <Category>Methods</Category>
             <Category>Inner Classes</Category>
+            <Category>Methods</Category>
           </Categories>
           <SCOPE>All</SCOPE>
         </state>
@@ -1229,17 +1211,17 @@
               <point x="193.75" y="133.0" />
               <point x="17.75" y="14.5" />
             </edge>
-            <edge source="experiment.Experiment" target="history.NoddyHistory">
-              <point x="-44.5" y="-14.5" />
-              <point x="131.5" y="212.0" />
-              <point x="83.5" y="212.0" />
-              <point x="0.0" y="14.5" />
-            </edge>
             <edge source="history.NoddyHistory" target="object">
               <point x="0.0" y="-14.5" />
               <point x="83.5" y="133.0" />
               <point x="158.25" y="133.0" />
               <point x="-17.75" y="14.5" />
+            </edge>
+            <edge source="experiment.Experiment" target="history.NoddyHistory">
+              <point x="-44.5" y="-14.5" />
+              <point x="131.5" y="212.0" />
+              <point x="83.5" y="212.0" />
+              <point x="0.0" y="14.5" />
             </edge>
           </edges>
           <settings layout="Hierarchic Group" zoom="1.0" x="-110.0" y="53.0" />
@@ -1295,6 +1277,154 @@
               <point x="988.8058831499945" y="265.59363872545407" />
               <point x="0.0" y="14.5" />
             </edge>
+            <edge source="object" target="_abcoll.Hashable">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="pynoddy.experiment.UncertaintyAnalysis.UncertaintyAnalysis" target="pynoddy.experiment.MonteCarlo.MonteCarlo">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="experiment.util.hive_plot.HivePlot" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="1464.6723809523812" y="-159.2695238095239" />
+              <point x="887.6009523809528" y="-159.2695238095239" />
+              <point x="30.42857142857156" y="14.5" />
+            </edge>
+            <edge source="events.Stratigraphy" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="768.1723809523812" y="-30.26952380952389" />
+              <point x="851.622380952381" y="-30.26952380952389" />
+              <point x="-5.550000000000182" y="14.5" />
+            </edge>
+            <edge source="output.NoddyOutput" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="989.5330769026668" y="145.1132861260695" />
+              <point x="836.886666666667" y="-149.2695238095239" />
+              <point x="-20.28571428571422" y="14.5" />
+            </edge>
+            <edge source="events.Dyke" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1226.1723809523812" y="-50.26952380952389" />
+              <point x="884.9223809523812" y="-50.26952380952389" />
+              <point x="27.75" y="14.5" />
+            </edge>
+            <edge source="output.NoddyTopology" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="1021.6723809523812" y="-139.2695238095239" />
+              <point x="867.3152380952386" y="-139.2695238095239" />
+              <point x="10.142857142857338" y="14.5" />
+            </edge>
+            <edge source="pynoddy.experiment.ResolutionTest.ResolutionTest" target="experiment.Experiment">
+              <point x="0.0" y="-14.5" />
+              <point x="1246.754930769042" y="353.38697205878736" />
+              <point x="1148.0558831499945" y="334.59363872545407" />
+              <point x="66.75" y="14.5" />
+            </edge>
+            <edge source="events.Tilt" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1473.6723809523812" y="-70.26952380952389" />
+              <point x="907.122380952381" y="-70.26952380952389" />
+              <point x="49.94999999999982" y="14.5" />
+            </edge>
+            <edge source="history.NoddyHistory" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="1142.8003510949345" y="124.26202492410766" />
+              <point x="847.0295238095239" y="-139.2695238095239" />
+              <point x="-10.142857142857338" y="14.5" />
+            </edge>
+            <edge source="experiment.Experiment" target="history.NoddyHistory">
+              <point x="44.5" y="-14.5" />
+              <point x="1125.8058831499945" y="265.59363872545407" />
+              <point x="1173.8058831499948" y="265.59363872545407" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="events.Unconformity" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="946.1723809523812" y="-30.26952380952389" />
+              <point x="862.7223809523814" y="-30.26952380952389" />
+              <point x="5.550000000000182" y="14.5" />
+            </edge>
+            <edge source="stochastic_events.StochasticFault" target="stochastic_events.StochasticEvent">
+              <point x="61.25" y="-14.5" />
+              <point x="245.92238095238122" y="48.73047619047611" />
+              <point x="283.6723809523812" y="48.73047619047611" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="experiment.util.LDA.LDA" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="690.3223809523813" y="82.3590476190476" />
+              <point x="826.7438095238099" y="-159.2695238095239" />
+              <point x="-30.42857142857133" y="14.5" />
+            </edge>
+            <edge source="stochastic_events.StochasticEvent" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="283.6723809523812" y="-60.26952380952389" />
+              <point x="818.3223809523813" y="-60.26952380952389" />
+              <point x="-38.84999999999991" y="14.5" />
+            </edge>
+            <edge source="pynoddy.experiment.TopologyAnalysis.ModelRealisation" target="object">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="pynoddy.experiment.MonteCarlo.MonteCarlo" target="experiment.Experiment">
+              <point x="0.0" y="-14.5" />
+              <point x="430.87809523809517" y="307.2066666666667" />
+              <point x="1014.5558831499945" y="334.59363872545407" />
+              <point x="-66.75" y="14.5" />
+            </edge>
+            <edge source="output.NoddyGeophysics" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="1226.1723809523812" y="-149.2695238095239" />
+              <point x="877.4580952380954" y="-149.2695238095239" />
+              <point x="20.28571428571422" y="14.5" />
+            </edge>
+            <edge source="events.Fault" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="85.67238095238122" y="-70.26952380952389" />
+              <point x="807.2223809523812" y="-70.26952380952389" />
+              <point x="-49.950000000000045" y="14.5" />
+            </edge>
+            <edge source="events.Event" target="object">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="events.Plug" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1099.6723809523812" y="-40.26952380952389" />
+              <point x="873.8223809523813" y="-40.26952380952389" />
+              <point x="16.65000000000009" y="14.5" />
+            </edge>
+            <edge source="pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis" target="experiment.Experiment">
+              <point x="0.0" y="-14.5" />
+              <point x="895.133026007137" y="344.59363872545407" />
+              <point x="1059.0558831499945" y="344.59363872545407" />
+              <point x="-22.25" y="14.5" />
+            </edge>
+            <edge source="events.Shear" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="616.1723809523812" y="-40.26952380952389" />
+              <point x="840.5223809523811" y="-40.26952380952389" />
+              <point x="-16.65000000000009" y="14.5" />
+            </edge>
+            <edge source="events.Fold" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="1352.6723809523812" y="-60.26952380952389" />
+              <point x="896.0223809523811" y="-60.26952380952389" />
+              <point x="38.84999999999991" y="14.5" />
+            </edge>
+            <edge source="stochastic_events.StochasticFault" target="events.Fault">
+              <point x="-61.25" y="-14.5" />
+              <point x="123.42238095238122" y="48.73047619047611" />
+              <point x="85.67238095238122" y="48.73047619047611" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="events.Strain" target="events.Event">
+              <point x="0.0" y="-14.5" />
+              <point x="484.1723809523812" y="-50.26952380952389" />
+              <point x="829.4223809523812" y="-50.26952380952389" />
+              <point x="-27.75" y="14.5" />
+            </edge>
             <edge source="pynoddy.experiment.TopologyAnalysis.TopologyAnalysis" target="object">
               <point x="0.0" y="0.0" />
               <point x="0.0" y="0.0" />
@@ -1305,166 +1435,11 @@
               <point x="1103.5558831499945" y="344.59363872545407" />
               <point x="22.25" y="14.5" />
             </edge>
-            <edge source="stochastic_events.StochasticFault" target="events.Fault">
-              <point x="-61.25" y="-14.5" />
-              <point x="123.42238095238122" y="48.73047619047611" />
-              <point x="85.67238095238122" y="48.73047619047611" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="output.NoddyOutput" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="989.5330769026668" y="145.1132861260695" />
-              <point x="836.886666666667" y="-149.2695238095239" />
-              <point x="-20.28571428571422" y="14.5" />
-            </edge>
-            <edge source="events.Fault" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="85.67238095238122" y="-70.26952380952389" />
-              <point x="807.2223809523812" y="-70.26952380952389" />
-              <point x="-49.950000000000045" y="14.5" />
-            </edge>
-            <edge source="stochastic_events.StochasticEvent" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="283.6723809523812" y="-60.26952380952389" />
-              <point x="818.3223809523813" y="-60.26952380952389" />
-              <point x="-38.84999999999991" y="14.5" />
-            </edge>
-            <edge source="events.Dyke" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="1226.1723809523812" y="-50.26952380952389" />
-              <point x="884.9223809523812" y="-50.26952380952389" />
-              <point x="27.75" y="14.5" />
-            </edge>
-            <edge source="events.Event" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="pynoddy.experiment.ResolutionTest.ResolutionTest" target="experiment.Experiment">
-              <point x="0.0" y="-14.5" />
-              <point x="1246.754930769042" y="353.38697205878736" />
-              <point x="1148.0558831499945" y="334.59363872545407" />
-              <point x="66.75" y="14.5" />
-            </edge>
-            <edge source="experiment.util.hive_plot.HivePlot" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="1464.6723809523812" y="-159.2695238095239" />
-              <point x="887.6009523809528" y="-159.2695238095239" />
-              <point x="30.42857142857156" y="14.5" />
-            </edge>
-            <edge source="events.Shear" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="616.1723809523812" y="-40.26952380952389" />
-              <point x="840.5223809523811" y="-40.26952380952389" />
-              <point x="-16.65000000000009" y="14.5" />
-            </edge>
-            <edge source="events.Stratigraphy" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="768.1723809523812" y="-30.26952380952389" />
-              <point x="851.622380952381" y="-30.26952380952389" />
-              <point x="-5.550000000000182" y="14.5" />
-            </edge>
-            <edge source="events.Strain" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="484.1723809523812" y="-50.26952380952389" />
-              <point x="829.4223809523812" y="-50.26952380952389" />
-              <point x="-27.75" y="14.5" />
-            </edge>
-            <edge source="events.Plug" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="1099.6723809523812" y="-40.26952380952389" />
-              <point x="873.8223809523813" y="-40.26952380952389" />
-              <point x="16.65000000000009" y="14.5" />
-            </edge>
-            <edge source="output.NoddyGeophysics" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="1226.1723809523812" y="-149.2695238095239" />
-              <point x="877.4580952380954" y="-149.2695238095239" />
-              <point x="20.28571428571422" y="14.5" />
-            </edge>
-            <edge source="experiment.Experiment" target="history.NoddyHistory">
-              <point x="44.5" y="-14.5" />
-              <point x="1125.8058831499945" y="265.59363872545407" />
-              <point x="1173.8058831499948" y="265.59363872545407" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="pynoddy.experiment.MonteCarlo.MonteCarlo" target="experiment.Experiment">
-              <point x="0.0" y="-14.5" />
-              <point x="430.87809523809517" y="307.2066666666667" />
-              <point x="1014.5558831499945" y="334.59363872545407" />
-              <point x="-66.75" y="14.5" />
-            </edge>
-            <edge source="history.NoddyHistory" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="1142.8003510949345" y="124.26202492410766" />
-              <point x="847.0295238095239" y="-139.2695238095239" />
-              <point x="-10.142857142857338" y="14.5" />
-            </edge>
-            <edge source="events.Fold" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="1352.6723809523812" y="-60.26952380952389" />
-              <point x="896.0223809523811" y="-60.26952380952389" />
-              <point x="38.84999999999991" y="14.5" />
-            </edge>
-            <edge source="experiment.util.LDA.LDA" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="690.3223809523813" y="82.3590476190476" />
-              <point x="826.7438095238099" y="-159.2695238095239" />
-              <point x="-30.42857142857133" y="14.5" />
-            </edge>
-            <edge source="output.NoddyTopology" target="object">
-              <point x="0.0" y="-14.5" />
-              <point x="1021.6723809523812" y="-139.2695238095239" />
-              <point x="867.3152380952386" y="-139.2695238095239" />
-              <point x="10.142857142857338" y="14.5" />
-            </edge>
-            <edge source="events.Unconformity" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="946.1723809523812" y="-30.26952380952389" />
-              <point x="862.7223809523814" y="-30.26952380952389" />
-              <point x="5.550000000000182" y="14.5" />
-            </edge>
-            <edge source="pynoddy.experiment.SensitivityAnalysis.SensitivityAnalysis" target="experiment.Experiment">
-              <point x="0.0" y="-14.5" />
-              <point x="895.133026007137" y="344.59363872545407" />
-              <point x="1059.0558831499945" y="344.59363872545407" />
-              <point x="-22.25" y="14.5" />
-            </edge>
-            <edge source="object" target="_abcoll.Hashable">
-              <point x="0.0" y="-14.5" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="stochastic_events.StochasticFault" target="stochastic_events.StochasticEvent">
-              <point x="61.25" y="-14.5" />
-              <point x="245.92238095238122" y="48.73047619047611" />
-              <point x="283.6723809523812" y="48.73047619047611" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="pynoddy.experiment.UncertaintyAnalysis.UncertaintyAnalysis" target="pynoddy.experiment.MonteCarlo.MonteCarlo">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="events.Tilt" target="events.Event">
-              <point x="0.0" y="-14.5" />
-              <point x="1473.6723809523812" y="-70.26952380952389" />
-              <point x="907.122380952381" y="-70.26952380952389" />
-              <point x="49.94999999999982" y="14.5" />
-            </edge>
-            <edge source="pynoddy.experiment.TopologyAnalysis.ModelRealisation" target="object">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
           </edges>
           <settings layout="Hierarchic Group" zoom="0.4746782511076754" x="356.0" y="-280.0" />
           <SelectedNodes />
           <Categories />
           <SCOPE>All</SCOPE>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/uncertainty_analysis.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.022488756">
-          <caret line="76" column="14" selection-start-line="76" selection-start-column="14" selection-end-line="76" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -1474,46 +1449,14 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
-      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../examples/GBasin_Ve1_V5.his">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/monte_carlo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="45" selection-start-line="21" selection-start-column="45" selection-end-line="21" selection-end-column="45" />
-          <folding>
-            <element signature="e#93#103#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/experiment/util/sampling.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
           <folding>
-            <element signature="e#274#292#0" expanded="true" />
+            <element signature="e#274#292#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/events.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="119" column="30" selection-start-line="119" selection-start-column="30" selection-end-line="119" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1537,9 +1480,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="37" column="40" selection-start-line="37" selection-start-column="40" selection-end-line="37" selection-end-column="40" />
-          <folding>
-            <element signature="e#261#270#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1553,10 +1494,60 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/uncertainty_analysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="47" column="98" selection-start-line="47" selection-start-column="98" selection-end-line="47" selection-end-column="98" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../examples/GBasin_Ve1_V5.his">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/monte_carlo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="45" selection-start-line="21" selection-start-column="45" selection-end-line="21" selection-end-column="45" />
+          <folding>
+            <element signature="e#93#103#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/events.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="418" column="33" selection-start-line="418" selection-start-column="33" selection-end-line="418" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/history.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55772114">
-          <caret line="691" column="89" selection-start-line="691" selection-start-column="89" selection-end-line="691" selection-end-column="89" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="947" column="6" selection-start-line="947" selection-start-column="6" selection-end-line="947" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../docs/notebooks/listric_rollover.his">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../docs/notebooks/listric_example.his">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42570952">
+          <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
           <folding />
         </state>
       </provider>

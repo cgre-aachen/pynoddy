@@ -402,7 +402,9 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
             - *resolution* = float : set resolution for section (default: self.cube_size)
             - *model_type* = 'current', 'base' : model type (base "freezed" model can be plotted for comparison)
             - *compute_output* = bool : provide output from command line call (default: True)
+            - *remove_tmp_files* = bool : remove temporary files (default: True)
         """
+        remove_tmp_files = kwds.get("remove_tmp_files", True)
         compute_output = kwds.get("compute_output", True)
         self.get_cube_size()
         self.get_extent()
@@ -454,19 +456,52 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
         # 4. run noddy
         import pynoddy.output
 
+
+
         pynoddy.compute_model(tmp_his_file, tmp_out_file, output=compute_output)
         # 5. open output
-        tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)
-        # 6. 
+        i = 0
+        while not 'tmp_out' in locals():
+            i += 1
+            pynoddy.compute_model(tmp_his_file, tmp_out_file, output=compute_output)
+            try:
+                tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)
+            except IOError:  # try again
+                pass
+
+            # just in case break statement:
+            if i > 20:
+                raise IOError
+
+            #     # print("Try again")
+            # pynoddy.compute_model(tmp_his_file, tmp_out_file, output=compute_output)
+            # try:
+            #     tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)
+            # except IOError: # and again
+            #     # print("and again...")
+            #     pynoddy.compute_model(tmp_his_file, tmp_out_file, output=compute_output)
+            #     try:
+            #         tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)
+            #     except IOError:
+            #         # print("and again...")
+            #         pynoddy.compute_model(tmp_his_file, tmp_out_file, output=compute_output)
+            #         try:
+            #             tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)
+            #         except IOError:
+            #             # print("and again...")
+            #             pynoddy.compute_model(tmp_his_file, tmp_out_file, output=compute_output)
+
+        # 6.
         #         tmp_out.plot_section(direction = direction, player_labels = self.model_stratigraphy, **kwds)
         # return tmp_out.block
 
         # remove temorary file
         # find all files that match base name of output file (depends on Noddy compute type!)
         import os
-        for f in os.listdir('.'):
-            if os.path.splitext(f)[0] == tmp_out_file:
-                os.remove(f)
+        if remove_tmp_files:
+            for f in os.listdir('.'):
+                if os.path.splitext(f)[0] == tmp_out_file:
+                    os.remove(f)
 
         return tmp_out
 

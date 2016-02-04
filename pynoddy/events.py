@@ -69,8 +69,15 @@ class Stratigraphy(Event):
         """Sedimentary pile with defined stratigraphy
         
         """
+        # initialise variables
+        self.properties = {}
+        self.property_lines = {} # required to reassign properties later!
+        self.layer_names = []
+        self.num_layers = 0
+        self.event_lines = []
+
         # iterate through lines and determine attributes
-        if kwds.has_key("lines") :
+        if kwds.has_key("lines"):
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
        
@@ -81,15 +88,35 @@ class Stratigraphy(Event):
             - *lines* = list of lines : lines with event information (as stored in .his file)         
         """
         self.event_lines = lines
-        # self.properties = {}
         self.num_layers = int(self.event_lines[1].split("=")[1])
         # determine layer names:
-        self.layer_names = []
         for line in lines:
             l = line.split("=")
             if "Unit Name" in l[0]: 
                 self.layer_names.append(l[1].rstrip())
-            
+        geometry_info_finished = False
+
+        for i, line in enumerate(lines):
+            l = line.split("=")
+            # print("Load event properties")
+            if "Event #" in line: continue
+            # if "Name" in line:
+            #     finished with parsing events
+                # geometry_info_finished = True
+            if not geometry_info_finished:
+                # parse events
+                # convert value to float if it is not a string
+                value = l[1].strip()
+                try:
+                    value = float(value)
+                except ValueError:
+                    # not a number, so just keep float
+                    pass
+                self.properties[l[0].strip()] = value
+                self.property_lines[l[0].strip()] = i
+
+
+
 class Fold(Event):
     """Folding event
     
@@ -99,7 +126,7 @@ class Fold(Event):
         """Folding event
         
         """
-        if kwds.has_key("lines") :
+        if kwds.has_key("lines"):
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
             

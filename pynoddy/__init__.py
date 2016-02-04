@@ -97,10 +97,16 @@ def compute_model(history, output_name, **kwds):
         out += subprocess.Popen([noddy_path + ".exe", history, output_name, sim_type],
                                 shell=False, stderr=subprocess.PIPE,
                                 stdout=subprocess.PIPE).stdout.read()
+        subprocess.Popen.communicate()
     except OSError:  # obviously not running windows - try just the binary
-        out += subprocess.Popen([noddy_path, history, output_name, sim_type],
-                                shell=False, stderr=subprocess.PIPE,
-                                stdout=subprocess.PIPE).stdout.read()
+        # out += subprocess.Popen([noddy_path, history, output_name, sim_type],
+        #                         shell=False, stderr=subprocess.PIPE,
+        #                         stdout=subprocess.PIPE).stdout.read()
+        p1 = subprocess.Popen([noddy_path, history, output_name, sim_type],
+                                 shell=False, stdout=subprocess.PIPE)
+        subprocess.Popen.wait(p1)
+
+        # out += open(p1.stdout).readlines()
 
     # Thought: Is there any reason compute_topology should not be called here if sim_type == "TOPOLOGY"???
     # It could simplify things a lot....
