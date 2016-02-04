@@ -27,6 +27,9 @@ docs/notebooks/*dxf
 docs/notebooks/*grv
 docs/notebooks/*mag
 
+docs/notebooks/*pkl
+docs/notebooks/*zip
+
 # C extensions
 *.so
 
@@ -77,3 +80,8 @@ pynoddy/noddyBatchProgress.txt
 docs/notebooks/parameters_thread0.csv
 docs/notebooks/parameters_thread2.csv
 *.pkl
+.idea
+docs/5-Geophysical-Potential-Fields_files
+docs/2-Adjust-input_files
+1-Simulation_14_0.png
+docs/bak

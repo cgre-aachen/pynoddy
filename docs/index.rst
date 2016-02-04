@@ -23,6 +23,7 @@ Contents:
    notebooks/7-Gippsland-Basin-Uncertainty
    notebooks/8-Sensitivity-Analysis
    notebooks/9-Topology
+   notebooks/10-Fault-Shapes
 
    pynoddy
 

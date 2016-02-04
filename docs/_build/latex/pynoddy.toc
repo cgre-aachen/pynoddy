@@ -1,78 +1,69 @@
 \select@language {english}
 \contentsline {chapter}{\numberline {1}pynoddy}{3}{chapter.1}
 \contentsline {section}{\numberline {1.1}How does it work?}{3}{section.1.1}
-\contentsline {section}{\numberline {1.2}Installation of \texttt {pynoddy}}{3}{section.1.2}
-\contentsline {subsection}{\numberline {1.2.1}Installing from the github repository}{3}{subsection.1.2.1}
-\contentsline {subsection}{\numberline {1.2.2}Installation from Python Package Index}{4}{subsection.1.2.2}
-\contentsline {section}{\numberline {1.3}Installation of the command line program \texttt {Noddy}}{4}{section.1.3}
-\contentsline {subsection}{\numberline {1.3.1}Using a pre-compiled version of \texttt {Noddy}}{4}{subsection.1.3.1}
-\contentsline {subsection}{\numberline {1.3.2}Compiling \texttt {Noddy} from source files (recommended)}{4}{subsection.1.3.2}
-\contentsline {subsection}{\numberline {1.3.3}Placing \texttt {Noddy} in the Path}{4}{subsection.1.3.3}
-\contentsline {subsection}{\numberline {1.3.4}Specifying path during \texttt {pynoddy} execution}{5}{subsection.1.3.4}
-\contentsline {section}{\numberline {1.4}Testing the installation}{5}{section.1.4}
-\contentsline {subsection}{\numberline {1.4.1}Testing \texttt {Noddy}}{5}{subsection.1.4.1}
-\contentsline {subsection}{\numberline {1.4.2}Testing \texttt {pynoddy}}{5}{subsection.1.4.2}
-\contentsline {section}{\numberline {1.5}Noddy executable and GUI}{6}{section.1.5}
-\contentsline {section}{\numberline {1.6}Documentation}{6}{section.1.6}
-\contentsline {section}{\numberline {1.7}How to get started: tutorial notebooks}{6}{section.1.7}
-\contentsline {section}{\numberline {1.8}Dependencies}{6}{section.1.8}
-\contentsline {section}{\numberline {1.9}3-D Visualisation}{6}{section.1.9}
-\contentsline {section}{\numberline {1.10}License}{7}{section.1.10}
-\contentsline {section}{\numberline {1.11}What is Noddy?}{7}{section.1.11}
-\contentsline {section}{\numberline {1.12}References}{8}{section.1.12}
-\contentsline {chapter}{\numberline {2}pynoddy.noddy module}{9}{chapter.2}
-\contentsline {chapter}{\numberline {3}Simulation of a Noddy history and visualisation of output}{11}{chapter.3}
-\contentsline {section}{\numberline {3.1}Compute the model}{11}{section.3.1}
-\contentsline {section}{\numberline {3.2}Loading Noddy output files}{12}{section.3.2}
-\contentsline {section}{\numberline {3.3}Plotting sections through the model}{12}{section.3.3}
-\contentsline {section}{\numberline {3.4}Export model to VTK}{12}{section.3.4}
-\contentsline {chapter}{\numberline {4}Change Noddy input file and recompute model}{15}{chapter.4}
-\contentsline {section}{\numberline {4.1}Get basic information on the model}{16}{section.4.1}
-\contentsline {section}{\numberline {4.2}Change model cube size and recompute model}{16}{section.4.2}
-\contentsline {section}{\numberline {4.3}Estimating computation time for a high-resolution model}{17}{section.4.3}
-\contentsline {section}{\numberline {4.4}Simple convergence study}{20}{section.4.4}
-\contentsline {chapter}{\numberline {5}Geological events in pynoddy: organisation and adpatiation}{23}{chapter.5}
-\contentsline {section}{\numberline {5.1}Loading events from a Noddy history}{23}{section.5.1}
-\contentsline {section}{\numberline {5.2}Changing aspects of geological events}{24}{section.5.2}
-\contentsline {section}{\numberline {5.3}Changing the order of geological events}{25}{section.5.3}
-\contentsline {section}{\numberline {5.4}Determining the stratigraphic difference between two models}{26}{section.5.4}
-\contentsline {chapter}{\numberline {6}Creating a model from scratch}{29}{chapter.6}
-\contentsline {section}{\numberline {6.1}Defining a stratigraphy}{29}{section.6.1}
-\contentsline {section}{\numberline {6.2}Add a fault event}{30}{section.6.2}
-\contentsline {section}{\numberline {6.3}Complete Model Set-up}{32}{section.6.3}
-\contentsline {chapter}{\numberline {7}Read and Visualise Geophysical Potential-Fields}{35}{chapter.7}
-\contentsline {section}{\numberline {7.1}Read history file from Virtual Explorer}{35}{section.7.1}
-\contentsline {section}{\numberline {7.2}Visualise calculated geophysical fields}{37}{section.7.2}
-\contentsline {section}{\numberline {7.3}Change history and compare gravity}{37}{section.7.3}
-\contentsline {section}{\numberline {7.4}Figure with all results}{42}{section.7.4}
-\contentsline {chapter}{\numberline {8}Reproducible Experiments with pynoddy}{45}{chapter.8}
-\contentsline {section}{\numberline {8.1}Defining an experiment}{45}{section.8.1}
-\contentsline {section}{\numberline {8.2}Loading an example model from the Atlas of Structural Geophysics}{46}{section.8.2}
-\contentsline {chapter}{\numberline {9}Gippsland Basin Uncertainty Study}{51}{chapter.9}
-\contentsline {section}{\numberline {9.1}The Gippsland Basin Model}{51}{section.9.1}
-\contentsline {section}{\numberline {9.2}Generate randomised model realisations}{52}{section.9.2}
-\contentsline {section}{\numberline {9.3}Exporting results to VTK for visualisation}{53}{section.9.3}
-\contentsline {chapter}{\numberline {10}Sensitivity Analysis}{55}{chapter.10}
-\contentsline {section}{\numberline {10.1}Theory: local sensitivity analysis}{55}{section.10.1}
-\contentsline {section}{\numberline {10.2}Defining the responses}{55}{section.10.2}
-\contentsline {section}{\numberline {10.3}Setting up the base model}{56}{section.10.3}
-\contentsline {section}{\numberline {10.4}Define parameter uncertainties}{57}{section.10.4}
-\contentsline {section}{\numberline {10.5}Calculate total stratigraphic distance}{58}{section.10.5}
-\contentsline {section}{\numberline {10.6}Function to modify parameters}{58}{section.10.6}
-\contentsline {section}{\numberline {10.7}Full sensitivity analysis}{59}{section.10.7}
-\contentsline {chapter}{\numberline {11}Simulation of a Noddy history and analysis of its voxel topology}{63}{chapter.11}
-\contentsline {section}{\numberline {11.1}Compute the model}{63}{section.11.1}
-\contentsline {section}{\numberline {11.2}Loading Topology output files}{64}{section.11.2}
-\contentsline {chapter}{\numberline {12}Pynoddy modules, classes and functions}{67}{chapter.12}
-\contentsline {section}{\numberline {12.1}Basic modules (low-level access)}{67}{section.12.1}
-\contentsline {subsection}{\numberline {12.1.1}Main module}{67}{subsection.12.1.1}
-\contentsline {subsection}{\numberline {12.1.2}History file parser: pynoddy.history}{68}{subsection.12.1.2}
-\contentsline {subsection}{\numberline {12.1.3}Output file parser: pynoddy.output}{71}{subsection.12.1.3}
-\contentsline {subsection}{\numberline {12.1.4}Additional useful classes}{77}{subsection.12.1.4}
-\contentsline {subsubsection}{pynoddy.events}{77}{subsubsection*.76}
-\contentsline {section}{\numberline {12.2}Modules for Kinematic experiments}{79}{section.12.2}
-\contentsline {subsection}{\numberline {12.2.1}Base classes for pynoddy experiments}{79}{subsection.12.2.1}
-\contentsline {subsection}{\numberline {12.2.2}MonteCarlo class}{82}{subsection.12.2.2}
-\contentsline {subsection}{\numberline {12.2.3}SensitivityAnalysis class}{82}{subsection.12.2.3}
-\contentsline {chapter}{Python Module Index}{83}{section*.120}
-\contentsline {chapter}{Index}{85}{section*.121}
+\contentsline {section}{\numberline {1.2}Installation of the \texttt {pynoddy} package}{3}{section.1.2}
+\contentsline {section}{\numberline {1.3}Installation of \texttt {Noddy}}{3}{section.1.3}
+\contentsline {section}{\numberline {1.4}Documentation}{4}{section.1.4}
+\contentsline {section}{\numberline {1.5}How to get started: tutorial notebooks}{4}{section.1.5}
+\contentsline {section}{\numberline {1.6}Dependencies}{4}{section.1.6}
+\contentsline {section}{\numberline {1.7}3-D Visualisation}{5}{section.1.7}
+\contentsline {section}{\numberline {1.8}License}{5}{section.1.8}
+\contentsline {section}{\numberline {1.9}What is Noddy?}{5}{section.1.9}
+\contentsline {section}{\numberline {1.10}References}{6}{section.1.10}
+\contentsline {chapter}{\numberline {2}pynoddy.noddy module}{7}{chapter.2}
+\contentsline {chapter}{\numberline {3}Simulation of a Noddy history and visualisation of output}{9}{chapter.3}
+\contentsline {section}{\numberline {3.1}Compute the model}{9}{section.3.1}
+\contentsline {section}{\numberline {3.2}Loading Noddy output files}{10}{section.3.2}
+\contentsline {section}{\numberline {3.3}Plotting sections through the model}{10}{section.3.3}
+\contentsline {section}{\numberline {3.4}Export model to VTK}{10}{section.3.4}
+\contentsline {chapter}{\numberline {4}Change Noddy input file and recompute model}{13}{chapter.4}
+\contentsline {section}{\numberline {4.1}Get basic information on the model}{14}{section.4.1}
+\contentsline {section}{\numberline {4.2}Change model cube size and recompute model}{14}{section.4.2}
+\contentsline {section}{\numberline {4.3}Estimating computation time for a high-resolution model}{15}{section.4.3}
+\contentsline {section}{\numberline {4.4}Simple convergence study}{19}{section.4.4}
+\contentsline {chapter}{\numberline {5}Geological events in pynoddy: organisation and adpatiation}{21}{chapter.5}
+\contentsline {section}{\numberline {5.1}Loading events from a Noddy history}{21}{section.5.1}
+\contentsline {section}{\numberline {5.2}Changing aspects of geological events}{22}{section.5.2}
+\contentsline {section}{\numberline {5.3}Changing the order of geological events}{23}{section.5.3}
+\contentsline {section}{\numberline {5.4}Determining the stratigraphic difference between two models}{24}{section.5.4}
+\contentsline {chapter}{\numberline {6}Creating a model from scratch}{27}{chapter.6}
+\contentsline {section}{\numberline {6.1}Defining a stratigraphy}{27}{section.6.1}
+\contentsline {section}{\numberline {6.2}Add a fault event}{28}{section.6.2}
+\contentsline {section}{\numberline {6.3}Complete Model Set-up}{30}{section.6.3}
+\contentsline {chapter}{\numberline {7}Read and Visualise Geophysical Potential-Fields}{33}{chapter.7}
+\contentsline {section}{\numberline {7.1}Read history file from Virtual Explorer}{33}{section.7.1}
+\contentsline {section}{\numberline {7.2}Visualise calculated geophysical fields}{34}{section.7.2}
+\contentsline {section}{\numberline {7.3}Change history and compare gravity}{35}{section.7.3}
+\contentsline {section}{\numberline {7.4}Figure with all results}{40}{section.7.4}
+\contentsline {chapter}{\numberline {8}Reproducible Experiments with pynoddy}{41}{chapter.8}
+\contentsline {section}{\numberline {8.1}Defining an experiment}{41}{section.8.1}
+\contentsline {section}{\numberline {8.2}Loading an example model from the Atlas of Structural Geophysics}{42}{section.8.2}
+\contentsline {chapter}{\numberline {9}Gippsland Basin Uncertainty Study}{47}{chapter.9}
+\contentsline {section}{\numberline {9.1}The Gippsland Basin Model}{47}{section.9.1}
+\contentsline {section}{\numberline {9.2}Generate randomised model realisations}{48}{section.9.2}
+\contentsline {section}{\numberline {9.3}Exporting results to VTK for visualisation}{48}{section.9.3}
+\contentsline {chapter}{\numberline {10}Sensitivity Analysis}{51}{chapter.10}
+\contentsline {section}{\numberline {10.1}Theory: local sensitivity analysis}{51}{section.10.1}
+\contentsline {section}{\numberline {10.2}Defining the responses}{51}{section.10.2}
+\contentsline {section}{\numberline {10.3}Setting up the base model}{52}{section.10.3}
+\contentsline {section}{\numberline {10.4}Define parameter uncertainties}{53}{section.10.4}
+\contentsline {section}{\numberline {10.5}Calculate total stratigraphic distance}{54}{section.10.5}
+\contentsline {section}{\numberline {10.6}Function to modify parameters}{54}{section.10.6}
+\contentsline {section}{\numberline {10.7}Full sensitivity analysis}{55}{section.10.7}
+\contentsline {chapter}{\numberline {11}Simulation of a Noddy history and analysis of its voxel topology}{59}{chapter.11}
+\contentsline {section}{\numberline {11.1}Compute the model}{59}{section.11.1}
+\contentsline {section}{\numberline {11.2}Loading Topology output files}{60}{section.11.2}
+\contentsline {chapter}{\numberline {12}Fault shapes}{63}{chapter.12}
+\contentsline {chapter}{\numberline {13}Pynoddy modules, classes and functions}{65}{chapter.13}
+\contentsline {section}{\numberline {13.1}Basic modules (low-level access)}{65}{section.13.1}
+\contentsline {subsection}{\numberline {13.1.1}Main module}{65}{subsection.13.1.1}
+\contentsline {subsection}{\numberline {13.1.2}History file parser: pynoddy.history}{66}{subsection.13.1.2}
+\contentsline {subsection}{\numberline {13.1.3}Output file parser: pynoddy.output}{69}{subsection.13.1.3}
+\contentsline {subsection}{\numberline {13.1.4}Additional useful classes}{75}{subsection.13.1.4}
+\contentsline {subsubsection}{pynoddy.events}{75}{subsubsection*.87}
+\contentsline {section}{\numberline {13.2}Modules for Kinematic experiments}{77}{section.13.2}
+\contentsline {subsection}{\numberline {13.2.1}Base classes for pynoddy experiments}{77}{subsection.13.2.1}
+\contentsline {subsection}{\numberline {13.2.2}MonteCarlo class}{80}{subsection.13.2.2}
+\contentsline {subsection}{\numberline {13.2.3}SensitivityAnalysis class}{80}{subsection.13.2.3}
+\contentsline {chapter}{Python Module Index}{81}{section*.131}
+\contentsline {chapter}{Index}{83}{section*.132}
