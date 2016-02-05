@@ -138,6 +138,7 @@ or (depending on your compilation or naming convention):
 
 Which should produce the general output:
 
+```
 Arguments <historyfile> <outputfile> <calc_mode>:
 BLOCK
 GEOPHYSICS
@@ -147,6 +148,7 @@ BLOCK_SURFACES
 TOPOLOGY
 ANOM_FROM_BLOCK
 ALL
+```
 
 Note: if the executable is correctly placed in a folder which is
 recognised by the (Environment) path variable, then you should be able
