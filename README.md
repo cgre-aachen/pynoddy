@@ -1,21 +1,33 @@
 pynoddy
 =======
 
-``pynoddy`` is a python package to write, change, and analyse kinematic geological modelling simulations performed with Noddy (see below for more information on Noddy).
+What is ``pynoddy``
+-------------------
 
-How does it work?
------------------
+``pynoddy`` is a python package to write, change, and analyse kinematic geological modelling simulations.  It provides methods to define, load, modify, and safe kinematic models for simulation with ``Noddy``. In addition, the package contains an extensive range for postprocessing of results. One main aspect of ``pynoddy`` is that it enables the encapsulation of full scientific kinematic modelling experiments for full reproducibility of results.
 
-``pynoddy`` provides methods to define, load, modify, and safe kinematic models for simulation with ``Noddy``. In addition, the package contains an extensive range for postprocessing of results. One main aspect of ``pynoddy`` is that it enables the encapsulation of full scientific kinematic modelling experiments for full reproducibility of results.
+What is Noddy?
+-------------
+
+Noddy itself is a kinematic modelling program written by Mark Jessell [1][2] to simulate the effect of subsequent geological events (folding, unconformities, faulting, etc.) on a primary sedimentary pile. A typical example would be:
+
+1. Create a sedimentary pile with defined thicknesses for multiple formations
+2. Add a folding event (for example simple sinoidal folding, but complex methods are possible!)
+3. Add an unconformity and, above it, a new stratigraphy
+4. Finally, add a sequence of late faults affecting the entire system.
+
+The result could look something like this:
+
+.. image:: docs/pics/noddy_block_example.png
+
+Installation of the ``pynoddy`` package
+-------------------------------------------
+
 
 A successful installation of ``pynoddy`` requires two steps:
 
 1. An installation of the python modules in the package ``pynoddy``
 2. The existance of an executable `Noddy(.exe)` program
-
-
-Installation of the ``pynoddy`` package
--------------------------------------------
 
 Installation of the first part is straight-forward:
 
@@ -45,27 +57,160 @@ Installation of ``Noddy``
 
 ``Noddy`` is a command line program, written in C, that performs the kinematic simulation itself. The program compilation is platform dependent, and therefore several ways for installation are possible (see below information for specific platforms).
 
-The C-code for Noddy itself is also part of the ``pynoddy`` repository.
+Using a pre-compiled version of ``Noddy``
+-----------
 
-**Windows**: An executeable version of the command line program is available for download .
+The easy way to obtain a executable version of ``Noddy`` is simply
+to download the appropriate version for your operating
+system. Currently, these executables versions are also stored on
+github (check the up-to-date online documentation if this should not
+anymore be the case) in the directory:
 
-**MacOSX**: Compile from source (using gcc):
+https://github.com/flohorovicic/pynoddy/tree/master/noddyapp
 
-- go to directory pynoddy/noddy (contains source files)
-- run ./adjust_for_MacOSX.sh
-- run ./compile.sh
+Furthermore, the executables for Windows are also available for
+download on the webpage:
 
-**Linux**:  Compile from source (using gcc):
+http://www.tectonique.net/pynoddy
 
-- go to directory pynoddy/noddy (contains source files)
-- run ./compile.sh
+Download the appropriate app, rename it to ``noddy`` or
+``noddy.exe``  and place it into a folder that is in
+your local environment path variable. If you are not sure if a folder
+is in the ``PATH`` or would like to add new one, see
+below for more information.
+
+Compiling ``Noddy`` from source files (recommended installation)
+--------------
+
+The source code for the executable ``Noddy`` is located in the repository
+directory ``noddy``. In order to perform the
+installation, a ``gcc`` compiler is required. This compiler
+should be available on Linux and MacOSX operating systems. On Windows,
+one possibility is to install MinGW. Otherwise, the code requires no
+specific libraries.
+
+Note for MacOSX users: some header files have to be adapted to avoid
+conflicts with local libraries. The required adaptations are executed
+when running the script:
+
+	> adjust_for_MacOSX.sh
+
+The compilation is then performed (in a Linux, MacOSX, or Windows
+MinGW terminal) with the command:
+
+	> compile.sh
+
+Compilation usually produces multiple warnings, but should otherwise
+proceed successfully. 
+
+Placing the executable ``noddy`` in the Path
+-----------
+
+For the most general installation, the executable of ``Noddy``
+should be placed in a folder that can be located from any terminal
+application in the system. This (usually) means that the folder with
+the executable has to be in the ``PATH`` environment
+variable. On Linux and MacOSX, a path can simply be added by:
+
+	> export PATH="path/to/executable/:\$PATH"
+
+Note that this command should be placed into your
+.bash_profile file to ensure that the path is added whenever
+you start a new Python script.
+
+On ``windows``, adding a folder to the local environment variable
+``Path`` is usually done through the System Control Panel 
+(Start - Settings - Control Panel - System). in Advanced mode, open
+the Environment Variables sub-menu, and find the variable Path. Click
+to edit the variable, and add the location of your folder to this path.
+
+Testing ``noddy``
+------------
+
+Simply test the installation by running the generated (or downloaded)
+executable in a terminal window (on Windows: ``cmd``):
+
+	> noddy
+
+or (depending on your compilation or naming convention):
+
+	> noddy.exe
+
+Which should produce the general output:
+
+Arguments <historyfile> <outputfile> <calc_mode>:
+BLOCK
+GEOPHYSICS
+SURFACES
+BLOCK_GEOPHYS
+BLOCK_SURFACES
+TOPOLOGY
+ANOM_FROM_BLOCK
+ALL
+
+Note: if the executable is correctly placed in a folder which is
+recognised by the (Environment) path variable, then you should be able
+to run ``Noddy`` from any directory. If this is not the case,
+please check if it is correctly placed in the path (see above).
+
+Testing ``pynoddy``
+----------
+
+
+The ``pynoddy`` package contains a set of tests which can be
+executed in the standard Python testing environment. If you cloned or
+downloaded the repository, then these tests can directly be performed
+through the setup script:
+
+	> python setup.py test
+
+Of specific relevance is the test that determines if the
+``noddy(.exe)`` executable is correctly accessible from
+``pynoddy``. If this is the case, then the
+``compute_model`` test should return:
+
+	test_compute_model (test.TestHistory) ... ok}
+
+If this test is not ok, then please check carefully the installation
+of the ``noddy(.exe)`` executable.
+
+If all tests are successful, **you are ready to go!**
+
+Noddy executable and GUI for Windows
+---------------
+
+The original graphical user interface for ``Noddy`` and the compiled
+executable program for Windows can be obtained from:
+
+\url{http://tinyurl.com/noddy-site}
+
+This site also contains the
+source code, as well as extensive documentation and tutorial material
+concerning the original implementation of the software, as well as
+more technical details on the modelling method itself.
+
+The Atlas of Strutural Geophysics
+-------------
+
+The Atlas of Structural Geophysics contains a collection of structural
+models, together with their expression as geophysical potential fields
+(gravity and magnetics), with a focus on guiding the interpretation of
+observed features in potential-field maps. 
+
+The atlas is currently available on:
+
+http://tectonique.net/asg
+
+The structural models are
+created with Noddy and the history files can be downloaded from the
+atlas. Models from this Atlas can directly be loaded with ``pynoddy``. See example notebooks and documentation for more details.
 
 Documentation
 -------------
 
-Documentation is available within the ``pynoddy`` repository (pynoddy/docs). 
+An updated version of the documentation is available within the ``pynoddy`` repository (pynoddy/docs). 
 
-In addition, an up-to-date online html version of the documentation is also hosted on readthedocs:
+In addition, an online html version of the documentation is also hosted on readthedocs:
 
 http://pynoddy.readthedocs.org
 
@@ -81,8 +226,6 @@ The notebooks require an installed Jupyter notebook. More information here:
 https://jupyter.org
 
 The notebook can be installed via ``pip`` or ``conda``.
-
-
 
 Dependencies
 ------------
@@ -122,21 +265,6 @@ What is Noddy?
 -------------
 
 Noddy itself is a kinematic modelling program written by Mark Jessell [1][2] to simulate the effect of subsequent geological events (folding, unconformities, faulting, etc.) on a primary sedimentary pile. A typical example would be:
-
-1. Create a sedimentary pile with defined thicknesses for multiple formations
-2. Add a folding event (for example simple sinoidal folding, but complex methods are possible!)
-3. Add an unconformity and, above it, a new stratigraphy
-4. Finally, add a sequence of late faults affecting the entire system.
-
-The result could look something like this:
-
-.. image:: docs/pics/noddy_block_example.png
-
-The software runs on Windows only, but the source files (written in C) are available for download to generate a command line version of the modelling step alone:
-
-https://github.com/flohorovicic/pynoddy
-
-It has been tested and compiled on MacOSX, Windows and Linux.
 
 References
 ----------
