@@ -184,7 +184,7 @@ Noddy executable and GUI for Windows
 The original graphical user interface for ``Noddy`` and the compiled
 executable program for Windows can be obtained from:
 
-\url{http://tinyurl.com/noddy-site}
+http://tinyurl.com/noddy-site
 
 This site also contains the
 source code, as well as extensive documentation and tutorial material
@@ -272,6 +272,7 @@ References
 ----------
 
 [1] Mark W. Jessell. Noddy, an interactive map creation package. Unpublished MSc Thesis, University of London. 1981.
+
 [2] Mark W. Jessell, Rick K. Valenta, Structural geophysics: Integrated structural and geophysical modelling, In: Declan G. De Paor, Editor(s), Computer Methods in the Geosciences, Pergamon, 1996, Volume 15, Pages 303-324, ISSN 1874-561X, ISBN 9780080424309, http://dx.doi.org/10.1016/S1874-561X(96)80027-7.
 
 
