@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  4 FEB 2016 10:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  5 FEB 2016 22:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -892,7 +892,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 128--128
 
  []
 
-<pynoddy_logo_3.pdf, id=246, 544.83984pt x 172.29814pt>
+<pynoddy_logo_3.pdf, id=286, 544.83984pt x 172.29814pt>
 File: pynoddy_logo_3.pdf Graphic file (type pdf)
 
 <use pynoddy_logo_3.pdf>
@@ -925,13 +925,13 @@ dy_logo_3.pdf>] [2
 ] (./pynoddy.toc
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 2.
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 4.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 3.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 41.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 43.
  [1
 
 ])
@@ -946,9 +946,9 @@ LaTeX Font Info:    Try loading font information for TS1+ptm on input line 140.
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 147.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 144.
 
-Overfull \hbox (14.79999pt too wide) in paragraph at lines 177--177
+Overfull \hbox (14.79999pt too wide) in paragraph at lines 207--207
  [] 
  []
 
@@ -959,594 +959,584 @@ Overfull \hbox (14.79999pt too wide) in paragraph at lines 177--177
 ]
 Chapter 1.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 180.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 210.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 180.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 210.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 180.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 210.
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 206.
-[3] [4] <noddy_block_example.png, id=398, 856.19875pt x 533.995pt>
-File: noddy_block_example.png Graphic file (type png)
-
-<use noddy_block_example.png>
-Package pdftex.def Info: noddy_block_example.png used on input line 383.
-(pdftex.def)             Requested size: 856.19666pt x 533.9937pt.
-File: noddy_block_example.png Graphic file (type png)
- <use noddy_block_example.png>
-Package pdftex.def Info: noddy_block_example.png used on input line 383.
-(pdftex.def)             Requested size: 452.96788pt x 282.50267pt.
- [5 <./noddy_block_example.png>] [6]
-Chapter 2.
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 435.
-[7
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 213.
+[3] [4] [5] [6] [7] [8
 
 ]
+Chapter 2.
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 607.
+[9]
 LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 495.
- [8]
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 667.
+ [10]
 Chapter 3.
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 528.
-LaTeX Font Info:    Try loading font information for TS1+pcr on input line 529.
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 700.
+LaTeX Font Info:    Try loading font information for TS1+pcr on input line 701.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/ts1pcr.fd
 File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
 )
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 538.
- [9
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 710.
+ [11
 
 ]
-<1-Simulation_14_0.png, id=428, 327.2225pt x 170.6375pt>
+<1-Simulation_14_0.png, id=510, 327.2225pt x 170.6375pt>
 File: 1-Simulation_14_0.png Graphic file (type png)
 
 <use 1-Simulation_14_0.png>
-Package pdftex.def Info: 1-Simulation_14_0.png used on input line 633.
+Package pdftex.def Info: 1-Simulation_14_0.png used on input line 805.
 (pdftex.def)             Requested size: 327.2217pt x 170.63707pt.
 File: 1-Simulation_14_0.png Graphic file (type png)
  <use 1-Simulation_14_0.png>
-Package pdftex.def Info: 1-Simulation_14_0.png used on input line 633.
+Package pdftex.def Info: 1-Simulation_14_0.png used on input line 805.
 (pdftex.def)             Requested size: 327.2217pt x 170.63707pt.
- [10 <./1-Simulation_14_0.png>] <3d_render_fault_model_2.png, id=435, 687.56876
+ [12 <./1-Simulation_14_0.png>] <3d_render_fault_model_2.png, id=517, 687.56876
 pt x 392.46625pt>
 File: 3d_render_fault_model_2.png Graphic file (type png)
 
 <use 3d_render_fault_model_2.png>
-Package pdftex.def Info: 3d_render_fault_model_2.png used on input line 653.
+Package pdftex.def Info: 3d_render_fault_model_2.png used on input line 825.
 (pdftex.def)             Requested size: 687.56708pt x 392.46527pt.
 File: 3d_render_fault_model_2.png Graphic file (type png)
  <use 3d_render_fault_model_2.png>
-Package pdftex.def Info: 3d_render_fault_model_2.png used on input line 653.
+Package pdftex.def Info: 3d_render_fault_model_2.png used on input line 825.
 (pdftex.def)             Requested size: 452.96788pt x 258.55542pt.
- [11pdfTeX warning (ext4): destination with the same identifier (name{figure.3.
+ [13pdfTeX warning (ext4): destination with the same identifier (name{figure.3.
 1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.657 \chapter
+l.829 \chapter
               {Change Noddy input file and recompute model} <./3d_render_fault_
-model_2.png>] [12
+model_2.png>] [14
 
 ]
 Chapter 4.
-[13] [14] <2-Adjust-input_20_0.png, id=454, 897.3525pt x 225.84375pt>
+[15] [16] <2-Adjust-input_20_0.png, id=536, 897.3525pt x 225.84375pt>
 File: 2-Adjust-input_20_0.png Graphic file (type png)
 
 <use 2-Adjust-input_20_0.png>
-Package pdftex.def Info: 2-Adjust-input_20_0.png used on input line 853.
+Package pdftex.def Info: 2-Adjust-input_20_0.png used on input line 1025.
 (pdftex.def)             Requested size: 897.3503pt x 225.84319pt.
 File: 2-Adjust-input_20_0.png Graphic file (type png)
  <use 2-Adjust-input_20_0.png>
-Package pdftex.def Info: 2-Adjust-input_20_0.png used on input line 853.
+Package pdftex.def Info: 2-Adjust-input_20_0.png used on input line 1025.
 (pdftex.def)             Requested size: 452.96788pt x 114.00021pt.
- [15 <./2-Adjust-input_20_0.png>] <2-Adjust-input_26_1.png, id=461, 1064.97874p
+ [17 <./2-Adjust-input_20_0.png>] <2-Adjust-input_26_1.png, id=542, 1064.97874p
 t x 296.10625pt>
 File: 2-Adjust-input_26_1.png Graphic file (type png)
 
 <use 2-Adjust-input_26_1.png>
-Package pdftex.def Info: 2-Adjust-input_26_1.png used on input line 942.
+Package pdftex.def Info: 2-Adjust-input_26_1.png used on input line 1114.
 (pdftex.def)             Requested size: 1064.97615pt x 296.10551pt.
 File: 2-Adjust-input_26_1.png Graphic file (type png)
  <use 2-Adjust-input_26_1.png>
-Package pdftex.def Info: 2-Adjust-input_26_1.png used on input line 942.
+Package pdftex.def Info: 2-Adjust-input_26_1.png used on input line 1114.
 (pdftex.def)             Requested size: 452.96788pt x 125.94063pt.
- [16]
-<2-Adjust-input_30_1.png, id=466, 395.4775pt x 266.9975pt>
+ [18]
+<2-Adjust-input_30_1.png, id=547, 395.4775pt x 266.9975pt>
 File: 2-Adjust-input_30_1.png Graphic file (type png)
 
 <use 2-Adjust-input_30_1.png>
-Package pdftex.def Info: 2-Adjust-input_30_1.png used on input line 997.
+Package pdftex.def Info: 2-Adjust-input_30_1.png used on input line 1169.
 (pdftex.def)             Requested size: 395.47653pt x 266.99683pt.
 File: 2-Adjust-input_30_1.png Graphic file (type png)
  <use 2-Adjust-input_30_1.png>
-Package pdftex.def Info: 2-Adjust-input_30_1.png used on input line 997.
+Package pdftex.def Info: 2-Adjust-input_30_1.png used on input line 1169.
 (pdftex.def)             Requested size: 395.47653pt x 266.99683pt.
- [17 <./2-Adjust-input_26_1.png>] <2-Adjust-input_36_1.png, id=477, 395.4775pt 
+ [19 <./2-Adjust-input_26_1.png>] <2-Adjust-input_36_1.png, id=558, 395.4775pt 
 x 266.9975pt>
 File: 2-Adjust-input_36_1.png Graphic file (type png)
 
 <use 2-Adjust-input_36_1.png>
-Package pdftex.def Info: 2-Adjust-input_36_1.png used on input line 1045.
+Package pdftex.def Info: 2-Adjust-input_36_1.png used on input line 1217.
 (pdftex.def)             Requested size: 395.47653pt x 266.99683pt.
 File: 2-Adjust-input_36_1.png Graphic file (type png)
  <use 2-Adjust-input_36_1.png>
-Package pdftex.def Info: 2-Adjust-input_36_1.png used on input line 1045.
+Package pdftex.def Info: 2-Adjust-input_36_1.png used on input line 1217.
 (pdftex.def)             Requested size: 395.47653pt x 266.99683pt.
- [18 <./2-Adjust-input_30_1.png>] [19 <./2-Adjust-input_36_1.png>]
-<2-Adjust-input_40_1.png, id=488, 967.615pt x 292.09125pt>
+ [20 <./2-Adjust-input_30_1.png>] [21 <./2-Adjust-input_36_1.png>]
+<2-Adjust-input_40_1.png, id=570, 967.615pt x 292.09125pt>
 File: 2-Adjust-input_40_1.png Graphic file (type png)
 
 <use 2-Adjust-input_40_1.png>
-Package pdftex.def Info: 2-Adjust-input_40_1.png used on input line 1127.
+Package pdftex.def Info: 2-Adjust-input_40_1.png used on input line 1299.
 (pdftex.def)             Requested size: 967.61266pt x 292.09052pt.
 File: 2-Adjust-input_40_1.png Graphic file (type png)
  <use 2-Adjust-input_40_1.png>
-Package pdftex.def Info: 2-Adjust-input_40_1.png used on input line 1127.
+Package pdftex.def Info: 2-Adjust-input_40_1.png used on input line 1299.
 (pdftex.def)             Requested size: 452.96788pt x 136.73468pt.
- [20 <./2-Adjust-input_40_1.png>]
+ [22 <./2-Adjust-input_40_1.png>]
 Chapter 5.
 LaTeX Font Info:    Font shape `TS1/pcr/m/it' in size <9> not available
-(Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 1195.
+(Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 1367.
 
-[21
+[23
 
-] [22] <3-Events_13_0.png, id=503, 900.36375pt x 225.84375pt>
+] [24] <3-Events_13_0.png, id=585, 900.36375pt x 225.84375pt>
 File: 3-Events_13_0.png Graphic file (type png)
 
 <use 3-Events_13_0.png>
-Package pdftex.def Info: 3-Events_13_0.png used on input line 1291.
+Package pdftex.def Info: 3-Events_13_0.png used on input line 1463.
 (pdftex.def)             Requested size: 900.36156pt x 225.84319pt.
 File: 3-Events_13_0.png Graphic file (type png)
  <use 3-Events_13_0.png>
-Package pdftex.def Info: 3-Events_13_0.png used on input line 1291.
+Package pdftex.def Info: 3-Events_13_0.png used on input line 1463.
 (pdftex.def)             Requested size: 452.96788pt x 113.62114pt.
- [23 <./3-Events_13_0.png>]
-<3-Events_22_0.png, id=511, 900.36375pt x 225.84375pt>
+ [25 <./3-Events_13_0.png>]
+<3-Events_22_0.png, id=593, 900.36375pt x 225.84375pt>
 File: 3-Events_22_0.png Graphic file (type png)
  <use 3-Events_22_0.png>
-Package pdftex.def Info: 3-Events_22_0.png used on input line 1378.
+Package pdftex.def Info: 3-Events_22_0.png used on input line 1550.
 (pdftex.def)             Requested size: 900.36156pt x 225.84319pt.
 File: 3-Events_22_0.png Graphic file (type png)
 
 <use 3-Events_22_0.png>
-Package pdftex.def Info: 3-Events_22_0.png used on input line 1378.
+Package pdftex.def Info: 3-Events_22_0.png used on input line 1550.
 (pdftex.def)             Requested size: 452.96788pt x 113.62114pt.
- <3-Events_26_1.png, id=512, 323.2075pt x 145.54375pt>
+ <3-Events_26_1.png, id=594, 323.2075pt x 145.54375pt>
 File: 3-Events_26_1.png Graphic file (type png)
 
 <use 3-Events_26_1.png>
-Package pdftex.def Info: 3-Events_26_1.png used on input line 1412.
+Package pdftex.def Info: 3-Events_26_1.png used on input line 1584.
 (pdftex.def)             Requested size: 323.20671pt x 145.54338pt.
 File: 3-Events_26_1.png Graphic file (type png)
  <use 3-Events_26_1.png>
-Package pdftex.def Info: 3-Events_26_1.png used on input line 1412.
+Package pdftex.def Info: 3-Events_26_1.png used on input line 1584.
 (pdftex.def)             Requested size: 323.20671pt x 145.54338pt.
- [24 <./3-Events_22_0.png>]
-<diff_3d_3.png, id=518, 957.5775pt x 578.16pt>
+ [26 <./3-Events_22_0.png>]
+<diff_3d_3.png, id=600, 957.5775pt x 578.16pt>
 File: diff_3d_3.png Graphic file (type png)
  <use diff_3d_3.png>
-Package pdftex.def Info: diff_3d_3.png used on input line 1431.
+Package pdftex.def Info: diff_3d_3.png used on input line 1603.
 (pdftex.def)             Requested size: 957.57516pt x 578.15858pt.
 File: diff_3d_3.png Graphic file (type png)
 
 <use diff_3d_3.png>
-Package pdftex.def Info: diff_3d_3.png used on input line 1431.
+Package pdftex.def Info: diff_3d_3.png used on input line 1603.
 (pdftex.def)             Requested size: 452.96788pt x 273.49081pt.
- [25pdfTeX warning (ext4): destination with the same identifier (name{figure.5.
+ [27pdfTeX warning (ext4): destination with the same identifier (name{figure.5.
 1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1435 \chapter
+l.1607 \chapter
                {Creating a model from scratch} <./3-Events_26_1.png> <./diff_3d
-_3.png>] [26
+_3.png>] [28
 
 ]
 Chapter 6.
-[27] <4-Create-model_9_0.png, id=534, 627.34375pt x 341.275pt>
+[29] <4-Create-model_9_0.png, id=616, 627.34375pt x 341.275pt>
 File: 4-Create-model_9_0.png Graphic file (type png)
 
 <use 4-Create-model_9_0.png>
-Package pdftex.def Info: 4-Create-model_9_0.png used on input line 1523.
+Package pdftex.def Info: 4-Create-model_9_0.png used on input line 1695.
 (pdftex.def)             Requested size: 627.34221pt x 341.27415pt.
 File: 4-Create-model_9_0.png Graphic file (type png)
  <use 4-Create-model_9_0.png>
-Package pdftex.def Info: 4-Create-model_9_0.png used on input line 1523.
+Package pdftex.def Info: 4-Create-model_9_0.png used on input line 1695.
 (pdftex.def)             Requested size: 452.96788pt x 246.42601pt.
- [28 <./4-Create-model_9_0.png>] <4-Create-model_15_0.png, id=540, 627.34375pt 
+ [30 <./4-Create-model_9_0.png>] <4-Create-model_15_0.png, id=622, 627.34375pt 
 x 341.275pt>
 File: 4-Create-model_15_0.png Graphic file (type png)
 
 <use 4-Create-model_15_0.png>
-Package pdftex.def Info: 4-Create-model_15_0.png used on input line 1584.
+Package pdftex.def Info: 4-Create-model_15_0.png used on input line 1756.
 (pdftex.def)             Requested size: 627.34221pt x 341.27415pt.
 File: 4-Create-model_15_0.png Graphic file (type png)
  <use 4-Create-model_15_0.png>
-Package pdftex.def Info: 4-Create-model_15_0.png used on input line 1584.
+Package pdftex.def Info: 4-Create-model_15_0.png used on input line 1756.
 (pdftex.def)             Requested size: 452.96788pt x 246.42601pt.
- [29 <./4-Create-model_15_0.png>] <4-Create-model_19_0.png, id=546, 627.34375pt
+ [31 <./4-Create-model_15_0.png>] <4-Create-model_19_0.png, id=628, 627.34375pt
  x 365.365pt>
 File: 4-Create-model_19_0.png Graphic file (type png)
 
 <use 4-Create-model_19_0.png>
-Package pdftex.def Info: 4-Create-model_19_0.png used on input line 1617.
+Package pdftex.def Info: 4-Create-model_19_0.png used on input line 1789.
 (pdftex.def)             Requested size: 627.34221pt x 365.3641pt.
 File: 4-Create-model_19_0.png Graphic file (type png)
  <use 4-Create-model_19_0.png>
-Package pdftex.def Info: 4-Create-model_19_0.png used on input line 1617.
+Package pdftex.def Info: 4-Create-model_19_0.png used on input line 1789.
 (pdftex.def)             Requested size: 452.96788pt x 263.8208pt.
- [30 <./4-Create-model_19_0.png>] <4-Create-model_26_0.png, id=552, 627.34375pt
+ [32 <./4-Create-model_19_0.png>] <4-Create-model_26_0.png, id=634, 627.34375pt
  x 341.275pt>
 File: 4-Create-model_26_0.png Graphic file (type png)
 
 <use 4-Create-model_26_0.png>
-Package pdftex.def Info: 4-Create-model_26_0.png used on input line 1695.
+Package pdftex.def Info: 4-Create-model_26_0.png used on input line 1867.
 (pdftex.def)             Requested size: 627.34221pt x 341.27415pt.
 File: 4-Create-model_26_0.png Graphic file (type png)
  <use 4-Create-model_26_0.png>
-Package pdftex.def Info: 4-Create-model_26_0.png used on input line 1695.
+Package pdftex.def Info: 4-Create-model_26_0.png used on input line 1867.
 (pdftex.def)             Requested size: 452.96788pt x 246.42601pt.
- [31 <./4-Create-model_26_0.png>] [32
+ [33 <./4-Create-model_26_0.png>] [34
 
 ]
 Chapter 7.
-[33] <5-Geophysical-Potential-Fields_11_0.png, id=567, 617.30624pt x 192.72pt>
+[35] <5-Geophysical-Potential-Fields_11_0.png, id=649, 617.30624pt x 192.72pt>
 File: 5-Geophysical-Potential-Fields_11_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_11_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_11_0.png used on input 
-line 1795.
+line 1967.
 (pdftex.def)             Requested size: 617.30473pt x 192.71951pt.
 File: 5-Geophysical-Potential-Fields_11_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_11_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_11_0.png used on input 
-line 1795.
+line 1967.
 (pdftex.def)             Requested size: 452.96788pt x 141.41959pt.
 
-<5-Geophysical-Potential-Fields_12_0.png, id=568, 617.30624pt x 178.6675pt>
+<5-Geophysical-Potential-Fields_12_0.png, id=650, 617.30624pt x 178.6675pt>
 File: 5-Geophysical-Potential-Fields_12_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_12_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_12_0.png used on input 
-line 1804.
+line 1976.
 (pdftex.def)             Requested size: 617.30473pt x 178.66705pt.
 File: 5-Geophysical-Potential-Fields_12_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_12_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_12_0.png used on input 
-line 1804.
+line 1976.
 (pdftex.def)             Requested size: 452.96788pt x 131.10774pt.
- [34 <./5-Geophysical-Potential-Fields_11_0.png> <./5-Geophysical-Potential-Fie
+ [36 <./5-Geophysical-Potential-Fields_11_0.png> <./5-Geophysical-Potential-Fie
 lds_12_0.png>]
-<5-Geophysical-Potential-Fields_18_0.png, id=575, 341.275pt x 285.065pt>
+<5-Geophysical-Potential-Fields_18_0.png, id=657, 341.275pt x 285.065pt>
 File: 5-Geophysical-Potential-Fields_18_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_18_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_18_0.png used on input 
-line 1844.
+line 2016.
 (pdftex.def)             Requested size: 341.27415pt x 285.0643pt.
 File: 5-Geophysical-Potential-Fields_18_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_18_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_18_0.png used on input 
-line 1844.
+line 2016.
 (pdftex.def)             Requested size: 341.27415pt x 285.0643pt.
- [35 <./5-Geophysical-Potential-Fields_18_0.png>] [36]
-<5-Geophysical-Potential-Fields_30_0.png, id=585, 341.275pt x 285.065pt>
+ [37 <./5-Geophysical-Potential-Fields_18_0.png>] [38]
+<5-Geophysical-Potential-Fields_30_0.png, id=667, 341.275pt x 285.065pt>
 File: 5-Geophysical-Potential-Fields_30_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_30_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_30_0.png used on input 
-line 1967.
+line 2139.
 (pdftex.def)             Requested size: 341.27415pt x 285.0643pt.
 File: 5-Geophysical-Potential-Fields_30_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_30_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_30_0.png used on input 
-line 1967.
+line 2139.
 (pdftex.def)             Requested size: 341.27415pt x 285.0643pt.
 
-<5-Geophysical-Potential-Fields_31_0.png, id=586, 326.21875pt x 285.065pt>
+<5-Geophysical-Potential-Fields_31_0.png, id=668, 326.21875pt x 285.065pt>
 File: 5-Geophysical-Potential-Fields_31_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_31_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_31_0.png used on input 
-line 1980.
+line 2152.
 (pdftex.def)             Requested size: 326.21794pt x 285.0643pt.
 File: 5-Geophysical-Potential-Fields_31_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_31_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_31_0.png used on input 
-line 1980.
+line 2152.
 (pdftex.def)             Requested size: 326.21794pt x 285.0643pt.
- [37 <./5-Geophysical-Potential-Fields_30_0.png>]
-<5-Geophysical-Potential-Fields_32_0.png, id=592, 617.30624pt x 156.585pt>
+ [39 <./5-Geophysical-Potential-Fields_30_0.png>]
+<5-Geophysical-Potential-Fields_32_0.png, id=675, 617.30624pt x 156.585pt>
 File: 5-Geophysical-Potential-Fields_32_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_32_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_32_0.png used on input 
-line 1988.
+line 2160.
 (pdftex.def)             Requested size: 617.30473pt x 156.58461pt.
 File: 5-Geophysical-Potential-Fields_32_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_32_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_32_0.png used on input 
-line 1988.
+line 2160.
 (pdftex.def)             Requested size: 452.96788pt x 114.90341pt.
 
-<5-Geophysical-Potential-Fields_32_1.png, id=593, 617.30624pt x 156.585pt>
+<5-Geophysical-Potential-Fields_32_1.png, id=676, 617.30624pt x 156.585pt>
 File: 5-Geophysical-Potential-Fields_32_1.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_32_1.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_32_1.png used on input 
-line 1990.
+line 2162.
 (pdftex.def)             Requested size: 617.30473pt x 156.58461pt.
 File: 5-Geophysical-Potential-Fields_32_1.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_32_1.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_32_1.png used on input 
-line 1990.
+line 2162.
 (pdftex.def)             Requested size: 452.96788pt x 114.90341pt.
- [38 <./5-Geophysical-Potential-Fields_31_0.png> <./5-Geophysical-Potential-Fie
+ [40 <./5-Geophysical-Potential-Fields_31_0.png> <./5-Geophysical-Potential-Fie
 lds_32_0.png> <./5-Geophysical-Potential-Fields_32_1.png>]
-<5-Geophysical-Potential-Fields_36_0.png, id=601, 617.30624pt x 192.72pt>
+<5-Geophysical-Potential-Fields_36_0.png, id=684, 617.30624pt x 192.72pt>
 File: 5-Geophysical-Potential-Fields_36_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_36_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_36_0.png used on input 
-line 2042.
+line 2214.
 (pdftex.def)             Requested size: 617.30473pt x 192.71951pt.
 File: 5-Geophysical-Potential-Fields_36_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_36_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_36_0.png used on input 
-line 2042.
+line 2214.
 (pdftex.def)             Requested size: 452.96788pt x 141.41959pt.
 
-<5-Geophysical-Potential-Fields_37_0.png, id=602, 617.30624pt x 178.6675pt>
+<5-Geophysical-Potential-Fields_37_0.png, id=685, 617.30624pt x 178.6675pt>
 File: 5-Geophysical-Potential-Fields_37_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_37_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_37_0.png used on input 
-line 2052.
+line 2224.
 (pdftex.def)             Requested size: 617.30473pt x 178.66705pt.
 File: 5-Geophysical-Potential-Fields_37_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_37_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_37_0.png used on input 
-line 2052.
+line 2224.
 (pdftex.def)             Requested size: 452.96788pt x 131.10774pt.
- [39 <./5-Geophysical-Potential-Fields_36_0.png> <./5-Geophysical-Potential-Fie
+ [41 <./5-Geophysical-Potential-Fields_36_0.png> <./5-Geophysical-Potential-Fie
 lds_37_0.png>]
-<5-Geophysical-Potential-Fields_41_0.png, id=610, 1167.36125pt x 449.68pt>
+<5-Geophysical-Potential-Fields_41_0.png, id=692, 1167.36125pt x 449.68pt>
 File: 5-Geophysical-Potential-Fields_41_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_41_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_41_0.png used on input 
-line 2104.
+line 2276.
 (pdftex.def)             Requested size: 1167.35841pt x 449.6789pt.
 File: 5-Geophysical-Potential-Fields_41_0.png Graphic file (type png)
 
 <use 5-Geophysical-Potential-Fields_41_0.png>
 Package pdftex.def Info: 5-Geophysical-Potential-Fields_41_0.png used on input 
-line 2104.
+line 2276.
 (pdftex.def)             Requested size: 452.96788pt x 174.48935pt.
- [40 <./5-Geophysical-Potential-Fields_41_0.png>]
+ [42 <./5-Geophysical-Potential-Fields_41_0.png>]
 Chapter 8.
-[41
+[43
 
-] <typeb.jpg, id=626, 501.875pt x 321.2pt>
+] <typeb.jpg, id=707, 501.875pt x 321.2pt>
 File: typeb.jpg Graphic file (type jpg)
  <use typeb.jpg>
-Package pdftex.def Info: typeb.jpg used on input line 2211.
+Package pdftex.def Info: typeb.jpg used on input line 2383.
 (pdftex.def)             Requested size: 501.87376pt x 321.19922pt.
 File: typeb.jpg Graphic file (type jpg)
  <use typeb.jpg>
-Package pdftex.def Info: typeb.jpg used on input line 2211.
+Package pdftex.def Info: typeb.jpg used on input line 2383.
 (pdftex.def)             Requested size: 452.96788pt x 289.91542pt.
 
-[42pdfTeX warning (ext4): destination with the same identifier (name{figure.8.1
+[44pdfTeX warning (ext4): destination with the same identifier (name{figure.8.1
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.2231 \begin{Verbatim}[commandchars=\\\{\}]
+l.2403 \begin{Verbatim}[commandchars=\\\{\}]
                                              <./typeb.jpg>]
-<6-Reproducible-Experiments_10_0.png, id=634, 617.30624pt x 296.10625pt>
+<6-Reproducible-Experiments_10_0.png, id=715, 617.30624pt x 296.10625pt>
 File: 6-Reproducible-Experiments_10_0.png Graphic file (type png)
 
 <use 6-Reproducible-Experiments_10_0.png>
 Package pdftex.def Info: 6-Reproducible-Experiments_10_0.png used on input line
- 2244.
+ 2416.
 (pdftex.def)             Requested size: 617.30473pt x 296.10551pt.
 File: 6-Reproducible-Experiments_10_0.png Graphic file (type png)
 
 <use 6-Reproducible-Experiments_10_0.png>
 Package pdftex.def Info: 6-Reproducible-Experiments_10_0.png used on input line
- 2244.
+ 2416.
 (pdftex.def)             Requested size: 452.96788pt x 217.28531pt.
- [43 <./6-Reproducible-Experiments_10_0.png>] <6-Reproducible-Experiments_22_1.
-png, id=640, 729.72626pt x 341.275pt>
+ [45 <./6-Reproducible-Experiments_10_0.png>] <6-Reproducible-Experiments_22_1.
+png, id=722, 729.72626pt x 341.275pt>
 File: 6-Reproducible-Experiments_22_1.png Graphic file (type png)
 
 <use 6-Reproducible-Experiments_22_1.png>
 Package pdftex.def Info: 6-Reproducible-Experiments_22_1.png used on input line
- 2353.
+ 2525.
 (pdftex.def)             Requested size: 729.72449pt x 341.27415pt.
 File: 6-Reproducible-Experiments_22_1.png Graphic file (type png)
 
 <use 6-Reproducible-Experiments_22_1.png>
 Package pdftex.def Info: 6-Reproducible-Experiments_22_1.png used on input line
- 2353.
+ 2525.
 (pdftex.def)             Requested size: 452.96788pt x 211.84346pt.
- [44] [45 <./6-Reproducible-Experiments_22_1.png>] [46
+ [46] [47 <./6-Reproducible-Experiments_22_1.png>] [48
 
 ]
 Chapter 9.
-[47]
-<7-Gippsland-Basin-Uncertainty_11_0.png, id=659, 625.33624pt x 201.75375pt>
+[49]
+<7-Gippsland-Basin-Uncertainty_11_0.png, id=741, 625.33624pt x 201.75375pt>
 File: 7-Gippsland-Basin-Uncertainty_11_0.png Graphic file (type png)
 
 <use 7-Gippsland-Basin-Uncertainty_11_0.png>
 Package pdftex.def Info: 7-Gippsland-Basin-Uncertainty_11_0.png used on input l
-ine 2452.
+ine 2624.
 (pdftex.def)             Requested size: 625.33472pt x 201.75325pt.
 File: 7-Gippsland-Basin-Uncertainty_11_0.png Graphic file (type png)
 
 <use 7-Gippsland-Basin-Uncertainty_11_0.png>
 Package pdftex.def Info: 7-Gippsland-Basin-Uncertainty_11_0.png used on input l
-ine 2452.
+ine 2624.
 (pdftex.def)             Requested size: 452.96788pt x 146.14612pt.
 
-<7-Gippsland-Basin-Uncertainty_11_1.png, id=660, 625.33624pt x 201.75375pt>
+<7-Gippsland-Basin-Uncertainty_11_1.png, id=742, 625.33624pt x 201.75375pt>
 File: 7-Gippsland-Basin-Uncertainty_11_1.png Graphic file (type png)
 
 <use 7-Gippsland-Basin-Uncertainty_11_1.png>
 Package pdftex.def Info: 7-Gippsland-Basin-Uncertainty_11_1.png used on input l
-ine 2454.
+ine 2626.
 (pdftex.def)             Requested size: 625.33472pt x 201.75325pt.
 File: 7-Gippsland-Basin-Uncertainty_11_1.png Graphic file (type png)
 
 <use 7-Gippsland-Basin-Uncertainty_11_1.png>
 Package pdftex.def Info: 7-Gippsland-Basin-Uncertainty_11_1.png used on input l
-ine 2454.
+ine 2626.
 (pdftex.def)             Requested size: 452.96788pt x 146.14612pt.
- [48 <./7-Gippsland-Basin-Uncertainty_11_0.png> <./7-Gippsland-Basin-Uncertaint
+ [50 <./7-Gippsland-Basin-Uncertainty_11_0.png> <./7-Gippsland-Basin-Uncertaint
 y_11_1.png>]
-<3D-render.png, id=667, 2007.5pt x 1003.75pt>
+<3D-render.png, id=749, 2007.5pt x 1003.75pt>
 File: 3D-render.png Graphic file (type png)
  <use 3D-render.png>
-Package pdftex.def Info: 3D-render.png used on input line 2484.
+Package pdftex.def Info: 3D-render.png used on input line 2656.
 (pdftex.def)             Requested size: 2007.49512pt x 1003.74756pt.
 File: 3D-render.png Graphic file (type png)
 
 <use 3D-render.png>
-Package pdftex.def Info: 3D-render.png used on input line 2484.
+Package pdftex.def Info: 3D-render.png used on input line 2656.
 (pdftex.def)             Requested size: 452.96788pt x 226.47728pt.
- [49pdfTeX warning (ext4): destination with the same identifier (name{figure.9.
+ [51pdfTeX warning (ext4): destination with the same identifier (name{figure.9.
 1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.2488 \chapter
-               {Sensitivity Analysis} <./3D-render.png (PNG copy)>] [50
+l.2660 \chapter
+               {Sensitivity Analysis} <./3D-render.png (PNG copy)>] [52
 
 ]
 Chapter 10.
-[51] [52] <8-Sensitivity-Analysis_7_0.png, id=690, 617.30624pt x 333.245pt>
+[53] [54] <8-Sensitivity-Analysis_7_0.png, id=772, 617.30624pt x 333.245pt>
 File: 8-Sensitivity-Analysis_7_0.png Graphic file (type png)
 
 <use 8-Sensitivity-Analysis_7_0.png>
-Package pdftex.def Info: 8-Sensitivity-Analysis_7_0.png used on input line 2641
+Package pdftex.def Info: 8-Sensitivity-Analysis_7_0.png used on input line 2813
 .
 (pdftex.def)             Requested size: 617.30473pt x 333.24417pt.
 File: 8-Sensitivity-Analysis_7_0.png Graphic file (type png)
  <use 8-Sensitivity-Analysis_7_0.png>
-Package pdftex.def Info: 8-Sensitivity-Analysis_7_0.png used on input line 2641
+Package pdftex.def Info: 8-Sensitivity-Analysis_7_0.png used on input line 2813
 .
 (pdftex.def)             Requested size: 452.96788pt x 244.53804pt.
 
-[53 <./8-Sensitivity-Analysis_7_0.png>]
-<8-Sensitivity-Analysis_10_0.png, id=696, 897.3525pt x 262.9825pt>
+[55 <./8-Sensitivity-Analysis_7_0.png>]
+<8-Sensitivity-Analysis_10_0.png, id=778, 897.3525pt x 262.9825pt>
 File: 8-Sensitivity-Analysis_10_0.png Graphic file (type png)
 
 <use 8-Sensitivity-Analysis_10_0.png>
-Package pdftex.def Info: 8-Sensitivity-Analysis_10_0.png used on input line 268
-3.
+Package pdftex.def Info: 8-Sensitivity-Analysis_10_0.png used on input line 285
+5.
 (pdftex.def)             Requested size: 897.3503pt x 262.98184pt.
 File: 8-Sensitivity-Analysis_10_0.png Graphic file (type png)
  <use 8-Sensitivity-Analysis_10_0.png>
-Package pdftex.def Info: 8-Sensitivity-Analysis_10_0.png used on input line 268
-3.
+Package pdftex.def Info: 8-Sensitivity-Analysis_10_0.png used on input line 285
+5.
 (pdftex.def)             Requested size: 452.96788pt x 132.74692pt.
 
-[54 <./8-Sensitivity-Analysis_10_0.png>]
-<8-Sensitivity-Analysis_16_0.png, id=702, 897.3525pt x 262.9825pt>
+[56 <./8-Sensitivity-Analysis_10_0.png>]
+<8-Sensitivity-Analysis_16_0.png, id=784, 897.3525pt x 262.9825pt>
 File: 8-Sensitivity-Analysis_16_0.png Graphic file (type png)
 
 <use 8-Sensitivity-Analysis_16_0.png>
-Package pdftex.def Info: 8-Sensitivity-Analysis_16_0.png used on input line 274
-9.
+Package pdftex.def Info: 8-Sensitivity-Analysis_16_0.png used on input line 292
+1.
 (pdftex.def)             Requested size: 897.3503pt x 262.98184pt.
 File: 8-Sensitivity-Analysis_16_0.png Graphic file (type png)
  <use 8-Sensitivity-Analysis_16_0.png>
-Package pdftex.def Info: 8-Sensitivity-Analysis_16_0.png used on input line 274
-9.
+Package pdftex.def Info: 8-Sensitivity-Analysis_16_0.png used on input line 292
+1.
 (pdftex.def)             Requested size: 452.96788pt x 132.74692pt.
 
-[55 <./8-Sensitivity-Analysis_16_0.png>]
-<8-Sensitivity-Analysis_26_1.png, id=708, 326.21875pt x 208.78pt>
+[57 <./8-Sensitivity-Analysis_16_0.png>]
+<8-Sensitivity-Analysis_26_1.png, id=791, 326.21875pt x 208.78pt>
 File: 8-Sensitivity-Analysis_26_1.png Graphic file (type png)
 
 <use 8-Sensitivity-Analysis_26_1.png>
-Package pdftex.def Info: 8-Sensitivity-Analysis_26_1.png used on input line 287
-0.
+Package pdftex.def Info: 8-Sensitivity-Analysis_26_1.png used on input line 304
+2.
 (pdftex.def)             Requested size: 326.21794pt x 208.77946pt.
 File: 8-Sensitivity-Analysis_26_1.png Graphic file (type png)
  <use 8-Sensitivity-Analysis_26_1.png>
-Package pdftex.def Info: 8-Sensitivity-Analysis_26_1.png used on input line 287
-0.
+Package pdftex.def Info: 8-Sensitivity-Analysis_26_1.png used on input line 304
+2.
 (pdftex.def)             Requested size: 326.21794pt x 208.77946pt.
 
-[56] [57 <./8-Sensitivity-Analysis_26_1.png>] [58
+[58] [59 <./8-Sensitivity-Analysis_26_1.png>] [60
 
 ]
 Chapter 11.
-[59] <9-Topology_9_1.png, id=727, 246.9225pt x 251.94125pt>
+[61] <9-Topology_9_1.png, id=809, 246.9225pt x 251.94125pt>
 File: 9-Topology_9_1.png Graphic file (type png)
 
 <use 9-Topology_9_1.png>
-Package pdftex.def Info: 9-Topology_9_1.png used on input line 2998.
+Package pdftex.def Info: 9-Topology_9_1.png used on input line 3170.
 (pdftex.def)             Requested size: 246.92188pt x 251.94063pt.
 File: 9-Topology_9_1.png Graphic file (type png)
  <use 9-Topology_9_1.png>
-Package pdftex.def Info: 9-Topology_9_1.png used on input line 2998.
+Package pdftex.def Info: 9-Topology_9_1.png used on input line 3170.
 (pdftex.def)             Requested size: 246.92188pt x 251.94063pt.
- [60] [61 <./9-Topology_9_1.png>] [62
+ [62] [63 <./9-Topology_9_1.png>] [64
 
 ]
 Chapter 12.
-[63] <10-Fault-Shapes_9_01.png, id=747, 617.30624pt x 333.245pt>
+[65] <10-Fault-Shapes_9_01.png, id=828, 617.30624pt x 333.245pt>
 File: 10-Fault-Shapes_9_01.png Graphic file (type png)
 
 <use 10-Fault-Shapes_9_01.png>
-Package pdftex.def Info: 10-Fault-Shapes_9_01.png used on input line 3090.
+Package pdftex.def Info: 10-Fault-Shapes_9_01.png used on input line 3262.
 (pdftex.def)             Requested size: 617.30473pt x 333.24417pt.
 File: 10-Fault-Shapes_9_01.png Graphic file (type png)
  <use 10-Fault-Shapes_9_01.png>
-Package pdftex.def Info: 10-Fault-Shapes_9_01.png used on input line 3090.
+Package pdftex.def Info: 10-Fault-Shapes_9_01.png used on input line 3262.
 (pdftex.def)             Requested size: 452.96788pt x 244.53804pt.
- [64 <./10-Fault-Shapes_9_01.png>]
+ [66 <./10-Fault-Shapes_9_01.png>]
 Chapter 13.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 3103.
-[65
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 3275.
+[67
 
-] [66] [67] [68]
-Overfull \hbox (54.09668pt too wide) in paragraph at lines 3753--3754
+] [68] [69] [70]
+Overfull \hbox (54.09668pt too wide) in paragraph at lines 3925--3926
 []\T1/ptm/m/n/10 ..Note:: Re-quires pyevtk, avail-able for free on: [][]https:/
 /github.com/firedrakeproject/firedrake/tree/master/python/evtk[][] 
  []
 
-[69]
-Underfull \hbox (badness 10000) in paragraph at lines 3844--3846
+[71]
+Underfull \hbox (badness 10000) in paragraph at lines 4016--4018
 []\T1/ptm/m/n/10 the top
  []
 
-[70] [71] [72] [73] [74] [75] [76]
-Overfull \hbox (54.09668pt too wide) in paragraph at lines 4832--4833
+[72] [73] [74] [75] [76] [77] [78]
+Overfull \hbox (54.09668pt too wide) in paragraph at lines 5004--5005
 []\T1/ptm/m/n/10 ..Note:: Re-quires pyevtk, avail-able for free on: [][]https:/
 /github.com/firedrakeproject/firedrake/tree/master/python/evtk[][] 
  []
 
-[77] [78] [79] [80] [81
+[79] [80] [81] [82] [83
 
 
 
-] (./pynoddy.ind [82
+] (./pynoddy.ind [84
 
 
 ]
@@ -1734,7 +1724,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 62--63
 []\T1/ptm/m/n/10 get_ev_counter() (pyn-oddy.history.NoddyHistory
  []
 
-[83
+[85
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 63--64
@@ -1911,7 +1901,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 140--141
 []\T1/ptm/m/n/10 set_event_params() (pyn-oddy.history.NoddyHistory
  []
 
-[84]
+[86]
 Underfull \hbox (badness 10000) in paragraph at lines 143--144
 []\T1/ptm/m/n/10 set_parameter_statistics() (pyn-
  []
@@ -1981,27 +1971,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 169--170
 \T1/ptm/m/n/10 oddy.output.NoddyTopology method),
  []
 
-[85
+[87
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 5244.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 5244.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 5416.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 5416.
  (./pynoddy.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 5244.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 5244.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 5416.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 5416.
 
 Package rerunfilecheck Info: File `pynoddy.out' has not changed.
-(rerunfilecheck)             Checksum: 6F200C1E1F6D0AA17768BE760E962671;4477.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 5244.
+(rerunfilecheck)             Checksum: 5FE2A0195A45E78FDE01323FE4403ADD;5241.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 5416.
  ) 
 Here is how much of TeX's memory you used:
- 9971 strings out of 493117
- 148492 string characters out of 6135433
- 246111 words of memory out of 5000000
- 12810 multiletter control sequences out of 15000+600000
+ 10018 strings out of 493117
+ 149254 string characters out of 6135433
+ 245954 words of memory out of 5000000
+ 12836 multiletter control sequences out of 15000+600000
  66312 words of font info for 78 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 36i,16n,48p,1209b,577s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,16n,49p,1209b,577s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
@@ -2019,10 +2009,10 @@ uhvr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
 ></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/lo
 cal/texlive/2014/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texliv
 e/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on pynoddy.pdf (89 pages, 1238098 bytes).
+Output written on pynoddy.pdf (91 pages, 1243284 bytes).
 PDF statistics:
- 1233 PDF objects out of 1440 (max. 8388607)
- 1035 compressed objects within 11 object streams
- 308 named destinations out of 1000 (max. 500000)
- 696 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1320 PDF objects out of 1440 (max. 8388607)
+ 1120 compressed objects within 12 object streams
+ 330 named destinations out of 1000 (max. 500000)
+ 771 words of extra memory for PDF output out of 10000 (max. 10000000)
 

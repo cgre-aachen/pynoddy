@@ -1,60 +1,70 @@
 \BOOKMARK [0][-]{chapter.1}{pynoddy}{}% 1
-\BOOKMARK [1][-]{section.1.1}{How does it work?}{chapter.1}% 2
-\BOOKMARK [1][-]{section.1.2}{Installation of the pynoddy package}{chapter.1}% 3
-\BOOKMARK [1][-]{section.1.3}{Installation of Noddy}{chapter.1}% 4
-\BOOKMARK [1][-]{section.1.4}{Documentation}{chapter.1}% 5
-\BOOKMARK [1][-]{section.1.5}{How to get started: tutorial notebooks}{chapter.1}% 6
-\BOOKMARK [1][-]{section.1.6}{Dependencies}{chapter.1}% 7
-\BOOKMARK [1][-]{section.1.7}{3-D Visualisation}{chapter.1}% 8
-\BOOKMARK [1][-]{section.1.8}{License}{chapter.1}% 9
-\BOOKMARK [1][-]{section.1.9}{What is Noddy?}{chapter.1}% 10
-\BOOKMARK [1][-]{section.1.10}{References}{chapter.1}% 11
-\BOOKMARK [0][-]{chapter.2}{pynoddy.noddy module}{}% 12
-\BOOKMARK [0][-]{chapter.3}{Simulation of a Noddy history and visualisation of output}{}% 13
-\BOOKMARK [1][-]{section.3.1}{Compute the model}{chapter.3}% 14
-\BOOKMARK [1][-]{section.3.2}{Loading Noddy output files}{chapter.3}% 15
-\BOOKMARK [1][-]{section.3.3}{Plotting sections through the model}{chapter.3}% 16
-\BOOKMARK [1][-]{section.3.4}{Export model to VTK}{chapter.3}% 17
-\BOOKMARK [0][-]{chapter.4}{Change Noddy input file and recompute model}{}% 18
-\BOOKMARK [1][-]{section.4.1}{Get basic information on the model}{chapter.4}% 19
-\BOOKMARK [1][-]{section.4.2}{Change model cube size and recompute model}{chapter.4}% 20
-\BOOKMARK [1][-]{section.4.3}{Estimating computation time for a high-resolution model}{chapter.4}% 21
-\BOOKMARK [1][-]{section.4.4}{Simple convergence study}{chapter.4}% 22
-\BOOKMARK [0][-]{chapter.5}{Geological events in pynoddy: organisation and adpatiation}{}% 23
-\BOOKMARK [1][-]{section.5.1}{Loading events from a Noddy history}{chapter.5}% 24
-\BOOKMARK [1][-]{section.5.2}{Changing aspects of geological events}{chapter.5}% 25
-\BOOKMARK [1][-]{section.5.3}{Changing the order of geological events}{chapter.5}% 26
-\BOOKMARK [1][-]{section.5.4}{Determining the stratigraphic difference between two models}{chapter.5}% 27
-\BOOKMARK [0][-]{chapter.6}{Creating a model from scratch}{}% 28
-\BOOKMARK [1][-]{section.6.1}{Defining a stratigraphy}{chapter.6}% 29
-\BOOKMARK [1][-]{section.6.2}{Add a fault event}{chapter.6}% 30
-\BOOKMARK [1][-]{section.6.3}{Complete Model Set-up}{chapter.6}% 31
-\BOOKMARK [0][-]{chapter.7}{Read and Visualise Geophysical Potential-Fields}{}% 32
-\BOOKMARK [1][-]{section.7.1}{Read history file from Virtual Explorer}{chapter.7}% 33
-\BOOKMARK [1][-]{section.7.2}{Visualise calculated geophysical fields}{chapter.7}% 34
-\BOOKMARK [1][-]{section.7.3}{Change history and compare gravity}{chapter.7}% 35
-\BOOKMARK [1][-]{section.7.4}{Figure with all results}{chapter.7}% 36
-\BOOKMARK [0][-]{chapter.8}{Reproducible Experiments with pynoddy}{}% 37
-\BOOKMARK [1][-]{section.8.1}{Defining an experiment}{chapter.8}% 38
-\BOOKMARK [1][-]{section.8.2}{Loading an example model from the Atlas of Structural Geophysics}{chapter.8}% 39
-\BOOKMARK [0][-]{chapter.9}{Gippsland Basin Uncertainty Study}{}% 40
-\BOOKMARK [1][-]{section.9.1}{The Gippsland Basin Model}{chapter.9}% 41
-\BOOKMARK [1][-]{section.9.2}{Generate randomised model realisations}{chapter.9}% 42
-\BOOKMARK [1][-]{section.9.3}{Exporting results to VTK for visualisation}{chapter.9}% 43
-\BOOKMARK [0][-]{chapter.10}{Sensitivity Analysis}{}% 44
-\BOOKMARK [1][-]{section.10.1}{Theory: local sensitivity analysis}{chapter.10}% 45
-\BOOKMARK [1][-]{section.10.2}{Defining the responses}{chapter.10}% 46
-\BOOKMARK [1][-]{section.10.3}{Setting up the base model}{chapter.10}% 47
-\BOOKMARK [1][-]{section.10.4}{Define parameter uncertainties}{chapter.10}% 48
-\BOOKMARK [1][-]{section.10.5}{Calculate total stratigraphic distance}{chapter.10}% 49
-\BOOKMARK [1][-]{section.10.6}{Function to modify parameters}{chapter.10}% 50
-\BOOKMARK [1][-]{section.10.7}{Full sensitivity analysis}{chapter.10}% 51
-\BOOKMARK [0][-]{chapter.11}{Simulation of a Noddy history and analysis of its voxel topology}{}% 52
-\BOOKMARK [1][-]{section.11.1}{Compute the model}{chapter.11}% 53
-\BOOKMARK [1][-]{section.11.2}{Loading Topology output files}{chapter.11}% 54
-\BOOKMARK [0][-]{chapter.12}{Fault shapes}{}% 55
-\BOOKMARK [0][-]{chapter.13}{Pynoddy modules, classes and functions}{}% 56
-\BOOKMARK [1][-]{section.13.1}{Basic modules \(low-level access\)}{chapter.13}% 57
-\BOOKMARK [1][-]{section.13.2}{Modules for Kinematic experiments}{chapter.13}% 58
-\BOOKMARK [0][-]{section*.131}{Python Module Index}{}% 59
-\BOOKMARK [0][-]{section*.132}{Index}{}% 60
+\BOOKMARK [1][-]{section.1.1}{What is pynoddy}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{What is Noddy?}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.3}{Installation}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.4}{Installation of the pynoddy package}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.5}{Installation of Noddy}{chapter.1}% 6
+\BOOKMARK [1][-]{section.1.6}{Using a pre-compiled version of Noddy}{chapter.1}% 7
+\BOOKMARK [1][-]{section.1.7}{Compiling Noddy from source files \(recommended installation\)}{chapter.1}% 8
+\BOOKMARK [1][-]{section.1.8}{Placing the executable noddy in the Path}{chapter.1}% 9
+\BOOKMARK [1][-]{section.1.9}{Noddy executable and GUI for Windows}{chapter.1}% 10
+\BOOKMARK [1][-]{section.1.10}{Testing the installation}{chapter.1}% 11
+\BOOKMARK [1][-]{section.1.11}{Testing noddy}{chapter.1}% 12
+\BOOKMARK [1][-]{section.1.12}{Testing pynoddy}{chapter.1}% 13
+\BOOKMARK [1][-]{section.1.13}{How to get started}{chapter.1}% 14
+\BOOKMARK [1][-]{section.1.14}{Tutorial Jupyter notebooks}{chapter.1}% 15
+\BOOKMARK [1][-]{section.1.15}{The Atlas of Strutural Geophysics}{chapter.1}% 16
+\BOOKMARK [1][-]{section.1.16}{Documentation}{chapter.1}% 17
+\BOOKMARK [1][-]{section.1.17}{Technical Notes}{chapter.1}% 18
+\BOOKMARK [1][-]{section.1.18}{Dependencies}{chapter.1}% 19
+\BOOKMARK [1][-]{section.1.19}{3-D Visualisation}{chapter.1}% 20
+\BOOKMARK [1][-]{section.1.20}{References}{chapter.1}% 21
+\BOOKMARK [0][-]{chapter.2}{pynoddy.noddy module}{}% 22
+\BOOKMARK [0][-]{chapter.3}{Simulation of a Noddy history and visualisation of output}{}% 23
+\BOOKMARK [1][-]{section.3.1}{Compute the model}{chapter.3}% 24
+\BOOKMARK [1][-]{section.3.2}{Loading Noddy output files}{chapter.3}% 25
+\BOOKMARK [1][-]{section.3.3}{Plotting sections through the model}{chapter.3}% 26
+\BOOKMARK [1][-]{section.3.4}{Export model to VTK}{chapter.3}% 27
+\BOOKMARK [0][-]{chapter.4}{Change Noddy input file and recompute model}{}% 28
+\BOOKMARK [1][-]{section.4.1}{Get basic information on the model}{chapter.4}% 29
+\BOOKMARK [1][-]{section.4.2}{Change model cube size and recompute model}{chapter.4}% 30
+\BOOKMARK [1][-]{section.4.3}{Estimating computation time for a high-resolution model}{chapter.4}% 31
+\BOOKMARK [1][-]{section.4.4}{Simple convergence study}{chapter.4}% 32
+\BOOKMARK [0][-]{chapter.5}{Geological events in pynoddy: organisation and adpatiation}{}% 33
+\BOOKMARK [1][-]{section.5.1}{Loading events from a Noddy history}{chapter.5}% 34
+\BOOKMARK [1][-]{section.5.2}{Changing aspects of geological events}{chapter.5}% 35
+\BOOKMARK [1][-]{section.5.3}{Changing the order of geological events}{chapter.5}% 36
+\BOOKMARK [1][-]{section.5.4}{Determining the stratigraphic difference between two models}{chapter.5}% 37
+\BOOKMARK [0][-]{chapter.6}{Creating a model from scratch}{}% 38
+\BOOKMARK [1][-]{section.6.1}{Defining a stratigraphy}{chapter.6}% 39
+\BOOKMARK [1][-]{section.6.2}{Add a fault event}{chapter.6}% 40
+\BOOKMARK [1][-]{section.6.3}{Complete Model Set-up}{chapter.6}% 41
+\BOOKMARK [0][-]{chapter.7}{Read and Visualise Geophysical Potential-Fields}{}% 42
+\BOOKMARK [1][-]{section.7.1}{Read history file from Virtual Explorer}{chapter.7}% 43
+\BOOKMARK [1][-]{section.7.2}{Visualise calculated geophysical fields}{chapter.7}% 44
+\BOOKMARK [1][-]{section.7.3}{Change history and compare gravity}{chapter.7}% 45
+\BOOKMARK [1][-]{section.7.4}{Figure with all results}{chapter.7}% 46
+\BOOKMARK [0][-]{chapter.8}{Reproducible Experiments with pynoddy}{}% 47
+\BOOKMARK [1][-]{section.8.1}{Defining an experiment}{chapter.8}% 48
+\BOOKMARK [1][-]{section.8.2}{Loading an example model from the Atlas of Structural Geophysics}{chapter.8}% 49
+\BOOKMARK [0][-]{chapter.9}{Gippsland Basin Uncertainty Study}{}% 50
+\BOOKMARK [1][-]{section.9.1}{The Gippsland Basin Model}{chapter.9}% 51
+\BOOKMARK [1][-]{section.9.2}{Generate randomised model realisations}{chapter.9}% 52
+\BOOKMARK [1][-]{section.9.3}{Exporting results to VTK for visualisation}{chapter.9}% 53
+\BOOKMARK [0][-]{chapter.10}{Sensitivity Analysis}{}% 54
+\BOOKMARK [1][-]{section.10.1}{Theory: local sensitivity analysis}{chapter.10}% 55
+\BOOKMARK [1][-]{section.10.2}{Defining the responses}{chapter.10}% 56
+\BOOKMARK [1][-]{section.10.3}{Setting up the base model}{chapter.10}% 57
+\BOOKMARK [1][-]{section.10.4}{Define parameter uncertainties}{chapter.10}% 58
+\BOOKMARK [1][-]{section.10.5}{Calculate total stratigraphic distance}{chapter.10}% 59
+\BOOKMARK [1][-]{section.10.6}{Function to modify parameters}{chapter.10}% 60
+\BOOKMARK [1][-]{section.10.7}{Full sensitivity analysis}{chapter.10}% 61
+\BOOKMARK [0][-]{chapter.11}{Simulation of a Noddy history and analysis of its voxel topology}{}% 62
+\BOOKMARK [1][-]{section.11.1}{Compute the model}{chapter.11}% 63
+\BOOKMARK [1][-]{section.11.2}{Loading Topology output files}{chapter.11}% 64
+\BOOKMARK [0][-]{chapter.12}{Fault shapes}{}% 65
+\BOOKMARK [0][-]{chapter.13}{Pynoddy modules, classes and functions}{}% 66
+\BOOKMARK [1][-]{section.13.1}{Basic modules \(low-level access\)}{chapter.13}% 67
+\BOOKMARK [1][-]{section.13.2}{Modules for Kinematic experiments}{chapter.13}% 68
+\BOOKMARK [0][-]{section*.141}{Python Module Index}{}% 69
+\BOOKMARK [0][-]{section*.142}{Index}{}% 70

@@ -9,4 +9,4 @@ echo "Convert IPython notebooks to rst"
 
 echo "Convert README.md to rst"
 
-# pandoc -s -t rst --toc ../README.md -o readme.rst
+pandoc -s -t rst --toc ../README.md -o readme.rst

@@ -3,10 +3,10 @@
 ..
 
 pynoddy
--------
+=======
 
 What is ``pynoddy``
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 ``pynoddy`` is a python package to write, change, and analyse kinematic
 geological modelling simulations. It provides methods to define, load,
@@ -17,7 +17,7 @@ encapsulation of full scientific kinematic modelling experiments for
 full reproducibility of results.
 
 What is Noddy?
-~~~~~~~~~~~~~~
+--------------
 
 Noddy itself is a kinematic modelling program written by Mark Jessell
 [1][2] to simulate the effect of subsequent geological events (folding,
@@ -37,10 +37,10 @@ The result could look something like this:
 interpretation purposes, but also for scientific studies (e.g. [3]).
 
 Installation
-~~~~~~~~~~~~
+============
 
 Installation of the ``pynoddy`` package
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------------
 
 A successful installation of ``pynoddy`` requires two steps:
 
@@ -77,7 +77,7 @@ A Windows installer is also available on the Pypi page:
 https://pypi.python.org/pypi/pynoddy/
 
 Installation of ``Noddy``
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 ``Noddy`` is a command line program, written in C, that performs the
 kinematic simulation itself. The program compilation is platform
@@ -85,7 +85,7 @@ dependent, and therefore several ways for installation are possible (see
 below information for specific platforms).
 
 Using a pre-compiled version of ``Noddy``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------
 
 The easy way to obtain a executable version of ``Noddy`` is simply to
 download the appropriate version for your operating system. Currently,
@@ -106,7 +106,7 @@ variable. If you are not sure if a folder is in the ``PATH`` or would
 like to add new one, see below for more information.
 
 Compiling ``Noddy`` from source files (recommended installation)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------------------------------
 
 The source code for the executable ``Noddy`` is located in the
 repository directory ``noddy``. In order to perform the installation, a
@@ -133,7 +133,7 @@ Compilation usually produces multiple warnings, but should otherwise
 proceed successfully.
 
 Placing the executable ``noddy`` in the Path
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------------------
 
 For the most general installation, the executable of ``Noddy`` should be
 placed in a folder that can be located from any terminal application in
@@ -143,7 +143,7 @@ can simply be added by:
 
 ::
 
-    > export PATH-"path/to/executable/:\$PATH"
+    > export PATH="path/to/executable/:\$PATH"
 
 Note that this command should be placed into your .bash\_profile file to
 ensure that the path is added whenever you start a new Python script.
@@ -155,7 +155,7 @@ Environment Variables sub-menu, and find the variable Path. Click to
 edit the variable, and add the location of your folder to this path.
 
 Noddy executable and GUI for Windows
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------
 
 The original graphical user interface for ``Noddy`` and the compiled
 executable program for Windows can be obtained from:
@@ -168,10 +168,10 @@ implementation of the software, as well as more technical details on the
 modelling method itself.
 
 Testing the installation
-~~~~~~~~~~~~~~~~~~~~~~~~
+========================
 
 Testing ``noddy``
-~~~~~~~~~~~~~~~~~
+-----------------
 
 Simply test the installation by running the generated (or downloaded)
 executable in a terminal window (on Windows: ``cmd``):
@@ -206,7 +206,7 @@ to run ``Noddy`` from any directory. If this is not the case, please
 check if it is correctly placed in the path (see above).
 
 Testing ``pynoddy``
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 The ``pynoddy`` package contains a set of tests which can be executed in
 the standard Python testing environment. If you cloned or downloaded the
@@ -231,10 +231,10 @@ the ``noddy(.exe)`` executable.
 If all tests are successful, **you are ready to go!**
 
 How to get started
-~~~~~~~~~~~~~~~~~~
+==================
 
 Tutorial Jupyter notebooks
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 The best way to get started with ``pynoddy`` is to have a look at the
 IPython notebooks in pynoddy/docs/notebooks. The numbered notebooks are
@@ -249,7 +249,7 @@ https://jupyter.org
 The notebook can be installed via ``pip`` or ``conda``.
 
 The Atlas of Strutural Geophysics
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------
 
 The Atlas of Structural Geophysics contains a collection of structural
 models, together with their expression as geophysical potential fields
@@ -266,7 +266,7 @@ loaded with ``pynoddy``. See example notebooks and documentation for
 more details.
 
 Documentation
-~~~~~~~~~~~~~
+-------------
 
 An updated version of the documentation is available within the
 ``pynoddy`` repository (pynoddy/docs).
@@ -277,10 +277,10 @@ on readthedocs:
 http://pynoddy.readthedocs.org
 
 Technical Notes
-~~~~~~~~~~~~~~~
+===============
 
 Dependencies
-~~~~~~~~~~~~
+------------
 
 ``pynoddy`` depends on several standard Python packages that should be
 shipped with any standard distribution (and are easy to install,
@@ -299,13 +299,13 @@ provided with this package.
 In addition, to export model results for full 3-D visualisation with
 VTK, the pyevtk package is used, available on bitbucket:
 
-https://bitbucket.org/pauloh/pyevtk/src/9c19e3a54d1e?at-v0.1.0
+https://bitbucket.org/pauloh/pyevtk/src/9c19e3a54d1e?at=v0.1.0
 
 The package is automatically downloaded and installed when running
 python setup.py install.
 
 3-D Visualisation
-~~~~~~~~~~~~~~~~
+-----------------
 
 At this stage, we do not supply methods for 3-D visualisation in python
 (although this may change in the future). However, we provide methods to
@@ -320,7 +320,7 @@ available, for example:
 -  Mayavi: http://docs.enthought.com/mayavi/mayavi/
 
 License
-~~~~~~-
+=======
 
 ``pynoddy`` is free software (see license file included in the
 repository). Please attribute the work when you use it and cite the
@@ -328,7 +328,7 @@ publication if you use it in a scientific context - feel free to change
 and adapt it otherwise!
 
 References
-~~~~~~~~~~
+==========
 
 [1] Mark W. Jessell. Noddy, an interactive map creation package.
 Unpublished MSc Thesis, University of London. 1981.
