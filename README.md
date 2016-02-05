@@ -18,7 +18,7 @@ Noddy itself is a kinematic modelling program written by Mark Jessell [1][2] to 
 
 The result could look something like this:
 
-.. image:: docs/pics/noddy_block_example.png
+.. image:: noddy_block_example.png
 
 Installation of the ``pynoddy`` package
 -------------------------------------------
