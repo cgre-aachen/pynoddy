@@ -1,5 +1,7 @@
 ## pynoddy
 
+[![DOI](https://zenodo.org/badge/20310/flohorovicic/pynoddy.svg)](https://zenodo.org/badge/latestdoi/20310/flohorovicic/pynoddy)
+
 ### What is ``pynoddy``
 
 ``pynoddy`` is a python package to write, change, and analyse kinematic geological modelling simulations.  It provides methods to define, load, modify, and safe kinematic models for simulation with ``Noddy``. In addition, the package contains an extensive range for postprocessing of results. One main aspect of ``pynoddy`` is that it enables the encapsulation of full scientific kinematic modelling experiments for full reproducibility of results.
