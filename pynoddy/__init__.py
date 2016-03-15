@@ -15,6 +15,8 @@ package_directory = os.path.dirname(os.path.abspath(__file__))
 ensure_discrete_volumes = True  # if True, spatially separated but otherwise
 # identical volumes are given separate codes.
 null_volume_threshold = 20  # volumes smaller than this are ignored
+
+
 # completely (as they represent pixelation artefacts).
 
 #
@@ -54,6 +56,7 @@ def which(program):
                 return exe_file
 
     return None
+
 
 def compute_model(history, output_name, **kwds):
     """Call Noddy and compute the history file
@@ -103,7 +106,7 @@ def compute_model(history, output_name, **kwds):
         #                         shell=False, stderr=subprocess.PIPE,
         #                         stdout=subprocess.PIPE).stdout.read()
         p1 = subprocess.Popen([noddy_path, history, output_name, sim_type],
-                                 shell=False, stdout=subprocess.PIPE)
+                              shell=False, stdout=subprocess.PIPE)
         subprocess.Popen.wait(p1)
 
         # out += open(p1.stdout).readlines()

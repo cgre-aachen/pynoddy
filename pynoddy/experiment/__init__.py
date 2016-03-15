@@ -456,11 +456,10 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
         # 4. run noddy
         import pynoddy.output
 
-
-
         pynoddy.compute_model(tmp_his_file, tmp_out_file, output=compute_output)
         # 5. open output
         i = 0
+        # if False:
         while not 'tmp_out' in locals():
             i += 1
             pynoddy.compute_model(tmp_his_file, tmp_out_file, output=compute_output)
@@ -471,7 +470,7 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
 
             # just in case break statement:
             if i > 20:
-                raise IOError
+                raise IOError("Computation attempts")
 
             #     # print("Try again")
             # pynoddy.compute_model(tmp_his_file, tmp_out_file, output=compute_output)

@@ -115,6 +115,7 @@ class Stratigraphy(Event):
                 self.properties[l[0].strip()] = value
                 self.property_lines[l[0].strip()] = i
 
+        self.name = self.event_lines[-1].split("=")[1].strip()
 
 
 class Fold(Event):
