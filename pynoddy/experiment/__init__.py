@@ -504,6 +504,90 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
 
         return tmp_out
 
+    def add_sampling_line(self, x, y, **kwds):
+        """Define a vertical sampling line, for example as a drillhole at position (x,y)
+
+        As default, the entire length for the model extent is exported. Ohter depth ranges
+        can be defined with optional keywords.
+
+        **Arguments**:
+            - *x* = float: x-position of drillhole
+           - *y* = float: y-position of drillhole
+
+        **Optional keywords**:
+            - *z_min* = float : minimum z-value (default: model origin)
+            - *z_max* = float : maximum z-value (default: surface)
+            - *label* = string : add a label to line (e.g. drillhole name, location, etc.)
+        """
+        if not hasattr(self, "sampling_lines"):
+            self.sampling_lines= {}
+
+        self.get_extent()
+        self.get_origin()
+
+        z_min = kwds.get("z_min", self.origin_z)
+        z_max = kwds.get("z_max", self.extent_z)
+
+        label = kwds.get('label', 'line %d' % len(self.sampling_lines))
+        self.sampling_lines[label] = {'x' : x, 'y' : y, 'z_min' : z_min, 'z_max' : z_max}
+
+    def get_model_lines(self, **kwds):
+        """Get base model along the defined sampling lines
+
+        **Optional keywords**:
+            - *model_type* = 'base', 'current' : model type (select base to get freezed model)
+            - *resolution* = float : model resolution to calculate distance at sampling lines
+        """
+        resolution = kwds.get("resolution", 1)
+        model_type = kwds.get("model_type", 'current')
+
+        import copy
+
+        tmp_his = copy.deepcopy(self)
+
+        current_lines = np.array([])
+        # get model for all sampling lines
+        for sl in self.sampling_lines.values():
+            # 2. set values
+            tmp_his.set_origin(sl['x'], sl['y'], sl['z_min'])
+            tmp_his.set_extent(resolution, resolution, sl['z_max'])
+            tmp_his.change_cube_size(resolution)
+
+            # test if base model:
+            if model_type == 'base':
+                # set base events:
+                tmp_his.events = self.base_events.copy()
+
+            elif model_type == 'current':
+                # use current model, do nothing for now
+                pass
+
+            else:
+                raise AttributeError("Model type %s not known, please check!" % model_type)
+
+            # 3. save temporary file
+            tmp_his_file = "tmp_1D_drillhole.his"
+            tmp_his.write_history(tmp_his_file)
+            tmp_out_file = "tmp_1d_out"
+            # 4. run noddy
+            import pynoddy
+            import pynoddy.output
+
+            pynoddy.compute_model(tmp_his_file, tmp_out_file)
+            # 5. open output
+            tmp_out = pynoddy.output.NoddyOutput(tmp_out_file)
+            # 6.
+            current_lines = np.append(current_lines, tmp_out.block[0,0,:])
+
+        # if base model: store as class variable:
+
+        # test if base model:
+        if model_type == 'base':
+            self.base_model_lines = current_lines
+
+        return current_lines
+
+
     def write_parameter_changes(self, filepath):
         if hasattr(self, 'random_parameter_changes'):  # if parameter changes have been stored
             # ensure directory exists
