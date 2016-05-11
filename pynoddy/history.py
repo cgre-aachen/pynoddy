@@ -334,7 +334,7 @@ class NoddyHistory(object):
             print "Loaded model with the following events:"
 
         for e in self._raw_events:
-            event_lines = self.history_lines[e['line_start']:e['line_end'] + 1]
+            event_lines = self.history_lines[e['line_start']:e['line_end']+1]
 
             if vb:
                 print e['type']

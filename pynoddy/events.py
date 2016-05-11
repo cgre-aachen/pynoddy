@@ -101,28 +101,58 @@ class Stratigraphy(Event):
         for i_begin in self.layer_begin:
             self.layers.append(StratiLayer(lines[i_begin:i_begin+19]))
 
-        geometry_info_finished = False
-
-        for i, line in enumerate(lines):
-            l = line.split("=")
-            # print("Load event properties")
-            if "Event #" in line: continue
-            # if "Name" in line:
-            #     finished with parsing events
-                # geometry_info_finished = True
-            if not geometry_info_finished:
-                # parse events
-                # convert value to float if it is not a string
-                value = l[1].strip()
-                try:
-                    value = float(value)
-                except ValueError:
-                    # not a number, so just keep float
-                    pass
-                self.properties[l[0].strip()] = value
-                self.property_lines[l[0].strip()] = i
+        # geometry_info_finished = False
+        #
+        # for i, line in enumerate(lines):
+        #     l = line.split("=")
+        #     # print("Load event properties")
+        #     if "Event #" in line: continue
+        #     # if "Name" in line:
+        #     #     finished with parsing events
+        #         # geometry_info_finished = True
+        #     if not geometry_info_finished:
+        #         # parse events
+        #         # convert value to float if it is not a string
+        #         value = l[1].strip()
+        #         try:
+        #             value = float(value)
+        #         except ValueError:
+        #             # not a number, so just keep float
+        #             pass
+        #         self.properties[l[0].strip()] = value
+        #         self.property_lines[l[0].strip()] = i
 
         self.name = self.event_lines[-1].split("=")[1].strip()
+
+    def update_properties(self, **kwds):
+        """Update properties (required if self.properties assignment changed!)
+
+        Note: overwrites function in base Event class!
+
+        """
+        # first entry: name of event and number of layers:
+        self.event_lines[1] = "\tNum Layers = %s\n" % (self.num_layers)
+
+        # now: add information from all stratigraphy layers
+        for i,layer in enumerate(self.layers):
+            for key, value in layer.properties.items():
+                # self.event_lines.append("\t%s = %s\n" % (key, value))
+                # self.event_lines[self.property_lines[key]+19*i+2] = "\t%s = %f\n" % (key, value)
+                if isinstance(value, str):
+                    # determine line number from number of layers
+                    self.event_lines[layer.property_lines[key]+19*i+2] = "\t%s = %s\n" % (key, value)
+                else:
+                    self.event_lines[layer.property_lines[key]+19*i+2] = "\t%s = %f\n" % (key, value)
+
+        #
+        # if hasattr(self, 'properties'):
+        #     for key, value in self.properties.items():
+        #         if "Event #" in key: continue
+        #         if isinstance(value, str):
+        #             self.event_lines[self.property_lines[key]] = "\t%s = %s\n" % (key, value)
+        #         else:
+        #             self.event_lines[self.property_lines[key]] = "\t%s = %f\n" % (key, value)
+
 
 
 class StratiLayer(object):
