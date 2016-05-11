@@ -90,10 +90,17 @@ class Stratigraphy(Event):
         self.event_lines = lines
         self.num_layers = int(self.event_lines[1].split("=")[1])
         # determine layer names:
-        for line in lines:
+        self.layer_begin = []
+        self.layers = []
+        for i,line in enumerate(lines):
             l = line.split("=")
             if "Unit Name" in l[0]: 
                 self.layer_names.append(l[1].rstrip())
+                self.layer_begin.append(i)
+        # now: create layer object for each stratigraphy layer:
+        for i_begin in self.layer_begin:
+            self.layers.append(StratiLayer(lines[i_begin:i_begin+19]))
+
         geometry_info_finished = False
 
         for i, line in enumerate(lines):
@@ -116,6 +123,25 @@ class Stratigraphy(Event):
                 self.property_lines[l[0].strip()] = i
 
         self.name = self.event_lines[-1].split("=")[1].strip()
+
+
+class StratiLayer(object):
+    """Single layer of stratigraphy event
+
+    """
+    def __init__(self, layer_lines):
+        self.properties = {}
+        self.property_lines = {}
+        for i, line in enumerate(layer_lines):
+            l = line.split("=")
+            value = l[1].strip()
+            try:
+                value = float(value)
+            except ValueError:
+                # not a number, so just keep float
+                pass
+            self.properties[l[0].strip()] = value
+            self.property_lines[l[0].strip()] = i
 
 
 class Fold(Event):

@@ -728,7 +728,7 @@ Version = 7.11
         **Arguments**:
             - *event_options* = list : list of required and optional settings for event;
             Options are:
-            'name' = string : name of fault event
+            'name' = string : name of tilt event
             'pos' = (x,y,z) : position of reference point (floats)
                 .. note::     for convenience, it is possible to assign 'top' to z
                               for position at "surface"
