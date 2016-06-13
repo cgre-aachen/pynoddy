@@ -3,6 +3,10 @@ Created on Mar 26, 2014
 
 @author: Florian Wellmann
 '''
+# enable logging capabilities for debugging
+import logging
+reload(logging)
+logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.CRITICAL, datefmt='%I:%M:%S')
 
 class Event(object):
     '''Main class container for geological events
@@ -24,28 +28,28 @@ class Event(object):
         '''
         if kwds.has_key("lines") :
             self.parse_event_lines(kwds['lines'])
-        
-        
+
+
 #     def parse_event_lines(self, lines):
 #         """Read specific event lines from history file
-#         
+#
 #         **Arguments**:
-#             - *lines* = list of lines : lines with event information (as stored in .his file)         
+#             - *lines* = list of lines : lines with event information (as stored in .his file)
 #         """
 #         self.event_lines = lines
-        
-    
+
+
     def update_properties(self, **kwds):
         """Update properties (required if self.properties assignment changed!)"""
         if hasattr(self, 'properties'):
             for key, value in self.properties.items():
 #                 if "Event #" in key:
-#                     if kwds.has_key('order'): 
+#                     if kwds.has_key('order'):
 #                         # update order
 #                         self.event_lines[self.property_lines[key]] = "Event #%d = %s\n" % (kwds['order'], value)
 #                     else:
 #                         self.event_lines[self.property_lines[key]] = "%s = %s\n" % (key, value)
-                if "Event #" in key: continue    
+                if "Event #" in key: continue
                 if isinstance(value, str):
                     self.event_lines[self.property_lines[key]] = "\t%s = %s\n" % (key, value)
                 else:
@@ -54,7 +58,7 @@ class Event(object):
     def set_event_number(self, num):
         """Set number in 'Event #' line to num"""
         self.event_lines[0] = "Event #%d\t= %s\n" % (num, self.event_type)
-        
+
     def set_event_lines(self, lines):
         """Explicitly define event lines"""
         self.event_lines = lines
@@ -64,7 +68,7 @@ class Stratigraphy(Event):
     """Sedimentary pile with defined stratigraphy
     
     """
-    
+
     def __init__(self, **kwds):
         """Sedimentary pile with defined stratigraphy
         
@@ -74,13 +78,14 @@ class Stratigraphy(Event):
         self.property_lines = {} # required to reassign properties later!
         self.layer_names = []
         self.num_layers = 0
+        self.layers = []
         self.event_lines = []
 
         # iterate through lines and determine attributes
         if kwds.has_key("lines"):
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
-       
+
     def parse_event_lines(self, lines):
         """Read specific event lines from history file
         
@@ -91,10 +96,10 @@ class Stratigraphy(Event):
         self.num_layers = int(self.event_lines[1].split("=")[1])
         # determine layer names:
         self.layer_begin = []
-        self.layers = []
+        # self.layers = []
         for i,line in enumerate(lines):
             l = line.split("=")
-            if "Unit Name" in l[0]: 
+            if "Unit Name" in l[0]:
                 self.layer_names.append(l[1].rstrip())
                 self.layer_begin.append(i)
         # now: create layer object for each stratigraphy layer:
@@ -130,14 +135,14 @@ class Stratigraphy(Event):
         Note: overwrites function in base Event class!
 
         """
+
         # first entry: name of event and number of layers:
         self.event_lines[1] = "\tNum Layers = %s\n" % (self.num_layers)
-
         # now: add information from all stratigraphy layers
         for i,layer in enumerate(self.layers):
             for key, value in layer.properties.items():
                 # self.event_lines.append("\t%s = %s\n" % (key, value))
-                # self.event_lines[self.property_lines[key]+19*i+2] = "\t%s = %f\n" % (key, value)
+                # self.event_lines[self.property_lines[key]19*i+2] = "\t%s = %f\n" % (key, value)
                 if isinstance(value, str):
                     # determine line number from number of layers
                     self.event_lines[layer.property_lines[key]+19*i+2] = "\t%s = %s\n" % (key, value)
@@ -152,7 +157,6 @@ class Stratigraphy(Event):
         #             self.event_lines[self.property_lines[key]] = "\t%s = %s\n" % (key, value)
         #         else:
         #             self.event_lines[self.property_lines[key]] = "\t%s = %f\n" % (key, value)
-
 
 
 class StratiLayer(object):
@@ -178,7 +182,7 @@ class Fold(Event):
     """Folding event
     
     """
-    
+
     def __init__(self, **kwds):
         """Folding event
         
@@ -186,7 +190,7 @@ class Fold(Event):
         if kwds.has_key("lines"):
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
-            
+
     def parse_event_lines(self, lines):
         """Read specific event lines from history file
         
@@ -215,7 +219,7 @@ class Fold(Event):
                     pass
                 self.properties[l[0].strip()] = value
                 self.property_lines[l[0].strip()] = i
-        
+
         # the event name always seems to be in the last line - check with
         # Mark if this is really the case!    
         self.name = self.event_lines[-1].split("=")[1].strip()
@@ -226,7 +230,7 @@ class Tilt(Event):
     """Tilt event
     
     """
-    
+
     def __init__(self, **kwds):
         """Tilt event
         
@@ -234,7 +238,7 @@ class Tilt(Event):
         if kwds.has_key("lines") :
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
-            
+
     def parse_event_lines(self, lines):
         """Read specific event lines from history file
         
@@ -256,7 +260,7 @@ class Tilt(Event):
                 pass
             self.properties[l[0].strip()] = value
             self.property_lines[l[0].strip()] = i
-        
+
         # the event name always seems to be in the last line - check with
         # Mark if this is really the case!    
         self.name = self.event_lines[-1].split("=")[1].strip()
@@ -305,7 +309,7 @@ class Dyke(Event):
         # the event name always seems to be in the last line - check with
         # Mark if this is really the case!    
         self.name = self.event_lines[-1].split("=")[1].strip()
-        
+
 class Plug(Event):
     """Plug event
     
@@ -349,7 +353,7 @@ class Plug(Event):
         # the event name always seems to be in the last line - check with
         # Mark if this is really the case!    
         self.name = self.event_lines[-1].split("=")[1].strip()
-    
+
 class Strain(Event):
     """Strain event
     
@@ -364,7 +368,7 @@ class Strain(Event):
             self.event_type = self.event_lines[0].split("=")[1].strip() #='STRAIN'
         else:
             print("Warning, lines argument not passed. Null event (strain) created")
-            
+
     def parse_event_lines(self,lines):
         """Read specific event lines from history file
         **Arguments**:
@@ -403,7 +407,7 @@ class Unconformity(Event):
         if kwds.has_key("lines") :
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
-            
+
     def parse_event_lines(self, lines):
         """Read specific event lines from history file
         
@@ -421,7 +425,7 @@ class Unconformity(Event):
             if "Alteration Type" in line:
                 # finished with parsing events 
                 geometry_info_finished = True
-            if "Unit Name" in l[0]: 
+            if "Unit Name" in l[0]:
                 self.layer_names.append(l[1].rstrip())
             if not geometry_info_finished:
                 # parse events
@@ -434,11 +438,11 @@ class Unconformity(Event):
                     pass
                 self.properties[l[0].strip()] = value
                 self.property_lines[l[0].strip()] = i
-        
+
         # the event name always seems to be in the last line - check with
         # Mark if this is really the case!    
         self.name = self.event_lines[-1].split("=")[1].strip()
-    
+
     def change_height(self, val):
         """Change the vertical position (i.e. height) of the entire stratigraphic pile
         above the unconformity
@@ -462,7 +466,7 @@ class Fault(Event):
     """Fault event
     
     """
-    
+
     def __init__(self, **kwds):
         """Fault event
         
@@ -499,7 +503,7 @@ class Fault(Event):
                     pass
                 self.properties[l[0].strip()] = value
                 self.property_lines[l[0].strip()] = i
-        
+
         # the event name always seems to be in the last line - check with
         # Mark if this is really the case!    
         self.name = self.event_lines[-1].split("=")[1].strip()
@@ -507,7 +511,7 @@ class Fault(Event):
 class Shear(Event):
     """Shear zone event
     """
-    
+
     def __init__(self, **kwds):
         """Fault event
         
@@ -544,27 +548,26 @@ class Shear(Event):
                     pass
                 self.properties[l[0].strip()] = value
                 self.property_lines[l[0].strip()] = i
-        
+
         # the event name always seems to be in the last line - check with
         # Mark if this is really the case!    
-        self.name = self.event_lines[-1].split("=")[1].strip()     
-        
-        
+        self.name = self.event_lines[-1].split("=")[1].strip()
+
+
 if __name__ == '__main__':
     # Some test and debug functions
     pass
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
