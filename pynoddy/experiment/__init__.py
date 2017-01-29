@@ -232,6 +232,22 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
                         raise AttributeError(
                             "Error: Normal distribution is underdefined. Please assign either a 'stdev' value or a '+-' value (defining the interval between the 2.5th and 97.25th quantile)")
 
+                if param['type'] == 'lognormal':
+                    # draw value of normal distribution:
+                    mean = param.get("mean", ori_val)  # default mean is original value
+
+                    # use assigned standard deviation
+                    if param.has_key('stdev'):
+                        stdev = param.get("stdev")
+                        random_val = np.random.lognormal() * stdev + mean
+                    elif param.has_key('+-'):
+                        ci = param.get('+-')
+                        random_val = Sample.Normal(mean, ci, 1)
+                    else:  # not enough information to calculate standard deviation
+                        raise AttributeError(
+                            "Error: Log-Normal distribution is underdefined. Please assign either a 'stdev' value or a '+-' value (defining the interval between the 2.5th and 97.25th quantile)")
+
+
                 if param['type'] == 'vonmises':
                     mean = param.get("mean", ori_val)
 
@@ -259,7 +275,10 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
                             "Error: Sampling from a uniform distribution requires either a specified range ('min' and 'max' values) or a mean and '+-' value (95% confidence interval)")
 
                 # throw error for other types of distribution
-                if param['type'] != 'normal' and param['type'] != 'vonmises' and param['type'] != 'uniform':
+                if param['type'] != 'normal' \
+                        and param['type'] != 'vonmises' \
+                        and param['type'] != 'lognormal' \
+                        and param['type'] != 'uniform':
                     raise AttributeError("Sampling for type %s not yet implemented, sorry." % param['type'])
 
                 # store relative changes
