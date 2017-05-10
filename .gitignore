@@ -30,6 +30,9 @@ docs/notebooks/*mag
 docs/notebooks/*pkl
 docs/notebooks/*zip
 
+# backup files
+*.bak
+
 # C extensions
 *.so
 
