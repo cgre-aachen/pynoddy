@@ -348,7 +348,7 @@ class NoddyHistory(object):
             elif 'UNCONFORMITY' in e['type']:
                 ev = events.Unconformity(lines=event_lines)
             elif 'STRATIGRAPHY' in e['type']:
-                event_lines = event_lines[:-1]
+                # event_lines = event_lines[:-1]
                 ev = events.Stratigraphy(lines=event_lines)
             elif 'TILT' in e['type']:  # AK
                 ev = events.Tilt(lines=event_lines)
