@@ -5,7 +5,6 @@ Created on Mar 26, 2014
 '''
 # enable logging capabilities for debugging
 import logging
-reload(logging)
 logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.CRITICAL, datefmt='%I:%M:%S')
 
 class Event(object):
