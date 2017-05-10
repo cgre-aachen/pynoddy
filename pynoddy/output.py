@@ -202,7 +202,7 @@ class NoddyOutput(object):
                     if i > i_max: i_max = i
                     if k/self.nz > k_max : k_max = k/self.nz
                     self.block[j,i,k/self.nz-1] = int(l1)
-            print i_max, j_max, k_max
+            print(i_max, j_max, k_max)
                     
         
         elif method == 'numpy':
@@ -481,7 +481,7 @@ class NoddyOutput(object):
                 
             section_slice = self.block[:,:,cell_pos].transpose()
         else:
-            print "Error: %s is not a valid direction. Please specify either ('x','y' or 'z')." % direction
+            print("Error: %s is not a valid direction. Please specify either ('x','y' or 'z')." % direction)
         
         #filter by lithology if a filter is set
         if kwds.has_key('litho_filter'):
@@ -726,7 +726,7 @@ class NoddyTopology(object):
         try:
             import networkx as nx
         except ImportError:
-            print "Warning: NetworkX module could not be loaded. Please install NetworkX from https://networkx.github.io/ to perform topological analyses in PyNoddy"
+            print("Warning: NetworkX module could not be loaded. Please install NetworkX from https://networkx.github.io/ to perform topological analyses in PyNoddy")
         
         #initialise new networkX graph
         self.graph = nx.Graph()
@@ -906,7 +906,7 @@ class NoddyTopology(object):
         for line in ml_lines:
             self.maxlitho = line 
             
-        print "maxlitho =", self.maxlitho
+        print("maxlitho =", self.maxlitho)
     
     def filter_node_volumes(self,min_volume=50):
         '''
@@ -939,7 +939,7 @@ class NoddyTopology(object):
         
         #check we can
         if not 'overall' in self.type:
-            print "Error: structural and lithological collapsed topologies can only be calculated from the overall topology"
+            print("Error: structural and lithological collapsed topologies can only be calculated from the overall topology")
             return
             
         #make copy of this object
@@ -1017,7 +1017,7 @@ class NoddyTopology(object):
         
         #check we can
         if not 'overall' in self.type:
-            print "Error: structural and lithological collapsed topologies can only be calculated from the overall topology"
+            print("Error: structural and lithological collapsed topologies can only be calculated from the overall topology")
             return
             
         import copy
@@ -1104,7 +1104,7 @@ class NoddyTopology(object):
         
         #ensure we are not comparing two empty graphs
         if G2.number_of_edges() == 0 and self.graph.number_of_edges()==0:
-            print "Warning: comparing two empty graphs... %s and %s" % (self.graph.name,G2.name)            
+            print("Warning: comparing two empty graphs... %s and %s" % (self.graph.name,G2.name))
             return 1 #two null graphs should be the same
             
         #add edges from this graph to union
@@ -1169,7 +1169,7 @@ class NoddyTopology(object):
         
         #validate input
         if len(topology_list) < 1:
-            print "Topology list contains no topologies... cannot combine."
+            print("Topology list contains no topologies... cannot combine.")
             return
         
         import networkx as nx
@@ -1250,7 +1250,7 @@ class NoddyTopology(object):
                      try:
                          s_e['area'] = s_e['area'] * w_inc
                      except TypeError:
-                         print "Type error combining edge %s, %s. List was observed rather than float - %s" % (e[0],e[1],str(s_e['area']))
+                         print("Type error combining edge %s, %s. List was observed rather than float - %s" % (e[0],e[1],str(s_e['area'])))
                                           
                  else: #edge already exists
                      
@@ -1471,7 +1471,7 @@ class NoddyTopology(object):
             import matplotlib.pyplot as plt
             import matplotlib.patches as patches
         except ImportError:
-            print "Could not draw image as matplotlib is not installed. Please install matplotlib."
+            print("Could not draw image as matplotlib is not installed. Please install matplotlib.")
             return
         
         n = G.number_of_nodes()
@@ -1609,8 +1609,8 @@ class NoddyTopology(object):
                                         
                         
                     else: #uh oh - though tbh this *should* never happen.... (though Murphy would disagree)
-                        print "Error: more than 4 relationship types! This cannot be drawn on adjacency matrix"
-                        print c                        
+                        print("Error: more than 4 relationship types! This cannot be drawn on adjacency matrix")
+                        print(c)
                         break
                 else: #only one relationship, rectangular patch
                     if c != '':     
@@ -1747,7 +1747,7 @@ class NoddyTopology(object):
             rows.append(row)
     
         #draw & save
-        print "Saving matrix image to... " + outputname
+        print("Saving matrix image to... " + outputname)
         cmap=plt.get_cmap('Paired')
         cmap.set_under('white')  # Color for values less than vmin
         plt.imshow(rows, interpolation="nearest", vmin=1, cmap=cmap)
@@ -1850,7 +1850,7 @@ class NoddyTopology(object):
         
         #draw & save
         if verbose:
-            print "Saving network image to..." + outputname
+            print("Saving network image to..." + outputname)
         
         nx.draw(self.graph,pos,node_color=nCols,node_size=size, edge_color=eCols) #cmap=cm
         
@@ -2140,7 +2140,7 @@ class NoddyTopology(object):
         for n in G2.nodes():
             
             if not G2.node[n].has_key('centroid'):
-                print "Error: node centroids are not defined. Please ensure this topology object has not been collapsed"
+                print("Error: node centroids are not defined. Please ensure this topology object has not been collapsed")
                 return
             
             x.append(G2.node[n]['centroid'][0])
