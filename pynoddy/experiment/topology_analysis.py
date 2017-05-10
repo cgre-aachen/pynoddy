@@ -35,7 +35,7 @@ class ModelRealisation(object):
         self.basename = history_file.split('.')[0]  # remove file extension
 
         if not os.path.exists(self.history_path):
-            print "Error: please specify a valid noddy history file (*.his)"
+            print("Error: please specify a valid noddy history file (*.his)")
             return
 
         # load history file
@@ -47,7 +47,7 @@ class ModelRealisation(object):
             pynoddy.compute_topology(self.basename)
 
         # load topology network
-        print self.basename
+        print(self.basename)
         self.topology = NoddyTopology(self.basename)  # overall topology
 
         # add sub-topology networks
@@ -66,7 +66,7 @@ class ModelRealisation(object):
         self.params = []  # array containing values
         for v in parameters:
             if len(v) != 2:
-                print "Warning: %s does not match the tuple format (eventID,parameter name)." % v
+                print("Warning: %s does not match the tuple format (eventID,parameter name)." % v)
             self.headings.append("%d_%s" % (v[0], v[1]))  # heading format is eventID_name: eg. 2_dip
             self.params.append(float(self.history.get_event_param(v[0], v[1])))
 
@@ -134,7 +134,7 @@ class ModelRealisation(object):
         vb = kwds.get('verbose', False)
 
         if vb:
-            print "Loading models in %s" % path
+            print("Loading models in %s" % path)
 
         # array of topology objects
         realisations = []
@@ -143,7 +143,7 @@ class ModelRealisation(object):
                 if ('.his' in f):  # find all topology files
                     p = os.path.join(root, f)
                     if vb:
-                        print 'Loading %s' % p
+                        print('Loading %s' % p)
 
                     # load model
                     realisations.append(ModelRealisation(p, verbose=vb))
@@ -187,16 +187,16 @@ class TopologyAnalysis(object):
         # a history file has been given, generate model stuff
         if '.' in path:
             if not '.his' in path:  # foobar
-                print "Error: please provide a valid history file (*.his)"
+                print("Error: please provide a valid history file (*.his)")
                 return
             if params is None or n is None:  # need this info
-                print "Error: please provide valid arguments [params,n]"
+                print("Error: please provide valid arguments [params,n]")
 
             self.base_history_path = path
             self.num_trials = n
 
             # calculate output path
-            if kwds.has_key('output'):
+            if 'output' in kwds:
                 self.base_path = kwds['output']
             else:
                 self.base_path = path.split('.')[0]  # trim file extension
@@ -252,7 +252,7 @@ class TopologyAnalysis(object):
                 self.unique_frequency.append(1)
                 self.initial_topo_id = len(self.unique_topologies) - 1
                 self.topo_type_ids.append(len(self.models) - 1)  # append type
-                print "Warning: all topologies generated are different to the initial topology"
+                print("Warning: all topologies generated are different to the initial topology")
 
             self.initial_litho_topology = self.initial_topology.collapse_structure()
             self.initial_litho_id = self.initial_litho_topology.find_first_match(self.unique_litho_topologies)
@@ -261,7 +261,7 @@ class TopologyAnalysis(object):
                 self.unique_litho_frequency.append(1)
                 self.initial_litho_id = len(self.unique_litho_topologies) - 1
                 self.litho_type_ids.append(len(self.models) - 1)
-                print "Warning: all litho topologies generated are different to the initial topology!"  # we probably want to know this
+                print("Warning: all litho topologies generated are different to the initial topology!")  # we probably want to know this
 
             self.initial_struct_topology = self.initial_topology.collapse_stratigraphy()
             self.initial_struct_id = self.initial_struct_topology.find_first_match(self.unique_struct_topologies)
@@ -270,7 +270,7 @@ class TopologyAnalysis(object):
                 self.unique_struct_frequency.append(1)
                 self.initial_struct_id = len(self.unique_struct_topologies) - 1
                 self.struct_type_ids.append(len(self.models) - 1)
-                print "Warning: all struct topologies generated are different to the initial topology!!!"  # we probably want to know this
+                print("Warning: all struct topologies generated are different to the initial topology!!!")  # we probably want to know this
 
             self.unique_ids.append(self.initial_topo_id)
             self.unique_struct_ids.append(self.initial_struct_id)
@@ -338,7 +338,7 @@ class TopologyAnalysis(object):
                 self.all_litho_topologies.append(m.topology.collapse_structure())
                 self.all_struct_topologies.append(m.topology.collapse_stratigraphy())
             else:
-                print "Warning: no topology loaded from %s" % m.topology.graph.name
+                print("Warning: no topology loaded from %s" % m.topology.graph.name)
                 
     def _sort_topologies_by_frequency(self):
         '''
@@ -347,13 +347,13 @@ class TopologyAnalysis(object):
         initially encountered will be lost (though I can't think what this info
         might be used for...)
         '''
-        from itertools import izip
+        
 
         # generate tempory id's so we can retain id mapping
-        t_id = range(len(self.unique_topologies))
+        t_id = list(range(len(self.unique_topologies)))
 
         # zip lists & sort by frequency in reverse order (highest to lowst)
-        s = sorted(izip(self.unique_topologies, t_id, self.unique_frequency), reverse=True, key=lambda x: x[2])
+        s = sorted(zip(self.unique_topologies, t_id, self.unique_frequency), reverse=True, key=lambda x: x[2])
 
         # unzip lists
         self.unique_topologies, t_id, self.unique_frequency = [[x[i] for x in s] for i in range(3)]
@@ -367,8 +367,8 @@ class TopologyAnalysis(object):
 
 
         # repeat for litho lists
-        t_id = range(len(self.unique_litho_topologies))
-        s = sorted(izip(self.unique_litho_topologies, t_id, self.unique_litho_frequency), reverse=True,
+        t_id = list(range(len(self.unique_litho_topologies)))
+        s = sorted(zip(self.unique_litho_topologies, t_id, self.unique_litho_frequency), reverse=True,
                    key=lambda x: x[2])
         self.unique_litho_topologies, t_id, self.unique_litho_frequency = [[x[i] for x in s] for i in range(3)]
         for i in range(len(self.unique_litho_ids)):
@@ -379,8 +379,8 @@ class TopologyAnalysis(object):
 
         # repeat for structural lists
         # zip lists & sort by frequency in reverse order (highest to lowst)
-        t_id = range(len(self.unique_struct_topologies))
-        s = sorted(izip(self.unique_struct_topologies, t_id, self.unique_struct_frequency), reverse=True,
+        t_id = list(range(len(self.unique_struct_topologies)))
+        s = sorted(zip(self.unique_struct_topologies, t_id, self.unique_struct_frequency), reverse=True,
                    key=lambda x: x[2])
         self.unique_struct_topologies, t_id, self.unique_struct_frequency = [[x[i] for x in s] for i in range(3)]
         for i in range(len(self.unique_struct_ids)):
@@ -460,13 +460,13 @@ class TopologyAnalysis(object):
         elif 'struct' in topology_type:
             t_list = self.struct_type_ids
         else:
-            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'")
 
         try:
             return self.models[t_list[typeID]]
         except IndexError:
-            print ("Error - type model index is out of range. Please ensure that topology_type is correct" +
-                   "and the topology you are looking for actually exists.")
+            print(("Error - type model index is out of range. Please ensure that topology_type is correct" +
+                   "and the topology you are looking for actually exists."))
             return None
 
     def get_parameter_space(self, params=None, recalculate=False):
@@ -498,7 +498,7 @@ class TopologyAnalysis(object):
             if hasattr(self, "params_file"):
                 params = self.params_file
             else:
-                print "Error: parameter information is not available. Please provide a params argument"
+                print("Error: parameter information is not available. Please provide a params argument")
                 return
         # if params is a csv file
         if ".csv" in params:
@@ -571,7 +571,7 @@ class TopologyAnalysis(object):
         elif 'struct' in topology_type:
             t_list = self.all_struct_topologies
         else:
-            print "Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'")
 
         avg = 0.0
         for t in t_list:
@@ -597,7 +597,7 @@ class TopologyAnalysis(object):
         elif 'struct' in topology_type:
             t_list = self.all_struct_topologies
         else:
-            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'")
 
         avg = 0.0
         for t in t_list:
@@ -626,9 +626,9 @@ class TopologyAnalysis(object):
             elif 'struct' in topology_type:
                 return -1 + (self.super_struct_topology.number_of_edges() / self.get_average_edge_count('struct'))
             else:
-                print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+                print("Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'")
         except ZeroDivisionError:  # average edge count = 0
-            print "Warning: empty or disconnected graphs. Average edge count = 0"
+            print("Warning: empty or disconnected graphs. Average edge count = 0")
             return 0
             
     @staticmethod
@@ -639,20 +639,20 @@ class TopologyAnalysis(object):
         #categorise edges by structure
         structures = {}
         for e in super_network.edges(data=True):
-            if e[2].has_key('name'):
-                if structures.has_key(e[2]['name']):
+            if 'name' in e[2]:
+                if e[2]['name'] in structures:
                     structures[e[2]['name']].append(e)
                 else:
                     structures[e[2]['name']] = [e]
             else:
-                if structures.has_key('other'):
+                if 'other' in structures:
                     structures['other'].append(e)
                 else:
                     structures['other'] = [e]
         
         #calculate variability
         output = {}
-        for key,value in structures.iteritems():
+        for key,value in structures.items():
             #calculate average size (sum of all the weights)
             w = 0.
             for e in value:
@@ -673,7 +673,7 @@ class TopologyAnalysis(object):
         elif 'struct' in topology_type:
                 return TopologyAnalysis.calculate_structure_variabilities(self.super_struct_topology)
         else:
-            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'")
     
                 
         
@@ -703,10 +703,10 @@ class TopologyAnalysis(object):
                 return self.struct_difference_matrix
             t_list = self.unique_struct_topologies
         else:
-            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'")
 
         if len(t_list) <= 1:  # need more than one model to build a dm...
-            print "Error: cannot build a distance matrix containing only one model..."
+            print("Error: cannot build a distance matrix containing only one model...")
             return None
 
         difference_matrix = np.zeros((len(t_list), len(t_list)))
@@ -718,7 +718,7 @@ class TopologyAnalysis(object):
                 elif i < j:
                     jq = t_list[i].jaccard_coefficient(t_list[j])
                     if jq == 1:
-                        print "Warning: difference matrix contains identical models."
+                        print("Warning: difference matrix contains identical models.")
 
                     # nb: similarity = 1 if networks are identical and approaches zero as they become different
                     if jq == 0:  # unlikely, but possible
@@ -755,7 +755,7 @@ class TopologyAnalysis(object):
         dm = self.get_difference_matrix(topology_type)
 
         if dm is None:
-            print "Error: could not build dendrogram for %s topologies" % topology_type
+            print("Error: could not build dendrogram for %s topologies" % topology_type)
             return
 
         m_dif = dist.squareform(dm, force='tovector')
@@ -840,7 +840,7 @@ class TopologyAnalysis(object):
             if hasattr(self, "params_file"):
                 params = self.params_file
             else:
-                print "Error - please specify a parameter list (or file) to plot."
+                print("Error - please specify a parameter list (or file) to plot.")
 
         # get group factor & frequency
         initial_id = -1
@@ -869,7 +869,7 @@ class TopologyAnalysis(object):
                 initial_id = self.initial_struct_id
                 ids = self.unique_struct_ids
         else:
-            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'")
             return
 
         # get data
@@ -973,7 +973,7 @@ class TopologyAnalysis(object):
             if hasattr(self, "params_file"):
                 params = self.params_file
             else:
-                print "Error - please specify a parameter list (or file) to plot."
+                print("Error - please specify a parameter list (or file) to plot.")
 
         # get data
         data = self.get_parameter_space(params)
@@ -1040,7 +1040,7 @@ class TopologyAnalysis(object):
             c = self.accumulate_struct_topologies
             title = "Cumulative Observed Structural Topologies"
         else:
-            print "Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'")
             return
 
         import matplotlib.pyplot as plt
@@ -1076,7 +1076,7 @@ class TopologyAnalysis(object):
             topols = self.all_struct_topologies
             title = "Cumulative Observed Structural Relationships (Edges)"
         else:
-            print "Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'")
             return
 
         import matplotlib.pyplot as plt
@@ -1088,9 +1088,9 @@ class TopologyAnalysis(object):
         for t in topols:
             for e in t.graph.edges():
                 e2 = (e[1], e[0])  # flip
-                if not (obs.has_key(e) or obs.has_key(e2)):
+                if not (e in obs or e2 in obs):
                     obs[e] = True  # append key
-            cumulative_count.append(len(obs.keys()))
+            cumulative_count.append(len(list(obs.keys())))
 
         # plot
         ax.plot(cumulative_count)
@@ -1141,7 +1141,7 @@ class TopologyAnalysis(object):
             title = 'Structural Topology'
             col = 'u_struct'
         else:
-            print "Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'")
             return
 
         # normalise data...
@@ -1203,7 +1203,7 @@ class TopologyAnalysis(object):
             freq = self.unique_litho_frequency
             title = 'Lithological Topology Frequency Distribution'
         else:
-            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'")
             return
 
         # calculate number of models in bins of each frequency
@@ -1275,7 +1275,7 @@ class TopologyAnalysis(object):
         if logy:
             ax.set_yscale('log')
 
-        if kwds.has_key('path'):
+        if 'path' in kwds:
             f.savefig(kwds.get('path'), dpi=dpi)
         else:
             f.show()
@@ -1321,7 +1321,7 @@ class TopologyAnalysis(object):
             param_space = param_space.drop(['u_topo', 'u_litho'], 1)  # drop unwanted columns
 
         else:
-            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'")
             return
 
         # find circular variables (currently on works for 'Dip' and 'Dip Direction')
@@ -1337,7 +1337,7 @@ class TopologyAnalysis(object):
         ld = LDA(param_space, col, circular)
 
         # draw plot
-        print ld.summary()
+        print(ld.summary())
         ld.scatter_plot()
 
     def plot_scatter_matrix(self, param_pairs=None, topology_type='struct', params=None, **kwds):
@@ -1408,7 +1408,7 @@ class TopologyAnalysis(object):
             param_space = param_space.drop(['u_topo', 'u_litho'], 1)  # drop unwanted columns
 
         else:
-            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'")
             return
 
         if param_pairs != None:
@@ -1419,8 +1419,8 @@ class TopologyAnalysis(object):
             if len(param_space.columns) <= 5:
                 data = param_space  # work on entire dataset
             else:
-                print "You be crazy - %d panels is to many for a scatter matrix." % math.factorial(
-                    len(param_space.columns) - 1)
+                print("You be crazy - %d panels is to many for a scatter matrix." % math.factorial(
+                    len(param_space.columns) - 1))
                 return
 
         # group
@@ -1508,7 +1508,7 @@ class TopologyAnalysis(object):
             topo = self.unique_litho_topologies
             t_id = self.litho_type_ids
         else:
-            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'")
             return
 
         # make sure we're not asking for too many models
@@ -1516,7 +1516,7 @@ class TopologyAnalysis(object):
             n = len(topo)
 
         # unique topologies are already sorted, so we just want to get the first n models
-        uids = range(n)
+        uids = list(range(n))
 
         ids = [t_id[i] for i in uids]
         models = [self.models[i] for i in ids]
@@ -1562,14 +1562,14 @@ class TopologyAnalysis(object):
             topo = self.unique_litho_topologies
             t_id = self.litho_type_ids
         else:
-            print "Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topology), 'litho' or 'struct'")
             return
 
         # compute tree
         dm = self.get_difference_matrix(topology_type)
 
         if dm is None:  # empty distance matrix...
-            print "Warning: only one model of this type has been found."
+            print("Warning: only one model of this type has been found.")
             return ([self.models[0]], [0], [0])  # models are all identical, return first one (it's as good as any)
 
         m_dif = dist.squareform(dm, force='tovector')
@@ -1674,7 +1674,7 @@ class TopologyAnalysis(object):
             else:
                 return
         else:
-            print "Error: Invalid criterion argument. Please pass either 'probability' (or 'prob') or 'clustering' (or 'clust')."
+            print("Error: Invalid criterion argument. Please pass either 'probability' (or 'prob') or 'clustering' (or 'clust').")
             return
 
         # plot grid
@@ -1682,7 +1682,7 @@ class TopologyAnalysis(object):
 
         # check for stupididty
         if n > 200:
-            print "Error: too many topologies of specified type '%s' to draw a grid. Please use a smaller n." % topology_type
+            print("Error: too many topologies of specified type '%s' to draw a grid. Please use a smaller n." % topology_type)
 
         rows = int(math.ceil(n / float(cols)))
 
@@ -1698,7 +1698,7 @@ class TopologyAnalysis(object):
             ax[i].get_yaxis().set_visible(False)
 
             ax[i].set_title('Model %d' % ids[i])
-            if (kwds.has_key('uid')):
+            if ('uid' in kwds):
                 if kwds['uid']:
                     ax[i].set_title('Topology %d' % uids[i])
 
@@ -1709,7 +1709,7 @@ class TopologyAnalysis(object):
         f.set_figwidth(width * cols)
         f.set_figheight(height * cols)
 
-        if (kwds.has_key('path')):
+        if ('path' in kwds):
             f.savefig(kwds['path'], dpi=kwds.get('dpi', 300))
         else:
             f.show()
@@ -1750,7 +1750,7 @@ class TopologyAnalysis(object):
         elif "struct" in topology_type:
             n = len(self.unique_struct_topologies)
         else:
-            print "Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'"
+            print("Error: Invalid topology_type. This should be '' (full topologies), 'litho' or 'struct'")
             return
 
         if not os.path.exists(directory):
@@ -1808,7 +1808,7 @@ class TopologyAnalysis(object):
         edge_vals = {}
 
         for u, v, d in graph.edges(data=True):
-            if not edges.has_key(d['edgeType']):
+            if d['edgeType'] not in edges:
                 edges[d['edgeType']] = []  # init list
                 edge_vals[d['edgeType']] = {'cm': 'alpha', 'color': d['colour']}
 
@@ -1886,7 +1886,7 @@ class TopologyAnalysis(object):
         # pickle this class for later
         # pickle this class for later
         if pickle:
-            import cPickle as pickle
+            import pickle as pickle
             
             #Pickle super networks
             pickle.dump(self.super_litho_topology,open('super_litho_topology.pkl','wb'))
@@ -2043,7 +2043,7 @@ class TopologyAnalysis(object):
         ##Not implemented yet. This function should count the number of topologies in which
         # all nodes of the given lithology are connected (not disjoint).
 
-        print "Not implemented yet. Sorry"
+        print("Not implemented yet. Sorry")
 
     def is_strata_touching(self, litho1, litho2):
         '''
@@ -2059,7 +2059,7 @@ class TopologyAnalysis(object):
         ##Not implemented yet. This function should count the number of topologies in which
         # any nodes of litho1 are touching nodes of litho2
 
-        print "Not implemented yet. Sorry"
+        print("Not implemented yet. Sorry")
 
     def write_noddy_output(self, directory):
         '''
@@ -2091,7 +2091,7 @@ class TopologyAnalysis(object):
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-        import cPickle as pk
+        import pickle as pk
 
         # store current wd
         wd = os.curdir
@@ -2102,16 +2102,16 @@ class TopologyAnalysis(object):
         pk.dump(self.super_litho_topology, open('super_litho_topology.pkl', 'wb'))
         pk.dump(self.super_struct_topology, open('super_struct_topology.pkl', 'wb'))
 
-        print "Saved topology supernetworks."
+        print("Saved topology supernetworks.")
         pk.dump(self.unique_ids, open('unique_topology.pkl', 'wb'))
         pk.dump(self.unique_litho_ids, open('unique_litho_topology.pkl', 'wb'))
         pk.dump(self.unique_struct_ids, open('unique_struct_topology.pkl', 'wb'))
 
-        print "Saved unique topology ids."
+        print("Saved unique topology ids.")
 		
         pk.dump(self.models,open('all_models.pkl','wb'))
 		
-        print "Saved model list"
+        print("Saved model list")
 		
         # change back to original wd
         os.chdir(wd)

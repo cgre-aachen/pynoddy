@@ -108,7 +108,7 @@ class SensitivityAnalysis(Experiment):
             - *param_values* = list of parameter values (as, for example, created by SALib methods)
             - *resolution* = float : model resolution to calculate distance at sampling lines
         """
-        if kwds.has_key("param_values"):
+        if "param_values" in kwds:
             param_values = kwds['param_values']
         elif hasattr(self, 'param_values'):
             param_values = self.param_values
@@ -137,7 +137,7 @@ class SensitivityAnalysis(Experiment):
                 param = self.param_stats[i]
                 
                 # initialise parameter changes dictionary if it doesn't exist:
-                if not param_values.has_key(param['event']):
+                if param['event'] not in param_values:
                     param_values[param['event']] = {}
                 param_values[param['event']][param['parameter']] = param_val
                 
@@ -168,7 +168,7 @@ class SensitivityAnalysis(Experiment):
         
         current_lines = np.array([])
         # get model for all sampling lines
-        for sl in self.sampling_lines.values():
+        for sl in list(self.sampling_lines.values()):
             # 2. set values
             tmp_his.set_origin(sl['x'], sl['y'], sl['z_min'])
             tmp_his.set_extent(resolution, resolution, sl['z_max'])

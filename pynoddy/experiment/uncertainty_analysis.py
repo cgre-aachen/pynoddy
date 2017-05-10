@@ -61,7 +61,7 @@ class UncertaintyAnalysis(MonteCarlo):
 
         # perform monte carlo sampling
         if vb:
-            print "Producing model realisations..."
+            print("Producing model realisations...")
         self.generate_model_instances(model_path, n_trials, verbose=vb, write_changes=None)
 
         # thought: it would be more efficient (memory wise) to load models 1 at a time rather than
@@ -69,7 +69,7 @@ class UncertaintyAnalysis(MonteCarlo):
 
         # load results
         if vb:
-            print "Loading models..."
+            print("Loading models...")
 
         models = MonteCarlo.load_noddy_realisations(model_path, verbose=vb)
         self.models = models
@@ -144,11 +144,11 @@ class UncertaintyAnalysis(MonteCarlo):
 
         # cleanup
         if vb:
-            print "Cleaning up..."
+            print("Cleaning up...")
         if cleanup:
             self.cleanup()
         if vb:
-            print "Finished."
+            print("Finished.")
 
     def estimate_uncertainty_from_existing(self, path, **kwds):
         """
@@ -175,7 +175,7 @@ class UncertaintyAnalysis(MonteCarlo):
         self.nz = (int)(ez / blocksize)
 
         if vb:
-            print "block dimensions = %d,%d,%d" % (self.nx, self.ny, self.nz)
+            print("block dimensions = %d,%d,%d" % (self.nx, self.ny, self.nz))
 
         # initialise blocks containing probability fields
         self.p_block = [[[[0. for z in range(self.nz)] for y in range(self.ny)] for x in range(self.nx)] for l in
@@ -189,7 +189,7 @@ class UncertaintyAnalysis(MonteCarlo):
                     base = os.path.join(root, f.split('.')[0])
 
                     if vb:
-                        print 'Loading %s' % base
+                        print('Loading %s' % base)
 
                     # load model
                     m = NoddyOutput(base)
@@ -255,7 +255,7 @@ class UncertaintyAnalysis(MonteCarlo):
             - *ve* = float : vertical exaggeration
             - *layer_labels* = list of strings: labels for each unit in plot
         """
-        if not kwds.has_key('cmap'):
+        if 'cmap' not in kwds:
             kwds['cmap'] = 'RdBu_r'
         kwds['data'] = np.array(self.e_block)  # specify the data we want to plot
 
@@ -283,7 +283,7 @@ class UncertaintyAnalysis(MonteCarlo):
             - *ve* = float : vertical exaggeration
             - *layer_labels* = list of strings: labels for each unit in plot
         """
-        if not kwds.has_key('cmap'):
+        if 'cmap' not in kwds:
             kwds['cmap'] = 'RdBu_r'
         kwds['data'] = np.array(self.p_block[litho_ID])  # specify the data we want to plot
         self.plot_section(direction, position, **kwds)

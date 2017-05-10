@@ -202,7 +202,7 @@ class NoddyOutput(object):
                     if i > i_max: i_max = i
                     if k/self.nz > k_max : k_max = k/self.nz
                     self.block[j,i,k/self.nz-1] = int(l1)
-            print(i_max, j_max, k_max)
+            print((i_max, j_max, k_max))
                     
         
         elif method == 'numpy':
@@ -265,7 +265,7 @@ class NoddyOutput(object):
             
              #start new line
             for i in lithoID:
-                if not sx.has_key(i): #create list
+                if i not in sx: #create list
                     sx[i] = []
                     sy[i] = []
                     sz[i] = []
@@ -315,7 +315,7 @@ class NoddyOutput(object):
             
             #start new line
             for i in lithoID: 
-                if not sx.has_key(i): #create list
+                if i not in sx: #create list
                     sx[i] = []
                     sy[i] = []
                     sz[i] = []
@@ -384,7 +384,7 @@ class NoddyOutput(object):
                     
                     if self.block[i][j][0] != self.block[i][j+1][0]: #this is a contact
                         code = "%d_%d" % (min(self.block[i][j][0],self.block[i][j+1][0]),max(self.block[i][j][0],self.block[i][j+1][0]))
-                        if not x.has_key(code):
+                        if code not in x:
                             x[code] = []
                             y[code] = []
                             z[code] = []
@@ -405,7 +405,7 @@ class NoddyOutput(object):
                     
                     if self.block[i][0][j] != self.block[i][0][j+1]: #this is a contact
                         code = "%d_%d" % (min(self.block[i][0][j],self.block[i][0][j+1]),max(self.block[i][0][j],self.block[i][0][j+1]))
-                        if not x.has_key(code):
+                        if code not in x:
                             x[code] = []
                             y[code] = []
                             z[code] = []
@@ -425,7 +425,7 @@ class NoddyOutput(object):
                     
                     if self.block[0][i][j] != self.block[0][i][j+1]: #this is a contact
                         code = "%d_%d" % (min(self.block[0][i][j],self.block[0][i][j+1]),max(self.block[0][i][j],self.block[0][i][j+1]))
-                        if not x.has_key(code):
+                        if code not in x:
                             x[code] = []
                             y[code] = []
                             z[code] = []
@@ -481,10 +481,10 @@ class NoddyOutput(object):
                 
             section_slice = self.block[:,:,cell_pos].transpose()
         else:
-            print("Error: %s is not a valid direction. Please specify either ('x','y' or 'z')." % direction)
+            print(("Error: %s is not a valid direction. Please specify either ('x','y' or 'z')." % direction))
         
         #filter by lithology if a filter is set
-        if kwds.has_key('litho_filter'):
+        if 'litho_filter' in kwds:
             litho_filter = kwds['litho_filter']
             if not litho_filter is None:
                 mask = []
@@ -544,7 +544,7 @@ class NoddyOutput(object):
         ve = kwds.get("ve", 1.)
         cmap_type = kwds.get('cmap', 'YlOrRd')
         
-        if kwds.has_key('ax'):
+        if 'ax' in kwds:
             # append plot to existing axis
             ax = kwds['ax']
             return_axis = True
@@ -578,7 +578,7 @@ class NoddyOutput(object):
                 
         im = ax.imshow(section_slice, interpolation='nearest', aspect=ve, cmap=cmap_type, origin = 'lower left')
        
-        if colorbar and not kwds.has_key('ax') and False: #disable - color bar is broken
+        if colorbar and 'ax' not in kwds and False: #disable - color bar is broken
 #            cbar = plt.colorbar(im)
 #            _ = cbar
 #        
@@ -601,7 +601,7 @@ class NoddyOutput(object):
                                            orientation = 'vertical') # , format='%s')
             # define the bins and normalize
     
-            if kwds.has_key("layer_labels"):
+            if "layer_labels" in kwds:
                 cb.set_ticklabels(kwds["layer_labels"])
                 
             # invert axis to have "correct" stratigraphic order
@@ -643,7 +643,7 @@ class NoddyOutput(object):
         
         # self.block = np.swapaxes(self.block, 0, 2)
         
-        if kwds.has_key("data"):
+        if "data" in kwds:
             gridToVTK(vtk_filename, x, y, z, cellData = {"data" : kwds['data']})         
         else:
             gridToVTK(vtk_filename, x, y, z, cellData = {"geology" : self.block})         
@@ -906,7 +906,7 @@ class NoddyTopology(object):
         for line in ml_lines:
             self.maxlitho = line 
             
-        print("maxlitho =", self.maxlitho)
+        print(("maxlitho =", self.maxlitho))
     
     def filter_node_volumes(self,min_volume=50):
         '''
@@ -1064,7 +1064,7 @@ class NoddyTopology(object):
             if topo.graph.has_edge(u,v): #edge already exists
                 #do our best to append/merge attributes
                 data = topo.graph.get_edge_data(u,v)
-                for key in e[2].keys():
+                for key in list(e[2].keys()):
                     try:
                         try:
                             data[key] = float(data[key]) + float(e[2][key]) #increment numbers
@@ -1081,7 +1081,7 @@ class NoddyTopology(object):
                 #create new edge
                 topo.graph.add_edge(u,v,attr_dict=e[2])
             if verbose:
-                print ("Collapsed (%s,%s) to (%s,%s)" % (e[0],e[1],u,v))
+                print(("Collapsed (%s,%s) to (%s,%s)" % (e[0],e[1],u,v)))
         
         return topo
     def jaccard_coefficient(self,G2):
@@ -1104,7 +1104,7 @@ class NoddyTopology(object):
         
         #ensure we are not comparing two empty graphs
         if G2.number_of_edges() == 0 and self.graph.number_of_edges()==0:
-            print("Warning: comparing two empty graphs... %s and %s" % (self.graph.name,G2.name))
+            print(("Warning: comparing two empty graphs... %s and %s" % (self.graph.name,G2.name)))
             return 1 #two null graphs should be the same
             
         #add edges from this graph to union
@@ -1194,20 +1194,20 @@ class NoddyTopology(object):
                      S.add_node(n,attr_dict = copy.copy(G.node[n]))
                      
                      #cast variables to list (or tuple of lists from centroid)
-                     if G.node[n].has_key('volume'):
+                     if 'volume' in G.node[n]:
                          S.node[n]['volume_list'] = [G.node[n]['volume']] 
                          S.node[n]['volume'] = G.node[n]['volume'] * w_inc
                      else:
                          S.node[n]['volume_list'] = [0]
                          S.node[n]['volume'] = 0
                          
-                     if S.node[n].has_key('centroid'):
+                     if 'centroid' in S.node[n]:
                          S.node[n]['centroid_list'] = ([G.node[n]['centroid'][0]],[G.node[n]['centroid'][1]],[G.node[n]['centroid'][2]])                     
                          S.node[n]['centroid'] = (w_inc * S.node[n]['centroid'][0],w_inc * S.node[n]['centroid'][1],w_inc * S.node[n]['centroid'][2])
                  else: #node already exists, store attributes
                      
                      #append centroid
-                     if G.node[n].has_key('centroid'):
+                     if 'centroid' in G.node[n]:
                          c1 = G.node[n]['centroid']
                          
                          #list of all centroids
@@ -1222,7 +1222,7 @@ class NoddyTopology(object):
                          
                  
                      #append volume
-                     if G.node[n].has_key('volume'):
+                     if 'volume' in G.node[n]:
                          S.node[n]['volume_list'].append(G.node[n]['volume'])
                      
                          #add to average
@@ -1250,7 +1250,7 @@ class NoddyTopology(object):
                      try:
                          s_e['area'] = s_e['area'] * w_inc
                      except TypeError:
-                         print("Type error combining edge %s, %s. List was observed rather than float - %s" % (e[0],e[1],str(s_e['area'])))
+                         print(("Type error combining edge %s, %s. List was observed rather than float - %s" % (e[0],e[1],str(s_e['area']))))
                                           
                  else: #edge already exists
                      
@@ -1314,7 +1314,7 @@ class NoddyTopology(object):
         #write output file if necessary
         if not output is None:
             import types
-            if type(output) == types.StringType: #path has been given so write file
+            if type(output) == bytes: #path has been given so write file
                 
                 #check directory exists
                 if not os.path.exists(os.path.dirname(output)) and not os.path.dirname(output) == '':
@@ -1324,7 +1324,7 @@ class NoddyTopology(object):
                 for o in out_list:
                     f.write("%d\n" % o)
                 f.close()  
-            elif type(output) == types.ListType:
+            elif type(output) == list:
                 for o in out_list:
                     output.append(o)
             
@@ -1444,7 +1444,7 @@ class NoddyTopology(object):
             f.write("#nodes: %s\n" % self.graph.number_of_nodes())
             f.write("#edges: %s\n" % self.graph.number_of_edges())
             f.write("Detail")
-            f.write("Degree sequence: %s" % str(nx.degree(self.graph).values()))
+            f.write("Degree sequence: %s" % str(list(nx.degree(self.graph).values())))
             f.write("Node list: %s" % str(self.graph.nodes(data=False)))
             f.write("Edge list: %s" % str(self.graph.edges(data=False)))
             f.write("Node attributes: %s" % str(self.graph.nodes(data=True)))
@@ -1483,7 +1483,7 @@ class NoddyTopology(object):
         nodes = sorted(nodes,key=lambda node: str.lower( node[0] ))
         
         #now sort by age, if we know it
-        if nodes[0][1].has_key('age'):
+        if 'age' in nodes[0][1]:
             nodes = sorted(nodes,key=lambda node: node[1]['age'])
         
         #build node id dictionary mapping
@@ -1653,7 +1653,7 @@ class NoddyTopology(object):
         #build node name mapping
         name_list = [] #order list containing node names from 0 to n
         for node in nodes:
-            if node[1].has_key('name'):
+            if 'name' in node[1]:
                 name = node[1]['name']
                 #name+=node[0].split('_')[-1]
             else:
@@ -1670,7 +1670,7 @@ class NoddyTopology(object):
         f.set_figheight(size)
         
         #save/show
-        if kwds.has_key('path'):
+        if 'path' in kwds:
             f.savefig(kwds['path'],dpi=kwds.get('dpi',300))
         else:
             f.show()
@@ -1747,7 +1747,7 @@ class NoddyTopology(object):
             rows.append(row)
     
         #draw & save
-        print("Saving matrix image to... " + outputname)
+        print(("Saving matrix image to... " + outputname))
         cmap=plt.get_cmap('Paired')
         cmap.set_under('white')  # Color for values less than vmin
         plt.imshow(rows, interpolation="nearest", vmin=1, cmap=cmap)
@@ -1834,7 +1834,7 @@ class NoddyTopology(object):
                     size_dict[n] = (size_dict[n] / dz) * 500
                 
             #store size array
-            size = size_dict.values()
+            size = list(size_dict.values())
             
         else: #2D layout
             if 'shell' in layout: #layouts: spring_layout, shell_layout, circular_layout, spectral_layout
@@ -1850,7 +1850,7 @@ class NoddyTopology(object):
         
         #draw & save
         if verbose:
-            print("Saving network image to..." + outputname)
+            print(("Saving network image to..." + outputname))
         
         nx.draw(self.graph,pos,node_color=nCols,node_size=size, edge_color=eCols) #cmap=cm
         
@@ -1903,7 +1903,7 @@ class NoddyTopology(object):
         edges = {}
         edge_vals = {}
         for u,v,d in self.graph.edges(data=True):
-            if not edges.has_key(d['edgeType']):
+            if d['edgeType'] not in edges:
                 edges[d['edgeType']] = [] #init list
                 edge_vals[d['edgeType']] = {}#'cm' : 'alpha', 'color' : d['colour']}
                 
@@ -1970,7 +1970,7 @@ class NoddyTopology(object):
         z = []
         nCols = [] #node colours
         for n in G2.nodes():
-            assert G2.node[n].has_key('centroid'), "Error: node centroids are not defined."
+            assert 'centroid' in G2.node[n], "Error: node centroids are not defined."
             
             centroid = G2.node[n]['centroid']
             x.append(centroid[0])
@@ -1986,7 +1986,7 @@ class NoddyTopology(object):
         
         for e in G2.edges(data=True):
             e_type = e[2]['edgeType']
-            if not edge_groups.has_key(e_type):
+            if e_type not in edge_groups:
                 col = e[2].get('colour',(0.3,0.3,0.3))
                 #convert matplotlib colours to rgb                
                 if not type( col ) is tuple:
@@ -2022,7 +2022,7 @@ class NoddyTopology(object):
         pts = mlab.points3d(x,y,z,nCols,scale_factor=node_size,scale_mode='none',resolution=20)
         
         #make edges
-        for k in edge_groups.keys():
+        for k in list(edge_groups.keys()):
             e = edge_groups[k]
                 
             #make start & end points
@@ -2052,7 +2052,7 @@ class NoddyTopology(object):
         #mlab.pipeline.surface(tube,color=np.array(eCols))#color=(0.3,0.3,0.3))
         
         #write
-        if kwds.has_key('path'):
+        if 'path' in kwds:
             try:
                 from tvtk.api import write_data
             except:
@@ -2106,7 +2106,7 @@ class NoddyTopology(object):
         ax = fig.gca(projection='3d')
         
         #load geology
-        if kwds.has_key('geology'):
+        if 'geology' in kwds:
             base=kwds.get('geology')
             res=kwds.get('res',1)
             
@@ -2117,16 +2117,16 @@ class NoddyTopology(object):
                 
                 #plot sections
                 for s in sections:
-                    for k in s[0].keys():
+                    for k in list(s[0].keys()):
                         ax.plot(s[0][k],s[1][k],s[2][k],c=s[3][k],zdir='z',alpha=0.5,linewidth=3)
                         
-            if kwds.has_key('horizons'): #plot surfaces
+            if 'horizons' in kwds: #plot surfaces
                 h = kwds.get('horizons')
                 surfaces = base.get_surface_grid(h) #range(0,base.n_rocktypes) #[12,14]
                 
                 #draw surfaces
                 for s in surfaces:
-                    for k in s[0].keys():
+                    for k in list(s[0].keys()):
                         for i in range(len(s[0][k])): #draw line segments
                         #ax.scatter(sx[k],sy[k],sz[k],s=2,linewidths=(0,),zdir='z',antialiased=False)
                         #ax.plot_trisurf(sx[k],sy[k],sz[k],color='r',alpha=0.6,antialiased=False)
@@ -2139,7 +2139,7 @@ class NoddyTopology(object):
         nCols = []
         for n in G2.nodes():
             
-            if not G2.node[n].has_key('centroid'):
+            if 'centroid' not in G2.node[n]:
                 print("Error: node centroids are not defined. Please ensure this topology object has not been collapsed")
                 return
             
@@ -2166,7 +2166,7 @@ class NoddyTopology(object):
             #draw line
             ax.plot(x,y,z,zdir='z',c=c)
            
-        if kwds.has_key('output'):
+        if 'output' in kwds:
             fig.savefig(kwds.get('output'))
         if kwds.get('show',True):
             fig.show()
@@ -2179,7 +2179,7 @@ if __name__ == '__main__':
 #     NO = NoddyOutput("strike_slip_out")
     #os.chdir(r'C:\Users\Sam\Documents\Temporary Model Files')
     os.chdir(r'C:\Users\Sam\OneDrive\Documents\Masters\Models\Primitive\Fold+Unconformity+Intrusion+Fault')
-    import cPickle as pk
+    import pickle as pk
     
     st = pk.load(open('super_topology.pkl'))
     

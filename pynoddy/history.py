@@ -9,7 +9,7 @@ import numpy as np
 # import numpy as np
 # import matplotlib.pyplot as plt
 
-import events
+from . import events
 
 
 class NoddyHistory(object):
@@ -35,7 +35,7 @@ class NoddyHistory(object):
         vb = kwds.get('verbose', False)
 
         if history is None:
-            if kwds.has_key("url"):
+            if "url" in kwds:
                 self.load_history_from_url(kwds['url'])
                 self.determine_events(verbose=vb)
             else:
@@ -56,7 +56,7 @@ class NoddyHistory(object):
         **Optional keywords**:
             - *events_only* = bool : only information on events
         """
-        print(self.get_info_string(**kwds))
+        print((self.get_info_string(**kwds)))
 
     def get_info_string(self, **kwds):
         """Get model information as string
@@ -81,7 +81,7 @@ class NoddyHistory(object):
             local_os += ("The model does not yet contain any events\n")
         else:
             local_os += ("This model consists of %d events:\n" % self.n_events)
-            for k, ev in self.events.items():
+            for k, ev in list(self.events.items()):
                 local_os += ("\t(%d) - %s\n" % (k, ev.event_type))
         if not events_only:
             local_os += ("The model extent is:\n")
@@ -273,8 +273,8 @@ class NoddyHistory(object):
         **Arguments**:
             - *url* : url of history file
         """
-        import urllib2
-        response = urllib2.urlopen(url)
+        import urllib.request, urllib.error, urllib.parse
+        response = urllib.request.urlopen(url)
         tmp_lines = response.read().split("\n")
         self.history_lines = []
         for line in tmp_lines:
@@ -288,7 +288,7 @@ class NoddyHistory(object):
     def determine_model_stratigraphy(self):
         """Determine stratigraphy of entire model from all events"""
         self.model_stratigraphy = []
-        for e in np.sort(self.events.keys()):
+        for e in np.sort(list(self.events.keys())):
             if self.events[e].event_type == 'STRATIGRAPHY':
                 self.model_stratigraphy += self.events[e].layer_names
             if self.events[e].event_type == 'UNCONFORMITY':
@@ -337,7 +337,7 @@ class NoddyHistory(object):
             event_lines = self.history_lines[e['line_start']:e['line_end']+1]
 
             if vb:
-                print(e['type'])
+                print((e['type']))
 
             if 'FAULT' in e['type']:
                 ev = events.Fault(lines=event_lines)
@@ -359,7 +359,7 @@ class NoddyHistory(object):
             elif 'STRAIN' in e['type']:
                 ev = events.Strain(lines=event_lines)
             else:
-                print("Warning: event of type %s has not been implemented in PyNoddy yet" % e['type'])
+                print(("Warning: event of type %s has not been implemented in PyNoddy yet" % e['type']))
                 continue
             # now set shared attributes (those defined in superclass Event)
             order = e['num']  # retrieve event number
@@ -468,22 +468,22 @@ class NoddyHistory(object):
             - *reorder_dict* = dict : for example {1 : 2, 2 : 3, 3 : 1}
         """
         tmp_events = self.events.copy()
-        for key, value in reorder_dict.items():
+        for key, value in list(reorder_dict.items()):
             try:
                 tmp_events[value] = self.events[key]
             except KeyError:
-                print("Event with id %d is not defined, please check!" % value)
+                print(("Event with id %d is not defined, please check!" % value))
         self.events = tmp_events.copy()
         self.update_event_numbers()
 
     def update_event_numbers(self):
         """Update event numbers in 'Event #' line in noddy history file"""
-        for key, event in self.events.items():
+        for key, event in list(self.events.items()):
             event.set_event_number(key)
 
     def update_all_event_properties(self):
         """Update properties of all events - in case changes were made"""
-        for event in self.events.values():
+        for event in list(self.events.values()):
             if isinstance(event, events.Stratigraphy):
                 continue
             else:
@@ -835,8 +835,8 @@ Version = 7.11
             - *params_dict* = dictionary : entries to set (multiple) parameters
             
         """
-        for key, sub_dict in params_dict.items():
-            for sub_key, val in sub_dict.items():
+        for key, sub_dict in list(params_dict.items()):
+            for sub_key, val in list(sub_dict.items()):
                 self.events[key].properties[sub_key] = val
 
     def change_event_params(self, changes_dict):
@@ -848,8 +848,8 @@ Version = 7.11
         Per default, the values in the dictionary are added to the event parameters.
         """
         # print changes_dict
-        for key, sub_dict in changes_dict.items():  # loop through events (key)
-            for sub_key, val in sub_dict.items():  # loop through parameters being changed (sub_key)
+        for key, sub_dict in list(changes_dict.items()):  # loop through events (key)
+            for sub_key, val in list(sub_dict.items()):  # loop through parameters being changed (sub_key)
                 self.events[key].properties[sub_key] += val
 
     def get_event_params(self, event_number):
