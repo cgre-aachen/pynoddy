@@ -11,13 +11,13 @@ from setuptools import setup
 
 
 setup(name='pynoddy',
-      version='1.0',
+      version='1.01',
       description='Python wrappers for kinematic geological simulations with Noddy',
 #      long_description=open('README.md').read(),
       classifiers=[
           "Development Status :: 4 - Beta",
           "Intended Audience :: Science/Research",
-          "Programming Language :: Python :: 2.7",
+          "Programming Language :: Python :: 3.6",
           "Intended Audience :: Education",
           "Topic :: Education",
           "Topic :: Scientific/Engineering",
