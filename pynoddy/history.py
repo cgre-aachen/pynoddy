@@ -56,7 +56,7 @@ class NoddyHistory(object):
         **Optional keywords**:
             - *events_only* = bool : only information on events
         """
-        print self.get_info_string(**kwds)
+        print(self.get_info_string(**kwds))
 
     def get_info_string(self, **kwds):
         """Get model information as string
@@ -331,13 +331,13 @@ class NoddyHistory(object):
         # to swap order later!
         # now create proper event objects for these events
         if vb:
-            print "Loaded model with the following events:"
+            print("Loaded model with the following events:")
 
         for e in self._raw_events:
             event_lines = self.history_lines[e['line_start']:e['line_end']+1]
 
             if vb:
-                print e['type']
+                print(e['type'])
 
             if 'FAULT' in e['type']:
                 ev = events.Fault(lines=event_lines)
@@ -359,7 +359,7 @@ class NoddyHistory(object):
             elif 'STRAIN' in e['type']:
                 ev = events.Strain(lines=event_lines)
             else:
-                print "Warning: event of type %s has not been implemented in PyNoddy yet" % e['type']
+                print("Warning: event of type %s has not been implemented in PyNoddy yet" % e['type'])
                 continue
             # now set shared attributes (those defined in superclass Event)
             order = e['num']  # retrieve event number
@@ -385,7 +385,7 @@ class NoddyHistory(object):
         cube_string = 'Geophysics Cube Size'  # get geology cube size by default
         if ('Geology' in sim_type):
             cube_string = 'Geology Cube Size'  # instead get geology cube size
-            print "Warning: pynoddy uses the geophysics cube size for all calculations... changing the geology cube size will have no effect internally."
+            print("Warning: pynoddy uses the geophysics cube size for all calculations... changing the geology cube size will have no effect internally.")
 
             # check if footer exists, if not: create from template
         if not hasattr(self, "footer_lines"):
@@ -484,7 +484,10 @@ class NoddyHistory(object):
     def update_all_event_properties(self):
         """Update properties of all events - in case changes were made"""
         for event in self.events.values():
-            event.update_properties()
+            if isinstance(event, events.Stratigraphy):
+                continue
+            else:
+                event.update_properties()
 
         #
         # class NewHistory():
