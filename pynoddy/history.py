@@ -273,8 +273,15 @@ class NoddyHistory(object):
         **Arguments**:
             - *url* : url of history file
         """
-        import urllib.request, urllib.error, urllib.parse
-        response = urllib.request.urlopen(url)
+        # test if python 2 or 3 are running for appropriate urllib functionality
+        import sys
+        if sys.version_info[0] < 3:
+            import urllib2
+            response = urllib2.urlopen(url)
+        else:
+            import urllib.request, urllib.error, urllib.parse
+            response = urllib.request.urlopen(url)
+
         tmp_lines = response.read().split("\n")
         self.history_lines = []
         for line in tmp_lines:
@@ -592,12 +599,17 @@ Version = 7.11
         for i in range(event_options['num_layers']):
             """Add stratigraphy layers"""
             layer_name = event_options['layer_names'][i]
+            try:
+                density = event_options['density'][i]
+            except KeyError:
+                density = 4.0
             cum_thickness = np.cumsum(event_options['layer_thickness'])
             layer_lines = _Templates().strati_layer
             # now replace required variables
             layer_lines = layer_lines.replace("$NAME$", layer_name)
             layer_lines = layer_lines.replace("$HEIGHT$", "%.1f" % cum_thickness[i])
             layer_lines = layer_lines.replace("    ", "\t")
+            layer_lines = layer_lines.replace("$DENSITY$", "%e" % density)
             # split lines and add to event lines list:
             for layer_line in layer_lines.split("\n"):
                 tmp_lines.append(layer_line)
@@ -951,7 +963,7 @@ Version = 7.11"""
     strati_layer = """    Unit Name    = $NAME$
     Height    = $HEIGHT$
     Apply Alterations    = ON
-    Density    = 4.00e+000
+    Density    = $DENSITY$
     Anisotropic Field    = 0
     MagSusX    = 1.60e-003
     MagSusY    = 1.60e-003
