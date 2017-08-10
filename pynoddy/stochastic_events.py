@@ -4,7 +4,7 @@ Created on Mar 26, 2014
 @author: flow
 '''
 
-from events import Event, Fault
+from .events import Event, Fault
 
 class StochasticEvent(Event):
     '''Main class container for stochastic events

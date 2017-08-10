@@ -30,6 +30,9 @@ docs/notebooks/*mag
 docs/notebooks/*pkl
 docs/notebooks/*zip
 
+# backup files
+*.bak
+
 # C extensions
 *.so
 
@@ -70,6 +73,8 @@ noddy.exe
 *.vtr
 docs/notebooks/SALib-sensitivity-analysis_files
 9-Sensitivity-Analysis-checkpoint.ipynb
+
+*-checkpoint.ipynb
 8-Experiments-checkpoint.ipynb
 *.o
 pynoddy/sampling-SamT15.py
@@ -85,3 +90,6 @@ docs/5-Geophysical-Potential-Fields_files
 docs/2-Adjust-input_files
 1-Simulation_14_0.png
 docs/bak
+
+*csv
+*_files

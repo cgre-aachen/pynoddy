@@ -92,7 +92,7 @@ def compute_model(history, output_name, **kwds):
         else:
             raise OSError
 
-    if kwds.has_key("verbose") and kwds['verbose']:
+    if "verbose" in kwds and kwds['verbose']:
         out = "Running noddy executable at %s(.exe)\n" % noddy_path
     else:
         out = ""

@@ -16,7 +16,7 @@ import numpy as np
 import pynoddy.history
 import pynoddy.output
 
-import util.sampling as Sample
+from .util import sampling as Sample
 
 
 class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
@@ -203,7 +203,7 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
                 param['event'] = (param['event'],)  # cast to tuple
 
             for e in param['event']:  # intialise param changes dictionaries
-                if not param_changes.has_key(e):
+                if e not in param_changes:
                     param_changes[e] = {}
                     absolute_changes[e] = {}
 
@@ -216,27 +216,43 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
 
             # sample value from appropriate distribution
             random_val = 0
-            if param.has_key("type"):
+            if "type" in param:
                 if param['type'] == 'normal':
                     # draw value of normal distribution:
                     mean = param.get("mean", ori_val)  # default mean is original value
 
                     # use assigned standard deviation
-                    if param.has_key('stdev'):
+                    if 'stdev' in param:
                         stdev = param.get("stdev")
                         random_val = np.random.normal(mean, stdev)
-                    elif param.has_key('+-'):
+                    elif '+-' in param:
                         ci = param.get('+-')
                         random_val = Sample.Normal(mean, ci, 1)
                     else:  # not enough information to calculate standard deviation
                         raise AttributeError(
                             "Error: Normal distribution is underdefined. Please assign either a 'stdev' value or a '+-' value (defining the interval between the 2.5th and 97.25th quantile)")
 
+                if param['type'] == 'lognormal':
+                    # draw value of normal distribution:
+                    mean = param.get("mean", ori_val)  # default mean is original value
+
+                    # use assigned standard deviation
+                    if 'stdev' in param:
+                        stdev = param.get("stdev")
+                        random_val = np.random.lognormal() * stdev + mean
+                    elif '+-' in param:
+                        ci = param.get('+-')
+                        random_val = Sample.Normal(mean, ci, 1)
+                    else:  # not enough information to calculate standard deviation
+                        raise AttributeError(
+                            "Error: Log-Normal distribution is underdefined. Please assign either a 'stdev' value or a '+-' value (defining the interval between the 2.5th and 97.25th quantile)")
+
+
                 if param['type'] == 'vonmises':
                     mean = param.get("mean", ori_val)
 
                     # sample distribution
-                    if param.has_key('+-'):
+                    if '+-' in param:
                         ci = param.get('+-')
                         random_val = Sample.VonMises(mean, ci, 1)
                     else:  # +- needs to be defined
@@ -245,11 +261,11 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
 
                 if param['type'] == 'uniform':
                     # retrieve specified min/max values
-                    if param.has_key("min") and param.has_key("max"):
+                    if "min" in param and "max" in param:
                         minimum = param.get("min")
                         maximum = param.get("max")
                         random_val = np.random.uniform(minimum, maximum)
-                    elif param.has_key("+-") and param.has_key("mean"):
+                    elif "+-" in param and "mean" in param:
                         # retrieve mean and confidence interval
                         mean = param.get("mean")
                         ci = param.get("+-")
@@ -259,7 +275,10 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
                             "Error: Sampling from a uniform distribution requires either a specified range ('min' and 'max' values) or a mean and '+-' value (95% confidence interval)")
 
                 # throw error for other types of distribution
-                if param['type'] != 'normal' and param['type'] != 'vonmises' and param['type'] != 'uniform':
+                if param['type'] != 'normal' \
+                        and param['type'] != 'vonmises' \
+                        and param['type'] != 'lognormal' \
+                        and param['type'] != 'uniform':
                     raise AttributeError("Sampling for type %s not yet implemented, sorry." % param['type'])
 
                 # store relative changes
@@ -272,7 +291,7 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
 
                     # print changes
                     if verbose:
-                        print('Changing %s to %s' % (param['parameter'], random_val))
+                        print(('Changing %s to %s' % (param['parameter'], random_val)))
 
             else:
                 raise AttributeError("Please define type of parameter statistics ('type' keyword in table)")
@@ -334,7 +353,7 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
             - *model_type* = 'current', 'base' : model type (base "freezed" model can be plotted for comparison)
             - *data* = np.array : data to plot, if different to block data itself
         """
-        if kwds.has_key("data"):
+        if "data" in kwds:
             super(Experiment, self).plot_section(direction, position, **kwds)
         else:
             # get model as section
@@ -359,7 +378,7 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
             
         ..Note:: If data is defined, the model is not recomputed and the data from this array is plotted
         """
-        if kwds.has_key("data"):
+        if "data" in kwds:
             super(Experiment, self).export_to_vtk(**kwds)
         else:
             recompute = kwds.get("recompute", True)  # recompute by default
@@ -372,7 +391,7 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
                 tmp_out_file = "tmp_section_out"
 
                 # reset to base model?
-                if kwds.has_key("model_type") and (kwds['model_type'] == 'base'):
+                if "model_type" in kwds and (kwds['model_type'] == 'base'):
                     # 1. create copy
                     import copy
                     tmp_his = copy.deepcopy(self)
@@ -547,7 +566,7 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
 
         current_lines = np.array([])
         # get model for all sampling lines
-        for sl in self.sampling_lines.values():
+        for sl in list(self.sampling_lines.values()):
             # 2. set values
             tmp_his.set_origin(sl['x'], sl['y'], sl['z_min'])
             tmp_his.set_extent(resolution, resolution, sl['z_max'])
@@ -603,16 +622,16 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
             f.write("ChangeNumber")
             change_list = []
             for e, c in self.random_parameter_changes[
-                0].iteritems():  # NB: This only works if the same parameters have been changed at each step!
-                for p, v in c.iteritems():
+                0].items():  # NB: This only works if the same parameters have been changed at each step!
+                for p, v in c.items():
                     f.write(",Event_%s_%s" % (e, p))  # write parameter: eg. Event_1_Amplitude
 
             # retrieve values
             i = 0
             for change in self.random_parameter_changes:
                 change_list.append([])  # list of changes
-                for e, c in change.iteritems():
-                    for p, v in c.iteritems():
+                for e, c in change.items():
+                    for p, v in c.items():
                         change_list[i].append(v)  # store value
                 i = i + 1
 

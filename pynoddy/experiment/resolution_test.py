@@ -63,12 +63,12 @@ class ResolutionTest(Experiment):
         step = (self.maxSize - self.minSize) / numTrials #step change between resolutions
         for res in range(self.minSize,self.maxSize,step):
             if verbose:
-                print("Computing model with %d block size" % res)    
+                print(("Computing model with %d block size" % res))    
            
             #change cube size
             self.change_cube_size(res,type="Geophysics")
             self.change_cube_size(res,type="Geology")
-            print"Cube size: %d:" % self.get_cube_size()
+            print("Cube size: %d:" % self.get_cube_size())
            
             #store cube size
             self.res_list.append(res)
@@ -80,8 +80,8 @@ class ResolutionTest(Experiment):
             
             #run saved history file
             if verbose:
-                print("Running resolution %d... " % res)
-                print(pynoddy.compute_model(basename+".his", basename+"_0001", sim_type = "TOPOLOGY"))
+                print(("Running resolution %d... " % res))
+                print((pynoddy.compute_model(basename+".his", basename+"_0001", sim_type = "TOPOLOGY")))
                 print ("Complete.\n")
             else:
                 pynoddy.compute_model(basename+".his", basename+"_0001", sim_type = "TOPOLOGY")
@@ -89,7 +89,7 @@ class ResolutionTest(Experiment):
             #calculate topology
             if verbose:
                 print('Computing model topologies...')
-                print(pynoddy.compute_topology(basename))
+                print((pynoddy.compute_topology(basename)))
                 print('Finished.\n')
             else:
                pynoddy.compute_topology(basename,1)
@@ -120,12 +120,12 @@ class ResolutionTest(Experiment):
                 for f in glob.glob(basename+"*"):
                     os.remove(f)
             
-        print "Complete. A total of %d topologies were observed" % self.nUnique
-        print "The size of the network at each step was:"
-        print self.size
+        print("Complete. A total of %d topologies were observed" % self.nUnique)
+        print("The size of the network at each step was:")
+        print(self.size)
         
-        print "The cumulative observation sequence was:"
-        print self.count
+        print("The cumulative observation sequence was:")
+        print(self.count)
         
         #restore
         pynoddy.null_volume_threshold = old_threshold
@@ -171,7 +171,7 @@ class ResolutionTest(Experiment):
         f.set_figwidth(width)
         f.set_figheight(height)
         
-        if kwds.has_key('path'):
+        if 'path' in kwds:
             f.savefig(kwds['path'],dpi=kwds.get('dpi',300))
         else:
             f.show()
@@ -199,7 +199,7 @@ class ResolutionTest(Experiment):
         f.set_figwidth(width)
         f.set_figheight(height)
         
-        if kwds.has_key('path'):
+        if 'path' in kwds:
             f.savefig(kwds['path'],dpi=kwds.get('dpi',300))
         else:
             f.show()

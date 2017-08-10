@@ -22,7 +22,7 @@ except ImportError:
     sys.stderr.write("Error: no module named pynoddy. Please ensure that pynoddy is installed and listed on the PythonPath\n")
     sys.exit(1) #we cannot really do anything more...
 
-print "Succesfully initialised pynoddy module."
+print("Succesfully initialised pynoddy module.")
 
 #basic imports
 try:
@@ -41,7 +41,7 @@ except Exception as e:
     sys.stderr.write("There was an error loading the NoddyTopology class (in pynoddy.output). %s\n" % e )
  
 if not err:
-    print "Succesfully loaded basic pynoddy classes (NoddyHistory, NoddyOutput and NoddyTopology)"
+    print("Succesfully loaded basic pynoddy classes (NoddyHistory, NoddyOutput and NoddyTopology)")
 
 
 #experiment imports
@@ -64,7 +64,7 @@ except Exception as e:
     err = True
     
 if not err:
-    print "Succesfully loaded pynoddy.experiment module and associated experiments (MonteCarlo and TopologyAnalysis)"
+    print("Succesfully loaded pynoddy.experiment module and associated experiments (MonteCarlo and TopologyAnalysis)")
     
 
 ##################
@@ -106,7 +106,7 @@ except Exception as e:
     sys.exit(1)
    
 if not err:
-    print "Succesfully created a new NoddyHistory"
+    print("Succesfully created a new NoddyHistory")
     
 #write history
 try:
@@ -118,7 +118,7 @@ except Exception as e:
     err = True
     
 if not err:
-    print "Successfully saved a history file"
+    print("Successfully saved a history file")
 
 #load history
 try:
@@ -127,7 +127,7 @@ except Exception as e:
     sys.stderr.write("An error occured while loading a NoddyHistory from a .his file... %s\n" % e)
     err = True
 if not err:
-    print "Succesfully loaded a history file"
+    print("Succesfully loaded a history file")
     
 
 #####################
@@ -143,7 +143,7 @@ except Exception as e:
     sys.exit(1)
 
 if not err:
-    print "Succesfully called Noddy executable in BLOCK mode."
+    print("Succesfully called Noddy executable in BLOCK mode.")
     
 try:
     txt = pynoddy.compute_model(history_path, output_name, sim_type = 'TOPOLOGY') 
@@ -153,7 +153,7 @@ except Exception as e:
     sys.exit(1)
 
 if not err:
-    print "Succesfully called Noddy executable in TOPOLOGY mode."
+    print("Succesfully called Noddy executable in TOPOLOGY mode.")
     
 #####################
 ##Test Topology
@@ -166,7 +166,7 @@ except Exception as e:
     err = True
     
 if not err:
-    print "Succesfully called Topology executable"
+    print("Succesfully called Topology executable")
     
 #####################
 #Test NoddyOutput
@@ -183,7 +183,7 @@ except Exception as e:
     err = True
 
 if not err:
-    print "Succesfully loaded Noddy output"
+    print("Succesfully loaded Noddy output")
     
 #####################
 #Test Experiment class
@@ -222,7 +222,7 @@ except Exception as e:
     err = True
     
 if not err:
-    print "Succesfully used Experiment class"
+    print("Succesfully used Experiment class")
 
 ###########################
 #Test MonteCarlo class
@@ -236,7 +236,7 @@ except Exception as e:
     err = True
 
 if not err:
-    print "Succesfully used MonteCarlo class"
+    print("Succesfully used MonteCarlo class")
     
 #cleanup
 os.remove(history_path)
@@ -249,4 +249,4 @@ for filename in glob.glob("tmp_section*"):
 os.remove(out_vtk + ".vtr")
 
 if not err:
-    print "Test functions all passed succesfully"
+    print("Test functions all passed succesfully")

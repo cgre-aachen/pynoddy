@@ -118,8 +118,8 @@ class MonteCarlo(experiment.Experiment):
             # call noddy
             if force or not os.path.exists(output + ".g12"):  # if noddy files don't exist, or force is true
                 if vb:
-                    print("Running %s... " % output)
-                    print(pynoddy.compute_model(path, output, sim_type=stype))
+                    print(("Running %s... " % output))
+                    print((pynoddy.compute_model(path, output, sim_type=stype)))
                     print ("Complete.")
                 else:
                     pynoddy.compute_model(path, output, sim_type=stype)
@@ -128,13 +128,13 @@ class MonteCarlo(experiment.Experiment):
             if 'TOPOLOGY' in stype:
                 if force or not os.path.exists(output + ".g23"):  # if topology files don't exist, or force is true
                     if vb:
-                        print("Running topology on %s... " % output)
-                        print(pynoddy.compute_topology(output))
+                        print(("Running topology on %s... " % output))
+                        print((pynoddy.compute_topology(output)))
                         print ("Complete.")
                     else:
                         pynoddy.compute_topology(output)
                 elif vb:
-                    print "Topology files alread exist for %s. Skipping." % path
+                    print("Topology files alread exist for %s. Skipping." % path)
 
             # flush print buffer
             sys.stdout.flush()
@@ -227,7 +227,7 @@ class MonteCarlo(experiment.Experiment):
                 # set random seed (nodeID * process ID * threadID * time in seconds)
                 t_his.set_random_seed(nodeID + seed_base + t)
 
-                if kwds.has_key('seed'):  # override default seed, for reproducable results
+                if 'seed' in kwds:  # override default seed, for reproducable results
                     t_his.set_random_seed(kwds['seed'] + t)  # specifed seed + threadID
 
                 # initialise thread
@@ -248,10 +248,10 @@ class MonteCarlo(experiment.Experiment):
 
             # now everything is finished!
             if vb:
-                print "Finito!"
+                print("Finito!")
 
                 elapsed = time.time() - start_time
-                print "Generated %d models in %d seconds\n\n" % (count, elapsed)
+                print("Generated %d models in %d seconds\n\n" % (count, elapsed))
 
         else:  # only 1 thread (or instance of a thread), so run noddy
             for n in range(1, count + 1):  # numbering needs to start at 1 for topology
@@ -260,7 +260,7 @@ class MonteCarlo(experiment.Experiment):
                 outputpath = os.path.join(path, outputfile)
 
                 if vb:
-                    print "Constructing %s... " % outputfile
+                    print("Constructing %s... " % outputfile)
 
                 # do random perturbation
                 self.random_perturbation(verbose=vb)
@@ -270,8 +270,8 @@ class MonteCarlo(experiment.Experiment):
 
                 # run noddy
                 if vb:
-                    print("Complete.\nRunning %s... " % outputfile)
-                    print(pynoddy.compute_model(outputpath + ".his", outputpath, sim_type=stype))
+                    print(("Complete.\nRunning %s... " % outputfile))
+                    print((pynoddy.compute_model(outputpath + ".his", outputpath, sim_type=stype)))
                     print ("Complete.")
                 else:
                     pynoddy.compute_model(outputpath + ".his", outputpath, sim_type=stype)
@@ -280,7 +280,7 @@ class MonteCarlo(experiment.Experiment):
                 if "TOPOLOGY" in stype:
                     if vb:
                         print("Complete. Calculating Topology... ")
-                        print(pynoddy.compute_topology(outputpath))
+                        print((pynoddy.compute_topology(outputpath)))
                         print ("Complete.")
                     else:
                         pynoddy.compute_topology(outputpath)
@@ -291,10 +291,10 @@ class MonteCarlo(experiment.Experiment):
             # write changes
             if not (changes is None):
                 if vb:
-                    print "Writing parameter changes to %s..." % (changes + ".csv")
+                    print("Writing parameter changes to %s..." % (changes + ".csv"))
                 self.write_parameter_changes(changes + ".csv")
                 if vb:
-                    print "Complete."
+                    print("Complete.")
 
     def cleanup(self, **kwds):
         """
@@ -312,7 +312,7 @@ class MonteCarlo(experiment.Experiment):
 
         # check that this class has been used to generate data
         if not hasattr(self, 'instance_path'):
-            print "Warning: Nothing cleaned - this MonteCarlo instance has not generated any files."
+            print("Warning: Nothing cleaned - this MonteCarlo instance has not generated any files.")
             return
 
         # delete files
@@ -396,7 +396,7 @@ class MonteCarlo(experiment.Experiment):
         attr = args.get('load_attributes', True)
 
         if vb:
-            print "Loading models in %s" % path
+            print("Loading models in %s" % path)
 
         # array of topology objects
         from pynoddy.output import NoddyTopology
@@ -407,7 +407,7 @@ class MonteCarlo(experiment.Experiment):
                 if '.g23' in f:  # find all topology files
                     base = os.path.join(root, f.split('.')[0])
                     if vb:
-                        print 'Loading %s' % base
+                        print('Loading %s' % base)
 
                     # load & store topology
                     topologies.append(NoddyTopology(base, load_attributes=attr))
@@ -432,7 +432,7 @@ class MonteCarlo(experiment.Experiment):
         vb = args.get('verbose', True)
 
         if vb:
-            print "Loading models in %s" % path
+            print("Loading models in %s" % path)
 
         # array of topology objects
         from pynoddy.output import NoddyOutput
@@ -444,13 +444,13 @@ class MonteCarlo(experiment.Experiment):
                     base = os.path.join(root, f.split('.')[0])
 
                     if vb:
-                        print 'Loading %s' % base
+                        print('Loading %s' % base)
 
                     # load & store model
                     models.append(NoddyOutput(base))
 
         if vb:
-            print "Complete."
+            print("Complete.")
 
         return models
 
@@ -482,7 +482,7 @@ if __name__ == '__main__':
     # generate 100 random perturbations using 4 separate threads (in TOPOLOGY mode)
     output_name = "mc_out"
     n = 4
-    print(mc.generate_model_instances(output_name, n, threads=4))
+    print((mc.generate_model_instances(output_name, n, threads=4)))
 
     # load output
     # topologies = MonteCarlo.load_topology_realisations(output_name, verbose=True)

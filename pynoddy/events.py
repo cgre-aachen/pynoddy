@@ -5,7 +5,6 @@ Created on Mar 26, 2014
 '''
 # enable logging capabilities for debugging
 import logging
-reload(logging)
 logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.CRITICAL, datefmt='%I:%M:%S')
 
 class Event(object):
@@ -26,7 +25,7 @@ class Event(object):
         
         .. note:: line begin and end are defined optional to allow alternative future implementations!
         '''
-        if kwds.has_key("lines") :
+        if "lines" in kwds :
             self.parse_event_lines(kwds['lines'])
 
 
@@ -42,7 +41,7 @@ class Event(object):
     def update_properties(self, **kwds):
         """Update properties (required if self.properties assignment changed!)"""
         if hasattr(self, 'properties'):
-            for key, value in self.properties.items():
+            for key, value in list(self.properties.items()):
 #                 if "Event #" in key:
 #                     if kwds.has_key('order'):
 #                         # update order
@@ -82,7 +81,7 @@ class Stratigraphy(Event):
         self.event_lines = []
 
         # iterate through lines and determine attributes
-        if kwds.has_key("lines"):
+        if "lines" in kwds:
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
 
@@ -140,7 +139,7 @@ class Stratigraphy(Event):
         self.event_lines[1] = "\tNum Layers = %s\n" % (self.num_layers)
         # now: add information from all stratigraphy layers
         for i,layer in enumerate(self.layers):
-            for key, value in layer.properties.items():
+            for key, value in list(layer.properties.items()):
                 # self.event_lines.append("\t%s = %s\n" % (key, value))
                 # self.event_lines[self.property_lines[key]19*i+2] = "\t%s = %f\n" % (key, value)
                 if isinstance(value, str):
@@ -187,7 +186,7 @@ class Fold(Event):
         """Folding event
         
         """
-        if kwds.has_key("lines"):
+        if "lines" in kwds:
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
 
@@ -235,7 +234,7 @@ class Tilt(Event):
         """Tilt event
         
         """
-        if kwds.has_key("lines") :
+        if "lines" in kwds :
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
 
@@ -275,7 +274,7 @@ class Dyke(Event):
         
         """
         #iterate through lines and determine attributes
-        if kwds.has_key("lines"):
+        if "lines" in kwds:
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip() #='DYKE'
         else:
@@ -319,7 +318,7 @@ class Plug(Event):
         
         """
         #iterate through lines and determine attributes
-        if kwds.has_key("lines"):
+        if "lines" in kwds:
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip() #='DYKE'
         else:
@@ -363,7 +362,7 @@ class Strain(Event):
         
         """
         #iterate through lines and determine attributes
-        if kwds.has_key("lines"):
+        if "lines" in kwds:
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip() #='STRAIN'
         else:
@@ -404,7 +403,7 @@ class Unconformity(Event):
         """Unconformity event
         
         """
-        if kwds.has_key("lines") :
+        if "lines" in kwds :
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
 
@@ -472,7 +471,7 @@ class Fault(Event):
         
         """
         # iterate through lines and determine attributes
-        if kwds.has_key("lines") :
+        if "lines" in kwds :
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
 
@@ -517,7 +516,7 @@ class Shear(Event):
         
         """
         # iterate through lines and determine attributes
-        if kwds.has_key("lines") :
+        if "lines" in kwds :
             self.parse_event_lines(kwds['lines'])
             self.event_type = self.event_lines[0].split("=")[1].strip()
 
