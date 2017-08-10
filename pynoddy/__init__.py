@@ -1,5 +1,6 @@
 """Package initialization file for pynoddy"""
 import os.path
+import sys
 import subprocess
 
 # save this module path for relative paths
@@ -79,6 +80,7 @@ def compute_model(history, output_name, **kwds):
 
     sim_type = kwds.get("sim_type", 'BLOCK')
 
+
     # actively select noddy executable
     if "noddy_path" in kwds:
         noddy_path = kwds['noddy_path']
@@ -96,23 +98,31 @@ def compute_model(history, output_name, **kwds):
         out = "Running noddy executable at %s(.exe)\n" % noddy_path
     else:
         out = ""
-    try:  # try running .exe file (windows only)
-        out += subprocess.Popen([noddy_path + ".exe", history, output_name, sim_type],
-                                shell=False, stderr=subprocess.PIPE,
-                                stdout=subprocess.PIPE).stdout.read()
-        subprocess.Popen.communicate()
-    except OSError:  # obviously not running windows - try just the binary
-        # out += subprocess.Popen([noddy_path, history, output_name, sim_type],
-        #                         shell=False, stderr=subprocess.PIPE,
-        #                         stdout=subprocess.PIPE).stdout.read()
-        p1 = subprocess.Popen([noddy_path, history, output_name, sim_type],
+
+    # check if Python > 3.5: use subprocess.run():
+    if sys.version_info[0] == 3 and sys.version_info[1] > 4:
+        noddy_path = 'noddy'
+        subprocess.run([noddy_path, history, output_name, sim_type],
                               shell=False, stdout=subprocess.PIPE)
-        subprocess.Popen.wait(p1)
+
+    else:
+        try:  # try running .exe file (windows only)
+            out += subprocess.Popen([noddy_path + ".exe", history, output_name, sim_type],
+                                    shell=False, stderr=subprocess.PIPE,
+                                    stdout=subprocess.PIPE).stdout.read()
+            subprocess.Popen.communicate()
+        except OSError:  # obviously not running windows - try just the binary
+            # out += subprocess.Popen([noddy_path, history, output_name, sim_type],
+            #                         shell=False, stderr=subprocess.PIPE,
+            #                         stdout=subprocess.PIPE).stdout.read()
+            p1 = subprocess.Popen([noddy_path, history, output_name, sim_type],
+                              shell=False, stdout=subprocess.PIPE)
+            subprocess.Popen.wait(p1)
 
         # out += open(p1.stdout).readlines()
 
-    # Thought: Is there any reason compute_topology should not be called here if sim_type == "TOPOLOGY"???
-    # It could simplify things a lot....
+        # Thought: Is there any reason compute_topology should not be called here if sim_type == "TOPOLOGY"???
+        # It could simplify things a lot....
 
     return out
 
