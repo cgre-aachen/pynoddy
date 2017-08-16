@@ -126,7 +126,10 @@ class Stratigraphy(Event):
         #         self.properties[l[0].strip()] = value
         #         self.property_lines[l[0].strip()] = i
 
-        self.name = self.event_lines[-1].split("=")[1].strip()
+        if self.event_lines[-1] == "\n":
+            self.name = self.event_lines[-2].split("=")[1].strip()
+        else:
+            self.name = self.event_lines[-1].split("=")[1].strip()
 
     def update_properties(self, **kwds):
         """Update properties (required if self.properties assignment changed!)
