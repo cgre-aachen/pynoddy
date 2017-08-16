@@ -457,27 +457,27 @@ class NoddyOutput(object):
             
         if direction == 'x':
             if position == 'center':
-                cell_pos = self.nx / 2
+                cell_pos = int(self.nx / 2)
             else:
-                cell_pos = position
+                cell_pos = int(position)
                 
             section_slice = data[cell_pos,:,:].transpose()
             #xlabel = "y"
             #ylabel = "z"
         elif direction == 'y':
             if position == 'center':
-                cell_pos = self.ny / 2
+                cell_pos = int(self.ny / 2)
             else:
-                cell_pos = position
+                cell_pos = int(position)
                 
             section_slice = data[:,cell_pos,:].transpose()
             #xlabel = "x"
             #ylabel = "z"
         elif direction == 'z':
             if position == 'center':
-                cell_pos = self.nz / 2
+                cell_pos = int(self.nz / 2)
             else:
-                cell_pos = position
+                cell_pos = int(position)
                 
             section_slice = self.block[:,:,cell_pos].transpose()
         else:
