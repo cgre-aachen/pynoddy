@@ -470,7 +470,7 @@ class NoddyOutput(object):
             else:
                 cell_pos = position
                 
-            section_slice = data[:,cell_pos,:].transpose()
+            section_slice = data[:,int(cell_pos),:].transpose()
             #xlabel = "x"
             #ylabel = "z"
         elif direction == 'z':
