@@ -32,11 +32,12 @@ import multiprocessing as mp
 #
 # ************************************************************************************
 
-n_rounds = 5 # number of modeling rounds (to avoid too much memory use)
+n_rounds = 6 # number of modeling rounds (to avoid too much memory use)
 n_draws = 10000 # number of random draws per round
 resolution = 100 # cell size of noddy model
 # set random seed for entire experiment (or leave empty for randomised version)
-ue.set_random_seed()
+# ue.set_random_seed()
+np.random.seed()
 init_state = np.random.randint(10000) # initial state of random seed within parallel processes
 print("Initial state: %d" % init_state)
 
@@ -171,7 +172,9 @@ tmp = sec.block[:,50,:]
 # Note: setting the dtype to 'int8' significantly reduces file size!
 #
 
-for round in range(n_rounds):
+for rnd in range(n_rounds):
+
+    print("\n\n" + 80*"*" + "\n\n" + "\t\t\t\tROUND %d \n\n" % (rnd+1) + 80*"*" + "\n\n" )
 
     model_sections = np.empty((n_draws, tmp.shape[0], tmp.shape[1]), dtype='int8')
 
