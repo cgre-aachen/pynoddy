@@ -496,10 +496,7 @@ class NoddyHistory(object):
     def update_all_event_properties(self):
         """Update properties of all events - in case changes were made"""
         for event in list(self.events.values()):
-            if isinstance(event, events.Stratigraphy):
-                continue
-            else:
-                event.update_properties()
+            event.update_properties()
 
         #
         # class NewHistory():
