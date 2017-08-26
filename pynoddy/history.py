@@ -278,11 +278,16 @@ class NoddyHistory(object):
         if sys.version_info[0] < 3:
             import urllib2
             response = urllib2.urlopen(url)
+            tmp_lines = response.read().split("\n")
         else:
-            import urllib.request, urllib.error, urllib.parse
-            response = urllib.request.urlopen(url)
+            # from urllib import urlopen # , urllib.error, urllib.parse
+            import urllib
+            with urllib.urlrequest.urlopen(url) as f:
+                output = f.read().decode('utf-8')
+            # response = urllib.request.urlopen(url)
+            tmp_lines = output.split("\n")
+            # tmp_lines = response.read().decode("utf-8").split("\n")
 
-        tmp_lines = response.read().split("\n")
         self.history_lines = []
         for line in tmp_lines:
             # append EOL again for consistency
@@ -622,7 +627,7 @@ Version = 7.11
         tmp_lines_list = []
         for line in tmp_lines:
             tmp_lines_list.append(line + "\n")
-        ev.set_event_lines(tmp_lines_list)
+        ev.set_event_lines(tmp_lines_list[:-1])
         ev.num_layers = event_options['num_layers']
         return ev
 
