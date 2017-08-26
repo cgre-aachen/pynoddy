@@ -863,7 +863,10 @@ Version = 7.11
         # print changes_dict
         for key, sub_dict in list(changes_dict.items()):  # loop through events (key)
             for sub_key, val in list(sub_dict.items()):  # loop through parameters being changed (sub_key)
-                self.events[key].properties[sub_key] += val
+                if isinstance(sub_key, int): # in this case, it is the layer id of a stratigraphic layer!
+                    self.events[key].layers[sub_key].properties[val['property']] += val['val']
+                else:
+                    self.events[key].properties[sub_key] += val
 
     def get_event_params(self, event_number):
         '''

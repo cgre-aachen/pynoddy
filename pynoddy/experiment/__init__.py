@@ -210,10 +210,19 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
 
             # get original value
             model_type = kwds.get('model_type', 'base')
-            if model_type == 'base':
-                ori_val = self.base_events[param['event'][0]].properties[param['parameter']]
+
+            # check if this is a layer in a stratigraphic event:
+            if isinstance(self.base_events[param['event'][0]], pynoddy.events.Stratigraphy):
+                if model_type == 'base':
+                    ori_val = self.base_events[param['event'][0]].layers[param['parameter']].properties[param['property']]
+                else:
+                    ori_val = self.events[param['event'][0]].layers[param['parameter']].properties[param['property']]
+
             else:
-                ori_val = self.events[param['event'][0]].properties[param['parameter']]
+                if model_type == 'base':
+                    ori_val = self.base_events[param['event'][0]].properties[param['parameter']]
+                else:
+                    ori_val = self.events[param['event'][0]].properties[param['parameter']]
 
             # sample value from appropriate distribution
             random_val = 0
@@ -284,15 +293,19 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
 
                 # store relative changes
                 for e in param['event']:
-                    param_changes[e][param['parameter']] = random_val - self.events[param['event'][0]].properties[
-                        param['parameter']]
+                    if isinstance(self.base_events[param['event'][0]], pynoddy.events.Stratigraphy):
+                        param_changes[e][param['parameter']] = {'val':random_val - ori_val,
+                                                                'property':param['property']}
+                    else:
+                        param_changes[e][param['parameter']] = random_val - self.events[param['event'][0]].properties[
+                            param['parameter']]
 
-                    # store absolute changes
-                    absolute_changes[e][param['parameter']] = random_val
+                        # store absolute changes
+                        absolute_changes[e][param['parameter']] = random_val
 
-                    # print changes
-                    if verbose:
-                        print(('Changing %s to %s' % (param['parameter'], random_val)))
+                        # print changes
+                        if verbose:
+                            print(('Changing %s to %s' % (param['parameter'], random_val)))
 
             else:
                 raise AttributeError("Please define type of parameter statistics ('type' keyword in table)")
