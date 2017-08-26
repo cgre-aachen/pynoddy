@@ -620,8 +620,7 @@ Version = 7.11
                 tmp_lines.append(layer_line)
 
         # append event name
-        tmp_lines.append("""\tName\t= Strat
-""")
+        tmp_lines.append("""\tName\t= Strat""")
 
         # event lines are defined in list:
         tmp_lines_list = []
