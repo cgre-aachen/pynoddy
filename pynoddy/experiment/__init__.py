@@ -9,6 +9,7 @@ Thought: perhaps drawing functions etc. should be moved into NoddyOutput class?
 '''
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 
 # from pynoddy.history import NoddyHistory
 # from pynoddy.output import NoddyOutput
@@ -96,7 +97,7 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
         **Optional arguments**:
             - *delim* = string : delimiter (default: ',' or ';', both checked)
         """
-        lines = open(filename).readlines()
+        lines = open(filename, 'r', encoding='utf-8').readlines()
         delim = kwds.get("delim", ",")
 
         # test if "," is actually the delimiter - if not, try ';' (stupid Excel standard...)
@@ -335,7 +336,7 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
             - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
             - *position* = int or 'center' : cell position of section as integer value
                 or identifier (default: 'center')
-        
+
         **Optional Keywords**:
             - *ax* = matplotlib.axis : append plot to axis (default: create new plot)
             - *figsize* = (x,y) : matplotlib figsize
@@ -361,6 +362,54 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
             self.determine_model_stratigraphy()
             # tmp_out.plot_section(direction = direction, layer_labels = self.model_stratigraphy, **kwds)
             tmp_out.plot_section(direction=direction, **kwds)
+
+    def plot_multiple_random(self, direction='y', position='center', **kwds):
+        """Plot multiple random realisations in one plot
+
+        This method can be useful to obtain a quick impression about the variability
+        in the model output given the applied parameter distributions.
+        Note that, by default, axis ticks and labels are removed for better visibility
+
+        **Arguments**:
+            - *direction* = 'x', 'y', 'z' : coordinate direction of section plot (default: 'y')
+            - *position* = int or 'center' : cell position of section as integer value
+                or identifier (default: 'center')
+
+        **Optional Keywords**:
+            - *ncols* = int : number of columns (default: 8)
+            - *nrows* = int : number of rows (default: 2)
+            - *cmap* = matplotlib.cmap : colormap (default: YlOrRd)
+            - *shuffle_events* = list of event ids : in addition to performing random draws, also
+                randomly shuffle events in list
+        """
+        ncols = kwds.get("ncols", 8)
+        nrows = kwds.get("nrows", 2)
+        cmap_type = kwds.get('cmap', 'YlOrRd')
+        ve = kwds.get("ve", 1.)
+        savefig = kwds.get("savefig", False)
+        figsize = kwds.get("figsize",(16, 5))
+
+        f, ax = plt.subplots(nrows, ncols, figsize=figsize)
+        for j in range(ncols):
+            for i in range(nrows):
+                self.random_draw()
+                if 'shuffle_events' in kwds:
+                    self.shuffle_event_order(kwds['shuffle_events'])
+                tmp = self.get_section(direction, position, **kwds)
+                section_slice, cell_pos = tmp.get_section_voxels(direction, position, **kwds)
+                im = ax[i,j].imshow(section_slice, interpolation='nearest', aspect=ve, cmap=cmap_type, origin='lower left')
+                # remove ticks and labels
+                ax[i,j].set_xticks([])
+                ax[i,j].set_yticks([])
+                # ax[i,j].imshow(im_subs_digit[j*nx+i])
+
+        if savefig:
+            fig_filename = kwds.get("fig_filename", "%s_random_sections_%s_pos_%d" % (self.basename, direction, cell_pos))
+            plt.savefig(fig_filename, bbox_inches="tight")
+        else:
+            plt.show()
+
+
 
     def export_to_vtk(self, **kwds):
         """Export model to VTK
