@@ -12,12 +12,14 @@ import os
 
 import pynoddy
 
-import experiment
 
-# try:
-#     from experiment import Experiment
-# except ImportError:
-#     from pynoddy.experiment import Experiment
+
+try:
+    import experiment
+    from experiment import Experiment
+except ImportError:
+    import pynoddy.experiment as experiment
+    from pynoddy.experiment import Experiment
 
 class MonteCarlo(experiment.Experiment):
     """Perform Monte Carlo simulations on a model using defined input statistics
@@ -41,7 +43,6 @@ class MonteCarlo(experiment.Experiment):
                               4) a collumn defining the distance between the 2.5th and 97.5th percentiles
                                  (titled '+-') OR one defining the standard deviation (titled 'stdev')
         """
-        from experiment import Experiment
         super(Experiment, self).__init__(history)  # initialise
         #         super().__init__(history) #initialise
 
