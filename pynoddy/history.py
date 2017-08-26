@@ -627,7 +627,7 @@ Version = 7.11
         tmp_lines_list = []
         for line in tmp_lines:
             tmp_lines_list.append(line + "\n")
-        ev.set_event_lines(tmp_lines_list[:-1])
+        ev.set_event_lines(tmp_lines_list)
         ev.num_layers = event_options['num_layers']
         return ev
 
