@@ -670,32 +670,32 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
         for i, well in enumerate(wells):
             if layer is None:  # extract all
                 for l in np.unique(well):
-                    entry = ['X', 'Y', 'Z', 'formation', 'series', 'X_std', 'Y_std', 'Z_std', "group_id"]
+                    entry = ['X', 'Y', 'Z', 'formation', 'series', 'formation_number', 'order_series', 'isFault',  "group_id"]
                     entry[0] = x[i]
                     entry[1] = y[i]
                     entry[2] = np.where(well == l)[0][-1]
                     entry[3] = "Layer " + str(int(l))
                     entry[4] = "Default serie"
-                    entry[5] = 0
-                    entry[6] = 0
-                    entry[7] = 0
+                    entry[5] = int(l)
+                    entry[6] = 1
+                    entry[7] = False
                     entry[8] = group_id
 
-                    s = pn.Series(entry, ['X', 'Y', 'Z', 'formation', 'series', 'X_std', 'Y_std', 'Z_std', "group_id"])
+                    s = pn.Series(entry, ['X', 'Y', 'Z', 'formation', 'series', 'formation_number', 'order_series', 'isFault',  "group_id"])
                     interfaces = interfaces.append(s, ignore_index=True)
             else:
-                entry = ['X', 'Y', 'Z', 'formation', 'series', 'X_std', 'Y_std', 'Z_std', "group_id"]
+                entry = ['X', 'Y', 'Z', 'formation', 'series', 'formation_number', 'order_series', 'isFault',  "group_id"]
                 entry[0] = x[i]
                 entry[1] = y[i]
                 entry[2] = np.where(well == layer)[0][-1]
                 entry[3] = "Layer " + str(int(layer))
                 entry[4] = "Default serie"
-                entry[5] = 0
-                entry[6] = 0
-                entry[7] = 0
+                entry[5] = int(layer)
+                entry[6] = 1
+                entry[7] = False
                 entry[8] = group_id
 
-                s = pn.Series(entry, ['X', 'Y', 'Z', 'formation', 'series', 'X_std', 'Y_std', 'Z_std', "group_id"])
+                s = pn.Series(entry, ['X', 'Y', 'Z', 'formation', 'series', 'formation_number', 'order_series', 'isFault',  "group_id"])
                 interfaces = interfaces.append(s, ignore_index=True)
 
         return interfaces
