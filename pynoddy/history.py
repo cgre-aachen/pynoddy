@@ -278,11 +278,16 @@ class NoddyHistory(object):
         if sys.version_info[0] < 3:
             import urllib2
             response = urllib2.urlopen(url)
+            tmp_lines = response.read().split("\n")
         else:
-            import urllib.request, urllib.error, urllib.parse
-            response = urllib.request.urlopen(url)
+            # from urllib import urlopen # , urllib.error, urllib.parse
+            import urllib
+            with urllib.urlrequest.urlopen(url) as f:
+                output = f.read().decode('utf-8')
+            # response = urllib.request.urlopen(url)
+            tmp_lines = output.split("\n")
+            # tmp_lines = response.read().decode("utf-8").split("\n")
 
-        tmp_lines = response.read().split("\n")
         self.history_lines = []
         for line in tmp_lines:
             # append EOL again for consistency
@@ -491,10 +496,7 @@ class NoddyHistory(object):
     def update_all_event_properties(self):
         """Update properties of all events - in case changes were made"""
         for event in list(self.events.values()):
-            if isinstance(event, events.Stratigraphy):
-                continue
-            else:
-                event.update_properties()
+            event.update_properties()
 
         #
         # class NewHistory():
@@ -615,8 +617,7 @@ Version = 7.11
                 tmp_lines.append(layer_line)
 
         # append event name
-        tmp_lines.append("""\tName\t= Strat
-""")
+        tmp_lines.append("""\tName\t= Strat""")
 
         # event lines are defined in list:
         tmp_lines_list = []
@@ -862,7 +863,10 @@ Version = 7.11
         # print changes_dict
         for key, sub_dict in list(changes_dict.items()):  # loop through events (key)
             for sub_key, val in list(sub_dict.items()):  # loop through parameters being changed (sub_key)
-                self.events[key].properties[sub_key] += val
+                if isinstance(sub_key, int): # in this case, it is the layer id of a stratigraphic layer!
+                    self.events[key].layers[sub_key].properties[val['property']] += val['val']
+                else:
+                    self.events[key].properties[sub_key] += val
 
     def get_event_params(self, event_number):
         '''
