@@ -2,6 +2,10 @@
 
 The script uses the python multiprocessing module and is intended for use in
 supercomputer/ multi-core environemnts in a terminal/ submission job/ screen mode.
+
+Adjusted from stackoverflow thread:
+https://stackoverflow.com/questions/8533318/python-multiprocessing-pool-when-to-use-apply-apply-async-or-map/8533626
+Thanks, stackoverflow!
 """
 
 # here the usual imports. If any of the imports fails, 
@@ -32,8 +36,32 @@ import multiprocessing as mp
 #
 # ************************************************************************************
 
-n_rounds = 6 # number of modeling rounds (to avoid too much memory use)
-n_draws = 10000 # number of random draws per round
+# Basic working directory
+ori_dir = "/Users/Shared/git/pynoddy/docs/notebooks/"
+
+# Noddy history file to use as base
+his_file = "typeb.his"
+
+# Define parameter uncertainties for events in his-file
+
+param_stats = [{'event' : 2,
+              'parameter': 'Amplitude',
+              'stdev': 100.0,
+              'type': 'normal'},
+              {'event' : 2,
+              'parameter': 'Wavelength',
+              'stdev': 500.0,
+              'type': 'normal'},
+              {'event' : 2,
+              'parameter': 'X',
+              'stdev': 500.0,
+              'type': 'normal'}]
+
+# base-filename for model results
+results_base = "gibbs_model_sections"
+
+n_rounds = 1 # 6 # number of modeling rounds (to avoid too much memory use)
+n_draws = 10 # 000 # number of random draws per round
 resolution = 100 # cell size of noddy model
 # set random seed for entire experiment (or leave empty for randomised version)
 # ue.set_random_seed()
@@ -44,31 +72,9 @@ print("Initial state: %d" % init_state)
 # ************************************************************************************
 
 
-# Load model here:
-
-# from pynoddy.experiment import monte_carlo
-model_url = 'http://tectonique.net/asg/ch3/ch3_7/his/typeb.his'
-ue = pynoddy.experiment.Experiment(history="typeb.his")
-
-
+# Load model and set parameters:
+ue = pynoddy.experiment.Experiment(history=his_file)
 ue.info(events_only = True)
-
-
-# We now define the parameter uncertainties:
-
-param_stats = [{'event' : 2, 
-              'parameter': 'Amplitude',
-              'stdev': 100.0,
-              'type': 'normal'},
-              {'event' : 2, 
-              'parameter': 'Wavelength',
-              'stdev': 500.0,
-              'type': 'normal'},
-              {'event' : 2, 
-              'parameter': 'X',
-              'stdev': 500.0,
-              'type': 'normal'}]
-
 ue.set_parameter_statistics(param_stats)
 
 
@@ -85,13 +91,6 @@ tmp = sec.block[:,50,:]
 # Note: setting the dtype to 'int8' significantly reduces file size!
 #
 model_sections = np.empty((n_draws, tmp.shape[0], tmp.shape[1]), dtype='int8')
-""";
-
-
-# In[10]:
-
-
-"""
 for i in range(n_draws):
     ue.random_draw()
     tmp_sec = ue.get_section('y', resolution = resolution, 
@@ -106,7 +105,6 @@ for i in range(n_draws):
 ori_dir = os.getcwd()
 
 # Adapt model generation to use temp directory:
-
 
 # Define function to perform one iteration
 # Execute iterations in temporary directories to avoid overlap
@@ -169,18 +167,19 @@ os.chdir("/Users/Shared/git/pynoddy/docs/notebooks/")
 ue.change_cube_size(resolution)
 sec = ue.get_section('y')
 tmp = sec.block[:,50,:]
-# Note: setting the dtype to 'int8' significantly reduces file size!
 #
 
 for rnd in range(n_rounds):
 
     print("\n\n" + 80*"*" + "\n\n" + "\t\t\t\tROUND %d \n\n" % (rnd+1) + 80*"*" + "\n\n" )
 
+    # initialise container to store model results
+    # Note: setting the dtype to 'int8' significantly reduces file size!
     model_sections = np.empty((n_draws, tmp.shape[0], tmp.shape[1]), dtype='int8')
 
     result_list = []
     def log_result(result):
-        # This is called whenever foo_pool(i) returns a result.
+        # This is called whenever compute_iter_pool returns a result.
         # result_list is modified only by the main process, not the pool workers.
         result_list.append(result)
 
@@ -195,11 +194,7 @@ for rnd in range(n_rounds):
 
     # model_sections = np.array([pool.apply(compute_iter_pool, args=(ue,)) for x in range(4)])
 
-    ori_dir = "/Users/Shared/git/pynoddy/docs/notebooks/"
     os.chdir(ori_dir)
-
-
-    # In[49]:
 
 
     model_sections = np.array(result_list)
@@ -207,15 +202,12 @@ for rnd in range(n_rounds):
 
 
     # Save results to file. Note: use random number in filename to avoid overwriting:
-
-    # In[64]:
-
     # reset seed, purely to ensure randomized file names:
     # NOTE: this should _not_ be used for completely reproducible results!
     # np.random.seed()
 
     import pickle
-    f_out = open("model_sections_%d.pkl" % np.random.randint(1000), 'wb')
+    f_out = open(results_base + "_%d.pkl" % np.random.randint(1000), 'wb')
     pickle.dump(model_sections, f_out)
     f_out.close()
 
