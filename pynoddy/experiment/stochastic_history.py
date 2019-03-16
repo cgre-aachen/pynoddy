@@ -135,7 +135,13 @@ class NoddyHistoryGenerator:
         fold_options.update(self._draw_dict(self.dist_fold))
         return fold_options
 
-    def gen_hist(self, name, path=""):
+    def gen_hist(self, name:str, path:str=""):
+        """Generate a random Noddy history file and save it.
+
+        Args:
+            name: History filename.
+            path: Filepath to save the history file to. Default: "" (execution folder)
+        """
         self.n_faults = np.random.randint(self.faults_low,
                                           self.faults_high)
         self.n_layers = np.random.randint(self.layer_low,
