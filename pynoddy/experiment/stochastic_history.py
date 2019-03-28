@@ -55,6 +55,12 @@ class NoddyHistoryGenerator:
             "amplitude": stats.uniform(self.z * 0.05, self.z * 0.15)
         }
 
+        self.dist_unconf = {
+            "pos": self._random_pos(z_offset=self.z / 2),
+            "dip_direction": stats.uniform(0, 360),
+            "dip": stats.norm(0, 5),
+        }
+
     @staticmethod
     def _draw_dict(dist_dict:dict):
         """Draw from parameter distribution dictionary and return parametrized
@@ -78,7 +84,7 @@ class NoddyHistoryGenerator:
         return draw_dict
 
 
-    def _random_pos(self):
+    def _random_pos(self, z_offset=0):
         """Random within-extent position generator.
 
         Returns:
@@ -86,7 +92,7 @@ class NoddyHistoryGenerator:
         """
         return (stats.uniform(self.extent[0], self.extent[1]),
                 stats.uniform(self.extent[2], self.extent[3]),
-                stats.uniform(self.extent[4], self.extent[5]))
+                stats.uniform(self.extent[4] + z_offset, self.extent[5]))
 
     def _gen_fault(self, n:int):
         """Generate fault event options for fault n.
@@ -114,7 +120,6 @@ class NoddyHistoryGenerator:
         strati_options.update(self._draw_dict(self.dist_strat))
         return strati_options
 
-
     def _gen_tilt(self):
         """Generate tilt event options.
 
@@ -134,6 +139,17 @@ class NoddyHistoryGenerator:
         fold_options = {"name": "Fold"}
         fold_options.update(self._draw_dict(self.dist_fold))
         return fold_options
+
+    def _gen_unconf(self):
+        """Generate unconformity event options.
+
+        Returns:
+            (dict) Unconformity event options.
+        """
+        unconf_options = {"name": "Unconf",
+                          "num_layers": 0}
+        unconf_options.update(self._draw_dict(self.dist_unconf))
+        return unconf_options
 
     def gen_hist(self, name:str, path:str=""):
         """Generate a random Noddy history file and save it.
@@ -155,17 +171,34 @@ class NoddyHistoryGenerator:
         # stratigraphy
         nm.add_event('stratigraphy', self._gen_strat())
 
+        unconf = False
+        unconf = self.has_unconf(nm, unconf)
+
         # tilting
         nm.add_event('tilt', self._gen_tilt())
 
-        # folding
+                # folding
         if bool(np.random.randint(0, 2)):
             nm.add_event("fold", self._gen_fold())
+
+        unconf = self.has_unconf(nm, unconf)
 
         # faults
         for n in range(self.n_faults):
             fault_options = self._gen_fault(n)
             nm.add_event('fault', fault_options)
 
+        unconf = self.has_unconf(nm, unconf)
+
         history = name + ".his"
         nm.write_history(path + "/" + history)
+
+    def has_unconf(self, nm, unconf):
+        if not unconf:
+            if not bool(np.random.randint(0, 16)):
+                nm.add_event("unconformity", self._gen_unconf())
+                return True
+            else:
+                return False
+        else:
+            return True
