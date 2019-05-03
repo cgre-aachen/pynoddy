@@ -55,7 +55,7 @@ kappa_lookup = VMLookupTable()
 
 
 def findKappa(ci):
-    if (kappa_lookup.has_key(ci)):  # this value has been calculated
+    if ci in kappa_lookup.keys():  # this value has been calculated
         return kappa_lookup[ci]
     else:  # we need to interpolate
         return np.interp(ci, kappa_lookup.keys(), kappa_lookup.values())

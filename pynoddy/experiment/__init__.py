@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import pynoddy.history
 import pynoddy.output
 
-from .util import sampling as Sample
+# from .util import sampling as Sample
 
 
 class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
