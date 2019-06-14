@@ -2,7 +2,7 @@
 
 -------
 
-![#f03c15](https://placehold.it/15/f03c15/000000?text=+) Important information: Mark Jessell is currently cleaning the Noddy core library in order to adjust our code to a more permissive license - more information, soon!
+![#f03c15](https://placehold.it/15/f03c15/000000?text=+) Important information: Mark Jessell is currently cleaning the Noddy core library in order to **adjust our code to a more permissive license** - more information, soon!
 
 -------
 
