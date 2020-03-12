@@ -17,7 +17,9 @@ BLOCK_GEOPHYS
 BLOCK_SURFACES
 TOPOLOGY
 ANOM_FROM_BLOCK
-ALL 
+ALL
+RANDOM
+RANDOMDB
 
 If SURFACES, BLOCK_SURFACES, or ALL is selected, the resulting DXF file has each surface (and triangle) coded according to the following information-
 For discontinuities (coded as faults=1,  unconformities=2, dykes=4, plugs=8, stratigraphic=16): age of discontinuity, code of discontinuity ,contiguous volume code #1, contiguous volume code #2,rock #1 adjacent to triangle,rock #2 adjacent to triangle 
@@ -46,5 +48,11 @@ If TOPOLOGY is chosen, noddy outputs a standard block model, plus three new file
 *.g22 The number of lithological units defined in the history	
 
 If ANOM_FROM_BLOCK is chosen, there should be a history file called, for example test.his, a block header called test.g00 and at least one other block model file, and the	calculation will produce both gravity and magnetics outputs based on the geophysics calculation mode set in the history file (which needs to have been used to export a block model).
+
+If RANDOM is chosen, a random five event history with random startigraphy and random petrophysics will be calculated with results written out to file.
+
+If RANDOMDB is chosen, a random five event history with random startigraphy and random petrophysics will be calculated with results sent to a postgres database (needs login data to be modfied in Database.c [line 51], replace this code with your own database access codes)
+
+Code requires libpq postgres library.
 
 Code developed by Mark Jessell, Paul Manser, and Sue Farrell
