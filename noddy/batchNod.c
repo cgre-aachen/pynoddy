@@ -206,7 +206,7 @@ char *message;
 #endif
 {
 	FILE *batchProgressFile;
-
+    return(0);
 	if (!(batchProgressFile = fopen ("noddyBatchProgress.txt", "w")))
 		return (FALSE);
 

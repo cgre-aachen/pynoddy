@@ -196,6 +196,7 @@ int distanceToVector ();
 static int applyAlterations ();
 #endif
 
+extern int Random;
 
 /* ======================================================================
 FUNCTION        convertFloatBlockDataToColors
@@ -2794,10 +2795,10 @@ LAYER_PROPERTIES **layerProps;
       for (i = 0; i < numProps; i++)
       {
          fprintf (fo, "ROCK DEFINITION %s = %d\n", layerProps[i]->unitName,i+1);
-         if (densityCalc)
+         if (densityCalc || Random)
             fprintf (fo, "\tDensity = %lf\n", layerProps[i]->density);
 
-         if (susCalc)
+         if (susCalc || Random)
             fprintf (fo, "\tSus = %lf\n", layerProps[i]->sus_X);
 
          if (remCalc)

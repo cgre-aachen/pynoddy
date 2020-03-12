@@ -564,8 +564,8 @@ double surfaceXDim, surfaceYDim, surfaceZDim;
    else /* FLAT_SURFACE */
       fprintf(stream,"\tSurface Type\t= FLAT_SURFACE\n");
    fprintf(stream,"\tSurface Filename\t= %s\n", surfaceFilename->name);
-   if (!xvt_fsys_convert_dir_to_str(&(surfaceFilename->dir), strVal, 100))
-      strcpy (strVal, ".");
+  // if (!xvt_fsys_convert_dir_to_str(&(surfaceFilename->dir), strVal, 100))
+  //    strcpy (strVal, ".");
    fprintf(stream,"\tSurface Directory\t= %s\n", strVal);
    fprintf(stream,"\tSurface XDim\t= %lf\n", surfaceXDim);
    fprintf(stream,"\tSurface YDim\t= %lf\n", surfaceYDim);

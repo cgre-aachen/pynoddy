@@ -31,7 +31,8 @@ extern GEOLOGY_OPTIONS geologyOptions;
 extern GEOPHYSICS_OPTIONS geophysicsOptions;
 extern PROJECT_OPTIONS projectOptions;
 extern int batchExecution;
-
+extern int Random;
+extern int DataBase;
 
                  /* ************************* */
                  /* Globals used in this file */
@@ -81,7 +82,7 @@ float ****densityData,     ****magSusData,      ****remSusDecData,
 {
    //if (indexCalc) //save index even if deformable rem or alteration mwj_fix
    //{
-      if (!(*indexData = (short ***) create3DIregArray (numLayers,
+      if (!(*indexData = (short ***) create3DIregArray (numLayers,    //mwj_fix so we can add a null character at the end
                                   layerDimensions, sizeof(short))))
          return (FALSE);
    //}
@@ -423,6 +424,8 @@ float ***densityData,     ***magSusData,      ***remSusDecData,
    int nx = 0, ny = 0, cubeSize;
    int i, calcRangeInCubes;
    char dxfname[250];
+   char *query;
+
    cubeSize = cubeSizes[0];
    for (i = 0; i < numLayers; i++)
    {
@@ -448,31 +451,51 @@ float ***densityData,     ***magSusData,      ***remSusDecData,
    sprintf((char *) dxfname,"%s.dxf",blockName);
 
    addFileExtention (blockName, ANOM_HEADER_FILE_EXT);
-   writeBlockHeaderToFile (blockName, numLayers, layerDimensions,
-             xStart, yStart, zStart, xEnd, yEnd, zEnd,
-             numCubeSizes,  cubeSizes,  calcRangeInCubes,
-             options->inclination,      options->intensity,
-             options->declination, densityCalc, susCalc, remCalc, aniCalc,
-             indexCalc, numProps, layerProps);
-             
-  // if (indexCalc)//save index even if deformable rem or alteration mwj_fix
-   //{
-      addFileExtention (blockName, ANOM_INDEX_FILE_EXT);
-      write3DIregBlockToFile (blockName, (char ***) indexData,
-                       numLayers, layerDimensions, sizeof(short));
-      //doTopology(blockName,(char ***) indexData);
+	if (DataBase == 1)
+	{
+		query = (char*) calloc(201*201*201, 2);
+		if(query==0L)
+		{
+			printf("no memory for block model query\n");
+			exit(0);
+		}
+		query[0] = '\0';
+
+		uploadBlockHeader(blockName, numLayers, layerDimensions, xStart, yStart,
+				zStart, xEnd, yEnd, zEnd, numCubeSizes, cubeSizes,
+				calcRangeInCubes, options->inclination, options->intensity,
+				options->declination, densityCalc, susCalc, remCalc, aniCalc,
+				indexCalc, numProps, layerProps, query);
+	}
+	else
+		writeBlockHeaderToFile(blockName, numLayers, layerDimensions, xStart,
+				yStart, zStart, xEnd, yEnd, zEnd, numCubeSizes, cubeSizes,
+				calcRangeInCubes, options->inclination, options->intensity,
+				options->declination, densityCalc, susCalc, remCalc, aniCalc,
+				indexCalc, numProps, layerProps);
+
+	// if (indexCalc)//save index even if deformable rem or alteration mwj_fix
+	//{
+	addFileExtention(blockName, ANOM_INDEX_FILE_EXT);
+	if (DataBase == 1)
+		upload3DIregBlock(blockName, (char***) indexData, numLayers,
+				layerDimensions, sizeof(short), query);
+	else
+		write3DIregBlockToFile(blockName, (char***) indexData, numLayers,
+				layerDimensions, sizeof(short));
+	//doTopology(blockName,(char ***) indexData);
       //do3dStratMap ((THREED_IMAGE_DATA *) NULL, dxfname); //comment out for for ipython
 
   // }
    //else
   // {
-      if (densityCalc)
+      if (densityCalc && Random==0)
       {
          addFileExtention (blockName, ANOM_DENSITY_FILE_EXT);
          write3DIregBlockToFile (blockName, (char ***) densityData,
                        numLayers, layerDimensions, sizeof(float));
       }
-      if (susCalc)
+      if (susCalc && Random==0)
       {
          addFileExtention (blockName, ANOM_MAG_SUS_FILE_EXT);
          write3DIregBlockToFile (blockName, (char ***) magSusData,

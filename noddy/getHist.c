@@ -833,10 +833,10 @@ double version;
             geophysicsOptions.spectralPaddingType = SET_MEAN_PADDING;
          else if (strcmp (temp, "SET_VALUE_PADDING") == 0)
             geophysicsOptions.spectralPaddingType = SET_VALUE_PADDING;
-         else if (strcmp (temp, "RECLECTION_PADDING") == 0)
-            geophysicsOptions.spectralPaddingType = RECLECTION_PADDING;
+         else if (strcmp (temp, "REFLECTION_PADDING") == 0)
+            geophysicsOptions.spectralPaddingType = REFLECTION_PADDING;
          else
-            geophysicsOptions.spectralPaddingType = RECLECTION_PADDING;
+            geophysicsOptions.spectralPaddingType = REFLECTION_PADDING;
 
          loadit(status,"%d",(void *) &geophysicsOptions.spectralFence);
          loadit(status,"%d",(void *) &geophysicsOptions.spectralPercent);

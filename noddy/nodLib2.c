@@ -853,7 +853,7 @@ WINDOW parentWin;
    
    win = xvt_win_get_ctl (parentWin, GEOPHYSICS_PADDING_TYPE);
    geophysicsOptions.spectralPaddingType = xvt_list_get_sel_index (win);
-   if (geophysicsOptions.spectralPaddingType == RECLECTION_PADDING)
+   if (geophysicsOptions.spectralPaddingType == REFLECTION_PADDING)
       geophysicsOptions.spectralPercent = getIntegerTextFieldValue (parentWin,
                                     GEOPHYSICS_PADDING_PARAM);
    if ((geophysicsOptions.spectralPaddingType == FENCE_VALUE_PADDING) ||
@@ -896,7 +896,7 @@ WINDOW parentWin;
             xvt_vobj_set_enabled (xvt_win_get_ctl(parentWin, GEOPHYSICS_PADDING_PARAM_LABEL), FALSE);
             xvt_vobj_set_enabled (xvt_win_get_ctl(parentWin, GEOPHYSICS_PADDING_PARAM), FALSE);
             break;
-         case (RECLECTION_PADDING):
+         case (REFLECTION_PADDING):
             xvt_vobj_set_enabled (xvt_win_get_ctl(parentWin, GEOPHYSICS_PADDING_PARAM_LABEL), TRUE);
             xvt_vobj_set_enabled (xvt_win_get_ctl(parentWin, GEOPHYSICS_PADDING_PARAM), TRUE);
             updateNumericTextField (parentWin, GEOPHYSICS_PADDING_PARAM, geophysicsOptions.spectralPercent);

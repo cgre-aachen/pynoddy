@@ -233,7 +233,7 @@ typedef struct s_tab {
 ** character array dimensions used in structures
 */
 #define OBJECT_TEXT_LENGTH      100
-#define UNIT_NAME_LENGTH        20
+#define UNIT_NAME_LENGTH        50
 #define COLOUR_NAME_LENGTH      30
 
 
@@ -865,7 +865,7 @@ typedef struct s_geophysics_ops {
    
    enum { RAMP_PADDING,        FENCE_MEAN_PADDING,
           FENCE_VALUE_PADDING, SET_MEAN_PADDING,
-          SET_VALUE_PADDING,   RECLECTION_PADDING } spectralPaddingType;
+          SET_VALUE_PADDING,   REFLECTION_PADDING } spectralPaddingType;
    int spectralFence, spectralPercent;
 	double spectralSusX, spectralSusY, spectralSusZ, spectralDensity;
 

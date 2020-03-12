@@ -64,7 +64,8 @@ extern ANOMIMAGE_DATA *gravityReferenceData, *magneticsReferenceData;
 extern WINDOW currentPreviewWindow;
 
 static WINDOW menuWindow = NULL_WIN;
-static WINDOW historyWindow = NULL_WIN;
+// MWJ_2019 static WINDOW historyWindow = NULL_WIN;
+WINDOW historyWindow = NULL_WIN;
 static BOOLEAN creatingObject = FALSE;
 static FILE_SPEC currentFileName;
 
