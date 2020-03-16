@@ -668,7 +668,6 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
 
         return current_lines
 
-
     def write_parameter_changes(self, filepath):
         if hasattr(self, 'random_parameter_changes'):  # if parameter changes have been stored
             # ensure directory exists
@@ -709,3 +708,56 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
             f.close()
         else:
             print ("This experiment has no stored changes")
+
+    def export_interfaces_gempy(self, x, y, layer=None, group_id=None):
+        """
+        Returns pandas dataframe directly compatible with GemPy's interfaces dataframe at positions x, y for specific
+        layer or all.
+        :param x: list/array of x-coordinates
+        :param y: list/array of y-coordinates
+        :param layer: Default value None returns all layers encountered at positions, otherwise specifiy int
+        :param group_id: Default None, if given groups together all the interfaces returns
+        :return: pandas.DataFrame compatible with GemPy's interfaces dataframe
+        """
+        import pandas as pn
+        wells = []
+        interfaces = pn.DataFrame(columns=['X', 'Y', 'Z', 'formation', 'series', 'X_std', 'Y_std', 'Z_std', "group_id"])
+
+        assert len(x) == len(y), "x and y need to have the same length!"
+
+        # get wells for every x, y pair
+        for i in range(len(x)):
+            wells.append(self.get_drillhole_data(int(x[i]), int(y[i])))  # append them to one list
+
+        for i, well in enumerate(wells):
+            if layer is None:  # extract all
+                for l in np.unique(well):
+                    entry = ['X', 'Y', 'Z', 'formation', 'series', 'X_std', 'Y_std', 'Z_std', "group_id"]
+                    entry[0] = x[i]
+                    entry[1] = y[i]
+                    entry[2] = np.where(well == l)[0][-1]
+                    entry[3] = "Layer " + str(int(l))
+                    entry[4] = "Default serie"
+                    entry[5] = 0
+                    entry[6] = 0
+                    entry[7] = 0
+                    entry[8] = group_id
+
+                    s = pn.Series(entry, ['X', 'Y', 'Z', 'formation', 'series', 'X_std', 'Y_std', 'Z_std', "group_id"])
+                    interfaces = interfaces.append(s, ignore_index=True)
+            else:
+                entry = ['X', 'Y', 'Z', 'formation', 'series', 'X_std', 'Y_std', 'Z_std', "group_id"]
+                entry[0] = x[i]
+                entry[1] = y[i]
+                entry[2] = np.where(well == layer)[0][-1]
+                entry[3] = "Layer " + str(int(layer))
+                entry[4] = "Default serie"
+                entry[5] = 0
+                entry[6] = 0
+                entry[7] = 0
+                entry[8] = group_id
+
+                s = pn.Series(entry, ['X', 'Y', 'Z', 'formation', 'series', 'X_std', 'Y_std', 'Z_std', "group_id"])
+                interfaces = interfaces.append(s, ignore_index=True)
+
+        return interfaces
