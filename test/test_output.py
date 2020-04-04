@@ -7,7 +7,7 @@ import os
 __author__ = 'flow'
 
 package_directory = os.path.dirname(os.path.abspath(__file__))
-print package_directory
+print(package_directory)
 
 
 class TestOutput(TestCase):
