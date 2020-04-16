@@ -8,6 +8,7 @@ import numpy as np
 
 import pynoddy
 
+
 class NoddyOutput(object):
     """Class definition for Noddy output analysis"""
     
@@ -647,7 +648,265 @@ class NoddyOutput(object):
             gridToVTK(vtk_filename, x, y, z, cellData = {"data" : kwds['data']})         
         else:
             gridToVTK(vtk_filename, x, y, z, cellData = {"geology" : self.block})         
+
+def CalculatePlotStructure(modelfile, plot, noddy_path, includeGravityCalc=0,   
+                           xy_origin=[0,0, 0], outputOption = 1, 
+                           outputfolder = '', LithologyOpacity=0.2):
+
+    '''
+    Function to take an input history file, calculate it, convert it to dxf,
+    and then plot it in vtkplotter
+    
+    Variables:
+        modelfile: the history file (e.q. Model.his)
+        plot: a reference to the vtkPlotter plot
+        noddy_path: where is your noddy executable file located? (e.q. 'C:/Users/ahino/Documents/GitHub/pynoddy/noddyapp/noddy_win64.exe')
+        includeGravityCalc: [0,1] - would you like to just plot the surface (0) or also calculate the gravity (1)
+        xy_origin: This shifts the model by this amount. Note that PyNoddy lithology models expand during the calculation phase
+        outputOption: would you like a single vtk file with all the faults (0)? or a vtk file for each surface (1)?
+        outputfolder: where would you like to dump all those generated vtk files
+        LithologyOpacity: 0: you can't see the lithology, 1: you can see only the lithology
+    '''
+
+    ## Some extra imports just for this function
+    import vtkplotter as vtkP
+    import time
+    import matplotlib.pylab as pl
+    
+    ###################################
+    ### Calculate the PyNoddy model
+    ###################################    
+    # Assign the output name for the calculation
+    output_name = outputfolder+'vtkscratch'
+    
+    ## You can choose whether to calculate the gravity data as well as the surfaces
+    if(includeGravityCalc==0):
+        outputoption = 'BLOCK_SURFACES'
+    else:
+        outputoption = 'ALL'
+
+    #Calculate the model
+    start = time.time()
+    pynoddy.compute_model(modelfile, output_name, sim_type=outputoption, noddy_path=noddy_path)
+    end = time.time()
+    print('Calculation time took '+str(end - start) + ' seconds')
+
+    ###################################
+    ### Convert the dxf surfaces to vtk
+    ###################################    
+    ## Now need to change the DXF file (mesh format) to VTK. 
+    ## This is slow unfortunately and I'm sure can be optimized
+    start = time.time()
+    points, cell_data, faceCounter = getDXF_parsed_structure(output_name)
+    end = time.time()
+    print('Parsing time took '+str(end - start) + ' seconds')
+
+
+    ###################################
+    ### Convert parsed structure to vtk
+    ###################################    
+    ## Make a vtk file for each surface (option 1) 
+    # or make a single vtk file for all surfaces (option 2)
+    fileprefix = outputfolder+'Surface'
+    start = time.time()
+    nSurfaces, points, CatCodes = convertSurfaces2VTK(points, cell_data, faceCounter, outputOption, fileprefix,  xy_origin=xy_origin)   
+    end = time.time()
+    print('Convert 2 VTK time took '+str(end - start) + ' seconds')
+
+    ###################################
+    ### Add the lithology block to the plot
+    ###################################    
+    ## Now get the lithology data
+    N1 = NoddyOutput(output_name)
+ 
+    vol = vtkP.Volume(N1.block, c='jet', spacing=[N1.delx, N1.dely,N1.delz], origin =[xy_origin[0]+N1.xmin, xy_origin[1]+N1.ymin, xy_origin[2]+N1.zmin])
+    lego = vol.legosurface(-1, np.max(N1.block)*2).opacity(LithologyOpacity).c('jet')
+    plot += lego
+
+    ###################################
+    ### Add the calculated surfaces to the plot
+    ###################################    
+    #make sure each surface gets its own color
+    colors = pl.cm.jet(np.linspace(0,1,nSurfaces))
+
+    if(outputOption==1):
+        for i in range(nSurfaces):
+            filename = fileprefix+str(i)+'.vtk'
+            e=vtkP.load(filename).c(colors[i, 0:3])
         
+            plot += e
+    else:
+        filename = 'Model.vtk'
+        e=vtkP.load(filename)
+        plot += e
+        
+    return points
+
+def getDXF_parsed_structure(output_name):
+    '''
+    Take a dxf file and convert it to a point set
+    This needs some optimization work which could probably save 90% of the time
+    (maybe by completly loading and then doing some matrix parse operations,
+    or by using a converter inside np.loadtxt)
+    '''
+    filename = output_name + '.dxf'
+    cell_data = []
+    xpoint = []
+    ypoint = []
+    zpoint = []
+    with open(filename) as f:
+        cntr=0
+        faceCounter=0
+        for line in f:
+            if(cntr==(7+faceCounter*28)):
+                cell_data.append(line)
+                faceCounter=faceCounter+1
+            elif(cntr==(9+(faceCounter-1)*28)):
+                xpoint.append(float(line))
+            elif(cntr==(11+(faceCounter-1)*28)):
+                ypoint.append(float(line))
+            elif(cntr==(13+(faceCounter-1)*28)):
+                zpoint.append(float(line))
+
+            elif(cntr==(15+(faceCounter-1)*28)):
+                xpoint.append(float(line))
+            elif(cntr==(17+(faceCounter-1)*28)):
+                ypoint.append(float(line))
+            elif(cntr==(19+(faceCounter-1)*28)):
+                zpoint.append(float(line))
+
+            elif(cntr==(21+(faceCounter-1)*28)):
+                xpoint.append(float(line))
+            elif(cntr==(23+(faceCounter-1)*28)):
+                ypoint.append(float(line))
+            elif(cntr==(25+(faceCounter-1)*28)):
+                zpoint.append(float(line))
+
+            cntr=cntr+1
+
+    points = np.column_stack((np.asarray(xpoint, dtype=float),
+                             np.asarray(ypoint, dtype=float),
+                             np.asarray(zpoint, dtype=float)))
+    cell_data.pop()
+    cell_data = np.asarray(cell_data, dtype=object)
+   
+    return points, cell_data, faceCounter
+
+def convertSurfaces2VTK(points, cell_data, faceCounter, outputOption = 1, 
+                        fileprefix='Surface',  xy_origin=[0,0,0]):
+
+    '''
+    Takes a pointset and then turns it into a vtk
+    Variables:
+        points, cell_data, faceCounter: outputs from getDXF_parsed_structure
+        outputOption: [0,1] 0: create a single vtk file with all the geologic events
+                            1: multiple vtk files, one for each event
+        fileprefix: the file prefix for each vtk file
+        xy_origin: an offset to apply to the objects
+    '''
+    import meshio
+    import pandas as pd    
+
+    num3Dfaces=faceCounter
+    print('The number of triangle elements (cells/faces) is: ' + str(num3Dfaces))
+
+
+    #apply origin transformation
+    points[:, 0] = points[:, 0]+xy_origin[0]
+    points[:, 1] = points[:, 1]+xy_origin[1]
+    points[:, 2] = points[:, 2]+xy_origin[2]
+    
+    cell_data = pd.Series(cell_data.reshape((-1, )))
+
+    #In the output of the SURFACES command in pynoody, each surface is assigned a code
+    #The code indicates to which event each surface belongs
+    #I haven't completely understood how this code works.
+    #So this parsing of events can be improved.
+    
+    #This is from the Noddy Manual:
+    #     The naming convention for stratigraphic layer names is as follows:
+    # S02040005
+    # Where:
+    # •  The initial S indicates that this is a stratigraphic surface.
+    # •  The next two characters (02 in this example) refer to the stratigraphy
+    # number, showing that this is the second stratigraphy defined in the
+    # deformation history.
+    # •  The next two characters (04) refer to the surface number within this
+    # stratigraphy.
+    # •  The last four characters (0005) are an internally generated code which
+    # uniquely identify which contiguous volume this layer sits in the model.
+    # Faults, unconformities, plugs and dykes all cut a geological model into
+    # discontinuous volumes, and each distinct volume, across which other surfaces
+    # are discontinuous, are labelled internally by the software.
+    # The naming convention for discontinuity layer names is as follows:
+    # B003006009
+    # Where:
+    # •  The initial B indicates that this is a discontinuity surface (Fault,
+    # unconformity, plug or dyke).
+    # •  The next three characters (003 in this example) indicate event numbers of
+    # the discontinuity causing deformation event.
+    # •  The next three characters (036) indicate the internally generated contiguous
+    # volume code of the volume on one side of the discontinuity.
+    # •  The final three characters (009) indicate the internally generated contiguous
+    # volume code of the other side of the discontinuity.
+    # The reason for adopting such a complex scheme is that it allows related surfaces
+    # to be grouped in one of two ways:
+    # 1. Stratigraphic or discontinuity surfaces can all be selected by their age
+    # 2. Individual contiguous volumes may be selected by their volume code, so
+    # that all the surfaces surrounding a particular contiguous volume may be
+    # identified easily. This approach allows simple triangulated 3D volumes to
+    # be created.
+
+    CatCodes = np.zeros((len(cell_data),))
+    filterB = (cell_data.str.contains('B')) 
+    filterS = (cell_data.str.contains('S')) 
+
+    CatCodes[filterB]= cell_data.loc[filterB].str[:-20].astype('category').cat.codes
+    CatCodes[filterS]= -1*(cell_data.loc[filterS].str[:-12].astype('category').cat.codes+1)
+
+    for i in range(1, len(CatCodes)):
+        if(CatCodes[i]==0):
+            CatCodes[i]=CatCodes[i-1]
+            if(CatCodes[i-1]==0):
+                CatCodes[i]=CatCodes[np.nonzero(CatCodes)[0][0]]
+
+    UniqueCodes = np.unique(CatCodes)
+    nSurfaces = len(UniqueCodes)
+
+    ## if you would like a single vtk file
+    if (outputOption==0): 
+        cells = np.zeros((num3Dfaces, 3),dtype ='int')
+        i=0
+        for f in range(num3Dfaces):
+            cells[f,:]= [i, i+1, i+2]
+            i=i+3
+        meshio.write_points_cells(
+            "Model.vtk",
+            points,
+            cells={'triangle':cells},
+            cell_data= {'triangle': CatCodes}   
+            )
+        
+    ## option 1: make a separate file for each surface
+    else: 
+        for i in range(nSurfaces):
+            filterPoints = CatCodes==UniqueCodes[i]
+            nCells = np.sum(filterPoints)
+            Cells_i = np.zeros((nCells, 3),dtype ='int')
+            cntr = 0
+            for j in range(nCells):
+                Cells_i[j]=[cntr, cntr+1, cntr+2]
+                cntr=cntr+3
+  
+            meshio.write_points_cells(
+                fileprefix+str(i)+".vtk",
+                points[np.repeat(filterPoints,3), :],
+                cells={'triangle':Cells_i}
+                )
+    
+    return nSurfaces, points, CatCodes
+
+       
 class NoddyGeophysics(object):
     """Definition to read, analyse, and visualise calculated geophysical responses"""
      
