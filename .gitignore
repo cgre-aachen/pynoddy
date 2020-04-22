@@ -95,3 +95,6 @@ docs/bak
 *_files
 docs/notebooks/1-Simulation.ipynb
 docs/notebooks/1-Simulation.ipynb
+faultmodel.grv
+faultmodel.his
+faultmodel.mag
