@@ -1194,6 +1194,7 @@ def createPyNoddyHistoryFile(noddyFormattedFaultData, StratDict,
     -------
     nothing. Just writes out the history file.
     '''
+    import pynoddy
     
     nFaults = noddyFormattedFaultData['nFaults']
     nEvents = nFaults + 1
