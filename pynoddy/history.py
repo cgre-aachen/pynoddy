@@ -967,6 +967,11 @@ def setUpFaultRepresentation(Data, SlipParam=0.04, xy_origin=[0,0,0],
      Parameters
     ----------
     Data : A pandas table with the vertices of the faults. 
+        This file is created by creating fault lines in QGIS with a dipdirection and id,
+        Using "Extract Vertices" tool to extract the vertices, 
+        and then adding the x and y information using the attribute calculator in the table, 
+        and then exporting to csv. 
+    
     Needs to contain four columns: id,DipDirecti,X,Y.
         id: an identifier for each fault (to which fault does the vertex belong)
         DipDirecti: dip direction: East, West, SS (strike slip)

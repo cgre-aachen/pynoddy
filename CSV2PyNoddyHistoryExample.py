@@ -11,6 +11,10 @@ import pandas as pd
 
 
 #Read a csv file with the vertices of the faults
+#The file is created by creating fault lines in QGIS with a dipdirection and id
+#Using "Extract Vertices" tool to extract the vertices, 
+#and then adding the x and y information using the attribute calculator in the table, 
+#and then exporting to csv. 
 csvfile = 'examples/FautDataCSV/Scenario1_Vertices.csv'
 CsvFaultData = pd.read_csv(csvfile).sort_values(['id'])
 
