@@ -582,7 +582,7 @@ class NoddyHistory(object):
         self.header_lines = """#Filename = """ + self.filename + """ 
 #Date Saved = """ + time_string + """
 FileType = 111
-Version = 7.11
+Version = 7.03
 
 """
 
@@ -1287,7 +1287,7 @@ class _Templates:
     header = """#Filename = simple_two_faults.his
 #Date Saved = 24/3/2014 14:21:0
 FileType = 111
-Version = 7.11"""
+Version = 7.03"""
 
     strati_layer = """    Unit Name    = $NAME$
     Height    = $HEIGHT$
