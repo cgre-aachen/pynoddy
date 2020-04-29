@@ -88,9 +88,9 @@ def compute_model(history, output_name, **kwds):
         np1 = which("noddy")
         np2 = which("noddy.exe")
         if np1 is not None:
-            noddy_path = np2
-        elif np2 is not None:
             noddy_path = np1
+        elif np2 is not None:
+            noddy_path = np2
         else:
             raise OSError
 
