@@ -1,8 +1,9 @@
-'''Noddy history file wrapper
+# coding=utf-8
+"""Noddy history file wrapper
 Created on 24/03/2014
 
 @author: Florian Wellmann
-'''
+"""
 
 import time  # for header in model generation
 import numpy as np
@@ -56,7 +57,7 @@ class NoddyHistory(object):
         **Optional keywords**:
             - *events_only* = bool : only information on events
         """
-        print((self.get_info_string(**kwds)))
+        print(self.get_info_string(**kwds))
 
     def get_info_string(self, **kwds):
         """Get model information as string
@@ -76,20 +77,20 @@ class NoddyHistory(object):
             if not hasattr(self, 'filename'): self.get_filename()
             if not hasattr(self, 'date_saved'): self.get_date_saved()
             local_os += (60 * "*" + "\n\t\t\tModel Information\n" + 60 * "*")
-            local_os += ("\n\n")
+            local_os += "\n\n"
         if self.n_events == 0:
-            local_os += ("The model does not yet contain any events\n")
+            local_os += "The model does not yet contain any events\n"
         else:
             local_os += ("This model consists of %d events:\n" % self.n_events)
             for k, ev in list(self.events.items()):
                 local_os += ("\t(%d) - %s\n" % (k, ev.event_type))
         if not events_only:
-            local_os += ("The model extent is:\n")
+            local_os += "The model extent is:\n"
             local_os += ("\tx - %.1f m\n" % self.extent_x)
             local_os += ("\ty - %.1f m\n" % self.extent_y)
             local_os += ("\tz - %.1f m\n" % self.extent_z)
 
-            local_os += ("Number of cells in each direction:\n")
+            local_os += 'Number of cells in each direction:\n'
             local_os += ("\tnx = %d\n" % (self.extent_x / self.cube_size))
             local_os += ("\tny = %d\n" % (self.extent_y / self.cube_size))
             local_os += ("\tnz = %d\n" % (self.extent_z / self.cube_size))
@@ -100,9 +101,9 @@ class NoddyHistory(object):
 
             local_os += ("The cubesize for model export is: \n\t%d m\n" % self.cube_size)
             # and now some metadata
-            local_os += ("\n\n")
+            local_os += "\n\n"
             local_os += (60 * "*" + "\n\t\t\tMeta Data\n" + 60 * "*")
-            local_os += ("\n\n")
+            local_os += "\n\n"
             local_os += ("The filename of the model is:\n\t%s\n" % self.filename)
             local_os += ("It was last saved (if origin was a history file!) at:\n\t%s\n" % self.date_saved)
 
@@ -125,7 +126,7 @@ class NoddyHistory(object):
                 self.origin_z = float(self.footer_lines[i + 2].split("=")[1])
                 break
 
-        return (self.origin_x, self.origin_y, self.origin_z)
+        return self.origin_x, self.origin_y, self.origin_z
 
     def set_origin(self, origin_x, origin_y, origin_z):
         """Set coordinates of model origin and update local variables
@@ -171,7 +172,7 @@ class NoddyHistory(object):
                 self.extent_z = float(self.footer_lines[i + 2].split("=")[1])
                 break
 
-        return (self.extent_x, self.extent_y, self.extent_z)
+        return self.extent_x, self.extent_y, self.extent_z
 
     def set_extent(self, extent_x, extent_y, extent_z):
         """Set model extent and update local variables
@@ -346,10 +347,10 @@ class NoddyHistory(object):
             print("Loaded model with the following events:")
 
         for e in self._raw_events:
-            event_lines = self.history_lines[e['line_start']:e['line_end']+1]
+            event_lines = self.history_lines[e['line_start']:e['line_end'] + 1]
 
             if vb:
-                print((e['type']))
+                print(e['type'])
 
             if 'FAULT' in e['type']:
                 ev = events.Fault(lines=event_lines)
@@ -371,7 +372,7 @@ class NoddyHistory(object):
             elif 'STRAIN' in e['type']:
                 ev = events.Strain(lines=event_lines)
             else:
-                print(("Warning: event of type %s has not been implemented in PyNoddy yet" % e['type']))
+                print("Warning: event of type %s has not been implemented in PyNoddy yet" % e['type'])
                 continue
             # now set shared attributes (those defined in superclass Event)
             order = e['num']  # retrieve event number
@@ -395,9 +396,10 @@ class NoddyHistory(object):
         # get args
         sim_type = kwds.get("type", 'Geophysics')  # everything seems to use this
         cube_string = 'Geophysics Cube Size'  # get geology cube size by default
-        if ('Geology' in sim_type):
+        if 'Geology' in sim_type:
             cube_string = 'Geology Cube Size'  # instead get geology cube size
-            print("Warning: pynoddy uses the geophysics cube size for all calculations... changing the geology cube size will have no effect internally.")
+            print(
+                "Warning: pynoddy uses the geophysics cube size for all calculations... changing the geology cube size will have no effect internally.")
 
             # check if footer exists, if not: create from template
         if not hasattr(self, "footer_lines"):
@@ -416,7 +418,7 @@ class NoddyHistory(object):
         """Determine the last savepoint of the file"""
         self.date_saved = self.history_lines[1].split('=')[1].rstrip()
 
-    def change_cube_size(self, cube_size, **kwds):
+    def change_cube_size(self, cube_size):
         """Change the model cube size (isotropic)
         
         **Arguments**:
@@ -484,7 +486,7 @@ class NoddyHistory(object):
             try:
                 tmp_events[value] = self.events[key]
             except KeyError:
-                print(("Event with id %d is not defined, please check!" % value))
+                print("Event with id %d is not defined, please check!" % value)
         self.events = tmp_events.copy()
         self.update_event_numbers()
 
@@ -676,7 +678,6 @@ Version = 7.11
         fault_lines = fault_lines.replace("$ZAXIS$", "%.1f" % event_options.get('zaxis', 2000.0))
         # $GEOMETRY$ Translation
 
-
         # now split lines and add as list entries to event lines
         # event lines are defined in list:
 
@@ -863,7 +864,7 @@ Version = 7.11
         # print changes_dict
         for key, sub_dict in list(changes_dict.items()):  # loop through events (key)
             for sub_key, val in list(sub_dict.items()):  # loop through parameters being changed (sub_key)
-                if isinstance(sub_key, int): # in this case, it is the layer id of a stratigraphic layer!
+                if isinstance(sub_key, int):  # in this case, it is the layer id of a stratigraphic layer!
                     self.events[key].layers[sub_key].properties[val['property']] += val['val']
                 else:
                     self.events[key].properties[sub_key] += val
@@ -881,17 +882,17 @@ Version = 7.11
         return self.events[event_number].properties
 
     def get_event_param(self, event_number, name):
-        '''
+        """
         Returns the value of a given parameter for a given event.
-        
+
         **Arguments**:
          - *event_number* = the event to get a parameter for (integer)
          - *name* = the name of the parameter to retreive (string)
-         
+
          **Returns**
-          - Returns the value of the request parameter, or None if it does not 
+          - Returns the value of the request parameter, or None if it does not
             exists.
-        '''
+        """
         try:
             ev = self.events[event_number].properties
             return ev[name]
@@ -957,21 +958,21 @@ Version = 7.11
 # Two extra PyNoddy functions for creating history files based on fault traces
 # ===============================================================================
 
-def setUpFaultRepresentation(Data, SlipParam=0.04, xy_origin=[0,0,0], 
+def setUpFaultRepresentation(Data, SlipParam=0.04, xy_origin=[0, 0, 0],
                              RefineFault=True, RefineDistance=350,
-                             interpType = 'linear'):    
-    '''
+                             interpType='linear'):
+    """
     This is a function that takes a csv files with fault vertices and manipulates
     the information so it can be easily input into PyNoddy
-    
+
      Parameters
     ----------
-    Data : A pandas table with the vertices of the faults. 
+    Data : A pandas table with the vertices of the faults.
         This file is created by creating fault lines in QGIS with a dipdirection and id,
-        Using "Extract Vertices" tool to extract the vertices, 
-        and then adding the x and y information using the attribute calculator in the table, 
-        and then exporting to csv. 
-    
+        Using "Extract Vertices" tool to extract the vertices,
+        and then adding the x and y information using the attribute calculator in the table,
+        and then exporting to csv.
+
     Needs to contain four columns: id,DipDirecti,X,Y.
         id: an identifier for each fault (to which fault does the vertex belong)
         DipDirecti: dip direction: East, West, SS (strike slip)
@@ -980,180 +981,182 @@ def setUpFaultRepresentation(Data, SlipParam=0.04, xy_origin=[0,0,0],
         The default is 0.04.
     RefineFault: Should you refine the number of points with which the fault is modeled
     RefineDistance: Every how many units should you create another fault vertex
-    interpType: The type of interpolation used when refining the fault trace. 
+    interpType: The type of interpolation used when refining the fault trace.
         choose from ‘linear’, ‘nearest’, ‘zero’, ‘slinear’, ‘quadratic’, ‘cubic’, ‘previous’, ‘next’
         https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html
     Returns
     -------
     parametersForGeneratingFaults: a dictionary with lists of Noddy-ready fault parameters.
 
-    '''       
+    """
     import pandas as pd
     from sklearn.decomposition import PCA
     from scipy import interpolate
 
     #################################
-    ## 1. initialize parameters
+    # 1. initialize parameters
     #################################
-    
-    #the x, y, z centers of the fault
+
+    # the x, y, z centers of the fault
     XList, YList, ZList = [], [], []
 
-    #the x, y, trace points of the fault, and the number of points per fault trace
-    PtXList,PtYList = [],[] 
+    # the x, y, trace points of the fault, and the number of points per fault trace
+    PtXList, PtYList = [], []
     nFaultPointsList = []
 
-    #for elliptic faults, the radii of the fault
+    # for elliptic faults, the radii of the fault
     XAxisList, YAxisList, ZAxisList = [], [], []
 
-    #the dip, dip direction, and slip
+    # the dip, dip direction, and slip
     DipList, DipDirectionList, SlipList = [], [], []
 
     # the amplitude, pitch, and profile pitch
     AmplitudeList = []
-    PitchList = []      
-    ProfilePitchList = []      
-              
-    #clean the input data such that it is relative to the point of origin of the model
-    Data['X'] = Data['X']-xy_origin[0]
-    Data['Y'] = Data['Y']-xy_origin[1]
-    
-    #Get the number of input faults
+    PitchList = []
+    ProfilePitchList = []
+
+    # clean the input data such that it is relative to the point of origin of the model
+    Data['X'] = Data['X'] - xy_origin[0]
+    Data['Y'] = Data['Y'] - xy_origin[1]
+
+    # Get the number of input faults
     Faults = pd.unique(Data['id'])
     nFaults = len(Faults)
-    
-    #################################
-    ## 2. Calculate initialized parameters for each input fault
-    #################################
-   
-    for i in range(nFaults):
-        
-        #select the data points for each fault one at a time
-        filterV = Data['id']==Faults[i]
 
-        #get the xy points of the fault
+    #################################
+    # 2. Calculate initialized parameters for each input fault
+    #################################
+
+    for i in range(nFaults):
+
+        # select the data points for each fault one at a time
+        filterV = Data['id'] == Faults[i]
+
+        # get the xy points of the fault
         xy = Data.loc[filterV, ['X', 'Y']].values
-        
-        #get the dip direction information (you only need one value)
-        EastWest =  Data.loc[filterV, ['DipDirecti']].values[0,0]
-      
+
+        # get the dip direction information (you only need one value)
+        EastWest = Data.loc[filterV, ['DipDirecti']].values[0, 0]
+
         # Perform a pca on the vertices in order to get the faults aligned on 
         # a major and minor axis
         pca = PCA(2)
-        pca.fit(xy) 
-        if(pca.components_[0, 0]>0):
-            pca.components_[0, :] = pca.components_[0, :]*-1
-        if(pca.components_[1, 1]>0):
-            pca.components_[1, :] = pca.components_[1, :]*-1           
+        pca.fit(xy)
+        if pca.components_[0, 0] > 0:
+            pca.components_[0, :] = pca.components_[0, :] * -1
+        if pca.components_[1, 1] > 0:
+            pca.components_[1, :] = pca.components_[1, :] * -1
         xypca = pca.transform(xy)
-    
+
         # Calculate the dip direction
-        vectorPCA1 = pca.components_[0, :]       
-        vectorNorth = [0,1]   
-        if(vectorPCA1[0]<0):
-            vectorPCA1= vectorPCA1*-1  
-        angle = np.math.atan2(np.linalg.det([vectorPCA1,vectorNorth]),np.dot(vectorPCA1,vectorNorth))
+        vectorPCA1 = pca.components_[0, :]
+        vectorNorth = [0, 1]
+        if vectorPCA1[0] < 0:
+            vectorPCA1 = vectorPCA1 * -1
+        angle = np.math.atan2(np.linalg.det([vectorPCA1, vectorNorth]), np.dot(vectorPCA1, vectorNorth))
         angle = np.degrees(angle)
-        dipdirection= angle+90
-        if(dipdirection<0):
-            dipdirection=dipdirection+360
-        
+        dipdirection = angle + 90
+        if dipdirection < 0:
+            dipdirection = dipdirection + 360
+
         # Calculate the fault length
-        lengthFault = np.max(xypca[:,0])-np.min(xypca[:,0])
+        lengthFault = np.max(xypca[:, 0]) - np.min(xypca[:, 0])
 
         # Get the fault center x and y        
-        means = pca.inverse_transform([(np.max(xypca[:,0])+np.min(xypca[:,0]))/2, (np.max(xypca[:,1])+np.min(xypca[:,1]))/2])
+        means = pca.inverse_transform(
+            [(np.max(xypca[:, 0]) + np.min(xypca[:, 0])) / 2, (np.max(xypca[:, 1]) + np.min(xypca[:, 1])) / 2])
         meanX = means[0]
         meanY = means[1]
- 
+
         # You need to normalize the input fault data to be between 0-628 for x
         # and between -100 to 100 in the y direction.
         targetXmin = 0
         targetXmax = 628
         targetYmin = -100
         targetYmax = 100
-        newRangeX = targetXmax-targetXmin
-        newRangeY = targetYmax-targetYmin
-        oldRangeX = (np.max(xypca[:,0])-np.min(xypca[:,0]))
-        oldRangeY = (np.max(xypca[:,1])-np.min(xypca[:,1]))
-        xypca[:,0]= ((xypca[:,0]-np.min(xypca[:,0]))/oldRangeX)*newRangeX
-        #If the fault is straight, it does not need be re-calibrated in the y direction
-        if(oldRangeY<0.0001):
+        newRangeX = targetXmax - targetXmin
+        newRangeY = targetYmax - targetYmin
+        oldRangeX = (np.max(xypca[:, 0]) - np.min(xypca[:, 0]))
+        oldRangeY = (np.max(xypca[:, 1]) - np.min(xypca[:, 1]))
+        xypca[:, 0] = ((xypca[:, 0] - np.min(xypca[:, 0])) / oldRangeX) * newRangeX
+        # If the fault is straight, it does not need be re-calibrated in the y direction
+        if oldRangeY < 0.0001:
             pass
         else:
-            xypca[:,1]= ((xypca[:,1]-np.min(xypca[:,1]))/oldRangeY)*newRangeY+targetYmin
-          
-        #The trace needs to be flipped sometimes depending on the dipping direction
-        if(EastWest=='East'):
-            if(dipdirection<180):
+            xypca[:, 1] = ((xypca[:, 1] - np.min(xypca[:, 1])) / oldRangeY) * newRangeY + targetYmin
+
+        # The trace needs to be flipped sometimes depending on the dipping direction
+        if EastWest == 'East':
+            if dipdirection < 180:
                 dip = 70
             else:
-                dipdirection=dipdirection-180
-                xypca[:,1]=-1*xypca[:,1]
-                xypca[:,0]=-1*xypca[:,0]+newRangeX
+                dipdirection = dipdirection - 180
+                xypca[:, 1] = -1 * xypca[:, 1]
+                xypca[:, 0] = -1 * xypca[:, 0] + newRangeX
                 dip = 70
-            ProfilePitch=0
-            Pitch=90
-        elif(EastWest=='SS'):
-            if(dipdirection<180):
+            ProfilePitch = 0
+            Pitch = 90
+        elif EastWest == 'SS':
+            if dipdirection < 180:
                 dip = 80
             else:
-                dipdirection=dipdirection-180
-                xypca[:,1]=-1*xypca[:,1]
+                dipdirection = dipdirection - 180
+                xypca[:, 1] = -1 * xypca[:, 1]
                 dip = 80
-            Pitch=180
-            ProfilePitch=90
+            Pitch = 180
+            ProfilePitch = 90
         else:
-            if(dipdirection>180):
+            if dipdirection > 180:
                 dip = 70
             else:
-                dipdirection=dipdirection+180
-                xypca[:,1]=-1*xypca[:,1]
-                xypca[:,0]=-1*xypca[:,0]+newRangeX
+                dipdirection = dipdirection + 180
+                xypca[:, 1] = -1 * xypca[:, 1]
+                xypca[:, 0] = -1 * xypca[:, 0] + newRangeX
                 dip = 70
-            ProfilePitch=0
-            Pitch=90
-            
-        #Just to be sure, I'm re-sorting the data by x. 
-        #I'm not sure this is a necessary step.
-        #This can most definitely be done using numpy and not pandas
-        xypcapd = pd.DataFrame({'X': xypca[:,0], 'Y': xypca[:,1]})
-        xypcapd = xypcapd.sort_values(['X','Y'], ascending='True')
+            ProfilePitch = 0
+            Pitch = 90
+
+        # Just to be sure, I'm re-sorting the data by x.
+        # I'm not sure this is a necessary step.
+        # This can most definitely be done using numpy and not pandas
+        xypcapd = pd.DataFrame({'X': xypca[:, 0], 'Y': xypca[:, 1]})
+        xypcapd = xypcapd.sort_values(['X', 'Y'], ascending='True')
         xypca = xypcapd.values
-        
-        traceXpts = xypca[:,0]
-        traceYpts = xypca[:,1]
 
-        #Refine the fault 
-        maxPointsFault=30
-        minPointsFault=2
-        if(RefineFault==True):
-            nPointsDivide = int(np.max([np.ceil(np.min([lengthFault/RefineDistance,maxPointsFault])), minPointsFault]))           
+        traceXpts = xypca[:, 0]
+        traceYpts = xypca[:, 1]
+
+        # Refine the fault
+        maxPointsFault = 30
+        minPointsFault = 2
+        if RefineFault == True:
+            nPointsDivide = int(
+                np.max([np.ceil(np.min([lengthFault / RefineDistance, maxPointsFault])), minPointsFault]))
             f = interpolate.interp1d(traceXpts.copy(), traceYpts.copy(), kind='linear')
-            traceXpts=np.linspace(0, 628, nPointsDivide)
-            traceYpts=f(traceXpts)
+            traceXpts = np.linspace(0, 628, nPointsDivide)
+            traceYpts = f(traceXpts)
 
-        #Add the calculated fault information to the initialized list.
+        # Add the calculated fault information to the initialized list.
         PtXList.append(traceXpts)
         PtYList.append(traceYpts)
         XList.append(meanX)
         YList.append(meanY)
         ZList.append(4000)
-        XAxisList.append(lengthFault/2)
-        ZAxisList.append(lengthFault/2)
-        YAxisList.append(lengthFault/2)
+        XAxisList.append(lengthFault / 2)
+        ZAxisList.append(lengthFault / 2)
+        YAxisList.append(lengthFault / 2)
         DipDirectionList.append(dipdirection)
         DipList.append(dip)
-        SlipList.append(lengthFault*SlipParam)
-        AmplitudeList.append(oldRangeY/2)
+        SlipList.append(lengthFault * SlipParam)
+        AmplitudeList.append(oldRangeY / 2)
         ProfilePitchList.append(ProfilePitch)
         PitchList.append(Pitch)
         nFaultPointsList.append(len(traceXpts))
-    
-    #Return all of the fault information in a list structure
-    parametersForGeneratingFaults={}
-    parametersForGeneratingFaults['nFaults']=nFaults
-    parametersForGeneratingFaults['nFaultPoints']=nFaultPointsList
+
+    # Return all of the fault information in a list structure
+    parametersForGeneratingFaults = {}
+    parametersForGeneratingFaults['nFaults'] = nFaults
+    parametersForGeneratingFaults['nFaultPoints'] = nFaultPointsList
     parametersForGeneratingFaults['PtX'] = PtXList
     parametersForGeneratingFaults['PtY'] = PtYList
     parametersForGeneratingFaults['X'] = XList
@@ -1168,17 +1171,18 @@ def setUpFaultRepresentation(Data, SlipParam=0.04, xy_origin=[0,0,0],
     parametersForGeneratingFaults['Amplitude'] = AmplitudeList
     parametersForGeneratingFaults['Profile Pitch'] = ProfilePitchList
     parametersForGeneratingFaults['Pitch'] = PitchList
-    
-    return parametersForGeneratingFaults 
 
-def createPyNoddyHistoryFile(noddyFormattedFaultData, StratDict, 
-                             filename = 'faultmodel.his', joinType = 'LINES',
-                             cubesize=150, origin=[0,0,4000], extent=[9000,9400,4000]):
-    '''
+    return parametersForGeneratingFaults
+
+
+def createPyNoddyHistoryFile(noddyFormattedFaultData, StratDict,
+                             filename='faultmodel.his', joinType='LINES',
+                             cubesize=150, origin=[0, 0, 4000], extent=[9000, 9400, 4000]):
+    """
     This is a function that created a PyNoddy history file from a dictionary
-    with information regarding faults and a dictionary with information regarding 
+    with information regarding faults and a dictionary with information regarding
     the stratigraphy.
-    
+
      Parameters
     ----------
     noddyFormattedFaultData: the output from setUpFaultRepresentation
@@ -1186,40 +1190,40 @@ def createPyNoddyHistoryFile(noddyFormattedFaultData, StratDict,
     for example:
         StratDict = {}
         StratDict['Heights'] = [2000, 2500, 3000, 3700]
-        StratDict['Names'] = ['Intrusive', 'Felsic', 'Mafic','Sed'] 
-        StratDict['Density'] =  [2.65, 2.5, 2.4, 2.3] 
+        StratDict['Names'] = ['Intrusive', 'Felsic', 'Mafic','Sed']
+        StratDict['Density'] =  [2.65, 2.5, 2.4, 2.3]
         StratDict['MagSus'] = [0.0015, 0.0012, 0.0018, 0.001]
 
     filename: a name for the history file
-    joinType: in Noddy, fault traces be interpolated via LINES, CURVES, SQUARE  
+    joinType: in Noddy, fault traces be interpolated via LINES, CURVES, SQUARE
     cubesize: the size of the cube that will determine the resolution
     origin: the minimum x and y values of the model and the top z point of the model
     extent: the extent of the model in the x, y, and z directions
     Returns
     -------
     nothing. Just writes out the history file.
-    '''
+    """
     import pynoddy
-    
+
     nFaults = noddyFormattedFaultData['nFaults']
     nEvents = nFaults + 1
     nLayers = len(StratDict['Names'])
-              
-    #Open the history file and write out the top header
-    file1 = open(filename,"w") 
+
+    # Open the history file and write out the top header
+    file1 = open(filename, "w")
     headerTxt = pynoddy.history._Templates().header
-    file1.write(headerTxt+ '\n') 
-    
-    #Write out the number of events
-    numEventsText = "No of Events\t= %d\n" % (nEvents)
-    file1.write(numEventsText) 
-    
-    #Make the stratigraphy event
-    #By copying a template and then replacing the key words identified by $key$
+    file1.write(headerTxt + '\n')
+
+    # Write out the number of events
+    numEventsText = "No of Events\t= %d\n" % nEvents
+    file1.write(numEventsText)
+
+    # Make the stratigraphy event
+    # By copying a template and then replacing the key words identified by $key$
     EventTitle = 'Event #1	= STRATIGRAPHY'
-    file1.write(EventTitle + '\n') 
-    SubTitle = "	Num Layers = %d" % (nLayers) 
-    file1.write(SubTitle + '\n') 
+    file1.write(EventTitle + '\n')
+    SubTitle = "	Num Layers = %d" % nLayers
+    file1.write(SubTitle + '\n')
     for i in range(nLayers):
         stratTxt = pynoddy.history._Templates().strati_layerExpanded
         stratTxt = stratTxt.replace("$NAME$", StratDict['Names'][i])
@@ -1228,51 +1232,50 @@ def createPyNoddyHistoryFile(noddyFormattedFaultData, StratDict,
         stratTxt = stratTxt.replace("$BLUE$", str(np.random.randint(0, 255)))
         stratTxt = stratTxt.replace("$Height$", "{:.5f}".format(StratDict['Heights'][i]))
         stratTxt = stratTxt.replace("$Density$", "{:.5f}".format(StratDict['Density'][i]))
-        stratTxt = stratTxt.replace("$MagSus$", "{:.5f}".format(StratDict['MagSus'][i]))        
-        file1.write(stratTxt + '\n') 
+        stratTxt = stratTxt.replace("$MagSus$", "{:.5f}".format(StratDict['MagSus'][i]))
+        file1.write(stratTxt + '\n')
     file1.write("	Name	= Strat\n")
 
-
-    #Make an event for each fault  
-    FaultProperties = ['X', 'Y', 'Z', 'Dip Direction', 
+    # Make an event for each fault
+    FaultProperties = ['X', 'Y', 'Z', 'Dip Direction',
                        'Dip', 'Slip', 'Amplitude', 'XAxis', 'YAxis',
-                       'ZAxis','Profile Pitch', 'Pitch'] 
+                       'ZAxis', 'Profile Pitch', 'Pitch']
 
     for i in range(nFaults):
-        nPoints= noddyFormattedFaultData['nFaultPoints'][i]
-        EventTitle = 'Event #%d	= FAULT' % (i+2)  
-        file1.write(EventTitle + '\n') 
+        nPoints = noddyFormattedFaultData['nFaultPoints'][i]
+        EventTitle = 'Event #%d	= FAULT' % (i + 2)
+        file1.write(EventTitle + '\n')
 
-        #start
+        # start
         faultTxt = pynoddy.history._Templates().fault_start
         for prop in FaultProperties:
-            faultTxt = faultTxt.replace("$"+prop+"$", "{:.5f}".format(noddyFormattedFaultData[prop][i]))
+            faultTxt = faultTxt.replace("$" + prop + "$", "{:.5f}".format(noddyFormattedFaultData[prop][i]))
         faultTxt = faultTxt.replace('$Join Type$', joinType)
-        file1.write(faultTxt+ '\n') 
+        file1.write(faultTxt + '\n')
 
-        #middle --> add the fault trace information           
-        faultPointTxt= "    Num Points    = %d" % (nPoints) 
-        file1.write(faultPointTxt+ '\n')
+        # middle --> add the fault trace information
+        faultPointTxt = "    Num Points    = %d" % nPoints
+        file1.write(faultPointTxt + '\n')
         for p in range(nPoints):
-            ptX = " 		Point X = "+"{:.5f}".format(noddyFormattedFaultData['PtX'][i][p])
-            file1.write(ptX+ '\n') 
-            ptY = " 		Point Y = "+"{:.5f}".format(noddyFormattedFaultData['PtY'][i][p])
-            file1.write(ptY+ '\n')             
+            ptX = " 		Point X = " + "{:.5f}".format(noddyFormattedFaultData['PtX'][i][p])
+            file1.write(ptX + '\n')
+            ptY = " 		Point Y = " + "{:.5f}".format(noddyFormattedFaultData['PtY'][i][p])
+            file1.write(ptY + '\n')
 
-        #end            
+            # end
         faultTxt = pynoddy.history._Templates().fault_end
-        faultTxt = faultTxt.replace("$NAME$", 'Fault'+str(i))
-        file1.write(faultTxt+ '\n') 
+        faultTxt = faultTxt.replace("$NAME$", 'Fault' + str(i))
+        file1.write(faultTxt + '\n')
 
-    #replace the origin information            
+        # replace the origin information
     footerTxt = pynoddy.history._Templates().footer_expanded
     footerTxt = footerTxt.replace('$origin_z$', str(origin[2]))
     footerTxt = footerTxt.replace('$extent_x$', str(extent[0]))
     footerTxt = footerTxt.replace('$extent_y$', str(extent[1]))
     footerTxt = footerTxt.replace('$extent_z$', str(extent[2]))
     footerTxt = footerTxt.replace('$cube_size$', str(cubesize))
-    file1.write(footerTxt) 
-    
+    file1.write(footerTxt)
+
     file1.close()
 
 
@@ -1280,7 +1283,7 @@ def createPyNoddyHistoryFile(noddyFormattedFaultData, StratDict,
 # Templates for Noddy history file
 # ===============================================================================
 
-class _Templates():
+class _Templates:
     header = """#Filename = simple_two_faults.his
 #Date Saved = 24/3/2014 14:21:0
 FileType = 111
@@ -1305,7 +1308,7 @@ Version = 7.11"""
     Red    = 0
     Green    = 153
     Blue    = 48 """
-  
+
     strati_layerExpanded = """    Unit Name    = $NAME$
     Height    = $Height$
     Apply Alterations    = ON
@@ -1381,7 +1384,7 @@ Version = 7.11"""
     Scale Origin    = 0.000000
     Min Y Replace    = -1.000000
     Max Y Replace    = 1.000000"""
-    
+
     fault_end = """    Alteration Type     = NONE
     Num Profiles    = 12
     Name    = Density
@@ -2263,7 +2266,6 @@ Version = 7.11"""
     Floating Menu Rows    = 1
     Floating Menu Cols    = 24
 End of Status Report"""
-
 
     # everything below events
     footer = """
