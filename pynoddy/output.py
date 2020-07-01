@@ -577,7 +577,7 @@ class NoddyOutput(object):
         #plot section
         title = kwds.get("title", "Section in %s-direction, pos=%d" % (direction, cell_pos))
                 
-        im = ax.imshow(section_slice, interpolation='nearest', aspect=ve, cmap=cmap_type, origin = 'lower left')
+        im = ax.imshow(section_slice, interpolation='nearest', aspect=ve, cmap=cmap_type, origin = 'lower')
        
         if colorbar and 'ax' not in kwds and False: #disable - color bar is broken
 #            cbar = plt.colorbar(im)
