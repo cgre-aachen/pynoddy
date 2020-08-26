@@ -167,7 +167,8 @@ class NoddyOutput(object):
             
     def load_geology(self):
         """Load block geology ids from .g12 output file"""
-        f = open(self.basename + ".g12")
+        with open(self.basename + ".g12", "r") as f:
+            lines = f.readlines()
         method = 'standard' # standard method to read file
         # method = 'numpy'    # using numpy should be faster - but it messes up the order... possible to fix?
         if method == 'standard':
@@ -175,7 +176,7 @@ class NoddyOutput(object):
             j = 0
             k = 0
             self.block = np.ndarray((self.nx,self.ny,self.nz))
-            for line in f.readlines():
+            for line in lines:
                 if line == '\n':
                     # next z-slice
                     k += 1
