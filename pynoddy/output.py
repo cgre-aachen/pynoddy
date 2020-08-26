@@ -184,7 +184,7 @@ class NoddyOutput(object):
         for n in range(1, self.nz + 1):
             sections.append(np.array(splits[(n - 1) * self.ny:n * self.ny]))
 
-        self.faultblock = np.array(sections).T
+        self.faultblock = np.flip(np.array(sections), axis=1).T
 
     def load_geology(self):
         """Load block geology ids from .g12 output file"""
