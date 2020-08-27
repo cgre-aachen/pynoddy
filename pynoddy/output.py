@@ -21,6 +21,7 @@ class NoddyOutput(object):
         self.basename = output_name
         self.load_model_info()
         self.load_geology()
+        self.load_faultblock()
         
     def __add__(self, other):
         """Define addition as addition of grid block values
@@ -163,11 +164,32 @@ class NoddyOutput(object):
                 
                 for l in reversed(lithos):
                     self.stratigraphy.append(l)
-                
-            
+
+    def load_faultblock(self):
+        """Load fault block from .g21 output file"""
+        try:
+            with open(self.basename + ".g21", "r") as f:
+                lines = f.readlines()
+        except FileNotFoundError:
+            return
+
+        splits = []
+        for line in lines:
+            if line == "\n":
+                continue
+            split = [int(entry) for entry in line.rstrip().split("\t")]
+            splits.append(split)
+
+        sections = []
+        for n in range(1, self.nz + 1):
+            sections.append(np.array(splits[(n - 1) * self.ny:n * self.ny]))
+
+        self.faultblock = np.flip(np.array(sections), axis=1).T
+
     def load_geology(self):
         """Load block geology ids from .g12 output file"""
-        f = open(self.basename + ".g12")
+        with open(self.basename + ".g12", "r") as f:
+            lines = f.readlines()
         method = 'standard' # standard method to read file
         # method = 'numpy'    # using numpy should be faster - but it messes up the order... possible to fix?
         if method == 'standard':
@@ -175,7 +197,7 @@ class NoddyOutput(object):
             j = 0
             k = 0
             self.block = np.ndarray((self.nx,self.ny,self.nz))
-            for line in f.readlines():
+            for line in lines:
                 if line == '\n':
                     # next z-slice
                     k += 1
