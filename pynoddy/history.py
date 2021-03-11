@@ -283,7 +283,7 @@ class NoddyHistory(object):
         else:
             # from urllib import urlopen # , urllib.error, urllib.parse
             import urllib
-            with urllib.urlrequest.urlopen(url) as f:
+            with urllib.request.urlopen(url) as f:
                 output = f.read().decode('utf-8')
             # response = urllib.request.urlopen(url)
             tmp_lines = output.split("\n")

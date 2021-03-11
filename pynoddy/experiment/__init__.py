@@ -487,6 +487,7 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
         """
         remove_tmp_files = kwds.get("remove_tmp_files", True)
         compute_output = kwds.get("compute_output", True)
+        sim_type = kwds.get("sim_type", "BLOCK")
         self.get_cube_size()
         self.get_extent()
         resolution = kwds.get("resolution", self.cube_size)
@@ -537,7 +538,7 @@ class Experiment(pynoddy.history.NoddyHistory, pynoddy.output.NoddyOutput):
         # 4. run noddy
         import pynoddy.output
 
-        pynoddy.compute_model(tmp_his_file, tmp_out_file, output=compute_output)
+        pynoddy.compute_model(tmp_his_file, tmp_out_file, output=compute_output, sim_type=sim_type)
         # 5. open output
         i = 0
         # if False:
