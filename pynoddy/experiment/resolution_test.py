@@ -66,8 +66,8 @@ class ResolutionTest(Experiment):
                 print(("Computing model with %d block size" % res))    
            
             #change cube size
-            self.change_cube_size(res,type="Geophysics")
-            self.change_cube_size(res,type="Geology")
+            self.change_cube_size(res)
+            self.change_cube_size(res)
             print("Cube size: %d:" % self.get_cube_size())
            
             #store cube size
