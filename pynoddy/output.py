@@ -214,7 +214,7 @@ class NoddyOutput(object):
             k_max = 0
             i_max = 0
             self.block = np.ndarray((self.nz, self.ny, self.nx))
-            for k, line in enumerate(f.readlines()):
+            for k, line in enumerate(lines):
                 if line == '\n':
                     # next y-slice
                     j += 1
@@ -229,7 +229,7 @@ class NoddyOutput(object):
 
         elif method == 'numpy':
             # old implementation - didn't work, but why?
-            self.block = np.loadtxt(f, dtype="int")
+            self.block = np.loadtxt(lines, dtype="int")
             # reshape to proper 3-D shape
             self.block = self.block.reshape((self.nz, self.ny, self.nx))
             self.block = np.swapaxes(self.block, 0, 2)
