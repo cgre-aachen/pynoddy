@@ -92,8 +92,7 @@ class NoddyOutput(object):
     def set_basename(self, name):
         """Set model basename"""
         self.basename = name
-        
-        
+
     def compare_dimensions_to(self, other):
         """Compare model dimensions to another model"""
         try:
@@ -197,7 +196,7 @@ class NoddyOutput(object):
             j = 0
             k = 0
             self.block = np.ndarray((self.nx, self.ny, self.nz))
-            for line in f.readlines():
+            for line in lines:
                 if line == '\n':
                     # next z-slice
                     k += 1
