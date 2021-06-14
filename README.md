@@ -133,7 +133,7 @@ to edit the variable, and add the location of your folder to this path.
 The original graphical user interface for ``Noddy`` and the compiled
 executable program for Windows can be obtained from:
 
-http://tinyurl.com/noddy-site
+https://tectonique.net/noddy/
 
 This site also contains the
 source code, as well as extensive documentation and tutorial material
