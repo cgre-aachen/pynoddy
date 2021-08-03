@@ -25,6 +25,9 @@ The result could look something like this:
 
 <img src="noddy_block_example.png" width="600"/>
 
+![pynoddy block visualization](https://user-images.githubusercontent.com/1070677/128020308-4ac93188-946b-493e-a19a-7f40a693acca.png)
+
+
 ``Noddy`` has been used to generate models for teaching and interpretation purposes, but also
 for scientific studies (e.g. [3]). 
 
